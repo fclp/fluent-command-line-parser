@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A2546703-0B86-4515-BE5B-FAF85B756BDC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fclp.Tests</RootNamespace>
+    <AssemblyName>FluentCommandLineParser.Tests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\_output\tests\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>FluentCommandLineParserTests.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Machine.Specifications, Version=0.5.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Machine.Specifications.0.5.11\lib\net20\Machine.Specifications.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommandLineOptionFormatterTests.cs" />
+    <Compile Include="FluentCommandLineParserTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FluentCommandLineParser\Behaviour\InvalidOptionSetupBehaviour.cs" />
+    <Compile Include="FluentCommandLineParser\TestContext\TestException.cs" />
+    <Compile Include="FluentCommandLineParser\TestContext\FluentCommandLineParserTestContext.cs" />
+    <Compile Include="FluentCommandLineParser\TestContext\SettingUpALongOptionTestContext.cs" />
+    <Compile Include="FluentCommandLineParser\TestContext\SettingUpAShortOptionTestContext.cs" />
+    <Compile Include="FluentCommandLineParser\when_executing_parse_operation\with_options_that_are_not_specified_in_the_args.cs" />
+    <Compile Include="FluentCommandLineParser\when_executing_parse_operation\with_options_that_are_specified_in_the_args.cs" />
+    <Compile Include="Internals\CommandLineParserEngine\when_args_contains_a_boolean_option_that_ends_with_negative_sign.cs" />
+    <Compile Include="Internals\CommandLineParserEngine\when_args_contains_a_boolean_option_that_ends_with_no_sign.cs" />
+    <Compile Include="Internals\CommandLineParserEngine\when_args_contains_a_boolean_option_that_ends_with_positive_sign.cs" />
+    <Compile Include="TestContext\TestContext.cs" />
+    <Compile Include="FluentCommandLineParser\TestContext\TestType.cs" />
+    <Compile Include="FluentCommandLineParser\when_executing_parse_operation\with_options_that_have_not_been_setup.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\and_the_option_factory\throws_an_error.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_is_already_used_but_differs_by_case.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_is_already_used_but_differs_by_case.cs" />
+    <Compile Include="FluentCommandLineParser\when_using_an_option_factory\that_is_custom.cs" />
+    <Compile Include="FluentCommandLineParser\when_executing_parse_operation\with_a_parser_engine_that_is_custom.cs" />
+    <Compile Include="FluentCommandLineParser\when_a_new_instance_is_created.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name.cs" />
+    <Compile Include="FluentCommandLineParser\when_using_an_option_factory\that_has_been_set_to_null.cs" />
+    <Compile Include="FluentCommandLineParser\when_executing_parse_operation\with_a_parser_engine_that_is_null.cs" />
+    <Compile Include="FluentCommandLineParser\when_creating_show_usage_text\with_a_formatter_that_is_custom.cs" />
+    <Compile Include="FluentCommandLineParser\when_creating_show_usage_text\with_a_formatter_that_is_null.cs" />
+    <Compile Include="FluentCommandLineParser\when_creating_show_usage_text\with_no_formatter.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\and_the_option_factory\returns_a_null_option.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_contains_an_equality_sign.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_contains_a_colon.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_contains_whitespace.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_is_already_used.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_is_empty.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_is_valid.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_is_whitespace.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_contains_an_equality_sign.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_contains_a_colon.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_contains_whitespace.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_is_already_used.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_is_empty.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_is_null.cs" />
+    <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_is_whitespace.cs" />
+    <Compile Include="HelperExtensions.cs" />
+    <Compile Include="Internals\CommandLineOptionFactoryTests.cs" />
+    <Compile Include="Internals\CommandLineOptionParserFactoryTests.cs" />
+    <Compile Include="Internals\CommandLineOptionTests.cs" />
+    <Compile Include="Internals\CommandLineParserEngineTests.cs" />
+    <Compile Include="Internals\CommandLineParserEngine\Behaviour\NoResultsBehaviour.cs" />
+    <Compile Include="Internals\CommandLineParserEngine\TestContext\CommandLineParserEngineTestContext.cs" />
+    <Compile Include="Internals\CommandLineParserEngine\when_arg_contains_key_and_value_assignment_but_no_value.cs" />
+    <Compile Include="Internals\CommandLineParserEngine\when_a_new_instance_is_created.cs" />
+    <Compile Include="Internals\CommandLineParserEngine\when_specified_args_are_empty.cs" />
+    <Compile Include="Internals\CommandLineParserEngine\when_specified_args_are_null.cs" />
+    <Compile Include="Internals\CommandLineParserEngine\when_specified_args_contain_no_keys.cs" />
+    <Compile Include="Mspec\Subjects.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FluentCommandLineParser\FluentCommandLineParser.csproj">
+      <Project>{74CDFA61-81D8-40F2-B536-949BABA15D3E}</Project>
+      <Name>FluentCommandLineParser</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="FluentCommandLineParserTests.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
