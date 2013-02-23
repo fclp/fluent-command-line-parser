@@ -19,7 +19,8 @@ Setup an option using a short name, or short and long name.
 
 ```
 .Setup<int>("r")
-.Setup<int>("r", "record")```
+.Setup<int>("r", "record")
+```
 
 `.Required()` Indicate the option is required and an error should be raised if it is not provided.
 
