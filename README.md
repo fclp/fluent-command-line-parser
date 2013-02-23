@@ -7,13 +7,24 @@ A simple, strongly typed .NET C# command line parser library using a fluent easy
 Commands such as `updaterecord.exe /r 10 /v="Mr. Smith" /silent` can be captured using
 
 ```
-var parser = new FluentCommandLineParser();
-   
-parser.Setup<int>("r").Callback(record => RecordID = record).Required();
-parser.Setup<string>("v").Callback(value => NewValue = value).Required();
-parser.Setup<bool>("s", "silent").Callback(silent => InSilentMode = silent).SetDefault(false);
-   
-parser.Parse(args);
+static void Main(string[] args)
+{
+  IFluentCommandLineParser parser = new FluentCommandLineParser();
+
+  parser.Setup<int>("r")
+		.Callback(record => RecordID = record)
+		.Required();
+
+  parser.Setup<string>("v")
+		.Callback(value => NewValue = value)
+		.Required();
+
+  parser.Setup<bool>("s", "silent")
+		.Callback(silent => InSilentMode = silent)
+		.SetDefault(false);
+
+  parser.Parse(args);
+}
 ```
 
 ### Parser Option Methods
