@@ -4,6 +4,12 @@ A simple, strongly typed .NET C# command line parser library using a fluent easy
 
 ***
 
+### Download
+
+v1.0.0 Available at [NuGet](http://nuget.org/packages/FluentCommandLineParser/1.0.0)
+
+***
+
 Commands such as `updaterecord.exe /r 10 /v="Mr. Smith" /silent` can be captured using
 
 ```
