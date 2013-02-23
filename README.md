@@ -43,7 +43,7 @@ static void Main(string[] args)
 
 `.WithDescription("Execute operation in silent mode without feedback")` Specify a help description for the option
 
-Supported syntax
+### Supported syntax
 
 `[-|--|/][switch_name][=|:| ][value]`
 
