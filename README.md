@@ -1,4 +1,4 @@
-fluent-command-line-parser
+Fluent Command Line Parser
 ==========================
 A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface
 
@@ -26,6 +26,8 @@ static void Main(string[] args)
   parser.Parse(args);
 }
 ```
+
+***
 
 ### Parser Option Methods
 
