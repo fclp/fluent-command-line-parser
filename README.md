@@ -6,30 +6,29 @@ A simple, strongly typed .NET C# command line parser library using a fluent easy
 
 Commands such as `updaterecord.exe /r 10 /v="Mr. Smith" /silent` can be captured using
 
-```var parser = new FluentCommandLineParser();
+```
+var parser = new FluentCommandLineParser();
    
 parser.Setup<int>("r").Callback(record => RecordID = record).Required();
 parser.Setup<string>("v").Callback(value => NewValue = value).Required();
 parser.Setup<bool>("s", "silent").Callback(silent => InSilentMode = silent).SetDefault(false);
    
-parser.Parse(args);```
+parser.Parse(args);
+```
 
 ### Parser Option Methods
-Setup an option using a short name, or short and long name.
 
-```
-.Setup<int>("r")
-.Setup<int>("r", "record")
-```
+`.Setup<int>("r")` Setup an option using a short name, 
+
+`.Setup<int>("r", "record")` or short and long name.
 
 `.Required()` Indicate the option is required and an error should be raised if it is not provided.
 
 `.Callback(val => Value = val)` Provide a delegate to call after the option has been parsed
 
-`.SetDefault(int.MaxValue)` Define a default value that is assigned to the callback if the option what not specified in the args
+`.SetDefault(int.MaxValue)` Define a default value if the option was not specified in the args
 
-Give the option a description to be used when help text is generated e.g using -? or --help.
-`.WithDescription("Execute operation in silent mode without feedback")` 
+`.WithDescription("Execute operation in silent mode without feedback")` Specify a help description for the option
 
 Supported syntax
 
