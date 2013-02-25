@@ -18,11 +18,11 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\FluentCommandLineParser.xml</DocumentationFile>
+    <DocumentationFile>bin\debug\FluentCommandLineParser.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -30,11 +30,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\FluentCommandLineParser.xml</DocumentationFile>
+    <DocumentationFile>bin\release\FluentCommandLineParser.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
