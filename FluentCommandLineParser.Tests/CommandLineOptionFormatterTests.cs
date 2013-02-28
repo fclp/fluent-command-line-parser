@@ -104,7 +104,6 @@ namespace FluentCommandLineParser.Tests
             var formatter = new CommandLineOptionFormatter();
 
             // expected:
-            //  Value           Description
             //  Short1          Description1
             //  Short2:Long2    Description2 
 
@@ -112,7 +111,6 @@ namespace FluentCommandLineParser.Tests
             var mockOption2 = CreateMockOption("Short2", "Long2", "Description2");
 
             var expectedSb = new StringBuilder();
-            expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, "Value", "Description");
             expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOption1.ShortName, mockOption1.Description);
             expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOption2.ShortName + ":" + mockOption2.LongName, mockOption2.Description);
 

@@ -43,13 +43,14 @@ namespace Fclp.Internals
         /// </summary>
         public CommandLineOptionFormatter()
         {
-            this.ShowHeader = true;
+            this.ShowHeader = false;
             this.ValueText = "Value";
             this.DescriptionText = "Description";
             this.NoOptionsText = "No options have been setup";
         }
 
         #endregion
+
         /// <summary>
         /// The text format used in this formatter.
         /// </summary>
