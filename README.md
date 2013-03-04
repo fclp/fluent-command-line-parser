@@ -1,12 +1,12 @@
 Fluent Command Line Parser
 ==========================
-A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface
+A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface.
 
 ***
 
 ### Download
 
-v1.0.0 Available at [NuGet](http://nuget.org/packages/FluentCommandLineParser/1.0.0)
+Available through [NuGet](http://nuget.org/packages/FluentCommandLineParser/)
 
 ***
 
@@ -48,6 +48,24 @@ static void Main(string[] args)
 `.SetDefault(int.MaxValue)` Define a default value if the option was not specified in the args
 
 `.WithDescription("Execute operation in silent mode without feedback")` Specify a help description for the option
+
+### Setup Help
+
+Setup to print the available option to the console when any of the help args are found.
+
+```	
+static void Main(string[] args)
+{
+   var parser = new FluentCommandLineParser();
+
+   parser.SetupHelp("h", "help", "?")
+         .Callback(Console.WriteLine);
+
+   var result = parser.Parse(args);
+   
+   if(result.HelpCalled) return;
+}
+```
 
 ### Supported syntax
 
