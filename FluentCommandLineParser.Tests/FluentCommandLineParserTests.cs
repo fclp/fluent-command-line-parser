@@ -597,8 +597,8 @@ namespace Fclp.Tests
 			var result = parser.Parse(args);
 
 			Assert.AreSame(expectedCallbackResult, callbackResult);
-			Assert.IsTrue(result.HasErrors);
-			Assert.IsTrue(result.HelpShown);
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsTrue(result.HelpCalled);
 		}
 
 		#endregion

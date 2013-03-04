@@ -177,7 +177,7 @@ namespace Fclp
 
 			if (this.HelpOption.ShouldShowHelp(args))
 			{
-				result.HelpShown = true;
+				result.HelpCalled = true;
 				this.HelpOption.ShowHelp(this.Options);
 				return result;
 			}

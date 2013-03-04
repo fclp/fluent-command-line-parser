@@ -38,9 +38,9 @@ namespace Fclp
 		bool HasErrors { get; }
 
 		/// <summary>
-		/// Gets whether the help text was shown to the user.
+		/// Gets whether the help text was called.
 		/// </summary>
-		bool HelpShown { get; }
+		bool HelpCalled { get; }
 
 		/// <summary>
 		/// Gets the errors which occurred during the parse operation.

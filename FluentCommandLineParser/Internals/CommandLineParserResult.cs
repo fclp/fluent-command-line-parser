@@ -47,7 +47,7 @@ namespace Fclp.Internals
 		/// </summary>
 		public bool HasErrors
 		{
-			get { return this.Errors.Any() || HelpShown; }
+			get { return this.Errors.Any(); }
 		}
 
 		/// <summary>
@@ -90,8 +90,8 @@ namespace Fclp.Internals
 		public IList<ICommandLineOption> UnMatchedOptions { get; set; }
 
 		/// <summary>
-		/// Gets whether the help text was shown to the user.
+		/// Gets whether the help text was called.
 		/// </summary>
-		public bool HelpShown { get; set; }
+		public bool HelpCalled { get; set; }
 	}
 }
