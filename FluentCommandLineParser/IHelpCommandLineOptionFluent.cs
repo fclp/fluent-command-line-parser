@@ -1,5 +1,5 @@
 ﻿#region License
-// HelperExtensions.cs
+// IHelpCommandLineOptionFluent.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,26 +22,34 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Internals;
+using System;
 
-namespace FluentCommandLineParser.Tests
+namespace Fclp
 {
-    public static class HelperExtensions
-    {
-        /// <summary>
-        /// Returns the specified <see cref="FluentCommandLineParser"/> represented as its interface <see cref="Fclp.IFluentCommandLineParser"/>
-        /// </summary>
-        public static Fclp.IFluentCommandLineParser AsInterface(this Fclp.FluentCommandLineParser parser)
-        {
-            return parser;
-        }
+	/// <summary>
+	/// Provides the fluent interface for setting up the help arguments.
+	/// </summary>
+	public interface IHelpCommandLineOptionFluent
+	{
+		/// <summary>
+		/// Specifies the method to invoke with the formatted command line options when any of the setup 
+		/// help arguments are found. If a callback is not required either do not call it, or specify <c>null</c>.
+		/// </summary>
+		/// <param name="callback">
+		/// The callback to execute with the formatted command line options. 
+		/// </param>
+		/// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
+		/// <remarks>
+		/// An example use of this would be to write the provided <see cref="System.String"/> containing the formatted
+		/// options directly to the console. If you would like to use a custom formatter you can do so by providing
+		/// one using the <see cref="WithCustomFormatter"/> method.
+		/// </remarks>
+		IHelpCommandLineOptionFluent Callback(Action<string> callback);
 
-        /// <summary>
-        /// Returns the specified <see cref="CommandLineParserEngine"/> represented as its interface <see cref="ICommandLineParserEngine"/>
-        /// </summary>
-        public static ICommandLineParserEngine AsInterface(this CommandLineParserEngine parserEngine)
-        {
-            return parserEngine;
-        }
-    }
+		/// <summary>
+		/// Registers a custom <see cref="ICommandLineOptionFormatter"/> to use to generate the help text.
+		/// </summary>
+		/// <param name="formatter">The custom formatter to use. This must not be <c>null</c>.</param>
+		IHelpCommandLineOptionFluent WithCustomFormatter(ICommandLineOptionFormatter formatter);
+	}
 }

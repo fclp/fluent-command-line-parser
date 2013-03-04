@@ -1,5 +1,5 @@
 ﻿#region License
-// HelperExtensions.cs
+// EmptyHelpCommandLineOption.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,26 +22,29 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Internals;
+using System;
 
-namespace FluentCommandLineParser.Tests
+namespace Fclp.Internals
 {
-    public static class HelperExtensions
-    {
-        /// <summary>
-        /// Returns the specified <see cref="FluentCommandLineParser"/> represented as its interface <see cref="Fclp.IFluentCommandLineParser"/>
-        /// </summary>
-        public static Fclp.IFluentCommandLineParser AsInterface(this Fclp.FluentCommandLineParser parser)
-        {
-            return parser;
-        }
+	/// <summary>
+	/// Help command line options used when there have been non setup.
+	/// </summary>
+	public class EmptyHelpCommandLineOption : IHelpCommandLineOption
+	{
+		/// <summary>
+		/// Always returns false.
+		/// </summary>
+		public bool ShouldShowHelp(System.Collections.Generic.IEnumerable<string> commandLineArgs)
+		{
+			return false;
+		}
 
-        /// <summary>
-        /// Returns the specified <see cref="CommandLineParserEngine"/> represented as its interface <see cref="ICommandLineParserEngine"/>
-        /// </summary>
-        public static ICommandLineParserEngine AsInterface(this CommandLineParserEngine parserEngine)
-        {
-            return parserEngine;
-        }
-    }
+		/// <summary>
+		/// Not supported.
+		/// </summary>
+		public void ShowHelp(System.Collections.Generic.IEnumerable<ICommandLineOption> options)
+		{
+			throw new NotSupportedException();
+		}
+	}
 }

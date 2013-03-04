@@ -1,5 +1,5 @@
 ﻿#region License
-// HelperExtensions.cs
+// IHelpCommandLineOptionResult.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -21,27 +21,13 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
-
-using Fclp.Internals;
-
-namespace FluentCommandLineParser.Tests
+namespace Fclp.Internals
 {
-    public static class HelperExtensions
-    {
-        /// <summary>
-        /// Returns the specified <see cref="FluentCommandLineParser"/> represented as its interface <see cref="Fclp.IFluentCommandLineParser"/>
-        /// </summary>
-        public static Fclp.IFluentCommandLineParser AsInterface(this Fclp.FluentCommandLineParser parser)
-        {
-            return parser;
-        }
-
-        /// <summary>
-        /// Returns the specified <see cref="CommandLineParserEngine"/> represented as its interface <see cref="ICommandLineParserEngine"/>
-        /// </summary>
-        public static ICommandLineParserEngine AsInterface(this CommandLineParserEngine parserEngine)
-        {
-            return parserEngine;
-        }
-    }
+	/// <summary>
+	/// Used to encapsulate both help command option interfaces which are returned from the factory.
+	/// </summary>
+	public interface IHelpCommandLineOptionResult : IHelpCommandLineOption, IHelpCommandLineOptionFluent
+	{
+		
+	}
 }

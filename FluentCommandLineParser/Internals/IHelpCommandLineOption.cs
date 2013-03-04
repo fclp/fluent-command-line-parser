@@ -1,5 +1,5 @@
 ﻿#region License
-// HelperExtensions.cs
+// IHelpCommandLineOption.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,26 +22,26 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Internals;
+using System.Collections.Generic;
 
-namespace FluentCommandLineParser.Tests
+namespace Fclp.Internals
 {
-    public static class HelperExtensions
-    {
-        /// <summary>
-        /// Returns the specified <see cref="FluentCommandLineParser"/> represented as its interface <see cref="Fclp.IFluentCommandLineParser"/>
-        /// </summary>
-        public static Fclp.IFluentCommandLineParser AsInterface(this Fclp.FluentCommandLineParser parser)
-        {
-            return parser;
-        }
+	/// <summary>
+	/// Represents a command line option that determines whether to show the help text.
+	/// </summary>
+	public interface IHelpCommandLineOption
+	{
+		/// <summary>
+		/// Determines whether the help text should be shown.
+		/// </summary>
+		/// <param name="commandLineArgs">The command line args</param>
+		/// <returns>true if the parser operation should cease and <see cref="ShowHelp"/> should be called; otherwise false if the parse operation to continue.</returns>
+		bool ShouldShowHelp(IEnumerable<string> commandLineArgs);
 
-        /// <summary>
-        /// Returns the specified <see cref="CommandLineParserEngine"/> represented as its interface <see cref="ICommandLineParserEngine"/>
-        /// </summary>
-        public static ICommandLineParserEngine AsInterface(this CommandLineParserEngine parserEngine)
-        {
-            return parserEngine;
-        }
-    }
+		/// <summary>
+		/// Shows the help text for the specified registered options.
+		/// </summary>
+		/// <param name="options">The options to generate the help text for.</param>
+		void ShowHelp(IEnumerable<ICommandLineOption> options);
+	}
 }
