@@ -58,7 +58,7 @@ namespace Fclp
 		}
 
 		/// <summary>
-		/// Gets the list of Options
+		/// Gets the list of Options that have been setup.
 		/// </summary>
 		internal List<ICommandLineOption> Options
 		{
