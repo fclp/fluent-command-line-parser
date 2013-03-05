@@ -32,7 +32,7 @@ namespace Fclp.Internals.Extensions
         /// Indicates whether the specified <see cref="System.String"/> is <c>null</c>, <c>empty</c> or contains only <c>whitespace</c>.
         /// </summary>
         /// <param name="value"></param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if the specified <see cref="System.String"/> is <c>null</c>, <c>empty</c> or contains only <c>whitespace</c>; otherwise <c>false.</c></returns>
         /// <remarks>This method mimics the String.IsNullOrWhiteSpace method available in .Net 4 framework.</remarks>
         public static bool IsNullOrWhiteSpace(this string value)
         {
