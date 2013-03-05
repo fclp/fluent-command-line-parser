@@ -51,7 +51,7 @@ namespace Fclp
 		/// <returns></returns>
 		/// <exception cref="OptionAlreadyExistsException">
 		/// A Option with the same <paramref name="shortOption"/> name 
-		/// already exists in the <see cref="IFluentCommandLineParser"/>.
+		/// has already been setup for this <see cref="IFluentCommandLineParser"/>.
 		/// </exception>
 		ICommandLineOptionFluent<T> Setup<T>(string shortOption);
 

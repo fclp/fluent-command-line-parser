@@ -598,7 +598,7 @@ namespace Fclp.Tests
 
 			Assert.AreSame(expectedCallbackResult, callbackResult);
 			Assert.IsFalse(result.HasErrors);
-			Assert.IsTrue(result.HelpCalled);
+			Assert.IsFalse(result.HelpCalled);
 		}
 
 		#endregion
