@@ -21,6 +21,10 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
+
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Fclp.Internals.Extensions
 {
     /// <summary>
@@ -37,6 +41,16 @@ namespace Fclp.Internals.Extensions
         public static bool IsNullOrWhiteSpace(this string value)
         {
             return string.IsNullOrEmpty(value) || string.IsNullOrEmpty(value.Trim());
+        }
+
+        /// <summary>
+        /// Indicates whether the specified <see cref="IEnumerable{T}"/> is <c>null</c> or contains no elements.
+        /// </summary>
+        /// <param name="enumerable">A <see cref="IEnumerable{T}"/> to check.</param>
+        /// <returns><c>true</c> if <paramref name="enumerable"/> is <c>null</c> or contains no elements; otherwise <c>false</c>.</returns>
+        public static bool IsNullOrEmpty<TSource>(this IEnumerable<TSource> enumerable)
+        {
+            return enumerable == null || enumerable.Any() == false;
         }
     }
 }
