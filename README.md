@@ -6,7 +6,13 @@ A simple, strongly typed .NET C# command line parser library using a fluent easy
 
 ### Download
 
-Available through [NuGet](http://nuget.org/packages/FluentCommandLineParser/)
+You can download the latest release from [CodeBetter's TeamCity server](http://teamcity.codebetter.com/project.html?projectId=project314)
+
+You can also install using [NuGet](http://nuget.org/packages/FluentCommandLineParser/)
+
+```
+PM> Install-Package FluentCommandLineParser
+```
 
 ***
 
@@ -51,7 +57,7 @@ static void Main(string[] args)
 
 ### Setup Help
 
-Setup to print the available option to the console when any of the help args are found.
+Setup to print the available options to the console when any of the help args are found.
 
 ```	
 static void Main(string[] args)
@@ -78,3 +84,7 @@ updaterecord.exe -s // enabled
 updaterecord.exe -s- // disabled
 updaterecord.exe -s+ // enabled
 ```
+
+### Contribute
+
+Contributions to the [develop branch](https://github.com/fclp/fluent-command-line-parser/tree/develop) please.
