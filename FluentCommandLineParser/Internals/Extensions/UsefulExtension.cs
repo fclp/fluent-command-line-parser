@@ -22,6 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -51,6 +52,21 @@ namespace Fclp.Internals.Extensions
         public static bool IsNullOrEmpty<TSource>(this IEnumerable<TSource> enumerable)
         {
             return enumerable == null || enumerable.Any() == false;
+        }
+
+        /// <summary>
+        /// Performs the specified action on each element of the <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="enumerable">A <see cref="IEnumerable{T}"/> to iterate through all the available elements.</param>
+        /// <param name="action">The delegate to execute with on each element of the specified <see cref="IEnumerable{T}"/>.</param>
+        /// <exception cref="ArgumentNullException">if <paramref name="enumerable"/> is <c>null</c>.</exception>
+        public static void ForEach<TSource>(this IEnumerable<TSource> enumerable, Action<TSource> action)
+        {
+            foreach (var item in enumerable)
+            {
+                action(item);
+            }
         }
     }
 }

@@ -69,11 +69,11 @@ namespace Fclp.Tests.FluentCommandLineParser
                 _blankOption.Setup(x => x.Bind(_blankOptionValue)).Verifiable();
                 sut.Options.Add(_blankOption.Object);
 
-                var parserEngineResult = new Dictionary<string, string>
+                var parserEngineResult = new List<ParsedOption>
                 {
-                    {_optionThatHasCallbackName, _optionThatHasCallbackValue},
-                    {_optionThatIsRequiredName, _optionThatIsRequiredValue},
-                    {_blankOptionName, _blankOptionValue}
+                    new ParsedOption { Key = _optionThatHasCallbackName, Value = _optionThatHasCallbackValue},
+                    new ParsedOption { Key = _optionThatIsRequiredName, Value = _optionThatIsRequiredValue},
+                    new ParsedOption { Key = _blankOptionName, Value = _blankOptionValue}
                 };
 
                 args = CreateArgsFromKvp(parserEngineResult);

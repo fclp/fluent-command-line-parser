@@ -182,10 +182,7 @@ namespace Fclp
 				return result;
 			}
 
-			var notFoundKey = default(KeyValuePair<string, string>);
-			List<KeyValuePair<string, string>> keyValuePairs = null;
-
-			keyValuePairs = this.ParserEngine.Parse(args).ToList();
+			var keyValuePairs = this.ParserEngine.Parse(args).ToList();
 
 			foreach (var setupOption in this.Options)
 			{
@@ -202,7 +199,7 @@ namespace Fclp
 					pair.Key.Equals(option.ShortName, this.StringComparison) // tries to match the short name
 					|| pair.Key.Equals(option.LongName, this.StringComparison)); // or else the long name
 
-				if (!notFoundKey.Equals(match)) // Step 2
+				if (match != null) // Step 2
 				{
 					setupOption.Bind(match.Value);
 					keyValuePairs.Remove(match);
@@ -218,7 +215,7 @@ namespace Fclp
 				}
 			}
 
-			keyValuePairs.ForEach(result.AdditionalOptionsFound.Add);
+			keyValuePairs.ForEach(item => result.AdditionalOptionsFound.Add(new KeyValuePair<string, string>(item.Key, item.Value)));
 
 			return result;
 		}

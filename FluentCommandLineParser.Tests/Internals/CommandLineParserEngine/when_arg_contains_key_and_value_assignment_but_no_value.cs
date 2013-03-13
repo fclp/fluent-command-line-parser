@@ -22,7 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Collections.Generic;
+using Fclp.Internals;
 using Fclp.Tests.CommandLineParserEngine;
 using Machine.Specifications;
 
@@ -30,8 +30,8 @@ namespace Fclp.Tests.Internals.CommandLineParserEngine
 {
     class when_arg_contains_key_and_value_assignment_but_no_value : CommandLineParserEngineTestContext
     {
-        static KeyValuePair<string, string> key = new KeyValuePair<string, string>("key", null);
-        static KeyValuePair<string, string> key2 = new KeyValuePair<string, string>("key2", "key2value");
+        static ParsedOption key = new ParsedOption("key", null);
+        static ParsedOption key2 = new ParsedOption("key2", "key2value");
 
         Establish context = () => args = new[] { "/key=", "/key2", "key2value" };
         Because of = () => RunParserWith(args);

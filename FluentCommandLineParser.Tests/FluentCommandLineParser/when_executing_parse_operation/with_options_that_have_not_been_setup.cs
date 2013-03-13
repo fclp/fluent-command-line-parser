@@ -23,6 +23,9 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
+using Fclp.Internals;
+using Fclp.Internals.Extensions;
 using Fclp.Tests.FluentCommandLineParser.TestContext;
 using Machine.Specifications;
 using Moq;
@@ -36,15 +39,15 @@ namespace Fclp.Tests.FluentCommandLineParser
         {
             static string[] args;
             static ICommandLineParserResult result;
-            static IEnumerable<KeyValuePair<string, string>> additionalOptions;
+            static IEnumerable<ParsedOption> additionalOptions;
 
             Establish context = () =>
             {
-                additionalOptions = new Dictionary<string, string>
+                additionalOptions = new List<ParsedOption>
                 {
-                    {"arg1", "1"},
-                    {"arg2", "2"},
-                    {"arg3", "3"},
+                    new ParsedOption { Key = "arg1", Value = "1"},
+                    new ParsedOption { Key = "arg2", Value = "2"},
+                    new ParsedOption { Key = "arg3", Value = "3"}
                 };
 
                 args = CreateArgsFromKvp(additionalOptions);
@@ -58,7 +61,10 @@ namespace Fclp.Tests.FluentCommandLineParser
 
             It should_not_throw_any_errors = () => error.ShouldBeNull();
             It should_return_a_result = () => result.ShouldNotBeNull();
-            It should_return_them_as_additional = () => result.AdditionalOptionsFound.ShouldContainOnly(additionalOptions);
+
+            It should_return_the_specified_args_as_additional_options = () => result.AdditionalOptionsFound
+                .Select(kvp => new ParsedOption(kvp.Key, kvp.Value))
+                .ShouldContainOnly(additionalOptions);
         }
     }
 }

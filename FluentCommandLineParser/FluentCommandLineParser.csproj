@@ -66,6 +66,7 @@
     <Compile Include="Internals\Errors\ExpectedOptionNotFoundParseError.cs" />
     <Compile Include="Internals\IHelpCommandLineOption.cs" />
     <Compile Include="Internals\IHelpCommandLineOptionResult.cs" />
+    <Compile Include="Internals\ParsedOption.cs" />
     <Compile Include="Internals\Parsers\BoolCommandLineOptionParser.cs" />
     <Compile Include="Internals\CommandLineOption.cs" />
     <Compile Include="Internals\CommandLineOptionFactory.cs" />
