@@ -136,9 +136,6 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="FluentCommandLineParserTests.snk" />
-    <None Include="Integration\Test.Specifications.xls">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
