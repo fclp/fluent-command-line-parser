@@ -38,7 +38,7 @@ namespace Fclp.Internals.Parsers
         /// <returns></returns>
         public string Parse(string value)
         {
-            return value;
+            return value.TrimStart('"').TrimEnd('"');
         }
 
         /// <summary>
