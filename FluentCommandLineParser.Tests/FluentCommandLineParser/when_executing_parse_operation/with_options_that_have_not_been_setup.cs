@@ -25,7 +25,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals;
-using Fclp.Internals.Extensions;
 using Fclp.Tests.FluentCommandLineParser.TestContext;
 using Machine.Specifications;
 using Moq;
