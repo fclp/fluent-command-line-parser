@@ -42,7 +42,6 @@ namespace Fclp.Tests.Integration
         [BoolInlineData("-b=true", true)]
         [BoolInlineData("-b=false", false)]
         [StringInlineData("-s {0}", "Hello World")]
-        [StringInlineData("-s 'HelloWorld'", "Hello World")]
         [StringInlineData("-s:{0}", "Hello World")]
         [StringInlineData("-s={0}", "Hello World")]
         [Int32InlineData("-i 123", 123)]
