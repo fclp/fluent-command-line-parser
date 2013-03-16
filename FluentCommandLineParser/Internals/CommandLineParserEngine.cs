@@ -55,7 +55,7 @@ namespace Fclp.Internals
                 // setup the option and remove the special key characters from the option.
                 var option = new ParsedOption
                     {
-                        KeyChar = item.Substring(0, key.Length),
+                        Prefix = item.Substring(0, key.Length),
                         Key = item.Remove(0, key.Length)
                     };
 
@@ -117,7 +117,7 @@ namespace Fclp.Internals
         /// <returns><c>true</c> if <paramref name="arg"/> is a Option key; otherwise <c>false</c>.</returns>
         static bool IsAKey(string arg)
         {
-            return arg != null && SpecialCharacters.OptionKeys.Any(arg.StartsWith);
+            return arg != null && SpecialCharacters.OptionPrefix.Any(arg.StartsWith);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace Fclp.Internals
         /// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
         static string ExtractKey(string arg)
         {
-            return arg != null ? SpecialCharacters.OptionKeys.FirstOrDefault(arg.StartsWith) : null;
+            return arg != null ? SpecialCharacters.OptionPrefix.FirstOrDefault(arg.StartsWith) : null;
         }
     }
 }

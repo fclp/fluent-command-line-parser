@@ -26,11 +26,17 @@ using Xunit.Extensions;
 
 namespace Fclp.Tests.Integration
 {
-    public abstract class ArgumentInlineDataAttribute : InlineDataAttribute
+    public class ArgumentInlineDataAttribute : InlineDataAttribute
     {
-        protected ArgumentInlineDataAttribute(string args, object obj)
+        public ArgumentInlineDataAttribute(string args, object obj)
             : base(ReplaceWithDoubleQuotes(args), obj)
         {
+        }
+
+        public ArgumentInlineDataAttribute(string args, params string[] values)
+            : base(args, values)
+        {
+
         }
 
         static string ReplaceWithDoubleQuotes(string args)

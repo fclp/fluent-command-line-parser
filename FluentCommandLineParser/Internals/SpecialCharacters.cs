@@ -41,6 +41,11 @@ namespace Fclp.Internals
         /// <summary>
         /// Characters that define the start of an option.
         /// </summary>
-        public static readonly string[] OptionKeys = new[] { "/", "--", "-" };
+        public static readonly string[] OptionPrefix = new[] { "/", "--", "-" };
+
+        /// <summary>
+        /// Characters that have special meaning at the end of an option key.
+        /// </summary>
+        public static readonly string[] OptionSuffix = new[] {"+", "-"};
     }
 }

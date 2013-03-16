@@ -57,9 +57,14 @@ namespace Fclp.Internals
         public string Value { get; set; }
 
         /// <summary>
-        /// Gets or sets the character that defined the key e.g. -, / or --
+        /// Gets or sets the prefix for the key e.g. -, / or --.
         /// </summary>
-        public string KeyChar { get; set; }
+        public string Prefix { get; set; }
+
+        /// <summary>
+        /// Gets or sets any suffix for the key e.g. boolean arguments with +, -.
+        /// </summary>
+        public string Suffix { get; set; }
 
         /// <summary>
         /// Gets whether this parsed option has a value set.
@@ -67,6 +72,14 @@ namespace Fclp.Internals
         public bool HasValue
         {
             get { return string.IsNullOrEmpty(Value) == false; }
+        }
+
+        /// <summary>
+        /// Gets whether this parsed options has a suffix.
+        /// </summary>
+        public bool HasSuffix
+        {
+            get { return string.IsNullOrEmpty(Suffix) == false; }
         }
 
         /// <summary>

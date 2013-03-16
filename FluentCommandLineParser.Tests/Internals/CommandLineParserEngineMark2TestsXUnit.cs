@@ -97,7 +97,7 @@ namespace Fclp.Tests.Internals
         [SingleOptionInlineData("-fruit={0}", "-", "fruit", "apple pear plum")]
         public void should_parse_single_options_correctly(
             string arguments,
-            string expectedKeyChar,
+            string expectedPrefix,
             string expectedKey,
             string expectedValue)
         {
@@ -115,7 +115,7 @@ namespace Fclp.Tests.Internals
 
             actualParsedOption.Key.ShouldEqual(expectedKey);
             actualParsedOption.Value.ShouldEqual(expectedValue);
-            actualParsedOption.KeyChar.ShouldEqual(expectedKeyChar);
+            actualParsedOption.Prefix.ShouldEqual(expectedPrefix);
         }
 
         [Theory]
@@ -169,13 +169,48 @@ namespace Fclp.Tests.Internals
 
             first.Key.ShouldEqual(firstExpectedKey);
             first.Value.ShouldEqual(firstExpectedValue);
-            first.KeyChar.ShouldEqual(firstExpectedKeyChar);
+            first.Prefix.ShouldEqual(firstExpectedKeyChar);
 
             var second = result.ParsedOptions.ElementAt(1);
 
             second.Key.ShouldEqual(secondExpectedKey);
             second.Value.ShouldEqual(secondExpectedValue);
-            second.KeyChar.ShouldEqual(secondExpectedKeyChar);
+            second.Prefix.ShouldEqual(secondExpectedKeyChar);
+        }
+
+        [Theory]
+        [InlineData("-b", "-", "b", null, null)]
+        [InlineData("-b+", "-", "b", null, "+")]
+        [InlineData("-b-", "-", "b", null, "-")]
+        [InlineData("/b", "/", "b", null, null)]
+        [InlineData("/b+", "/", "b", null, "+")]
+        [InlineData("/b-", "/", "b", null, "-")]
+        [InlineData("--b", "--", "b", null, null)]
+        [InlineData("--b+", "--", "b", null, "+")]
+        [InlineData("--b-", "--", "b", null, "-")]
+        public void should_parse_boolean_values_correctly(
+            string arguments,
+            string expectedPrefix,
+            string expectedKey,
+            string expectedValue,
+            string expectedSuffix)
+        {
+            var convertedArgs = TestHelpers.ParseArguments(arguments);
+
+            InitialiseFixture();
+            CreatSut();
+
+            var result = sut.Parse(convertedArgs);
+
+            result.ParsedOptions.Count().ShouldEqual(1);
+            result.AdditionalValues.ShouldBeEmpty();
+
+            var actualParsedOption = result.ParsedOptions.First();
+
+            actualParsedOption.Key.ShouldEqual(expectedKey);
+            actualParsedOption.Value.ShouldEqual(expectedValue);
+            actualParsedOption.Prefix.ShouldEqual(expectedPrefix);
+            actualParsedOption.Suffix.ShouldEqual(expectedSuffix);
         }
 
         [Fact]

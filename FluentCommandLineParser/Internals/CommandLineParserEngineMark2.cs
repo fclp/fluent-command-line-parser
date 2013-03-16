@@ -54,17 +54,27 @@ namespace Fclp.Internals
 
                 var parsedOption = new ParsedOption
                 {
-                    KeyChar = key,
+                    Prefix = key,
                     Key = currentArg.Remove(0, key.Length),
+                    Suffix = ExtractSuffix(currentArg)
                 };
+
+                TrimSuffix(parsedOption);
 
                 DetermineOptionValue(args, index, parsedOption);
 
                 list.Add(parsedOption);
             }
 
-
             return new ParserEngineResult(list, null);
+        }
+
+        private static void TrimSuffix(ParsedOption parsedOption)
+        {
+            if (parsedOption.HasSuffix)
+            {
+                parsedOption.Key = parsedOption.Key.TrimEnd(parsedOption.Suffix.ToCharArray());
+            }
         }
 
         static void DetermineOptionValue(string[] args, int currentIndex, ParsedOption option)
@@ -131,7 +141,7 @@ namespace Fclp.Internals
         /// <returns><c>true</c> if <paramref name="arg"/> is a Option key; otherwise <c>false</c>.</returns>
         static bool IsAKey(string arg)
         {
-            return arg != null && SpecialCharacters.OptionKeys.Any(arg.StartsWith);
+            return arg != null && SpecialCharacters.OptionPrefix.Any(arg.StartsWith);
         }
 
         /// <summary>
@@ -141,7 +151,7 @@ namespace Fclp.Internals
         /// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
         static string ExtractKey(string arg)
         {
-            return arg != null ? SpecialCharacters.OptionKeys.FirstOrDefault(arg.StartsWith) : null;
+            return arg != null ? SpecialCharacters.OptionPrefix.FirstOrDefault(arg.StartsWith) : null;
         }
 
         /// <summary>
@@ -152,6 +162,26 @@ namespace Fclp.Internals
         IEnumerable<ParsedOption> ICommandLineParserEngine.Parse(string[] args)
         {
             return Parse(args).ParsedOptions;
+        }
+
+        /// <summary>
+        /// Gets whether the specified <see cref="System.String"/> has a special suffix;
+        /// </summary>
+        /// <param name="arg">The <see cref="System.String"/> to examine.</param>
+        /// <returns><c>true</c> if the <paramref name="arg"/> ends with a special suffix; otherwise <c>false</c>.</returns>
+        static bool HasSpecialSuffix(string arg)
+        {
+            return arg != null && SpecialCharacters.OptionSuffix.Any(arg.EndsWith);
+        }
+
+        /// <summary>
+        /// Extracts the key identifier from the specified <see cref="System.String"/>.
+        /// </summary>
+        /// <param name="arg">The <see cref="System.String"/> to extract the key identifier from.</param>
+        /// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
+        static string ExtractSuffix(string arg)
+        {
+            return arg != null ? SpecialCharacters.OptionSuffix.FirstOrDefault(arg.EndsWith) : null;
         }
     }
 }
