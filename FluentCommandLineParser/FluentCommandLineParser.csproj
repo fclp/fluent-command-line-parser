@@ -49,6 +49,7 @@
     <DelaySign>true</DelaySign>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +86,7 @@
     <Compile Include="ICommandLineOptionFluent.cs" />
     <Compile Include="IFluentCommandLineParser.cs" />
     <Compile Include="Internals\Parsers\Int32CommandLineOptionParser.cs" />
+    <Compile Include="Internals\Parsers\ListCommandLineOptionParser.cs" />
     <Compile Include="Internals\Parsers\StringCommandLineOptionParser.cs" />
     <Compile Include="Internals\SpecialCharacters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -22,14 +22,14 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Tests.TestContext;
+using Fclp.Tests.Internals;
 using Machine.Specifications;
 using Xunit;
 using Xunit.Extensions;
 
 namespace Fclp.Tests.Integration
 {
-    public class IntegrationTests
+    public class IntegrationTests : TestContextBase<Fclp.FluentCommandLineParser>
     {
         [Theory]
         [BoolInlineData("-b", true)]
@@ -57,7 +57,7 @@ namespace Fclp.Tests.Integration
             int? expectedInt32,
             double? expectedDouble)
         {
-            var sut = new Fclp.FluentCommandLineParser();
+            CreatSut();
 
             bool? actualBoolean = null;
             string actualString = null;
@@ -79,11 +79,6 @@ namespace Fclp.Tests.Integration
             actualString.ShouldEqual(expectedString);
             actualInt32.ShouldEqual(expectedInt32);
             actualDouble.ShouldEqual(expectedDouble);
-        }
-
-        static string[] ParseArguments(string args)
-        {
-            return TestHelpers.ParseArguments(args);
         }
 
         [Fact]

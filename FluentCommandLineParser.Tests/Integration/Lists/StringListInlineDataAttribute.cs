@@ -1,5 +1,5 @@
 ﻿#region License
-// TestContextBase.cs
+// StringListInlineDataAttribute.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -21,48 +21,13 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
-
-using System;
-using Fclp.Tests.TestContext;
-using Machine.Specifications;
-using Moq;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.AutoMoq;
-
-namespace Fclp.Tests.Internals
+namespace Fclp.Tests.Integration
 {
-    public abstract class TestContextBase<TSut> where TSut : class
+    public class StringListInlineDataAttribute : ArgumentInlineDataAttribute
     {
-        protected static TSut sut;
-        protected static IFixture fixture;
-        protected static Exception error;
-
-        Establish context = () =>
+        public StringListInlineDataAttribute(string args, params string[] listItems)
+            : base(args, listItems)
         {
-            InitialiseFixture();
-        };
-
-        protected static IFixture InitialiseFixture()
-        {
-            fixture = new Fixture().Customize(new AutoMoqCustomization());
-            return fixture;
-        }
-
-        protected static TSut CreatSut()
-        {
-            sut = fixture.Create<TSut>();
-            return sut;
-        }
-
-        protected Mock<TType> InitialiseMock<TType>(out Mock<TType> mockObj) where TType : class
-        {
-            mockObj = fixture.Freeze<Mock<TType>>();
-            return mockObj;
-        }
-
-        protected static string[] ParseArguments(string args)
-        {
-            return TestHelpers.ParseArguments(args);
         }
     }
 }

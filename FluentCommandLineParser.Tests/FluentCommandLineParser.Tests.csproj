@@ -82,6 +82,12 @@
     <Compile Include="Integration\DoubleInlineDataAttribute.cs" />
     <Compile Include="Integration\Int32InlineDataAttribute.cs" />
     <Compile Include="Integration\IntegrationTests.cs" />
+    <Compile Include="Integration\Lists\ArgumentInlineDataAttribute.cs" />
+    <Compile Include="Integration\Lists\BoolListInlineDataAttribute.cs" />
+    <Compile Include="Integration\Lists\DoubleListInlineDataAttribute.cs" />
+    <Compile Include="Integration\Lists\Int32ListInlineDataAttribute.cs" />
+    <Compile Include="Integration\Lists\ListTests.cs" />
+    <Compile Include="Integration\Lists\StringListInlineDataAttribute.cs" />
     <Compile Include="Integration\NCrunchExcelDataAttribute.cs" />
     <Compile Include="Integration\StringInlineDataAttribute.cs" />
     <Compile Include="Internals\CommandLineParserEngineMark2Tests.cs" />
