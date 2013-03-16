@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="IHelpCommandLineOptionFluent.cs" />
     <Compile Include="Internals\CommandLineParserEngine.cs" />
+    <Compile Include="Internals\CommandLineParserEngineMark2.cs" />
     <Compile Include="Internals\EmptyHelpCommandLineOption.cs" />
     <Compile Include="Internals\Errors\OptionSyntaxParseError.cs" />
     <Compile Include="Internals\HelpCommandLineOption.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Internals\IHelpCommandLineOption.cs" />
     <Compile Include="Internals\IHelpCommandLineOptionResult.cs" />
     <Compile Include="Internals\ParsedOption.cs" />
+    <Compile Include="Internals\ParserEngineResult.cs" />
     <Compile Include="Internals\Parsers\BoolCommandLineOptionParser.cs" />
     <Compile Include="Internals\CommandLineOption.cs" />
     <Compile Include="Internals\CommandLineOptionFactory.cs" />

@@ -1,5 +1,5 @@
 ﻿#region License
-// IHelpCommandLineOption.cs
+// TestHelpers.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,26 +22,25 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Collections.Generic;
+using System;
 
-namespace Fclp.Internals
+namespace Fclp.Tests.TestContext
 {
-	/// <summary>
-	/// Represents a command line option that determines whether to show the help text.
-	/// </summary>
-	public interface IHelpCommandLineOption
-	{
-		/// <summary>
-		/// Determines whether the help text should be shown.
-		/// </summary>
-		/// <param name="parsedOptions">The parsed command line arguments</param>
-		/// <returns>true if the parser operation should cease and <see cref="ShowHelp"/> should be called; otherwise false if the parse operation to continue.</returns>
-		bool ShouldShowHelp(IEnumerable<ParsedOption> parsedOptions);
-
-		/// <summary>
-		/// Shows the help text for the specified registered options.
-		/// </summary>
-		/// <param name="options">The options to generate the help text for.</param>
-		void ShowHelp(IEnumerable<ICommandLineOption> options);
-	}
+    public static class TestHelpers
+    {
+        public static string[] ParseArguments(string args)
+        {
+            if (string.IsNullOrEmpty(args)) return null;
+            char[] parmChars = args.ToCharArray();
+            bool inQuote = false;
+            for (int index = 0; index < parmChars.Length; index++)
+            {
+                if (parmChars[index] == '"')
+                    inQuote = !inQuote;
+                if (!inQuote && parmChars[index] == ' ')
+                    parmChars[index] = '\n';
+            }
+            return (new string(parmChars)).Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+    }
 }

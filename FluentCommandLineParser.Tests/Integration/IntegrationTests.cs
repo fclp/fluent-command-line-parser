@@ -22,7 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System;
+using Fclp.Tests.TestContext;
 using Machine.Specifications;
 using Xunit;
 using Xunit.Extensions;
@@ -83,16 +83,7 @@ namespace Fclp.Tests.Integration
 
         static string[] ParseArguments(string args)
         {
-            char[] parmChars = args.ToCharArray();
-            bool inQuote = false;
-            for (int index = 0; index < parmChars.Length; index++)
-            {
-                if (parmChars[index] == '"')
-                    inQuote = !inQuote;
-                if (!inQuote && parmChars[index] == ' ')
-                    parmChars[index] = '\n';
-            }
-            return (new string(parmChars)).Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            return TestHelpers.ParseArguments(args);
         }
 
         [Fact]

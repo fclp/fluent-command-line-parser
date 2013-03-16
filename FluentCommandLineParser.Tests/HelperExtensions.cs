@@ -43,5 +43,13 @@ namespace FluentCommandLineParser.Tests
         {
             return parserEngine;
         }
+
+        /// <summary>
+        /// Wraps the specified <see cref="System.String"/> in double quotes.
+        /// </summary>
+        public static string WrapInDoubleQuotes(this string str)
+        {
+            return string.Format(@"""{0}""", str);
+        }
     }
 }

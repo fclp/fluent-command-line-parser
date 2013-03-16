@@ -1,5 +1,5 @@
 ﻿#region License
-// IHelpCommandLineOption.cs
+// TestContextBase.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,26 +22,41 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Collections.Generic;
+using System;
+using Machine.Specifications;
+using Moq;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
-namespace Fclp.Internals
+namespace Fclp.Tests.Internals
 {
-	/// <summary>
-	/// Represents a command line option that determines whether to show the help text.
-	/// </summary>
-	public interface IHelpCommandLineOption
-	{
-		/// <summary>
-		/// Determines whether the help text should be shown.
-		/// </summary>
-		/// <param name="parsedOptions">The parsed command line arguments</param>
-		/// <returns>true if the parser operation should cease and <see cref="ShowHelp"/> should be called; otherwise false if the parse operation to continue.</returns>
-		bool ShouldShowHelp(IEnumerable<ParsedOption> parsedOptions);
+    public abstract class TestContextBase<TSut> where TSut : class
+    {
+        protected static TSut sut;
+        protected static IFixture fixture;
+        protected static Exception error;
 
-		/// <summary>
-		/// Shows the help text for the specified registered options.
-		/// </summary>
-		/// <param name="options">The options to generate the help text for.</param>
-		void ShowHelp(IEnumerable<ICommandLineOption> options);
-	}
+        Establish context = () =>
+        {
+            InitialiseFixture();
+        };
+
+        protected static IFixture InitialiseFixture()
+        {
+            fixture = new Fixture().Customize(new AutoMoqCustomization());
+            return fixture;
+        }
+
+        protected static TSut CreatSut()
+        {
+            sut = fixture.Create<TSut>();
+            return sut;
+        }
+
+        protected Mock<TType> InitialiseMock<TType>(out Mock<TType> mockObj) where TType : class
+        {
+            mockObj = fixture.Freeze<Mock<TType>>();
+            return mockObj;
+        }
+    }
 }

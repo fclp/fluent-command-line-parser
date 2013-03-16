@@ -581,7 +581,7 @@ namespace Fclp.Tests
 
 			var formatter = new Mock<ICommandLineOptionFormatter>();
 
-			var args = new[] {"help", "i", "s"};
+			var args = new[] {"/help", "i", "s"};
 			const string expectedCallbackResult = "blah";
 			string callbackResult = null;
 

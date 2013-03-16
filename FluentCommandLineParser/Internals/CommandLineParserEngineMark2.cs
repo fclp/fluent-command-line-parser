@@ -1,5 +1,5 @@
 ﻿#region License
-// CommandLineParserEngine.cs
+// CommandLineParserEngineMark2.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -24,57 +24,68 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace Fclp.Internals
 {
     /// <summary>
-    /// Simple parser for transforming command line arguments into simple key and value pairs.
+    /// More advanced parser for transforming command line arguments into appropriate <see cref="ParsedOption"/>.
     /// </summary>
-    public class CommandLineParserEngine : ICommandLineParserEngine
+    public class CommandLineParserEngineMark2 : ICommandLineParserEngine
     {
         /// <summary>
-        /// Parses the specified <see><cref>T:System.String[]</cref></see> into key value pairs.
+        /// Parses the specified <see><cref>T:System.String[]</cref></see> into appropriate <see cref="ParsedOption"/> objects..
         /// </summary>
         /// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
-        /// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
-        public IEnumerable<ParsedOption> Parse(string[] args)
+        /// <returns>An <see cref="ParserEngineResult"/> representing the results of the parse operation.</returns>
+        public ParserEngineResult Parse(string[] args)
         {
             args = args ?? new string[0];
+            var list = new List<ParsedOption>();
 
             for (int index = 0; index < args.Length; index++)
             {
-                string item = args[index];
+                string currentArg = args[index];
 
                 // we only want to find keys at this point
-                if (IsAKey(item) == false) continue; 
+                if (IsAKey(currentArg) == false) continue;
 
-                string key = ExtractKey(item);
+                string key = ExtractKey(currentArg);
 
-                // setup the option and remove the special key characters from the option.
-                var option = new ParsedOption
-                    {
-                        KeyChar = item.Substring(0, key.Length),
-                        Key = item.Remove(0, key.Length)
-                    };
-
-                // value should be the next in list
-                int nextIndex = index + 1; 
-
-                // key may contains value i.e. opt=value or opt:value
-                if (SpecialCharacters.ValueAssignments.Any(option.Key.Contains))
+                var parsedOption = new ParsedOption
                 {
-                    TryGetValueFromKey(option);
-                }
-                else if (option.HasValue == false)
+                    KeyChar = key,
+                    Key = currentArg.Remove(0, key.Length),
+                };
+
+                DetermineOptionValue(args, index, parsedOption);
+
+                list.Add(parsedOption);
+            }
+
+
+            return new ParserEngineResult(list, null);
+        }
+
+        static void DetermineOptionValue(string[] args, int currentIndex, ParsedOption option)
+        {
+            if (SpecialCharacters.ValueAssignments.Any(option.Key.Contains))
+            {
+                TryGetValueFromKey(option);
+            }
+
+            var otherValues = CombineValuesUntilNextKey(args, currentIndex + 1);
+
+            if (otherValues != null)
+            {
+                if (option.Value == null)
                 {
-                    option.Value = nextIndex < args.Length ? args[nextIndex] : null; // find value (may not exist)
+                    option.Value = otherValues;
                 }
-
-                TryParseBooleanSyntax(option);
-
-                yield return option;
+                else
+                {
+                    option.Value += " " + otherValues;
+                }                
             }
         }
 
@@ -85,29 +96,32 @@ namespace Fclp.Internals
             option.Key = splitted[0];
 
             if (splitted.Length > 1)
-                option.Value = splitted[1].Trim('"');
+                option.Value = splitted[1].Trim('"').Trim();
         }
 
-        private static void TryParseBooleanSyntax(ParsedOption option)
+        static string CombineValuesUntilNextKey(string[] args, int currentIndex)
         {
-            if (option.HasValue) return;
+            string values = null;
 
-            // support boolean names
-            bool? boolValue = null;
-
-            if (option.Key.EndsWith("-"))
+            for (int index = currentIndex; index < args.Length; index++)
             {
-                boolValue = false;
-                option.Key = option.Key.TrimEnd('-');
-            }
-            else if (option.Key.EndsWith("+"))
-            {
-                boolValue = true;
-                option.Key = option.Key.TrimEnd('+');
-            }
+                string currentArg = args[index];
 
-            if (boolValue.HasValue)
-                option.Value = boolValue.Value.ToString(CultureInfo.InvariantCulture);
+                // we only want to find keys at this point
+                if (IsAKey(currentArg)) break;
+
+                currentArg = currentArg.Trim('"').Trim();
+
+                if (values == null)
+                {
+                    values = currentArg;
+                }
+                else
+                {
+                    values += " " + currentArg;
+                }
+            }
+            return values;
         }
 
         /// <summary>
@@ -128,6 +142,16 @@ namespace Fclp.Internals
         static string ExtractKey(string arg)
         {
             return arg != null ? SpecialCharacters.OptionKeys.FirstOrDefault(arg.StartsWith) : null;
+        }
+
+        /// <summary>
+        /// Parses the specified <see><cref>T:System.String[]</cref></see> into key value pairs.
+        /// </summary>
+        /// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> containing the results of the parse operation.</returns>
+        IEnumerable<ParsedOption> ICommandLineParserEngine.Parse(string[] args)
+        {
+            return Parse(args).ParsedOptions;
         }
     }
 }

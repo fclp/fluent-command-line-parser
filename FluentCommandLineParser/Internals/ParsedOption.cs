@@ -21,7 +21,6 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
-
 namespace Fclp.Internals
 {
     /// <summary>
@@ -53,9 +52,14 @@ namespace Fclp.Internals
         public string Key { get; set; }
 
         /// <summary>
-        /// Gets or sets any value matched with the key.
+        /// Gets or sets any value(s) matched with the key.
         /// </summary>
         public string Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets the character that defined the key e.g. -, / or --
+        /// </summary>
+        public string KeyChar { get; set; }
 
         /// <summary>
         /// Gets whether this parsed option has a value set.

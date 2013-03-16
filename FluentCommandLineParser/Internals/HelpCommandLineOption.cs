@@ -90,12 +90,12 @@ namespace Fclp.Internals
 		/// <summary>
 		/// Determines whether the help text should be shown.
 		/// </summary>
-		/// <param name="commandLineArgs">The command line args</param>
+		/// <param name="parsedOptions">The parsed command line arguments</param>
 		/// <returns>true if the parser operation should cease and <see cref="ShowHelp"/> should be called; otherwise false if the parse operation to continue.</returns>
-		public bool ShouldShowHelp(IEnumerable<string> commandLineArgs)
+		public bool ShouldShowHelp(IEnumerable<ParsedOption> parsedOptions)
 		{
-			commandLineArgs = commandLineArgs ?? new List<string>();
-			return this.HelpArgs.Any(helpArg => commandLineArgs.Any(cmdArg => helpArg.Equals(cmdArg, StringComparison.CurrentCultureIgnoreCase)));
+			parsedOptions = parsedOptions ?? new List<ParsedOption>();
+			return this.HelpArgs.Any(helpArg => parsedOptions.Any(cmdArg => helpArg.Equals(cmdArg.Key, StringComparison.CurrentCultureIgnoreCase)));
 		}
 
 		/// <summary>

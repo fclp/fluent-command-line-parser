@@ -1,5 +1,5 @@
 ﻿#region License
-// IHelpCommandLineOption.cs
+// CommandLineParserEngineMark2Tests.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,26 +22,48 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Collections.Generic;
+using Fclp.Internals;
+using Fclp.Tests.TestContext;
+using Machine.Specifications;
 
-namespace Fclp.Internals
+namespace Fclp.Tests.Internals
 {
-	/// <summary>
-	/// Represents a command line option that determines whether to show the help text.
-	/// </summary>
-	public interface IHelpCommandLineOption
-	{
-		/// <summary>
-		/// Determines whether the help text should be shown.
-		/// </summary>
-		/// <param name="parsedOptions">The parsed command line arguments</param>
-		/// <returns>true if the parser operation should cease and <see cref="ShowHelp"/> should be called; otherwise false if the parse operation to continue.</returns>
-		bool ShouldShowHelp(IEnumerable<ParsedOption> parsedOptions);
+    abstract class CommandLineParserEngineMark2TestContext : TestContextBase<CommandLineParserEngineMark2>
+    {
+        Establish context = () => CreatSut();
+    }
 
-		/// <summary>
-		/// Shows the help text for the specified registered options.
-		/// </summary>
-		/// <param name="options">The options to generate the help text for.</param>
-		void ShowHelp(IEnumerable<ICommandLineOption> options);
-	}
+    sealed class Parse
+    {
+        abstract class ParseTestContext : CommandLineParserEngineMark2TestContext
+        {
+            protected static string[] args;
+            protected static ParserEngineResult result;
+
+            protected static void SetupArgs(string arguments)
+            {
+                args = TestHelpers.ParseArguments(arguments);
+            }
+
+            Because of = () =>
+                result = sut.Parse(args);
+        }
+
+        class when_args_is_null : ParseTestContext
+        {
+            Establish context = () => args = null;
+            
+            It should_return_a_result_with_no_parsed_options = () =>
+                result.ParsedOptions.ShouldBeEmpty();
+
+            It should_return_a_result_with_no_additional_values = () =>
+                result.AdditionalValues.ShouldBeEmpty();
+        }
+
+        class when_ : ParseTestContext
+        {
+            Establish context = () => SetupArgs("");
+        }
+    }
+    
 }

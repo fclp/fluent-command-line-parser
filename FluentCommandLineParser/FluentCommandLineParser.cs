@@ -89,7 +89,7 @@ namespace Fclp
 		/// </summary>
 		public ICommandLineParserEngine ParserEngine
 		{
-			get { return _parserEngine ?? (_parserEngine = new CommandLineParserEngine()); }
+			get { return _parserEngine ?? (_parserEngine = new CommandLineParserEngineMark2()); }
 			set { _parserEngine = value; }
 		}
 
@@ -175,14 +175,14 @@ namespace Fclp
 		{
 			var result = new CommandLineParserResult();
 
-			if (this.HelpOption.ShouldShowHelp(args))
+			var parsedOptions = this.ParserEngine.Parse(args).ToList();
+
+			if (this.HelpOption.ShouldShowHelp(parsedOptions))
 			{
 				result.HelpCalled = true;
 				this.HelpOption.ShowHelp(this.Options);
 				return result;
 			}
-
-			var keyValuePairs = this.ParserEngine.Parse(args).ToList();
 
 			foreach (var setupOption in this.Options)
 			{
@@ -195,14 +195,14 @@ namespace Fclp
 
 				// Step 1
 				ICommandLineOption option = setupOption;
-				var match = keyValuePairs.FirstOrDefault(pair =>
+				var match = parsedOptions.FirstOrDefault(pair =>
 					pair.Key.Equals(option.ShortName, this.StringComparison) // tries to match the short name
 					|| pair.Key.Equals(option.LongName, this.StringComparison)); // or else the long name
 
 				if (match != null) // Step 2
 				{
 					setupOption.Bind(match.Value);
-					keyValuePairs.Remove(match);
+					parsedOptions.Remove(match);
 				}
 				else
 				{
@@ -215,7 +215,7 @@ namespace Fclp
 				}
 			}
 
-			keyValuePairs.ForEach(item => result.AdditionalOptionsFound.Add(new KeyValuePair<string, string>(item.Key, item.Value)));
+			parsedOptions.ForEach(item => result.AdditionalOptionsFound.Add(new KeyValuePair<string, string>(item.Key, item.Value)));
 
 			return result;
 		}

@@ -1,5 +1,5 @@
 ﻿#region License
-// IHelpCommandLineOption.cs
+// ParserEngineResult.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -26,22 +26,30 @@ using System.Collections.Generic;
 
 namespace Fclp.Internals
 {
-	/// <summary>
-	/// Represents a command line option that determines whether to show the help text.
-	/// </summary>
-	public interface IHelpCommandLineOption
-	{
-		/// <summary>
-		/// Determines whether the help text should be shown.
-		/// </summary>
-		/// <param name="parsedOptions">The parsed command line arguments</param>
-		/// <returns>true if the parser operation should cease and <see cref="ShowHelp"/> should be called; otherwise false if the parse operation to continue.</returns>
-		bool ShouldShowHelp(IEnumerable<ParsedOption> parsedOptions);
+    /// <summary>
+    /// Contains the results of the parse operation
+    /// </summary>
+    public class ParserEngineResult
+    {
+        /// <summary>
+        /// Initialises a new instance of the <see cref="ParserEngineResult"/> class;
+        /// </summary>
+        /// <param name="parsedOptions">The parsed options.</param>
+        /// <param name="additionalValues">Any additional values that could not be translated into options.</param>
+        public ParserEngineResult(IEnumerable<ParsedOption> parsedOptions, IEnumerable<string> additionalValues)
+        {
+            ParsedOptions = parsedOptions ?? new List<ParsedOption>();
+            AdditionalValues = additionalValues ?? new List<string>();
+        }
 
-		/// <summary>
-		/// Shows the help text for the specified registered options.
-		/// </summary>
-		/// <param name="options">The options to generate the help text for.</param>
-		void ShowHelp(IEnumerable<ICommandLineOption> options);
-	}
+        /// <summary>
+        /// Gets the parsed options.
+        /// </summary>
+        public IEnumerable<ParsedOption> ParsedOptions { get; private set; }
+
+        /// <summary>
+        /// Gets any additional values that could not be translated into options.
+        /// </summary>
+        public IEnumerable<string> AdditionalValues { get; private set; }
+    }
 }
