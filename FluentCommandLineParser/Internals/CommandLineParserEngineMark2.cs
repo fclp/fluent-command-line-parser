@@ -96,7 +96,7 @@ namespace Fclp.Internals
             option.Key = splitted[0];
 
             if (splitted.Length > 1)
-                option.Value = splitted[1].Trim('"').Trim();
+                option.Value = splitted[1].Trim();
         }
 
         static string CombineValuesUntilNextKey(string[] args, int currentIndex)
@@ -110,7 +110,7 @@ namespace Fclp.Internals
                 // we only want to find keys at this point
                 if (IsAKey(currentArg)) break;
 
-                currentArg = currentArg.Trim('"').Trim();
+                currentArg = currentArg.Trim();
 
                 if (values == null)
                 {
