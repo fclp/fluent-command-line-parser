@@ -1,0 +1,17 @@
+<Project
+    DefaultTargets="Test"
+    xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <UsingTask
+    AssemblyFile="..\packages\xunit.1.9.1\lib\net20\xunit.runner.msbuild.dll"
+    TaskName="Xunit.Runner.MSBuild.xunit" />
+
+  <ItemGroup>
+    <TestAssemblies Include="**/bin/release/*.Tests.dll" />
+  </ItemGroup>
+
+  <Target Name="Test">
+    <xunit Assemblies="@(TestAssemblies)" />
+  </Target>
+
+</Project>
