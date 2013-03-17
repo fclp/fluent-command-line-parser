@@ -48,30 +48,41 @@ namespace Fclp.Internals.Parsers
         /// <summary>
         /// Parses the specified <see cref="System.String"/> into the return type.
         /// </summary>
-        /// <param name="value">The <see cref="System.String"/> representing the value to parse. This may be <c>null</c>, <c>empty</c> or contain only <c>whitespace</c>.</param>
+        /// <param name="parsedOption"></param>
         /// <returns>The parsed value.</returns>
-        public List<T> Parse(string value)
+        public List<T> Parse(ParsedOption parsedOption)
         {
             var parser = _parserFactory.CreateParser<T>();
 
-            return SplitOnWhitespace(value)
-                .Where(parser.CanParse)
-                .Select(parser.Parse)
-                .ToList();
+            var splitValues = SplitOnWhitespace(parsedOption.Value);
+
+            return splitValues.Select(value =>
+            {
+                var clone = parsedOption.Clone();
+                clone.Value = value;
+                return parser.Parse(clone);
+            }).ToList();
         }
 
         /// <summary>
         /// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
         /// </summary>
-        /// <param name="value">The <see cref="System.String"/> to check.</param>
+        /// <param name="parsedOption"></param>
         /// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-        public bool CanParse(string value)
+        public bool CanParse(ParsedOption parsedOption)
         {
-            if(string.IsNullOrEmpty(value)) return false;
+            if(parsedOption == null) return false;
 
             var parser = _parserFactory.CreateParser<T>();
 
-            return SplitOnWhitespace(value).All(parser.CanParse);
+            var splitValues = SplitOnWhitespace(parsedOption.Value);
+
+            return splitValues.All(value =>
+            {
+                var clone = parsedOption.Clone();
+                clone.Value = value;
+                return parser.CanParse(clone);
+            });
         }
 
         static IEnumerable<string> SplitOnWhitespace(string args)

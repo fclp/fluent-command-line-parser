@@ -57,7 +57,7 @@ namespace Fclp.Tests.Integration
             int? expectedInt32,
             double? expectedDouble)
         {
-            CreatSut();
+            sut = new Fclp.FluentCommandLineParser();
 
             bool? actualBoolean = null;
             string actualString = null;
@@ -79,6 +79,68 @@ namespace Fclp.Tests.Integration
             actualString.ShouldEqual(expectedString);
             actualInt32.ShouldEqual(expectedInt32);
             actualDouble.ShouldEqual(expectedDouble);
+        }
+
+        [Theory]
+        [InlineData("-xyz", true)]
+        [InlineData("-xyz+", true)]
+        [InlineData("-xyz-", false)]
+        public void combined_bool_short_options_should_be_parsed_correctly(string arguments,bool expectedValue)
+        {
+            sut = new Fclp.FluentCommandLineParser();
+
+            bool? actualXValue = null;
+            bool? actualYValue = null;
+            bool? actualZValue = null;
+
+            sut.Setup<bool>("x").Callback(x => actualXValue = x);
+            sut.Setup<bool>("y").Callback(y => actualYValue = y);
+            sut.Setup<bool>("z").Callback(z => actualZValue = z);
+
+            var args = ParseArguments(arguments);
+
+            var results = sut.Parse(args);
+
+            results.HasErrors.ShouldBeFalse();
+
+            actualXValue.HasValue.ShouldBeTrue();
+            actualYValue.HasValue.ShouldBeTrue();
+            actualZValue.HasValue.ShouldBeTrue();
+
+            actualXValue.Value.ShouldEqual(expectedValue);
+            actualYValue.Value.ShouldEqual(expectedValue);
+            actualZValue.Value.ShouldEqual(expectedValue);
+        }
+
+        [Theory]
+        [InlineData("-xyz 'apply this to x, y and z'", "apply this to x, y and z")]
+        [InlineData("-xyz salmon", "salmon")]
+        [InlineData("-xyz 'salmon'", "salmon")]
+        [InlineData("-xyz 'salmon' 'eggs' 'pie'", "'salmon' 'eggs' 'pie'")]
+        public void combined_short_options_should_have_the_same_value(string arguments, string expectedValue)
+        {
+            arguments = ReplaceWithDoubleQuotes(arguments);
+            expectedValue = ReplaceWithDoubleQuotes(expectedValue);
+
+            sut = new Fclp.FluentCommandLineParser();
+
+            string actualXValue = null;
+            string actualYValue = null;
+            string actualZValue = null;
+
+            sut.Setup<string>("x").Callback(x => actualXValue = x);
+            sut.Setup<string>("y").Callback(y => actualYValue = y);
+            sut.Setup<string>("z").Callback(z => actualZValue = z);
+
+            var args = ParseArguments(arguments);
+
+            var results = sut.Parse(args);
+
+            results.HasErrors.ShouldBeFalse();
+
+            actualXValue.ShouldEqual(expectedValue);
+            actualYValue.ShouldEqual(expectedValue);
+            actualZValue.ShouldEqual(expectedValue);
         }
 
         [Fact]

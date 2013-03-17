@@ -21,6 +21,9 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
+
+using System;
+
 namespace Fclp.Internals
 {
     /// <summary>
@@ -115,6 +118,21 @@ namespace Fclp.Internals
             {
                 return ((Key != null ? Key.GetHashCode() : 0)*397) ^ (Value != null ? Value.GetHashCode() : 0);
             }
+        }
+
+        /// <summary>
+        /// Creates a clone of this option.
+        /// </summary>
+        /// <returns></returns>
+        public ParsedOption Clone()
+        {
+            return new ParsedOption
+            {
+                Key = Key,
+                Prefix = Prefix,
+                Suffix = Suffix,
+                Value = Value
+            };
         }
     }
 }

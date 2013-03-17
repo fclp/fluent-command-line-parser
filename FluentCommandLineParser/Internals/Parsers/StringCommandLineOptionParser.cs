@@ -34,21 +34,21 @@ namespace Fclp.Internals.Parsers
         /// <summary>
         /// Parses the specified <see cref="System.String"/> into a <see cref="System.String"/>.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="parsedOption"></param>
         /// <returns></returns>
-        public string Parse(string value)
+        public string Parse(ParsedOption parsedOption)
         {
-            return value.TrimStart('"').TrimEnd('"');
+            return parsedOption.Value.TrimStart('"').TrimEnd('"');
         }
 
         /// <summary>
         /// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
         /// </summary>
-        /// <param name="value">The <see cref="System.String"/> to check.</param>
+        /// <param name="parsedOption"></param>
         /// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-        public bool CanParse(string value)
+        public bool CanParse(ParsedOption parsedOption)
         {
-            return !value.IsNullOrWhiteSpace();
+            return parsedOption.Value.IsNullOrWhiteSpace() == false;
         }
     }
 }

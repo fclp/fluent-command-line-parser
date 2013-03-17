@@ -81,7 +81,7 @@ namespace Fclp.Tests
             var parser = CreateFluentParser();
             T actual = default(T);
 
-            parser.Setup<T>("short", "long")
+            parser.Setup<T>("s", "long")
                 .Callback(val => actual = val);
 
             var assert = new Action<string[], ICommandLineParserResult>((args, result) =>
@@ -344,7 +344,7 @@ namespace Fclp.Tests
             var parser = CreateFluentParser();
 
             parser
-                .Setup<DateTime>("dt", "datetime")
+                .Setup<DateTime>("d", "datetime")
                 .Callback(val => actual = val);
 
             var result = parser.Parse(new[] { "--datetime", expected.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.CurrentCulture) });

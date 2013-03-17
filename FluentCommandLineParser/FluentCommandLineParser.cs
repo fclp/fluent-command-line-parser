@@ -136,7 +136,7 @@ namespace Fclp
 		private static void EnsureIsValidShortName(string value)
 		{
 			var invalidChars = SpecialCharacters.ValueAssignments.Union(new[] { SpecialCharacters.Whitespace });
-			if (value.IsNullOrWhiteSpace() || invalidChars.Any(value.Contains))
+			if (value.IsNullOrWhiteSpace() || invalidChars.Any(value.Contains) || value.Length > 1)
 				throw new ArgumentOutOfRangeException("value");
 		}
 
@@ -201,7 +201,7 @@ namespace Fclp
 
 				if (match != null) // Step 2
 				{
-					setupOption.Bind(match.Value);
+					setupOption.Bind(match);
 					parsedOptions.Remove(match);
 				}
 				else

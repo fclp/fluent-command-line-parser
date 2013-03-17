@@ -64,7 +64,7 @@ namespace Fclp.Tests.Integration
 
         [Theory]
         [BoolListInlineData("--list true false true", true, false, true)]
-        [BoolListInlineData("-list true false true", true, false, true)]
+        [BoolListInlineData("-l true false true", true, false, true)]
         [BoolListInlineData("/list true false true", true, false, true)]
         public void should_create_list_with_expected_bool_items(string arguments, IEnumerable<bool> expectedItems)
         {
@@ -77,7 +77,7 @@ namespace Fclp.Tests.Integration
 
             List<T> actualItems = null;
 
-            sut.Setup<List<T>>("list").Callback(items => actualItems = items).Required();
+            sut.Setup<List<T>>("l", "list").Callback(items => actualItems = items).Required();
 
             var args = ParseArguments(arguments);
 

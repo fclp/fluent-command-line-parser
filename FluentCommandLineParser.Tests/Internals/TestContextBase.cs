@@ -62,7 +62,14 @@ namespace Fclp.Tests.Internals
 
         protected static string[] ParseArguments(string args)
         {
+            args = ReplaceWithDoubleQuotes(args);
             return TestHelpers.ParseArguments(args);
+        }
+
+        protected static string ReplaceWithDoubleQuotes(string args)
+        {
+            if (args == null) return null;
+            return args.Replace('\'', '"');
         }
     }
 }

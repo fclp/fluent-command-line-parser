@@ -34,22 +34,22 @@ namespace Fclp.Internals.Parsers
         /// <summary>
         /// Converts the string representation of a number in a specified culture-specific format to its 32-bit signed integer equivalent.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="parsedOption"></param>
         /// <returns></returns>
-        public int Parse(string value)
+        public int Parse(ParsedOption parsedOption)
         {
-            return int.Parse(value, CultureInfo.CurrentCulture);
+            return int.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
         }
 
         /// <summary>
         /// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
         /// </summary>
-        /// <param name="value">The <see cref="System.String"/> to check.</param>
+        /// <param name="parsedOption"></param>
         /// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-        public bool CanParse(string value)
+        public bool CanParse(ParsedOption parsedOption)
         {
             int result;
-            return int.TryParse(value, out result);
+            return int.TryParse(parsedOption.Value, out result);
         }
     }
 }

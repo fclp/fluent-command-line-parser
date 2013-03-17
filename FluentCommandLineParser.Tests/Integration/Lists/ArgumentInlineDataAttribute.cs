@@ -29,7 +29,7 @@ namespace Fclp.Tests.Integration
     public class ArgumentInlineDataAttribute : InlineDataAttribute
     {
         public ArgumentInlineDataAttribute(string args, object obj)
-            : base(ReplaceWithDoubleQuotes(args), obj)
+            : base(args, obj)
         {
         }
 
@@ -37,11 +37,6 @@ namespace Fclp.Tests.Integration
             : base(args, values)
         {
 
-        }
-
-        static string ReplaceWithDoubleQuotes(string args)
-        {
-            return args.Replace('\'', '"');
         }
     }
 }

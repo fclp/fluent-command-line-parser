@@ -48,14 +48,14 @@ namespace Fclp.Internals
                 string currentArg = args[index];
 
                 // we only want to find keys at this point
-                if (IsAKey(currentArg) == false) continue;
+                string prefix = ExtractPrefix(currentArg);
 
-                string key = ExtractKey(currentArg);
+                if (prefix == null) continue;
 
                 var parsedOption = new ParsedOption
                 {
-                    Prefix = key,
-                    Key = currentArg.Remove(0, key.Length),
+                    Prefix = prefix,
+                    Key = currentArg.Remove(0, prefix.Length),
                     Suffix = ExtractSuffix(currentArg)
                 };
 
@@ -63,10 +63,30 @@ namespace Fclp.Internals
 
                 DetermineOptionValue(args, index, parsedOption);
 
-                list.Add(parsedOption);
+                var needToSplitKey = PrefixIsShortOption(prefix) && parsedOption.Key.Length > 1;
+
+                if (needToSplitKey)
+                    list.AddRange(CloneAndSplit(parsedOption));
+                else
+                    list.Add(parsedOption);
             }
 
             return new ParserEngineResult(list, null);
+        }
+
+        private static IEnumerable<ParsedOption> CloneAndSplit(ParsedOption parsedOption)
+        {
+            return parsedOption.Key.Select(c =>
+            {
+                var clone = parsedOption.Clone();
+                clone.Key = new string(new[] {c});
+                return clone;
+            }).ToList();
+        }
+
+        private static bool PrefixIsShortOption(string key)
+        {
+            return SpecialCharacters.ShortOptionPrefix.Contains(key);
         }
 
         private static void TrimSuffix(ParsedOption parsedOption)
@@ -95,7 +115,7 @@ namespace Fclp.Internals
                 else
                 {
                     option.Value += " " + otherValues;
-                }                
+                }
             }
         }
 
@@ -149,7 +169,7 @@ namespace Fclp.Internals
         /// </summary>
         /// <param name="arg">The <see cref="System.String"/> to extract the key identifier from.</param>
         /// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
-        static string ExtractKey(string arg)
+        static string ExtractPrefix(string arg)
         {
             return arg != null ? SpecialCharacters.OptionPrefix.FirstOrDefault(arg.StartsWith) : null;
         }
