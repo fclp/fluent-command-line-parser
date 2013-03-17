@@ -34,22 +34,22 @@ namespace Fclp.Internals.Parsers
         /// <summary>
         /// Parses the specified <see cref="System.String"/> into a <see cref="System.Double"/>.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="parsedOption"></param>
         /// <returns></returns>
-        public double Parse(string value)
+        public double Parse(ParsedOption parsedOption)
         {
-            return double.Parse(value, CultureInfo.CurrentCulture);
+            return double.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
         }
 
         /// <summary>
         /// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
         /// </summary>
-        /// <param name="value">The <see cref="System.String"/> to check.</param>
+        /// <param name="parsedOption"></param>
         /// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-        public bool CanParse(string value)
+        public bool CanParse(ParsedOption parsedOption)
         {
             double result;
-            return double.TryParse(value, out result);
+            return double.TryParse(parsedOption.Value, out result);
         }
     }
 }

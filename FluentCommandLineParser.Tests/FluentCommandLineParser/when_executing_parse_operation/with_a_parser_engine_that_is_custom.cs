@@ -43,12 +43,12 @@ namespace Fclp.Tests.FluentCommandLineParser
                                     {
                                         sut = new Fclp.FluentCommandLineParser();
                                         mockedEngine = new Mock<ICommandLineParserEngine>();
-
+                                        
                                         args = new string[0];
 
                                         mockedEngine
                                             .Setup(x => x.Parse(args))
-                                            .Returns(new List<KeyValuePair<string, string>>())
+                                            .Returns(new List<ParsedOption>())
                                             .Verifiable();
                                     };
 

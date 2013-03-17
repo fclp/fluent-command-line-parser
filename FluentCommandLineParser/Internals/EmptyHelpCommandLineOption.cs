@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace Fclp.Internals
 {
@@ -34,7 +35,7 @@ namespace Fclp.Internals
 		/// <summary>
 		/// Always returns false.
 		/// </summary>
-		public bool ShouldShowHelp(System.Collections.Generic.IEnumerable<string> commandLineArgs)
+		public bool ShouldShowHelp(IEnumerable<ParsedOption> commandLineArgs)
 		{
 			return false;
 		}
@@ -42,7 +43,7 @@ namespace Fclp.Internals
 		/// <summary>
 		/// Not supported.
 		/// </summary>
-		public void ShowHelp(System.Collections.Generic.IEnumerable<ICommandLineOption> options)
+		public void ShowHelp(IEnumerable<ICommandLineOption> options)
 		{
 			throw new NotSupportedException();
 		}

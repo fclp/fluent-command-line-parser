@@ -1,5 +1,5 @@
 ﻿#region License
-// when_args_contains_a_boolean_option_that_ends_with_no_sign.cs
+// StringListInlineDataAttribute.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -21,23 +21,13 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
-
-using Fclp.Internals;
-using Machine.Specifications;
-
-namespace Fclp.Tests
+namespace Fclp.Tests.Integration
 {
-    namespace CommandLineParserEngine
+    public class StringListInlineDataAttribute : ArgumentInlineDataAttribute
     {
-        class when_args_contains_a_boolean_option_that_ends_with_no_sign : CommandLineParserEngineTestContext
+        public StringListInlineDataAttribute(string args, params string[] listItems)
+            : base(args, listItems)
         {
-            static ParsedOption expected = new ParsedOption("key", null);
-
-            Establish context = () => args = new[] { "/key" };
-
-            Because of = () => RunParserWith(args);
-
-            It should_return_key_with_null_value = () => results.ShouldContainOnly(expected);
         }
     }
 }

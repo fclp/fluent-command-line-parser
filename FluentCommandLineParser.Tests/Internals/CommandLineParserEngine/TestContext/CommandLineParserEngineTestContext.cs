@@ -24,6 +24,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Fclp.Internals;
 using Machine.Specifications;
 
 namespace Fclp.Tests
@@ -33,7 +34,7 @@ namespace Fclp.Tests
         [Subject(typeof(Fclp.Internals.CommandLineParserEngine), "CommandLineParserEngine")]
         public abstract class CommandLineParserEngineTestContext : TestContext<Fclp.Internals.CommandLineParserEngine>
         {
-            protected static IEnumerable<KeyValuePair<string, string>> results;
+            protected static IEnumerable<ParsedOption> results;
             protected static string[] args;
 
             Establish context = () => sut = new Fclp.Internals.CommandLineParserEngine();

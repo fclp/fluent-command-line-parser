@@ -22,7 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Collections.Generic;
+using Fclp.Internals;
 using Machine.Specifications;
 
 namespace Fclp.Tests
@@ -31,7 +31,7 @@ namespace Fclp.Tests
     {
         class when_args_contains_a_boolean_option_that_ends_with_negative_sign : CommandLineParserEngineTestContext
         {
-            static KeyValuePair<string, string> expected = new KeyValuePair<string, string>("key", "False");
+            static ParsedOption expected = new ParsedOption("key", "False");
 
             Establish context = () => args = new[] { "/key-" };
 

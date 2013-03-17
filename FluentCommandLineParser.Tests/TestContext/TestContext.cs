@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Fclp.Internals;
 using Machine.Specifications;
 
 namespace Fclp.Tests
@@ -40,7 +41,7 @@ namespace Fclp.Tests
             error = Catch.Exception(test);
         }
 
-        protected static string[] CreateArgsFromKvp(IEnumerable<KeyValuePair<string,string>> kvps)
+        protected static string[] CreateArgsFromKvp(IEnumerable<ParsedOption> kvps)
         {
             return kvps.Select(kvp => string.Format(CultureInfo.InvariantCulture, "/{0}:{1}", kvp.Key, kvp.Value)).ToArray();
         }

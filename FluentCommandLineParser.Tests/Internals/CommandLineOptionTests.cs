@@ -172,13 +172,14 @@ namespace FluentCommandLineParser.Tests.Internals
         [ExpectedException(typeof(OptionSyntaxException))]
         public void Ensure_That_If_Value_Is_Null_Cannot_Be_Parsed_And_No_Default_Set_Then_optionSyntaxException_Is_Thrown()
         {
+            var option = new ParsedOption();
             const string value = null;
             var mockParser = new Mock<ICommandLineOptionParser<string>>();
-            mockParser.Setup(x => x.CanParse(value)).Returns(false);
+            mockParser.Setup(x => x.CanParse(option)).Returns(false);
 
             var target = new CommandLineOption<string>("s", "long name", mockParser.Object);
 
-            target.Bind(value);
+            target.Bind(option);
         }
 
 
@@ -186,13 +187,14 @@ namespace FluentCommandLineParser.Tests.Internals
         [ExpectedException(typeof(OptionSyntaxException))]
         public void Ensure_That_If_Value_Is_Empty_Cannot_Be_Parsed_And_No_Default_Set_Then_optionSyntaxException_Is_Thrown()
         {
+            var option = new ParsedOption();
             const string value = "";
             var mockParser = new Mock<ICommandLineOptionParser<string>>();
-            mockParser.Setup(x => x.CanParse(value)).Returns(false);
+            mockParser.Setup(x => x.CanParse(option)).Returns(false);
 
             var target = new CommandLineOption<string>("s", "long name", mockParser.Object);
 
-            target.Bind(value);
+            target.Bind(option);
         }
 
 
@@ -200,13 +202,14 @@ namespace FluentCommandLineParser.Tests.Internals
         [ExpectedException(typeof(OptionSyntaxException))]
         public void Ensure_That_If_Value_Is_Whitespace_Cannot_Be_Parsed_And_No_Default_Set_Then_optionSyntaxException_Is_Thrown()
         {
+            var option = new ParsedOption();
             const string value = " ";
             var mockParser = new Mock<ICommandLineOptionParser<string>>();
-            mockParser.Setup(x => x.CanParse(value)).Returns(false);
+            mockParser.Setup(x => x.CanParse(option)).Returns(false);
 
             var target = new CommandLineOption<string>("s", "long name", mockParser.Object);
 
-            target.Bind(value);
+            target.Bind(option);
         }
         #endregion
     }

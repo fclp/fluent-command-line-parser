@@ -21,6 +21,7 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
+
 namespace Fclp.Internals
 {
     /// <summary>
@@ -41,6 +42,16 @@ namespace Fclp.Internals
         /// <summary>
         /// Characters that define the start of an option.
         /// </summary>
-        public static readonly string[] OptionKeys = new[] { "/", "--", "-" };
+        public static readonly string[] OptionPrefix = new[] { "/", "--", "-" };
+
+        /// <summary>
+        /// Characters that have special meaning at the end of an option key.
+        /// </summary>
+        public static readonly string[] OptionSuffix = new[] {"+", "-"};
+
+        /// <summary>
+        /// Characters that define an explicit short option.
+        /// </summary>
+        public static readonly string[] ShortOptionPrefix = new[] {"-"};
     }
 }

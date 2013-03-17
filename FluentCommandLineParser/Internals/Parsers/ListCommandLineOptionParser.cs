@@ -1,5 +1,5 @@
-#region License
-// StringCommandLineOptionParser.cs
+﻿#region License
+// ListCommandLineOptionParser.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -30,18 +30,39 @@ using Fclp.Internals.Extensions;
 namespace Fclp.Internals.Parsers
 {
     /// <summary>
-    /// Parser used to convert to <see cref="System.String"/>.
+    /// 
     /// </summary>
-    public class StringCommandLineOptionParser : ICommandLineOptionParser<string>
+    /// <typeparam name="T"></typeparam>
+    public class ListCommandLineOptionParser<T> : ICommandLineOptionParser<List<T>>
     {
+        private readonly ICommandLineOptionParserFactory _parserFactory;
+
         /// <summary>
-        /// Parses the specified <see cref="System.String"/> into a <see cref="System.String"/>.
+        /// Initialises a new instance of the <see cref="ListCommandLineOptionParser{T}"/>.
+        /// </summary>
+        /// <param name="parserFactory"></param>
+        public ListCommandLineOptionParser(ICommandLineOptionParserFactory parserFactory)
+        {
+            _parserFactory = parserFactory;
+        }
+
+        /// <summary>
+        /// Parses the specified <see cref="System.String"/> into the return type.
         /// </summary>
         /// <param name="parsedOption"></param>
-        /// <returns></returns>
-        public string Parse(ParsedOption parsedOption)
+        /// <returns>The parsed value.</returns>
+        public List<T> Parse(ParsedOption parsedOption)
         {
-            return parsedOption.Value.TrimStart('"').TrimEnd('"');
+            var parser = _parserFactory.CreateParser<T>();
+
+            var splitValues = parsedOption.Value.SplitOnWhitespace();
+
+            return splitValues.Select(value =>
+            {
+                var clone = parsedOption.Clone();
+                clone.Value = value;
+                return parser.Parse(clone);
+            }).ToList();
         }
 
         /// <summary>
@@ -51,13 +72,18 @@ namespace Fclp.Internals.Parsers
         /// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
         public bool CanParse(ParsedOption parsedOption)
         {
-            if (parsedOption.Value.IsNullOrWhiteSpace()) return false;
+            if(parsedOption == null) return false;
 
-            string value = parsedOption.Value.Trim();
+            var parser = _parserFactory.CreateParser<T>();
 
-            var items = value.SplitOnWhitespace();
+            var splitValues = parsedOption.Value.SplitOnWhitespace();
 
-            return items.Count() == 1;
+            return splitValues.All(value =>
+            {
+                var clone = parsedOption.Clone();
+                clone.Value = value;
+                return parser.CanParse(clone);
+            });
         }
     }
 }

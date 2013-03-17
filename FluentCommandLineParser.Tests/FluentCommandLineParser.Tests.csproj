@@ -10,10 +10,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Fclp.Tests</RootNamespace>
     <AssemblyName>FluentCommandLineParser.Tests</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,20 +40,37 @@
     <AssemblyOriginatorKeyFile>FluentCommandLineParserTests.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Machine.Specifications, Version=0.5.11.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Machine.Specifications, Version=0.5.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Machine.Specifications.0.5.11\lib\net20\Machine.Specifications.dll</HintPath>
+      <HintPath>..\packages\Machine.Specifications.0.5.12\lib\net40\Machine.Specifications.dll</HintPath>
+    </Reference>
+    <Reference Include="Machine.Specifications.Clr4">
+      <HintPath>..\packages\Machine.Specifications.0.5.12\lib\net40\Machine.Specifications.Clr4.dll</HintPath>
     </Reference>
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Ploeh.AutoFixture">
+      <HintPath>..\packages\AutoFixture.3.0.3\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+    </Reference>
+    <Reference Include="Ploeh.AutoFixture.AutoMoq, Version=3.0.3.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AutoFixture.AutoMoq.3.0.3\lib\net40\Ploeh.AutoFixture.AutoMoq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Reference Include="xunit, Version=1.9.1.1600, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\xunit.1.9.1\lib\net20\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.extensions, Version=1.9.1.1600, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\xunit.extensions.1.9.1\lib\net20\xunit.extensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineOptionFormatterTests.cs" />
@@ -66,9 +84,24 @@
     <Compile Include="FluentCommandLineParser\TestContext\SettingUpAShortOptionTestContext.cs" />
     <Compile Include="FluentCommandLineParser\when_executing_parse_operation\with_options_that_are_not_specified_in_the_args.cs" />
     <Compile Include="FluentCommandLineParser\when_executing_parse_operation\with_options_that_are_specified_in_the_args.cs" />
+    <Compile Include="Integration\BoolInlineDataAttribute.cs" />
+    <Compile Include="Integration\DoubleInlineDataAttribute.cs" />
+    <Compile Include="Integration\Int32InlineDataAttribute.cs" />
+    <Compile Include="Integration\IntegrationTests.cs" />
+    <Compile Include="Integration\Lists\ArgumentInlineDataAttribute.cs" />
+    <Compile Include="Integration\Lists\BoolListInlineDataAttribute.cs" />
+    <Compile Include="Integration\Lists\DoubleListInlineDataAttribute.cs" />
+    <Compile Include="Integration\Lists\Int32ListInlineDataAttribute.cs" />
+    <Compile Include="Integration\Lists\ListTests.cs" />
+    <Compile Include="Integration\Lists\StringListInlineDataAttribute.cs" />
+    <Compile Include="Integration\NCrunchExcelDataAttribute.cs" />
+    <Compile Include="Integration\StringInlineDataAttribute.cs" />
+    <Compile Include="Internals\CommandLineParserEngineMark2Tests.cs" />
+    <Compile Include="Internals\CommandLineParserEngineMark2TestsXUnit.cs" />
     <Compile Include="Internals\CommandLineParserEngine\when_args_contains_a_boolean_option_that_ends_with_negative_sign.cs" />
     <Compile Include="Internals\CommandLineParserEngine\when_args_contains_a_boolean_option_that_ends_with_no_sign.cs" />
     <Compile Include="Internals\CommandLineParserEngine\when_args_contains_a_boolean_option_that_ends_with_positive_sign.cs" />
+    <Compile Include="Internals\TestContextBase.cs" />
     <Compile Include="TestContext\TestContext.cs" />
     <Compile Include="FluentCommandLineParser\TestContext\TestType.cs" />
     <Compile Include="FluentCommandLineParser\when_executing_parse_operation\with_options_that_have_not_been_setup.cs" />
@@ -123,8 +156,11 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="FluentCommandLineParserTests.snk" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

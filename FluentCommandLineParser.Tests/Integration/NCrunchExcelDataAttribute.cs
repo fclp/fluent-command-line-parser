@@ -1,5 +1,5 @@
 ﻿#region License
-// when_args_contains_a_boolean_option_that_ends_with_no_sign.cs
+// NCrunchExcelDataAttribute.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,22 +22,28 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Internals;
+using System.IO;
 using Machine.Specifications;
+using Xunit.Extensions;
 
-namespace Fclp.Tests
+namespace Fclp.Tests.Integration
 {
-    namespace CommandLineParserEngine
+    public class NCrunchExcelDataAttribute : ExcelDataAttribute
     {
-        class when_args_contains_a_boolean_option_that_ends_with_no_sign : CommandLineParserEngineTestContext
+        public NCrunchExcelDataAttribute(string filename, string selectStatement)
+            : base(GetPathFromContext(filename), selectStatement)
         {
-            static ParsedOption expected = new ParsedOption("key", null);
+        }
 
-            Establish context = () => args = new[] { "/key" };
+        private static string GetPathFromContext(string filename)
+        {
+            string newFilePath = filename;
+#if NCRUNCH
+            newFilePath = (Directory.GetCurrentDirectory() + @"/" + filename);
+#endif
+            File.Exists(newFilePath).ShouldBeTrue();
 
-            Because of = () => RunParserWith(args);
-
-            It should_return_key_with_null_value = () => results.ShouldContainOnly(expected);
+            return newFilePath;
         }
     }
 }

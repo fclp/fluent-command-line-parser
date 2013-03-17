@@ -1,5 +1,5 @@
 ﻿#region License
-// when_args_contains_a_boolean_option_that_ends_with_no_sign.cs
+// CommandLineParserEngineMark2Tests.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,22 +22,49 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System.Linq;
 using Fclp.Internals;
+using Fclp.Internals.Extensions;
 using Machine.Specifications;
 
-namespace Fclp.Tests
+namespace Fclp.Tests.Internals
 {
-    namespace CommandLineParserEngine
+    abstract class CommandLineParserEngineMark2TestContext : TestContextBase<CommandLineParserEngineMark2>
     {
-        class when_args_contains_a_boolean_option_that_ends_with_no_sign : CommandLineParserEngineTestContext
+        Establish context = () => CreatSut();
+    }
+
+    sealed class Parse
+    {
+        abstract class ParseTestContext : CommandLineParserEngineMark2TestContext
         {
-            static ParsedOption expected = new ParsedOption("key", null);
+            protected static string[] args;
+            protected static ParserEngineResult result;
 
-            Establish context = () => args = new[] { "/key" };
+            protected static void SetupArgs(string arguments)
+            {
+                args = arguments.SplitOnWhitespace().ToArray();
+            }
 
-            Because of = () => RunParserWith(args);
+            Because of = () =>
+                result = sut.Parse(args);
+        }
 
-            It should_return_key_with_null_value = () => results.ShouldContainOnly(expected);
+        class when_args_is_null : ParseTestContext
+        {
+            Establish context = () => args = null;
+            
+            It should_return_a_result_with_no_parsed_options = () =>
+                result.ParsedOptions.ShouldBeEmpty();
+
+            It should_return_a_result_with_no_additional_values = () =>
+                result.AdditionalValues.ShouldBeEmpty();
+        }
+
+        class when_ : ParseTestContext
+        {
+            Establish context = () => SetupArgs("");
         }
     }
+    
 }
