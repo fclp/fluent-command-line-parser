@@ -22,6 +22,9 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Fclp.Internals.Extensions;
 
 namespace Fclp.Internals.Parsers
@@ -48,7 +51,13 @@ namespace Fclp.Internals.Parsers
         /// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
         public bool CanParse(ParsedOption parsedOption)
         {
-            return parsedOption.Value.IsNullOrWhiteSpace() == false;
+            if (parsedOption.Value.IsNullOrWhiteSpace()) return false;
+
+            string value = parsedOption.Value.Trim();
+
+            var items = value.SplitOnWhitespace();
+
+            return items.Count() == 1;
         }
     }
 }

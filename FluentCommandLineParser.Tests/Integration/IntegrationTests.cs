@@ -116,7 +116,6 @@ namespace Fclp.Tests.Integration
         [InlineData("-xyz 'apply this to x, y and z'", "apply this to x, y and z")]
         [InlineData("-xyz salmon", "salmon")]
         [InlineData("-xyz 'salmon'", "salmon")]
-        [InlineData("-xyz 'salmon' 'eggs' 'pie'", "'salmon' 'eggs' 'pie'")]
         public void combined_short_options_should_have_the_same_value(string arguments, string expectedValue)
         {
             arguments = ReplaceWithDoubleQuotes(arguments);

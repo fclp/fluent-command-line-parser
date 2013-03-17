@@ -22,8 +22,9 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System.Linq;
 using Fclp.Internals;
-using Fclp.Tests.TestContext;
+using Fclp.Internals.Extensions;
 using Machine.Specifications;
 
 namespace Fclp.Tests.Internals
@@ -42,7 +43,7 @@ namespace Fclp.Tests.Internals
 
             protected static void SetupArgs(string arguments)
             {
-                args = TestHelpers.ParseArguments(arguments);
+                args = arguments.SplitOnWhitespace().ToArray();
             }
 
             Because of = () =>

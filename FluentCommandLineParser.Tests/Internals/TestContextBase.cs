@@ -23,7 +23,8 @@
 #endregion
 
 using System;
-using Fclp.Tests.TestContext;
+using System.Linq;
+using Fclp.Internals.Extensions;
 using Machine.Specifications;
 using Moq;
 using Ploeh.AutoFixture;
@@ -63,7 +64,7 @@ namespace Fclp.Tests.Internals
         protected static string[] ParseArguments(string args)
         {
             args = ReplaceWithDoubleQuotes(args);
-            return TestHelpers.ParseArguments(args);
+            return args.SplitOnWhitespace().ToArray();
         }
 
         protected static string ReplaceWithDoubleQuotes(string args)

@@ -123,7 +123,7 @@ namespace Fclp.Tests
         [Test]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_String_When_Using_Short_option()
         {
-            const string expected = "my expected string";
+            const string expected = "my-expected-string";
             RunTest(expected, expected);
 
             //const string key = "s";
@@ -147,7 +147,7 @@ namespace Fclp.Tests
         [Test]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_String_When_Using_Long_option()
         {
-            const string expected = "my expected string";
+            const string expected = "my-expected-string";
             const string key = "string";
             string actual = null;
 
@@ -534,7 +534,7 @@ namespace Fclp.Tests
             const string expectedValue = "Mr. Smith";
             const bool expectedSilentMode = true;
 
-            var args = new[] { "-r", expectedRecordId.ToString(CultureInfo.InvariantCulture), "-v", expectedValue, "--silent" };
+            var args = new[] { "-r", expectedRecordId.ToString(CultureInfo.InvariantCulture), "-v", "\"Mr. Smith\"", "--silent" };
 
             int recordId = 0;
             string newValue = null;

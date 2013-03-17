@@ -68,5 +68,41 @@ namespace Fclp.Internals.Extensions
                 action(item);
             }
         }
+
+        /// <summary>
+        /// Indicates whether the specified <see cref="System.String"/> contains <c>whitespace</c>.
+        /// </summary>
+        /// <param name="value">The <see cref="System.String"/> to examine.</param>
+        /// <returns><c>true</c> if <paramref name="value"/> contains at least one whitespace char; otherwise <c>false</c>.</returns>
+        public static bool ContainsWhitespace(this string value)
+        {
+            return string.IsNullOrEmpty(value) == false && value.Contains(" ");
+        }
+
+        /// <summary>
+        /// Splits the specified <see cref="System.String"/> when each whitespace char is encountered into a collection of substrings.
+        /// </summary>
+        /// <param name="value">The <see cref="System.String"/> to split.</param>
+        /// <returns>A collection of substrings taken from <paramref name="value"/>.</returns>
+        /// <remarks>If the whitespace is wrapped in double quotes then it is ignored.</remarks>
+        public static IEnumerable<string> SplitOnWhitespace(this string value)
+        {
+            if (string.IsNullOrEmpty(value)) return null;
+
+            char[] parmChars = value.ToCharArray();
+
+            bool inDoubleQuotes = false;
+
+            for (int index = 0; index < parmChars.Length; index++)
+            {
+                if (parmChars[index] == '"')
+                    inDoubleQuotes = !inDoubleQuotes;
+
+                if (!inDoubleQuotes && parmChars[index] == ' ')
+                    parmChars[index] = '\n';
+            }
+
+            return (new string(parmChars)).Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        }
     }
 }

@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fclp.Internals.Extensions;
 
 namespace Fclp.Internals.Parsers
 {
@@ -54,7 +55,7 @@ namespace Fclp.Internals.Parsers
         {
             var parser = _parserFactory.CreateParser<T>();
 
-            var splitValues = SplitOnWhitespace(parsedOption.Value);
+            var splitValues = parsedOption.Value.SplitOnWhitespace();
 
             return splitValues.Select(value =>
             {
@@ -75,7 +76,7 @@ namespace Fclp.Internals.Parsers
 
             var parser = _parserFactory.CreateParser<T>();
 
-            var splitValues = SplitOnWhitespace(parsedOption.Value);
+            var splitValues = parsedOption.Value.SplitOnWhitespace();
 
             return splitValues.All(value =>
             {
@@ -83,21 +84,6 @@ namespace Fclp.Internals.Parsers
                 clone.Value = value;
                 return parser.CanParse(clone);
             });
-        }
-
-        static IEnumerable<string> SplitOnWhitespace(string args)
-        {
-            if (string.IsNullOrEmpty(args)) return null;
-            char[] parmChars = args.ToCharArray();
-            bool inQuote = false;
-            for (int index = 0; index < parmChars.Length; index++)
-            {
-                if (parmChars[index] == '"')
-                    inQuote = !inQuote;
-                if (!inQuote && parmChars[index] == ' ')
-                    parmChars[index] = '\n';
-            }
-            return (new string(parmChars)).Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }
