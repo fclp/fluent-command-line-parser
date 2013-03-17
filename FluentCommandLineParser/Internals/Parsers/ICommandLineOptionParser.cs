@@ -31,15 +31,15 @@ namespace Fclp.Internals.Parsers
         /// <summary>
         /// Parses the specified <see cref="System.String"/> into the return type.
         /// </summary>
-        /// <param name="value">The <see cref="System.String"/> representing the value to parse. This may be <c>null</c>, <c>empty</c> or contain only <c>whitespace</c>.</param>
+        /// <param name="parsedOption"></param>
         /// <returns>The parsed value.</returns>
-        T Parse(string value);
+        T Parse(ParsedOption parsedOption);
 
         /// <summary>
         /// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
         /// </summary>
-        /// <param name="value">The <see cref="System.String"/> to check.</param>
+        /// <param name="parsedOption"></param>
         /// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-        bool CanParse(string value);
+        bool CanParse(ParsedOption parsedOption);
     }
 }

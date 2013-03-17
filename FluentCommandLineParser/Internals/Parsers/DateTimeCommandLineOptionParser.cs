@@ -35,22 +35,22 @@ namespace Fclp.Internals.Parsers
         /// <summary>
         /// Parses the specified <see cref="System.String"/> into a <see cref="System.DateTime"/>.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="parsedOption"></param>
         /// <returns></returns>
-        public DateTime Parse(string value)
+        public DateTime Parse(ParsedOption parsedOption)
         {
-            return DateTime.Parse(value, CultureInfo.CurrentCulture);
+            return DateTime.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
         }
 
         /// <summary>
         /// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
         /// </summary>
-        /// <param name="value">The <see cref="System.String"/> to check.</param>
+        /// <param name="parsedOption"></param>
         /// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-        public bool CanParse(string value)
+        public bool CanParse(ParsedOption parsedOption)
         {
             DateTime dtOut;
-            return DateTime.TryParse(value, out dtOut);
+            return DateTime.TryParse(parsedOption.Value, out dtOut);
         }
     }
 }

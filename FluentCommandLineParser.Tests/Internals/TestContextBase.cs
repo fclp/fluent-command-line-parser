@@ -1,5 +1,5 @@
 ﻿#region License
-// when_args_contains_a_boolean_option_that_ends_with_no_sign.cs
+// TestContextBase.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,22 +22,55 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Internals;
+using System;
+using System.Linq;
+using Fclp.Internals.Extensions;
 using Machine.Specifications;
+using Moq;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
-namespace Fclp.Tests
+namespace Fclp.Tests.Internals
 {
-    namespace CommandLineParserEngine
+    public abstract class TestContextBase<TSut> where TSut : class
     {
-        class when_args_contains_a_boolean_option_that_ends_with_no_sign : CommandLineParserEngineTestContext
+        protected static TSut sut;
+        protected static IFixture fixture;
+        protected static Exception error;
+
+        Establish context = () =>
         {
-            static ParsedOption expected = new ParsedOption("key", null);
+            InitialiseFixture();
+        };
 
-            Establish context = () => args = new[] { "/key" };
+        protected static IFixture InitialiseFixture()
+        {
+            fixture = new Fixture().Customize(new AutoMoqCustomization());
+            return fixture;
+        }
 
-            Because of = () => RunParserWith(args);
+        protected static TSut CreatSut()
+        {
+            sut = fixture.Create<TSut>();
+            return sut;
+        }
 
-            It should_return_key_with_null_value = () => results.ShouldContainOnly(expected);
+        protected Mock<TType> InitialiseMock<TType>(out Mock<TType> mockObj) where TType : class
+        {
+            mockObj = fixture.Freeze<Mock<TType>>();
+            return mockObj;
+        }
+
+        protected static string[] ParseArguments(string args)
+        {
+            args = ReplaceWithDoubleQuotes(args);
+            return args.SplitOnWhitespace().ToArray();
+        }
+
+        protected static string ReplaceWithDoubleQuotes(string args)
+        {
+            if (args == null) return null;
+            return args.Replace('\'', '"');
         }
     }
 }

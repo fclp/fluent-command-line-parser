@@ -117,7 +117,7 @@ namespace Fclp.Internals
         /// Binds the specified <see cref="System.String"/> to the Option.
         /// </summary>
         /// <param name="value">The <see cref="System.String"/> to bind.</param>
-        public void Bind(string value)
+        public void Bind(ParsedOption value)
         {
             if(this.Parser.CanParse(value))
                 this.Bind(this.Parser.Parse(value));

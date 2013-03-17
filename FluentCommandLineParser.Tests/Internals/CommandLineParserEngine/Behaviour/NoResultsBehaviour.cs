@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using Fclp.Internals;
 using Machine.Specifications;
 
 namespace Fclp.Tests
@@ -34,7 +35,7 @@ namespace Fclp.Tests
         public class NoResultsBehaviour
         {
             protected static Exception error;
-            protected static IEnumerable<KeyValuePair<string, string>> results;
+            protected static IEnumerable<ParsedOption> results;
 
             It should_not_error = () => error.ShouldBeNull();
             It should_return_no_found_values = () => results.ShouldBeEmpty();

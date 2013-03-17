@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentCommandLineParser", "FluentCommandLineParser\FluentCommandLineParser.csproj", "{74CDFA61-81D8-40F2-B536-949BABA15D3E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentCommandLineParser.Tests", "FluentCommandLineParser.Tests\FluentCommandLineParser.Tests.csproj", "{A2546703-0B86-4515-BE5B-FAF85B756BDC}"

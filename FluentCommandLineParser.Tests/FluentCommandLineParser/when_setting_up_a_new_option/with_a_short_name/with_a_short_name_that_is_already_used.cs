@@ -34,7 +34,7 @@ namespace Fclp.Tests.FluentCommandLineParser
     {
         public class with_a_short_name_that_is_already_used : SettingUpAShortOptionTestContext
         {
-            private const string existingShortName = "shortName";
+            private const string existingShortName = "s";
             private static ICommandLineOption existingOption;
 
             Establish context = () =>

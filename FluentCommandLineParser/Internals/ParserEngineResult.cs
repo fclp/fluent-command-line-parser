@@ -1,5 +1,5 @@
 ﻿#region License
-// when_args_contains_a_boolean_option_that_ends_with_no_sign.cs
+// ParserEngineResult.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,22 +22,34 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Internals;
-using Machine.Specifications;
+using System.Collections.Generic;
 
-namespace Fclp.Tests
+namespace Fclp.Internals
 {
-    namespace CommandLineParserEngine
+    /// <summary>
+    /// Contains the results of the parse operation
+    /// </summary>
+    public class ParserEngineResult
     {
-        class when_args_contains_a_boolean_option_that_ends_with_no_sign : CommandLineParserEngineTestContext
+        /// <summary>
+        /// Initialises a new instance of the <see cref="ParserEngineResult"/> class;
+        /// </summary>
+        /// <param name="parsedOptions">The parsed options.</param>
+        /// <param name="additionalValues">Any additional values that could not be translated into options.</param>
+        public ParserEngineResult(IEnumerable<ParsedOption> parsedOptions, IEnumerable<string> additionalValues)
         {
-            static ParsedOption expected = new ParsedOption("key", null);
-
-            Establish context = () => args = new[] { "/key" };
-
-            Because of = () => RunParserWith(args);
-
-            It should_return_key_with_null_value = () => results.ShouldContainOnly(expected);
+            ParsedOptions = parsedOptions ?? new List<ParsedOption>();
+            AdditionalValues = additionalValues ?? new List<string>();
         }
+
+        /// <summary>
+        /// Gets the parsed options.
+        /// </summary>
+        public IEnumerable<ParsedOption> ParsedOptions { get; private set; }
+
+        /// <summary>
+        /// Gets any additional values that could not be translated into options.
+        /// </summary>
+        public IEnumerable<string> AdditionalValues { get; private set; }
     }
 }

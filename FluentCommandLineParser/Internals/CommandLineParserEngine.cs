@@ -39,7 +39,7 @@ namespace Fclp.Internals
         /// </summary>
         /// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
         /// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
-        public IEnumerable<KeyValuePair<string, string>> Parse(string[] args)
+        public IEnumerable<ParsedOption> Parse(string[] args)
         {
             args = args ?? new string[0];
 
@@ -47,49 +47,67 @@ namespace Fclp.Internals
             {
                 string item = args[index];
 
-                if (!IsAKey(item)) continue; // we only want to find keys at this point
+                // we only want to find keys at this point
+                if (IsAKey(item) == false) continue; 
 
                 string key = ExtractKey(item);
-                item = item.Remove(0, key.Length);
 
-                int nextIndex = index + 1; // value should be the next in list
-                string value = null;
+                // setup the option and remove the special key characters from the option.
+                var option = new ParsedOption
+                    {
+                        Prefix = item.Substring(0, key.Length),
+                        Key = item.Remove(0, key.Length)
+                    };
+
+                // value should be the next in list
+                int nextIndex = index + 1; 
 
                 // key may contains value i.e. opt=value or opt:value
-                if (SpecialCharacters.ValueAssignments.Any(item.Contains))
+                if (SpecialCharacters.ValueAssignments.Any(option.Key.Contains))
                 {
-                    var splitted = item.Split(SpecialCharacters.ValueAssignments, 2, StringSplitOptions.RemoveEmptyEntries);
-
-                    item = splitted[0];
-
-                    if (splitted.Length > 1)
-                        value = splitted[1].Trim('"');
+                    TryGetValueFromKey(option);
                 }
-                else if (value == null)
-                    value = nextIndex < args.Length ? args[nextIndex] : null; // find value (may not exist)
-
-                if (value == null)
+                else if (option.HasValue == false)
                 {
-                    // support boolean names
-                    bool? boolValue = null;
-
-                    if (item.EndsWith("-"))
-                    {
-                        boolValue = false;
-                        item = item.TrimEnd('-');
-                    }
-                    else if (item.EndsWith("+"))
-                    {
-                        boolValue = true;
-                        item = item.TrimEnd('+');
-                    }
-
-                    if (boolValue.HasValue)
-                        value = boolValue.Value.ToString(CultureInfo.InvariantCulture);
+                    option.Value = nextIndex < args.Length ? args[nextIndex] : null; // find value (may not exist)
                 }
 
-                yield return new KeyValuePair<string, string>(item, value);
+                TryParseBooleanSyntax(option);
+
+                yield return option;
             }
+        }
+
+        private static void TryGetValueFromKey(ParsedOption option)
+        {
+            var splitted = option.Key.Split(SpecialCharacters.ValueAssignments, 2, StringSplitOptions.RemoveEmptyEntries);
+
+            option.Key = splitted[0];
+
+            if (splitted.Length > 1)
+                option.Value = splitted[1].Trim('"');
+        }
+
+        private static void TryParseBooleanSyntax(ParsedOption option)
+        {
+            if (option.HasValue) return;
+
+            // support boolean names
+            bool? boolValue = null;
+
+            if (option.Key.EndsWith("-"))
+            {
+                boolValue = false;
+                option.Key = option.Key.TrimEnd('-');
+            }
+            else if (option.Key.EndsWith("+"))
+            {
+                boolValue = true;
+                option.Key = option.Key.TrimEnd('+');
+            }
+
+            if (boolValue.HasValue)
+                option.Value = boolValue.Value.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -99,7 +117,7 @@ namespace Fclp.Internals
         /// <returns><c>true</c> if <paramref name="arg"/> is a Option key; otherwise <c>false</c>.</returns>
         static bool IsAKey(string arg)
         {
-            return arg != null && SpecialCharacters.OptionKeys.Any(arg.StartsWith);
+            return arg != null && SpecialCharacters.OptionPrefix.Any(arg.StartsWith);
         }
 
         /// <summary>
@@ -109,7 +127,7 @@ namespace Fclp.Internals
         /// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
         static string ExtractKey(string arg)
         {
-            return arg != null ? SpecialCharacters.OptionKeys.FirstOrDefault(arg.StartsWith) : null;
+            return arg != null ? SpecialCharacters.OptionPrefix.FirstOrDefault(arg.StartsWith) : null;
         }
     }
 }
