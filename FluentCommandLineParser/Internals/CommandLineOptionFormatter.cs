@@ -43,7 +43,6 @@ namespace Fclp.Internals
         /// </summary>
         public CommandLineOptionFormatter()
         {
-            this.ShowHeader = false;
             this.ValueText = "Value";
             this.DescriptionText = "Description";
             this.NoOptionsText = "No options have been setup";
@@ -56,10 +55,18 @@ namespace Fclp.Internals
         /// </summary>
         public const string TextFormat = "\t/{0}\t\t{1}\n";
 
-        /// <summary>
-        /// If true, outputs a header line above the option list. If false, the header is omitted. Default is true.
-        /// </summary>
-        public bool ShowHeader { get; set; }
+	    /// <summary>
+	    /// If true, outputs a header line above the option list. If false, the header is omitted. Default is true.
+	    /// </summary>
+	    private bool ShowHeader
+	    {
+		    get { return Header != null; }
+	    }
+
+		/// <summary>
+		/// Gets or sets the header to display before the printed options.
+		/// </summary>
+		public string Header { get; set; }
 
         /// <summary>
         /// Gets or sets the text to use as <c>Value</c> header. This should be localised for the end user.
@@ -94,7 +101,7 @@ namespace Fclp.Internals
 
             // add headers first
             if (ShowHeader)
-                sb.AppendFormat(CultureInfo.CurrentUICulture, TextFormat, this.ValueText, this.DescriptionText);
+                sb.AppendLine(Header);
 
             foreach (var cmdOption in list.OrderBy(x => x.ShortName))
                 sb.AppendFormat(CultureInfo.CurrentUICulture, TextFormat, FormatValue(cmdOption), cmdOption.Description);

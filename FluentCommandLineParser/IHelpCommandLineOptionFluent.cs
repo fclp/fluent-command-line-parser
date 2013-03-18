@@ -51,5 +51,11 @@ namespace Fclp
 		/// </summary>
 		/// <param name="formatter">The custom formatter to use. This must not be <c>null</c>.</param>
 		IHelpCommandLineOptionFluent WithCustomFormatter(ICommandLineOptionFormatter formatter);
+
+		/// <summary>
+		/// Provides a custom header to be printed before the registered options.
+		/// </summary>
+		/// <param name="header">The header to use.</param>
+		IHelpCommandLineOptionFluent WithHeader(string header);
 	}
 }

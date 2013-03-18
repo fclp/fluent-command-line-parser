@@ -55,11 +55,16 @@ namespace Fclp.Internals
 		internal Action<string> ReturnCallback { get; set; }
 
 		/// <summary>
+		/// Gets or sets any header to display at the top of the printed options.
+		/// </summary>
+		public string Header { get; set; }
+
+		/// <summary>
 		/// Gets or sets the <see cref="ICommandLineOptionFormatter"/> to use to format the options.
 		/// </summary>
 		public ICommandLineOptionFormatter OptionFormatter
 		{
-			get { return _optionFormatter ?? (_optionFormatter = new CommandLineOptionFormatter()); }
+			get { return _optionFormatter ?? (_optionFormatter = new CommandLineOptionFormatter { Header = this.Header }); }
 			set { _optionFormatter = value; }
 		}
 
@@ -84,6 +89,17 @@ namespace Fclp.Internals
 		public IHelpCommandLineOptionFluent WithCustomFormatter(ICommandLineOptionFormatter formatter)
 		{
 			this.OptionFormatter = formatter;
+			return this;
+		}
+
+
+		/// <summary>
+		/// Provides a custom header to be printed before the registered options.
+		/// </summary>
+		/// <param name="header">The header to use.</param>
+		public IHelpCommandLineOptionFluent WithHeader(string header)
+		{
+			this.Header = header;
 			return this;
 		}
 
