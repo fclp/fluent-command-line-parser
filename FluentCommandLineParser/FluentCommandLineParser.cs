@@ -201,15 +201,23 @@ namespace Fclp
 
 				if (match != null) // Step 2
 				{
-					setupOption.Bind(match);
+					try
+					{
+						option.Bind(match);
+					}
+					catch(OptionSyntaxException)
+					{
+						result.Errors.Add(new OptionSyntaxParseError(option));
+					}
+
 					parsedOptions.Remove(match);
 				}
 				else
 				{
-					if (setupOption.IsRequired) // Step 3
-						result.Errors.Add(new ExpectedOptionNotFoundParseError(setupOption));
-					else if (setupOption.HasDefault)
-						setupOption.BindDefault(); // Step 4
+					if (option.IsRequired) // Step 3
+						result.Errors.Add(new ExpectedOptionNotFoundParseError(option));
+					else if (option.HasDefault)
+						option.BindDefault(); // Step 4
 
 					result.UnMatchedOptions.Add(option);
 				}
