@@ -85,6 +85,8 @@ updaterecord.exe -s- // disabled
 updaterecord.exe -s+ // enabled
 ```
 
-### Contribute
+### Development
 
-Contributions to the [develop branch](https://github.com/fclp/fluent-command-line-parser/tree/develop) please.
+Fclp is in the early stages of development. Please feel free to provide any feedback on feature support or the Api itself.
+
+If you would like to contribute, you may do so to the [develop branch](https://github.com/fclp/fluent-command-line-parser/tree/develop).
