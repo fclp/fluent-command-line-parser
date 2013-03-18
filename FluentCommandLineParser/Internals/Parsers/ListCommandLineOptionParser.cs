@@ -72,7 +72,8 @@ namespace Fclp.Internals.Parsers
         /// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
         public bool CanParse(ParsedOption parsedOption)
         {
-            if(parsedOption == null) return false;
+            if (parsedOption == null) return false;
+            if (parsedOption.HasValue == false) return false;
 
             var parser = _parserFactory.CreateParser<T>();
 
