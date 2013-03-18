@@ -2,8 +2,6 @@ Fluent Command Line Parser
 ==========================
 A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface.
 
-***
-
 ### Download
 
 You can download the latest release from [CodeBetter's TeamCity server](http://teamcity.codebetter.com/project.html?projectId=project314)
@@ -13,9 +11,6 @@ You can also install using [NuGet](http://nuget.org/packages/FluentCommandLinePa
 ```
 PM> Install-Package FluentCommandLineParser
 ```
-
-***
-
 Commands such as `updaterecord.exe /r 10 /v="Mr. Smith" /silent` can be captured using
 
 ```
@@ -38,9 +33,6 @@ static void Main(string[] args)
   parser.Parse(args);
 }
 ```
-
-***
-
 ### Parser Option Methods
 
 `.Setup<int>("r")` Setup an option using a short name, 
@@ -72,7 +64,6 @@ static void Main(string[] args)
    if(result.HelpCalled) return;
 }
 ```
-
 ### Supported syntax
 
 `[-|--|/][switch_name][=|:| ][value]`
