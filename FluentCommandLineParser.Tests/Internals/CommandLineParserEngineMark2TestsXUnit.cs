@@ -24,6 +24,7 @@
 
 using System.Linq;
 using Fclp.Internals;
+using Fclp.Internals.Extensions;
 using FluentCommandLineParser.Tests;
 using Machine.Specifications;
 using Xunit;

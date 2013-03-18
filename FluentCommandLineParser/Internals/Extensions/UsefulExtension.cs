@@ -80,6 +80,35 @@ namespace Fclp.Internals.Extensions
         }
 
         /// <summary>
+        /// Wraps the specified <see cref="System.String"/> in double quotes.
+        /// </summary>
+        public static string WrapInDoubleQuotes(this string str)
+        {
+            return string.Format(@"""{0}""", str);
+        }
+
+        /// <summary>
+        /// Wraps the specified <see cref="System.String"/> in double quotes if it contains at least one whitespace character.
+        /// </summary>
+        /// <param name="str">The <see cref="System.String"/> to examine and wrap.</param>
+        public static string WrapInDoubleQuotesIfContainsWhitespace(this string str)
+        {
+            return str.ContainsWhitespace() && str.IsWrappedInDoubleQuotes() == false
+                ? str.WrapInDoubleQuotes()
+                : str;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.String"/> starts and ends with a double quote.
+        /// </summary>
+        /// <param name="str">The <see cref="System.String"/> to examine.</param>
+        /// <returns><c>true</c> if <paramref name="str"/> is wrapped in double quotes; otherwise <c>false</c>.</returns>
+        public static bool IsWrappedInDoubleQuotes(this string str)
+        {
+            return str.IsNullOrWhiteSpace() == false && str.StartsWith("\"") && str.EndsWith("\"");
+        }
+
+        /// <summary>
         /// Splits the specified <see cref="System.String"/> when each whitespace char is encountered into a collection of substrings.
         /// </summary>
         /// <param name="value">The <see cref="System.String"/> to split.</param>

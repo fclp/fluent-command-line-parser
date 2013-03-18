@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fclp.Internals.Extensions;
 
 namespace Fclp.Internals
 {
@@ -126,7 +127,7 @@ namespace Fclp.Internals
             option.Key = splitted[0];
 
             if (splitted.Length > 1)
-                option.Value = splitted[1].Trim();
+                option.Value = splitted[1].WrapInDoubleQuotesIfContainsWhitespace();
         }
 
         static string CombineValuesUntilNextKey(string[] args, int currentIndex)
@@ -140,7 +141,7 @@ namespace Fclp.Internals
                 // we only want to find keys at this point
                 if (IsAKey(currentArg)) break;
 
-                currentArg = currentArg.Trim();
+                currentArg = currentArg.WrapInDoubleQuotesIfContainsWhitespace();
 
                 if (values == null)
                 {
