@@ -52,6 +52,7 @@ namespace Fclp.Internals.Parsers
         public bool CanParse(ParsedOption parsedOption)
         {
             if (parsedOption.Value.IsNullOrWhiteSpace()) return false;
+            if (parsedOption.HasValue == false) return false;
 
             string value = parsedOption.Value.Trim();
 
