@@ -85,6 +85,18 @@ namespace FluentCommandLineParser.Tests
             Assert.AreEqual(expected, formatter.NoOptionsText);
         }
 
+        [Test]
+        public void Ensure_Header_Can_Be_Set()
+        {
+            var formatter = new CommandLineOptionFormatter();
+
+            const string expected = "my custom header";
+
+            formatter.Header = expected;
+
+            Assert.AreEqual(expected, formatter.Header);   
+        }
+
         #endregion Properties
 
         #region Format
@@ -119,6 +131,36 @@ namespace FluentCommandLineParser.Tests
 
             Assert.AreEqual(expected, actual, "Formatter returned unexpected string");
         }
+
+        [Test]
+        public void Ensure_Header_Is_Displayed_If_One_Is_Set()
+        {
+            var formatter = new CommandLineOptionFormatter();
+
+            // expected:
+            //  my custom header
+            //
+            //  Short1          Description1
+            //  Short2:Long2    Description2 
+
+            const string expectedHeader = "my custom header";
+
+            formatter.Header = expectedHeader;
+
+            var mockOption1 = CreateMockOption("Short1", null, "Description1");
+            var mockOption2 = CreateMockOption("Short2", "Long2", "Description2");
+
+            var expectedSb = new StringBuilder();
+            expectedSb.AppendLine(expectedHeader);
+            expectedSb.AppendLine();
+            expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOption1.ShortName, mockOption1.Description);
+            expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOption2.ShortName + ":" + mockOption2.LongName, mockOption2.Description);
+
+            var expected = expectedSb.ToString();
+            var actual = formatter.Format(new[] { mockOption1, mockOption2 });
+
+            Assert.AreEqual(expected, actual, "Formatter returned unexpected string");
+        }
         
         [Test]
         public void Ensure_NoOptionsText_Returned_If_No_options_Have_Been_Setup()
@@ -137,7 +179,7 @@ namespace FluentCommandLineParser.Tests
         /// <summary>
         /// Helper method to return a mocked <see cref="ICommandLineOption"/>.
         /// </summary>
-        static Fclp.Internals.ICommandLineOption CreateMockOption(string shortName, string longName, string description)
+        static ICommandLineOption CreateMockOption(string shortName, string longName, string description)
         {
             var mockOption = new Mock<ICommandLineOption>();
             mockOption.SetupGet(x => x.ShortName).Returns(shortName);
