@@ -27,17 +27,17 @@ using Machine.Specifications;
 
 namespace Fclp.Tests
 {
-    namespace CommandLineParserEngine
-    {
-        class when_args_contains_a_boolean_option_that_ends_with_negative_sign : CommandLineParserEngineTestContext
-        {
-            static ParsedOption expected = new ParsedOption("key", "False");
+	namespace CommandLineParserEngine
+	{
+		class when_args_contains_a_boolean_option_that_ends_with_negative_sign : CommandLineParserEngineTestContext
+		{
+			static ParsedOption expected = new ParsedOption("key", "False");
 
-            Establish context = () => args = new[] { "/key-" };
+			Establish context = () => args = new[] { "/key-" };
 
-            Because of = () => RunParserWith(args);
+			Because of = () => RunParserWith(args);
 
-            It should_return_key_with_false_value = () => results.ShouldContainOnly(expected);
-        }
-    }
+			It should_return_key_with_false_value = () => results.ShouldContainOnly(expected);
+		}
+	}
 }

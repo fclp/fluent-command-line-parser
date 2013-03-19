@@ -26,11 +26,11 @@ using Xunit.Extensions;
 
 namespace Fclp.Tests.Integration
 {
-    public class DoubleInlineDataAttribute : InlineDataAttribute
-    {
-        public DoubleInlineDataAttribute(string args, double expected)
-            : base(args, null, null, null, expected)
-        {
-        }
-    }
+	public class DoubleInlineDataAttribute : InlineDataAttribute
+	{
+		public DoubleInlineDataAttribute(string args, double expected)
+			: base(args, null, null, null, expected)
+		{
+		}
+	}
 }

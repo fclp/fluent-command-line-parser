@@ -26,17 +26,17 @@ using Xunit.Extensions;
 
 namespace Fclp.Tests.Integration
 {
-    public class ArgumentInlineDataAttribute : InlineDataAttribute
-    {
-        public ArgumentInlineDataAttribute(string args, object obj)
-            : base(args, obj)
-        {
-        }
+	public class ArgumentInlineDataAttribute : InlineDataAttribute
+	{
+		public ArgumentInlineDataAttribute(string args, object obj)
+			: base(args, obj)
+		{
+		}
 
-        public ArgumentInlineDataAttribute(string args, params string[] values)
-            : base(args, values)
-        {
+		public ArgumentInlineDataAttribute(string args, params string[] values)
+			: base(args, values)
+		{
 
-        }
-    }
+		}
+	}
 }

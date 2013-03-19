@@ -175,9 +175,9 @@ namespace Fclp
 		{
 			var parsedOptions = this.ParserEngine.Parse(args).ToList();
 
-            var result = new CommandLineParserResult { EmptyArgs = parsedOptions.IsNullOrEmpty() };
+			var result = new CommandLineParserResult { EmptyArgs = parsedOptions.IsNullOrEmpty() };
 
-		    if (this.HelpOption.ShouldShowHelp(parsedOptions))
+			if (this.HelpOption.ShouldShowHelp(parsedOptions))
 			{
 				result.HelpCalled = true;
 				this.HelpOption.ShowHelp(this.Options);

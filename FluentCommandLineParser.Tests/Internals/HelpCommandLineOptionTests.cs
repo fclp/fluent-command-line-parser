@@ -28,40 +28,40 @@ using Machine.Specifications;
 
 namespace Fclp.Tests.Internals
 {
-    sealed class HelpCommandLineOptionTests
-    {
-        abstract class HelpCommandLineOptionTestContext : TestContextBase<HelpCommandLineOption> 
-        {
-            Establish context = () => CreatSut();    
-        }
+	sealed class HelpCommandLineOptionTests
+	{
+		abstract class HelpCommandLineOptionTestContext : TestContextBase<HelpCommandLineOption> 
+		{
+			Establish context = () => CreatSut();    
+		}
 
 
-        sealed class ShouldShowHelp
-        {
-            abstract class ShouldShowHelpTestContext : HelpCommandLineOptionTestContext
-            {
-                protected static bool actualResult;
-                protected static IEnumerable<ParsedOption> parsedOptions;
+		sealed class ShouldShowHelp
+		{
+			abstract class ShouldShowHelpTestContext : HelpCommandLineOptionTestContext
+			{
+				protected static bool actualResult;
+				protected static IEnumerable<ParsedOption> parsedOptions;
 
-                Because of = () => actualResult = sut.ShouldShowHelp(parsedOptions);
-            }
+				Because of = () => actualResult = sut.ShouldShowHelp(parsedOptions);
+			}
 
-            class when_the_args_are_empty_and_the_option_is_setup_to_handle_empty_args_like_help_args : ShouldShowHelpTestContext
-            {
-                Establish context = () =>
-                {
-                    parsedOptions = null;
-                    sut.UseForEmptyArgs();
-                };
+			class when_the_args_are_empty_and_the_option_is_setup_to_handle_empty_args_like_help_args : ShouldShowHelpTestContext
+			{
+				Establish context = () =>
+				{
+					parsedOptions = null;
+					sut.UseForEmptyArgs();
+				};
 
-                It should_return_true = () => actualResult.ShouldBeTrue();
-            }
-            class when_the_args_are_empty_and_the_option_is_not_setup_to_handle_empty_args_like_help_args : ShouldShowHelpTestContext
-            {
-                Establish context = () => parsedOptions = null;
+				It should_return_true = () => actualResult.ShouldBeTrue();
+			}
+			class when_the_args_are_empty_and_the_option_is_not_setup_to_handle_empty_args_like_help_args : ShouldShowHelpTestContext
+			{
+				Establish context = () => parsedOptions = null;
 
-                It should_return_false = () => actualResult.ShouldBeFalse();
-            }
-        }
-    }
+				It should_return_false = () => actualResult.ShouldBeFalse();
+			}
+		}
+	}
 }

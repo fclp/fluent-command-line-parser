@@ -50,7 +50,7 @@ namespace Fclp.Internals
 			get { return this.Errors.Any(); }
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// 
 		/// </summary>
 		internal IList<ICommandLineParserError> Errors { get; set; }
@@ -94,9 +94,9 @@ namespace Fclp.Internals
 		/// </summary>
 		public bool HelpCalled { get; set; }
 
-        /// <summary>
-        /// Gets whether the parser was called with empty arguments.
-        /// </summary>
-        public bool EmptyArgs { get; set; }
+		/// <summary>
+		/// Gets whether the parser was called with empty arguments.
+		/// </summary>
+		public bool EmptyArgs { get; set; }
 	}
 }

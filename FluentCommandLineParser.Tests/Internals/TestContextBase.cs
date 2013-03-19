@@ -32,45 +32,45 @@ using Ploeh.AutoFixture.AutoMoq;
 
 namespace Fclp.Tests.Internals
 {
-    public abstract class TestContextBase<TSut> where TSut : class
-    {
-        protected static TSut sut;
-        protected static IFixture fixture;
-        protected static Exception error;
+	public abstract class TestContextBase<TSut> where TSut : class
+	{
+		protected static TSut sut;
+		protected static IFixture fixture;
+		protected static Exception error;
 
-        Establish context = () =>
-        {
-            InitialiseFixture();
-        };
+		Establish context = () =>
+		{
+			InitialiseFixture();
+		};
 
-        protected static IFixture InitialiseFixture()
-        {
-            fixture = new Fixture().Customize(new AutoMoqCustomization());
-            return fixture;
-        }
+		protected static IFixture InitialiseFixture()
+		{
+			fixture = new Fixture().Customize(new AutoMoqCustomization());
+			return fixture;
+		}
 
-        protected static TSut CreatSut()
-        {
-            sut = fixture.Create<TSut>();
-            return sut;
-        }
+		protected static TSut CreatSut()
+		{
+			sut = fixture.Create<TSut>();
+			return sut;
+		}
 
-        protected Mock<TType> InitialiseMock<TType>(out Mock<TType> mockObj) where TType : class
-        {
-            mockObj = fixture.Freeze<Mock<TType>>();
-            return mockObj;
-        }
+		protected Mock<TType> InitialiseMock<TType>(out Mock<TType> mockObj) where TType : class
+		{
+			mockObj = fixture.Freeze<Mock<TType>>();
+			return mockObj;
+		}
 
-        protected static string[] ParseArguments(string args)
-        {
-            args = ReplaceWithDoubleQuotes(args);
-            return args.SplitOnWhitespace().ToArray();
-        }
+		protected static string[] ParseArguments(string args)
+		{
+			args = ReplaceWithDoubleQuotes(args);
+			return args.SplitOnWhitespace().ToArray();
+		}
 
-        protected static string ReplaceWithDoubleQuotes(string args)
-        {
-            if (args == null) return null;
-            return args.Replace('\'', '"');
-        }
-    }
+		protected static string ReplaceWithDoubleQuotes(string args)
+		{
+			if (args == null) return null;
+			return args.Replace('\'', '"');
+		}
+	}
 }

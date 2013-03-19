@@ -28,14 +28,14 @@ using Machine.Specifications;
 
 namespace Fclp.Tests.Internals.CommandLineParserEngine
 {
-    class when_arg_contains_key_and_value_assignment_but_no_value : CommandLineParserEngineTestContext
-    {
-        static ParsedOption key = new ParsedOption("key", null);
-        static ParsedOption key2 = new ParsedOption("key2", "key2value");
+	class when_arg_contains_key_and_value_assignment_but_no_value : CommandLineParserEngineTestContext
+	{
+		static ParsedOption key = new ParsedOption("key", null);
+		static ParsedOption key2 = new ParsedOption("key2", "key2value");
 
-        Establish context = () => args = new[] { "/key=", "/key2", "key2value" };
-        Because of = () => RunParserWith(args);
-        It should_return_key_with_null_value = () => results.ShouldContain(key);
-        It should_return_key2_with_expected_value = () => results.ShouldContain(key2);
-    }
+		Establish context = () => args = new[] { "/key=", "/key2", "key2value" };
+		Because of = () => RunParserWith(args);
+		It should_return_key_with_null_value = () => results.ShouldContain(key);
+		It should_return_key2_with_expected_value = () => results.ShouldContain(key2);
+	}
 }

@@ -23,11 +23,11 @@
 #endregion
 namespace Fclp.Tests.FluentCommandLineParser
 {
-    namespace TestContext
-    {
-        public class TestType
-        {
+	namespace TestContext
+	{
+		public class TestType
+		{
 
-        }
-    }
+		}
+	}
 }

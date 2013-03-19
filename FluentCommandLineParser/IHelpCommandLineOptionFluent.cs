@@ -46,35 +46,35 @@ namespace Fclp
 		/// </remarks>
 		IHelpCommandLineOptionFluent Callback(Action<string> callback);
 
-        /// <summary>
-        /// Specified the method to invoke when any of the setup help arguments are found. If a callback is not required
-        /// either do not call it, or specified <c>null</c>.
-        /// </summary>
-        /// <param name="callback">
-        /// The callback to execute. If you have also setup the other help callback this will be called last.
-        /// </param>
-        /// <returns>A <see cref="IHelpCommandLineOptionFluent"/>.</returns>
-        IHelpCommandLineOptionFluent Callback(Action callback);
+		/// <summary>
+		/// Specified the method to invoke when any of the setup help arguments are found. If a callback is not required
+		/// either do not call it, or specified <c>null</c>.
+		/// </summary>
+		/// <param name="callback">
+		/// The callback to execute. If you have also setup the other help callback this will be called last.
+		/// </param>
+		/// <returns>A <see cref="IHelpCommandLineOptionFluent"/>.</returns>
+		IHelpCommandLineOptionFluent Callback(Action callback);
 
 		/// <summary>
 		/// Registers a custom <see cref="ICommandLineOptionFormatter"/> to use to generate the help text.
 		/// </summary>
 		/// <param name="formatter">The custom formatter to use. This must not be <c>null</c>.</param>
-        /// <returns>A <see cref="IHelpCommandLineOptionFluent"/>.</returns>
+		/// <returns>A <see cref="IHelpCommandLineOptionFluent"/>.</returns>
 		IHelpCommandLineOptionFluent WithCustomFormatter(ICommandLineOptionFormatter formatter);
 
 		/// <summary>
 		/// Provides a custom header to be printed before the registered options.
 		/// </summary>
 		/// <param name="header">The header to use.</param>
-        /// <returns>A <see cref="IHelpCommandLineOptionFluent"/>.</returns>
+		/// <returns>A <see cref="IHelpCommandLineOptionFluent"/>.</returns>
 		IHelpCommandLineOptionFluent WithHeader(string header);
 
-        /// <summary>
-        /// Specifies that if empty arguments are found then the behaviour should be the same as when any help arguments
-        /// are found.
-        /// </summary>
-        /// <returns>A <see cref="IHelpCommandLineOptionFluent"/>.</returns>
-	    IHelpCommandLineOptionFluent UseForEmptyArgs();
+		/// <summary>
+		/// Specifies that if empty arguments are found then the behaviour should be the same as when any help arguments
+		/// are found.
+		/// </summary>
+		/// <returns>A <see cref="IHelpCommandLineOptionFluent"/>.</returns>
+		IHelpCommandLineOptionFluent UseForEmptyArgs();
 	}
 }

@@ -28,22 +28,22 @@ using Xunit.Extensions;
 
 namespace Fclp.Tests.Integration
 {
-    public class NCrunchExcelDataAttribute : ExcelDataAttribute
-    {
-        public NCrunchExcelDataAttribute(string filename, string selectStatement)
-            : base(GetPathFromContext(filename), selectStatement)
-        {
-        }
+	public class NCrunchExcelDataAttribute : ExcelDataAttribute
+	{
+		public NCrunchExcelDataAttribute(string filename, string selectStatement)
+			: base(GetPathFromContext(filename), selectStatement)
+		{
+		}
 
-        private static string GetPathFromContext(string filename)
-        {
-            string newFilePath = filename;
+		private static string GetPathFromContext(string filename)
+		{
+			string newFilePath = filename;
 #if NCRUNCH
-            newFilePath = (Directory.GetCurrentDirectory() + @"/" + filename);
+			newFilePath = (Directory.GetCurrentDirectory() + @"/" + filename);
 #endif
-            File.Exists(newFilePath).ShouldBeTrue();
+			File.Exists(newFilePath).ShouldBeTrue();
 
-            return newFilePath;
-        }
-    }
+			return newFilePath;
+		}
+	}
 }

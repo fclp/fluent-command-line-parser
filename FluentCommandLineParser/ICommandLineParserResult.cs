@@ -42,10 +42,10 @@ namespace Fclp
 		/// </summary>
 		bool HelpCalled { get; }
 
-        /// <summary>
-        /// Gets whether the parser was called with empty arguments.
-        /// </summary>
-        bool EmptyArgs { get; }
+		/// <summary>
+		/// Gets whether the parser was called with empty arguments.
+		/// </summary>
+		bool EmptyArgs { get; }
 
 		/// <summary>
 		/// Gets the errors which occurred during the parse operation.

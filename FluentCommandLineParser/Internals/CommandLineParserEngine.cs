@@ -29,105 +29,105 @@ using System.Linq;
 
 namespace Fclp.Internals
 {
-    /// <summary>
-    /// Simple parser for transforming command line arguments into simple key and value pairs.
-    /// </summary>
-    public class CommandLineParserEngine : ICommandLineParserEngine
-    {
-        /// <summary>
-        /// Parses the specified <see><cref>T:System.String[]</cref></see> into key value pairs.
-        /// </summary>
-        /// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
-        /// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
-        public IEnumerable<ParsedOption> Parse(string[] args)
-        {
-            args = args ?? new string[0];
+	/// <summary>
+	/// Simple parser for transforming command line arguments into simple key and value pairs.
+	/// </summary>
+	public class CommandLineParserEngine : ICommandLineParserEngine
+	{
+		/// <summary>
+		/// Parses the specified <see><cref>T:System.String[]</cref></see> into key value pairs.
+		/// </summary>
+		/// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
+		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
+		public IEnumerable<ParsedOption> Parse(string[] args)
+		{
+			args = args ?? new string[0];
 
-            for (int index = 0; index < args.Length; index++)
-            {
-                string item = args[index];
+			for (int index = 0; index < args.Length; index++)
+			{
+				string item = args[index];
 
-                // we only want to find keys at this point
-                if (IsAKey(item) == false) continue; 
+				// we only want to find keys at this point
+				if (IsAKey(item) == false) continue; 
 
-                string key = ExtractKey(item);
+				string key = ExtractKey(item);
 
-                // setup the option and remove the special key characters from the option.
-                var option = new ParsedOption
-                    {
-                        Prefix = item.Substring(0, key.Length),
-                        Key = item.Remove(0, key.Length)
-                    };
+				// setup the option and remove the special key characters from the option.
+				var option = new ParsedOption
+					{
+						Prefix = item.Substring(0, key.Length),
+						Key = item.Remove(0, key.Length)
+					};
 
-                // value should be the next in list
-                int nextIndex = index + 1; 
+				// value should be the next in list
+				int nextIndex = index + 1; 
 
-                // key may contains value i.e. opt=value or opt:value
-                if (SpecialCharacters.ValueAssignments.Any(option.Key.Contains))
-                {
-                    TryGetValueFromKey(option);
-                }
-                else if (option.HasValue == false)
-                {
-                    option.Value = nextIndex < args.Length ? args[nextIndex] : null; // find value (may not exist)
-                }
+				// key may contains value i.e. opt=value or opt:value
+				if (SpecialCharacters.ValueAssignments.Any(option.Key.Contains))
+				{
+					TryGetValueFromKey(option);
+				}
+				else if (option.HasValue == false)
+				{
+					option.Value = nextIndex < args.Length ? args[nextIndex] : null; // find value (may not exist)
+				}
 
-                TryParseBooleanSyntax(option);
+				TryParseBooleanSyntax(option);
 
-                yield return option;
-            }
-        }
+				yield return option;
+			}
+		}
 
-        private static void TryGetValueFromKey(ParsedOption option)
-        {
-            var splitted = option.Key.Split(SpecialCharacters.ValueAssignments, 2, StringSplitOptions.RemoveEmptyEntries);
+		private static void TryGetValueFromKey(ParsedOption option)
+		{
+			var splitted = option.Key.Split(SpecialCharacters.ValueAssignments, 2, StringSplitOptions.RemoveEmptyEntries);
 
-            option.Key = splitted[0];
+			option.Key = splitted[0];
 
-            if (splitted.Length > 1)
-                option.Value = splitted[1].Trim('"');
-        }
+			if (splitted.Length > 1)
+				option.Value = splitted[1].Trim('"');
+		}
 
-        private static void TryParseBooleanSyntax(ParsedOption option)
-        {
-            if (option.HasValue) return;
+		private static void TryParseBooleanSyntax(ParsedOption option)
+		{
+			if (option.HasValue) return;
 
-            // support boolean names
-            bool? boolValue = null;
+			// support boolean names
+			bool? boolValue = null;
 
-            if (option.Key.EndsWith("-"))
-            {
-                boolValue = false;
-                option.Key = option.Key.TrimEnd('-');
-            }
-            else if (option.Key.EndsWith("+"))
-            {
-                boolValue = true;
-                option.Key = option.Key.TrimEnd('+');
-            }
+			if (option.Key.EndsWith("-"))
+			{
+				boolValue = false;
+				option.Key = option.Key.TrimEnd('-');
+			}
+			else if (option.Key.EndsWith("+"))
+			{
+				boolValue = true;
+				option.Key = option.Key.TrimEnd('+');
+			}
 
-            if (boolValue.HasValue)
-                option.Value = boolValue.Value.ToString(CultureInfo.InvariantCulture);
-        }
+			if (boolValue.HasValue)
+				option.Value = boolValue.Value.ToString(CultureInfo.InvariantCulture);
+		}
 
-        /// <summary>
-        /// Gets whether the specified <see cref="System.String"/> is a Option key.
-        /// </summary>
-        /// <param name="arg">The <see cref="System.String"/> to examine.</param>
-        /// <returns><c>true</c> if <paramref name="arg"/> is a Option key; otherwise <c>false</c>.</returns>
-        static bool IsAKey(string arg)
-        {
-            return arg != null && SpecialCharacters.OptionPrefix.Any(arg.StartsWith);
-        }
+		/// <summary>
+		/// Gets whether the specified <see cref="System.String"/> is a Option key.
+		/// </summary>
+		/// <param name="arg">The <see cref="System.String"/> to examine.</param>
+		/// <returns><c>true</c> if <paramref name="arg"/> is a Option key; otherwise <c>false</c>.</returns>
+		static bool IsAKey(string arg)
+		{
+			return arg != null && SpecialCharacters.OptionPrefix.Any(arg.StartsWith);
+		}
 
-        /// <summary>
-        /// Extracts the key identifier from the specified <see cref="System.String"/>.
-        /// </summary>
-        /// <param name="arg">The <see cref="System.String"/> to extract the key identifier from.</param>
-        /// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
-        static string ExtractKey(string arg)
-        {
-            return arg != null ? SpecialCharacters.OptionPrefix.FirstOrDefault(arg.StartsWith) : null;
-        }
-    }
+		/// <summary>
+		/// Extracts the key identifier from the specified <see cref="System.String"/>.
+		/// </summary>
+		/// <param name="arg">The <see cref="System.String"/> to extract the key identifier from.</param>
+		/// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
+		static string ExtractKey(string arg)
+		{
+			return arg != null ? SpecialCharacters.OptionPrefix.FirstOrDefault(arg.StartsWith) : null;
+		}
+	}
 }

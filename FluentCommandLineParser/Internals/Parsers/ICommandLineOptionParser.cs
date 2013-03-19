@@ -23,23 +23,23 @@
 #endregion
 namespace Fclp.Internals.Parsers
 {
-    /// <summary>
-    /// Represents a parser for a Option that can convert a value into the required type.
-    /// </summary>
-    public interface ICommandLineOptionParser<T>
-    {
-        /// <summary>
-        /// Parses the specified <see cref="System.String"/> into the return type.
-        /// </summary>
-        /// <param name="parsedOption"></param>
-        /// <returns>The parsed value.</returns>
-        T Parse(ParsedOption parsedOption);
+	/// <summary>
+	/// Represents a parser for a Option that can convert a value into the required type.
+	/// </summary>
+	public interface ICommandLineOptionParser<T>
+	{
+		/// <summary>
+		/// Parses the specified <see cref="System.String"/> into the return type.
+		/// </summary>
+		/// <param name="parsedOption"></param>
+		/// <returns>The parsed value.</returns>
+		T Parse(ParsedOption parsedOption);
 
-        /// <summary>
-        /// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
-        /// </summary>
-        /// <param name="parsedOption"></param>
-        /// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-        bool CanParse(ParsedOption parsedOption);
-    }
+		/// <summary>
+		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
+		/// </summary>
+		/// <param name="parsedOption"></param>
+		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
+		bool CanParse(ParsedOption parsedOption);
+	}
 }

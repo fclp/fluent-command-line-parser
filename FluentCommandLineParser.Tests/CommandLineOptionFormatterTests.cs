@@ -31,166 +31,166 @@ using NUnit.Framework;
 
 namespace FluentCommandLineParser.Tests
 {
-    /// <summary>
-    /// Contains unit test for the <see cref="CommandLineOptionFormatter"/> test.
-    /// </summary>
-    [TestFixture]
-    public class CommandLineOptionFormatterTests
-    {
-        #region Constructors
+	/// <summary>
+	/// Contains unit test for the <see cref="CommandLineOptionFormatter"/> test.
+	/// </summary>
+	[TestFixture]
+	public class CommandLineOptionFormatterTests
+	{
+		#region Constructors
 
-        [Test]
-        public void Ensure_Can_Be_Constructed()
-        {
-            new CommandLineOptionFormatter();
-        }
+		[Test]
+		public void Ensure_Can_Be_Constructed()
+		{
+			new CommandLineOptionFormatter();
+		}
 
-        #endregion Constructors
+		#endregion Constructors
 
-        #region Properties
+		#region Properties
 
-        [Test]
-        public void Ensure_ValueText_Can_Be_Set()
-        {
-            var formatter = new CommandLineOptionFormatter();
+		[Test]
+		public void Ensure_ValueText_Can_Be_Set()
+		{
+			var formatter = new CommandLineOptionFormatter();
 
-            const string expected = "my value text";
+			const string expected = "my value text";
 
-            formatter.ValueText = expected;
+			formatter.ValueText = expected;
 
-            Assert.AreEqual(expected, formatter.ValueText);            
-        }
+			Assert.AreEqual(expected, formatter.ValueText);            
+		}
 
-        [Test]
-        public void Ensure_DescriptionText_Can_Be_Set()
-        {
-            var formatter = new CommandLineOptionFormatter();
+		[Test]
+		public void Ensure_DescriptionText_Can_Be_Set()
+		{
+			var formatter = new CommandLineOptionFormatter();
 
-            const string expected = "my description text";
+			const string expected = "my description text";
 
-            formatter.DescriptionText = expected;
+			formatter.DescriptionText = expected;
 
-            Assert.AreEqual(expected, formatter.DescriptionText);
-        }
+			Assert.AreEqual(expected, formatter.DescriptionText);
+		}
 
-        [Test]
-        public void Ensure_NoOptionsText_Can_Be_Set()
-        {
-            var formatter = new CommandLineOptionFormatter();
+		[Test]
+		public void Ensure_NoOptionsText_Can_Be_Set()
+		{
+			var formatter = new CommandLineOptionFormatter();
 
-            const string expected = "no Options setup text";
+			const string expected = "no Options setup text";
 
-            formatter.NoOptionsText = expected;
+			formatter.NoOptionsText = expected;
 
-            Assert.AreEqual(expected, formatter.NoOptionsText);
-        }
+			Assert.AreEqual(expected, formatter.NoOptionsText);
+		}
 
-        [Test]
-        public void Ensure_Header_Can_Be_Set()
-        {
-            var formatter = new CommandLineOptionFormatter();
+		[Test]
+		public void Ensure_Header_Can_Be_Set()
+		{
+			var formatter = new CommandLineOptionFormatter();
 
-            const string expected = "my custom header";
+			const string expected = "my custom header";
 
-            formatter.Header = expected;
+			formatter.Header = expected;
 
-            Assert.AreEqual(expected, formatter.Header);   
-        }
+			Assert.AreEqual(expected, formatter.Header);   
+		}
 
-        #endregion Properties
+		#endregion Properties
 
-        #region Format
+		#region Format
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Ensure_Cannot_Specify_Null_options_Param()
-        {
-            var formatter = new CommandLineOptionFormatter();
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void Ensure_Cannot_Specify_Null_options_Param()
+		{
+			var formatter = new CommandLineOptionFormatter();
 
-            formatter.Format(null);
-        }
+			formatter.Format(null);
+		}
 
-        [Test]
-        public void Ensure_Format_Returns_Expected_String()
-        {
-            var formatter = new CommandLineOptionFormatter();
+		[Test]
+		public void Ensure_Format_Returns_Expected_String()
+		{
+			var formatter = new CommandLineOptionFormatter();
 
-            // expected:
-            //  Short1          Description1
-            //  Short2:Long2    Description2 
+			// expected:
+			//  Short1          Description1
+			//  Short2:Long2    Description2 
 
-            var mockOption1 = CreateMockOption("Short1", null, "Description1");
-            var mockOption2 = CreateMockOption("Short2", "Long2", "Description2");
+			var mockOption1 = CreateMockOption("Short1", null, "Description1");
+			var mockOption2 = CreateMockOption("Short2", "Long2", "Description2");
 
-            var expectedSb = new StringBuilder();
-            expectedSb.AppendLine();
-            expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOption1.ShortName, mockOption1.Description);
-            expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOption2.ShortName + ":" + mockOption2.LongName, mockOption2.Description);
+			var expectedSb = new StringBuilder();
+			expectedSb.AppendLine();
+			expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOption1.ShortName, mockOption1.Description);
+			expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOption2.ShortName + ":" + mockOption2.LongName, mockOption2.Description);
 
-            var expected = expectedSb.ToString();
-            var actual = formatter.Format(new[] { mockOption1, mockOption2 });
+			var expected = expectedSb.ToString();
+			var actual = formatter.Format(new[] { mockOption1, mockOption2 });
 
-            Assert.AreEqual(expected, actual, "Formatter returned unexpected string");
-        }
+			Assert.AreEqual(expected, actual, "Formatter returned unexpected string");
+		}
 
-        [Test]
-        public void Ensure_Header_Is_Displayed_If_One_Is_Set()
-        {
-            var formatter = new CommandLineOptionFormatter();
+		[Test]
+		public void Ensure_Header_Is_Displayed_If_One_Is_Set()
+		{
+			var formatter = new CommandLineOptionFormatter();
 
-            // expected:
-            //  my custom header
-            //
-            //  Short1          Description1
-            //  Short2:Long2    Description2 
+			// expected:
+			//  my custom header
+			//
+			//  Short1          Description1
+			//  Short2:Long2    Description2 
 
-            const string expectedHeader = "my custom header";
+			const string expectedHeader = "my custom header";
 
-            formatter.Header = expectedHeader;
+			formatter.Header = expectedHeader;
 
-            var mockOption1 = CreateMockOption("Short1", null, "Description1");
-            var mockOption2 = CreateMockOption("Short2", "Long2", "Description2");
+			var mockOption1 = CreateMockOption("Short1", null, "Description1");
+			var mockOption2 = CreateMockOption("Short2", "Long2", "Description2");
 
-            var expectedSb = new StringBuilder();
-            expectedSb.AppendLine();
-            expectedSb.AppendLine(expectedHeader);
-            expectedSb.AppendLine();
-            expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOption1.ShortName, mockOption1.Description);
-            expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOption2.ShortName + ":" + mockOption2.LongName, mockOption2.Description);
+			var expectedSb = new StringBuilder();
+			expectedSb.AppendLine();
+			expectedSb.AppendLine(expectedHeader);
+			expectedSb.AppendLine();
+			expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOption1.ShortName, mockOption1.Description);
+			expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOption2.ShortName + ":" + mockOption2.LongName, mockOption2.Description);
 
-            var expected = expectedSb.ToString();
-            var actual = formatter.Format(new[] { mockOption1, mockOption2 });
+			var expected = expectedSb.ToString();
+			var actual = formatter.Format(new[] { mockOption1, mockOption2 });
 
-            Assert.AreEqual(expected, actual, "Formatter returned unexpected string");
-        }
-        
-        [Test]
-        public void Ensure_NoOptionsText_Returned_If_No_options_Have_Been_Setup()
-        {
-            var formatter = new CommandLineOptionFormatter();
+			Assert.AreEqual(expected, actual, "Formatter returned unexpected string");
+		}
+		
+		[Test]
+		public void Ensure_NoOptionsText_Returned_If_No_options_Have_Been_Setup()
+		{
+			var formatter = new CommandLineOptionFormatter();
 
-            var actual = formatter.Format(new ICommandLineOption[0]);
+			var actual = formatter.Format(new ICommandLineOption[0]);
 
-            Assert.AreEqual(formatter.NoOptionsText, actual);
-        }
+			Assert.AreEqual(formatter.NoOptionsText, actual);
+		}
 
-        #endregion Format
+		#endregion Format
 
-        #region Helper Methods
+		#region Helper Methods
 
-        /// <summary>
-        /// Helper method to return a mocked <see cref="ICommandLineOption"/>.
-        /// </summary>
-        static ICommandLineOption CreateMockOption(string shortName, string longName, string description)
-        {
-            var mockOption = new Mock<ICommandLineOption>();
-            mockOption.SetupGet(x => x.ShortName).Returns(shortName);
-            mockOption.SetupGet(x => x.LongName).Returns(longName);
-            mockOption.SetupGet(x => x.Description).Returns(description);
-            return mockOption.Object;
-        }
+		/// <summary>
+		/// Helper method to return a mocked <see cref="ICommandLineOption"/>.
+		/// </summary>
+		static ICommandLineOption CreateMockOption(string shortName, string longName, string description)
+		{
+			var mockOption = new Mock<ICommandLineOption>();
+			mockOption.SetupGet(x => x.ShortName).Returns(shortName);
+			mockOption.SetupGet(x => x.LongName).Returns(longName);
+			mockOption.SetupGet(x => x.Description).Returns(description);
+			return mockOption.Object;
+		}
 
-        #endregion Helper Methods
-    }
+		#endregion Helper Methods
+	}
 }
 

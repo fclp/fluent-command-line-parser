@@ -31,77 +31,77 @@ using It = Machine.Specifications.It;
 
 namespace Fclp.Tests.FluentCommandLineParser
 {
-    namespace when_executing_parse_operation
-    {
-        class with_options_that_are_specified_in_the_args : FluentCommandLineParserTestContext
-        {
-            static ICommandLineParserResult result;
-            static string[] args = null;
+	namespace when_executing_parse_operation
+	{
+		class with_options_that_are_specified_in_the_args : FluentCommandLineParserTestContext
+		{
+			static ICommandLineParserResult result;
+			static string[] args = null;
 
-            static Mock<ICommandLineOption> _blankOption = new Mock<ICommandLineOption>();
-            static string _blankOptionName = "blankOption";
-            static string _blankOptionValue = "blank Option Value";
-            private static ParsedOption _parsedBlankOption;
+			static Mock<ICommandLineOption> _blankOption = new Mock<ICommandLineOption>();
+			static string _blankOptionName = "blankOption";
+			static string _blankOptionValue = "blank Option Value";
+			private static ParsedOption _parsedBlankOption;
 
-            static Mock<ICommandLineOption> _optionThatHasCallback = new Mock<ICommandLineOption>();
-            static string _optionThatHasCallbackName = "optionThatHasCallback";
-            static string _optionThatHasCallbackValue = "Callback Value";
-            private static ParsedOption _parsedOptionThatHasCallback;
+			static Mock<ICommandLineOption> _optionThatHasCallback = new Mock<ICommandLineOption>();
+			static string _optionThatHasCallbackName = "optionThatHasCallback";
+			static string _optionThatHasCallbackValue = "Callback Value";
+			private static ParsedOption _parsedOptionThatHasCallback;
 
-            static Mock<ICommandLineOption> _optionThatIsRequired = new Mock<ICommandLineOption>();
-            static string _optionThatIsRequiredName = "optionThatIsRequired";
-            static string _optionThatIsRequiredValue = "Is required value";
-            private static ParsedOption _parsedOptionThatIsRequired;
+			static Mock<ICommandLineOption> _optionThatIsRequired = new Mock<ICommandLineOption>();
+			static string _optionThatIsRequiredName = "optionThatIsRequired";
+			static string _optionThatIsRequiredValue = "Is required value";
+			private static ParsedOption _parsedOptionThatIsRequired;
 
-            Establish context = () =>
-            {
-                // create item that has a callback - the bind value should be executed
-                _parsedOptionThatHasCallback = new ParsedOption { Value = _optionThatHasCallbackValue, Key = _optionThatHasCallbackName };
-                _optionThatHasCallback.SetupGet(x => x.ShortName).Returns(_optionThatHasCallbackName);
-                _optionThatHasCallback.Setup(x => x.BindDefault()).Verifiable();
-                _optionThatHasCallback.Setup(x => x.Bind(_parsedOptionThatHasCallback)).Verifiable();
-                sut.Options.Add(_optionThatHasCallback.Object);
+			Establish context = () =>
+			{
+				// create item that has a callback - the bind value should be executed
+				_parsedOptionThatHasCallback = new ParsedOption { Value = _optionThatHasCallbackValue, Key = _optionThatHasCallbackName };
+				_optionThatHasCallback.SetupGet(x => x.ShortName).Returns(_optionThatHasCallbackName);
+				_optionThatHasCallback.Setup(x => x.BindDefault()).Verifiable();
+				_optionThatHasCallback.Setup(x => x.Bind(_parsedOptionThatHasCallback)).Verifiable();
+				sut.Options.Add(_optionThatHasCallback.Object);
 
-                // create option that has a callback and is required - the bind value should be executed like normal
-                _parsedOptionThatIsRequired = new ParsedOption { Value = _optionThatIsRequiredValue, Key = _optionThatIsRequiredName };
-                _optionThatIsRequired.SetupGet(x => x.IsRequired).Returns(true);
-                _optionThatIsRequired.SetupGet(x => x.ShortName).Returns(_optionThatIsRequiredName);
-                _optionThatIsRequired.Setup(x => x.Bind(_parsedOptionThatIsRequired)).Verifiable();
-                sut.Options.Add(_optionThatIsRequired.Object);
+				// create option that has a callback and is required - the bind value should be executed like normal
+				_parsedOptionThatIsRequired = new ParsedOption { Value = _optionThatIsRequiredValue, Key = _optionThatIsRequiredName };
+				_optionThatIsRequired.SetupGet(x => x.IsRequired).Returns(true);
+				_optionThatIsRequired.SetupGet(x => x.ShortName).Returns(_optionThatIsRequiredName);
+				_optionThatIsRequired.Setup(x => x.Bind(_parsedOptionThatIsRequired)).Verifiable();
+				sut.Options.Add(_optionThatIsRequired.Object);
 
-                // create blank option
-                _parsedBlankOption = new ParsedOption { Value = _blankOptionValue, Key = _blankOptionName };
-                _blankOption.SetupGet(x => x.ShortName).Returns(_blankOptionName);
-                _blankOption.Setup(x => x.Bind(_parsedBlankOption)).Verifiable();
-                sut.Options.Add(_blankOption.Object);
+				// create blank option
+				_parsedBlankOption = new ParsedOption { Value = _blankOptionValue, Key = _blankOptionName };
+				_blankOption.SetupGet(x => x.ShortName).Returns(_blankOptionName);
+				_blankOption.Setup(x => x.Bind(_parsedBlankOption)).Verifiable();
+				sut.Options.Add(_blankOption.Object);
 
-                var parserEngineResult = new List<ParsedOption>
-                {
-                    _parsedOptionThatHasCallback,
-                    _parsedOptionThatIsRequired,
-                    _parsedBlankOption
-                };
+				var parserEngineResult = new List<ParsedOption>
+				{
+					_parsedOptionThatHasCallback,
+					_parsedOptionThatIsRequired,
+					_parsedBlankOption
+				};
 
-                args = CreateArgsFromKvp(parserEngineResult);
+				args = CreateArgsFromKvp(parserEngineResult);
 
-                var parserEngineMock = new Mock<ICommandLineParserEngine>();
-                parserEngineMock.Setup(x => x.Parse(args)).Returns(parserEngineResult);
-                sut.ParserEngine = parserEngineMock.Object;
-            };
+				var parserEngineMock = new Mock<ICommandLineParserEngine>();
+				parserEngineMock.Setup(x => x.Parse(args)).Returns(parserEngineResult);
+				sut.ParserEngine = parserEngineMock.Object;
+			};
 
-            Because of = () => CatchAnyError(() => result = sut.Parse(args));
+			Because of = () => CatchAnyError(() => result = sut.Parse(args));
 
-            It should_not_error = () => error.ShouldBeNull();
+			It should_not_error = () => error.ShouldBeNull();
 
-            It should_return_results_with_no_errors = () => result.Errors.ShouldBeEmpty();
+			It should_return_results_with_no_errors = () => result.Errors.ShouldBeEmpty();
 
-            It should_return_no_unmatched_options = () => result.UnMatchedOptions.ShouldBeEmpty();
+			It should_return_no_unmatched_options = () => result.UnMatchedOptions.ShouldBeEmpty();
 
-            It should_have_called_bind_on_the_option_has_callback_setup = () => _optionThatHasCallback.Verify(x => x.Bind(_parsedOptionThatHasCallback), Times.Once());
+			It should_have_called_bind_on_the_option_has_callback_setup = () => _optionThatHasCallback.Verify(x => x.Bind(_parsedOptionThatHasCallback), Times.Once());
 
-            It should_have_called_bind_on_the_option_that_does_not_have_callback_setup = () => _blankOption.Verify(x => x.Bind(_parsedBlankOption), Times.Once());
+			It should_have_called_bind_on_the_option_that_does_not_have_callback_setup = () => _blankOption.Verify(x => x.Bind(_parsedBlankOption), Times.Once());
 
-            It should_have_called_bind_on_the_option_that_is_required = () => _optionThatIsRequired.Verify(x => x.Bind(_parsedOptionThatIsRequired), Times.Once());
-        }
-    }
+			It should_have_called_bind_on_the_option_that_is_required = () => _optionThatIsRequired.Verify(x => x.Bind(_parsedOptionThatIsRequired), Times.Once());
+		}
+	}
 }

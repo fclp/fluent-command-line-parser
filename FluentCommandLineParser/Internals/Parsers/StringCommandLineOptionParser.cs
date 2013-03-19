@@ -27,36 +27,36 @@ using Fclp.Internals.Extensions;
 
 namespace Fclp.Internals.Parsers
 {
-    /// <summary>
-    /// Parser used to convert to <see cref="System.String"/>.
-    /// </summary>
-    public class StringCommandLineOptionParser : ICommandLineOptionParser<string>
-    {
-        /// <summary>
-        /// Parses the specified <see cref="System.String"/> into a <see cref="System.String"/>.
-        /// </summary>
-        /// <param name="parsedOption"></param>
-        /// <returns></returns>
-        public string Parse(ParsedOption parsedOption)
-        {
-            return parsedOption.Value.TrimStart('"').TrimEnd('"');
-        }
+	/// <summary>
+	/// Parser used to convert to <see cref="System.String"/>.
+	/// </summary>
+	public class StringCommandLineOptionParser : ICommandLineOptionParser<string>
+	{
+		/// <summary>
+		/// Parses the specified <see cref="System.String"/> into a <see cref="System.String"/>.
+		/// </summary>
+		/// <param name="parsedOption"></param>
+		/// <returns></returns>
+		public string Parse(ParsedOption parsedOption)
+		{
+			return parsedOption.Value.TrimStart('"').TrimEnd('"');
+		}
 
-        /// <summary>
-        /// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
-        /// </summary>
-        /// <param name="parsedOption"></param>
-        /// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-        public bool CanParse(ParsedOption parsedOption)
-        {
-            if (parsedOption.Value.IsNullOrWhiteSpace()) return false;
-            if (parsedOption.HasValue == false) return false;
+		/// <summary>
+		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
+		/// </summary>
+		/// <param name="parsedOption"></param>
+		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
+		public bool CanParse(ParsedOption parsedOption)
+		{
+			if (parsedOption.Value.IsNullOrWhiteSpace()) return false;
+			if (parsedOption.HasValue == false) return false;
 
-            string value = parsedOption.Value.Trim();
+			string value = parsedOption.Value.Trim();
 
-            var items = value.SplitOnWhitespace();
+			var items = value.SplitOnWhitespace();
 
-            return items.Count() == 1;
-        }
-    }
+			return items.Count() == 1;
+		}
+	}
 }

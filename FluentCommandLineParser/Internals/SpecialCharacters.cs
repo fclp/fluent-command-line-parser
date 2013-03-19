@@ -23,34 +23,34 @@
 #endregion
 namespace Fclp.Internals
 {
-    /// <summary>
-    /// Contains special characters used throughout the parser.
-    /// </summary>
-    public static class SpecialCharacters
-    {
-        /// <summary>
-        /// Characters used for value assignment.
-        /// </summary>
-        public static readonly char[] ValueAssignments = new[] { '=', ':' };
+	/// <summary>
+	/// Contains special characters used throughout the parser.
+	/// </summary>
+	public static class SpecialCharacters
+	{
+		/// <summary>
+		/// Characters used for value assignment.
+		/// </summary>
+		public static readonly char[] ValueAssignments = new[] { '=', ':' };
 
-        /// <summary>
-        /// Assign a name to the whitespace character.
-        /// </summary>
-        public const char Whitespace = ' ';
+		/// <summary>
+		/// Assign a name to the whitespace character.
+		/// </summary>
+		public const char Whitespace = ' ';
 
-        /// <summary>
-        /// Characters that define the start of an option.
-        /// </summary>
-        public static readonly string[] OptionPrefix = new[] { "/", "--", "-" };
+		/// <summary>
+		/// Characters that define the start of an option.
+		/// </summary>
+		public static readonly string[] OptionPrefix = new[] { "/", "--", "-" };
 
-        /// <summary>
-        /// Characters that have special meaning at the end of an option key.
-        /// </summary>
-        public static readonly string[] OptionSuffix = new[] {"+", "-"};
+		/// <summary>
+		/// Characters that have special meaning at the end of an option key.
+		/// </summary>
+		public static readonly string[] OptionSuffix = new[] {"+", "-"};
 
-        /// <summary>
-        /// Characters that define an explicit short option.
-        /// </summary>
-        public static readonly string[] ShortOptionPrefix = new[] {"-"};
-    }
+		/// <summary>
+		/// Characters that define an explicit short option.
+		/// </summary>
+		public static readonly string[] ShortOptionPrefix = new[] {"-"};
+	}
 }

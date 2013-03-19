@@ -28,15 +28,15 @@ using Machine.Specifications;
 
 namespace Fclp.Tests.FluentCommandLineParser
 {
-    namespace when_setting_up_a_new_option
-    {
-        public class with_a_short_name_that_is_empty : SettingUpAShortOptionTestContext
-        {
-            Establish context = AutoMockAll;
+	namespace when_setting_up_a_new_option
+	{
+		public class with_a_short_name_that_is_empty : SettingUpAShortOptionTestContext
+		{
+			Establish context = AutoMockAll;
 
-            Because of = () => SetupOptionWith(invalid_short_name_that_is_empty);
+			Because of = () => SetupOptionWith(invalid_short_name_that_is_empty);
 
-            Behaves_like<InvalidOptionSetupBehaviour> a_failed_setup_option;
-        }
-    }
+			Behaves_like<InvalidOptionSetupBehaviour> a_failed_setup_option;
+		}
+	}
 }

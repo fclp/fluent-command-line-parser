@@ -32,38 +32,38 @@ using It = Machine.Specifications.It;
 
 namespace Fclp.Tests.FluentCommandLineParser
 {
-    namespace when_executing_parse_operation
-    {
-        class with_options_that_have_not_been_setup : FluentCommandLineParserTestContext
-        {
-            static string[] args;
-            static ICommandLineParserResult result;
-            static IEnumerable<ParsedOption> additionalOptions;
+	namespace when_executing_parse_operation
+	{
+		class with_options_that_have_not_been_setup : FluentCommandLineParserTestContext
+		{
+			static string[] args;
+			static ICommandLineParserResult result;
+			static IEnumerable<ParsedOption> additionalOptions;
 
-            Establish context = () =>
-            {
-                additionalOptions = new List<ParsedOption>
-                {
-                    new ParsedOption { Key = "arg1", Value = "1"},
-                    new ParsedOption { Key = "arg2", Value = "2"},
-                    new ParsedOption { Key = "arg3", Value = "3"}
-                };
+			Establish context = () =>
+			{
+				additionalOptions = new List<ParsedOption>
+				{
+					new ParsedOption { Key = "arg1", Value = "1"},
+					new ParsedOption { Key = "arg2", Value = "2"},
+					new ParsedOption { Key = "arg3", Value = "3"}
+				};
 
-                args = CreateArgsFromKvp(additionalOptions);
+				args = CreateArgsFromKvp(additionalOptions);
 
-                var mockEngine = new Mock<Fclp.Internals.ICommandLineParserEngine>();
-                mockEngine.Setup(x => x.Parse(args)).Returns(additionalOptions);
-                sut.ParserEngine = mockEngine.Object;
-            };
+				var mockEngine = new Mock<Fclp.Internals.ICommandLineParserEngine>();
+				mockEngine.Setup(x => x.Parse(args)).Returns(additionalOptions);
+				sut.ParserEngine = mockEngine.Object;
+			};
 
-            Because of = () => CatchAnyError(() => result = sut.Parse(args));
+			Because of = () => CatchAnyError(() => result = sut.Parse(args));
 
-            It should_not_throw_any_errors = () => error.ShouldBeNull();
-            It should_return_a_result = () => result.ShouldNotBeNull();
+			It should_not_throw_any_errors = () => error.ShouldBeNull();
+			It should_return_a_result = () => result.ShouldNotBeNull();
 
-            It should_return_the_specified_args_as_additional_options = () => result.AdditionalOptionsFound
-                .Select(kvp => new ParsedOption(kvp.Key, kvp.Value))
-                .ShouldContainOnly(additionalOptions);
-        }
-    }
+			It should_return_the_specified_args_as_additional_options = () => result.AdditionalOptionsFound
+				.Select(kvp => new ParsedOption(kvp.Key, kvp.Value))
+				.ShouldContainOnly(additionalOptions);
+		}
+	}
 }

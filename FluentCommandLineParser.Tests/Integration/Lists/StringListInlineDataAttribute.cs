@@ -23,11 +23,11 @@
 #endregion
 namespace Fclp.Tests.Integration
 {
-    public class StringListInlineDataAttribute : ArgumentInlineDataAttribute
-    {
-        public StringListInlineDataAttribute(string args, params string[] listItems)
-            : base(args, listItems)
-        {
-        }
-    }
+	public class StringListInlineDataAttribute : ArgumentInlineDataAttribute
+	{
+		public StringListInlineDataAttribute(string args, params string[] listItems)
+			: base(args, listItems)
+		{
+		}
+	}
 }

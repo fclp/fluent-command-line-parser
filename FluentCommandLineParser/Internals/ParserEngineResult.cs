@@ -26,30 +26,30 @@ using System.Collections.Generic;
 
 namespace Fclp.Internals
 {
-    /// <summary>
-    /// Contains the results of the parse operation
-    /// </summary>
-    public class ParserEngineResult
-    {
-        /// <summary>
-        /// Initialises a new instance of the <see cref="ParserEngineResult"/> class;
-        /// </summary>
-        /// <param name="parsedOptions">The parsed options.</param>
-        /// <param name="additionalValues">Any additional values that could not be translated into options.</param>
-        public ParserEngineResult(IEnumerable<ParsedOption> parsedOptions, IEnumerable<string> additionalValues)
-        {
-            ParsedOptions = parsedOptions ?? new List<ParsedOption>();
-            AdditionalValues = additionalValues ?? new List<string>();
-        }
+	/// <summary>
+	/// Contains the results of the parse operation
+	/// </summary>
+	public class ParserEngineResult
+	{
+		/// <summary>
+		/// Initialises a new instance of the <see cref="ParserEngineResult"/> class;
+		/// </summary>
+		/// <param name="parsedOptions">The parsed options.</param>
+		/// <param name="additionalValues">Any additional values that could not be translated into options.</param>
+		public ParserEngineResult(IEnumerable<ParsedOption> parsedOptions, IEnumerable<string> additionalValues)
+		{
+			ParsedOptions = parsedOptions ?? new List<ParsedOption>();
+			AdditionalValues = additionalValues ?? new List<string>();
+		}
 
-        /// <summary>
-        /// Gets the parsed options.
-        /// </summary>
-        public IEnumerable<ParsedOption> ParsedOptions { get; private set; }
+		/// <summary>
+		/// Gets the parsed options.
+		/// </summary>
+		public IEnumerable<ParsedOption> ParsedOptions { get; private set; }
 
-        /// <summary>
-        /// Gets any additional values that could not be translated into options.
-        /// </summary>
-        public IEnumerable<string> AdditionalValues { get; private set; }
-    }
+		/// <summary>
+		/// Gets any additional values that could not be translated into options.
+		/// </summary>
+		public IEnumerable<string> AdditionalValues { get; private set; }
+	}
 }

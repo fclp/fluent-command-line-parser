@@ -29,42 +29,42 @@ using Machine.Specifications;
 
 namespace Fclp.Tests.Internals
 {
-    abstract class CommandLineParserEngineMark2TestContext : TestContextBase<CommandLineParserEngineMark2>
-    {
-        Establish context = () => CreatSut();
-    }
+	abstract class CommandLineParserEngineMark2TestContext : TestContextBase<CommandLineParserEngineMark2>
+	{
+		Establish context = () => CreatSut();
+	}
 
-    sealed class Parse
-    {
-        abstract class ParseTestContext : CommandLineParserEngineMark2TestContext
-        {
-            protected static string[] args;
-            protected static ParserEngineResult result;
+	sealed class Parse
+	{
+		abstract class ParseTestContext : CommandLineParserEngineMark2TestContext
+		{
+			protected static string[] args;
+			protected static ParserEngineResult result;
 
-            protected static void SetupArgs(string arguments)
-            {
-                args = arguments.SplitOnWhitespace().ToArray();
-            }
+			protected static void SetupArgs(string arguments)
+			{
+				args = arguments.SplitOnWhitespace().ToArray();
+			}
 
-            Because of = () =>
-                result = sut.Parse(args);
-        }
+			Because of = () =>
+				result = sut.Parse(args);
+		}
 
-        class when_args_is_null : ParseTestContext
-        {
-            Establish context = () => args = null;
-            
-            It should_return_a_result_with_no_parsed_options = () =>
-                result.ParsedOptions.ShouldBeEmpty();
+		class when_args_is_null : ParseTestContext
+		{
+			Establish context = () => args = null;
+			
+			It should_return_a_result_with_no_parsed_options = () =>
+				result.ParsedOptions.ShouldBeEmpty();
 
-            It should_return_a_result_with_no_additional_values = () =>
-                result.AdditionalValues.ShouldBeEmpty();
-        }
+			It should_return_a_result_with_no_additional_values = () =>
+				result.AdditionalValues.ShouldBeEmpty();
+		}
 
-        class when_ : ParseTestContext
-        {
-            Establish context = () => SetupArgs("");
-        }
-    }
-    
+		class when_ : ParseTestContext
+		{
+			Establish context = () => SetupArgs("");
+		}
+	}
+	
 }

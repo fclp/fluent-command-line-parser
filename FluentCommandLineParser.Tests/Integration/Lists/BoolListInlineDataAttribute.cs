@@ -23,11 +23,11 @@
 #endregion
 namespace Fclp.Tests.Integration
 {
-    public class BoolListInlineDataAttribute : ArgumentInlineDataAttribute
-    {
-        public BoolListInlineDataAttribute(string args, params bool[] listItems)
-            : base(args, listItems)
-        {
-        }
-    }
+	public class BoolListInlineDataAttribute : ArgumentInlineDataAttribute
+	{
+		public BoolListInlineDataAttribute(string args, params bool[] listItems)
+			: base(args, listItems)
+		{
+		}
+	}
 }

@@ -27,30 +27,30 @@ using System.Globalization;
 
 namespace Fclp.Internals.Parsers
 {
-    /// <summary>
-    /// Parser used to convert to <see cref="System.DateTime"/>.
-    /// </summary>
-    public class DateTimeCommandLineOptionParser : ICommandLineOptionParser<DateTime>
-    {
-        /// <summary>
-        /// Parses the specified <see cref="System.String"/> into a <see cref="System.DateTime"/>.
-        /// </summary>
-        /// <param name="parsedOption"></param>
-        /// <returns></returns>
-        public DateTime Parse(ParsedOption parsedOption)
-        {
-            return DateTime.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
-        }
+	/// <summary>
+	/// Parser used to convert to <see cref="System.DateTime"/>.
+	/// </summary>
+	public class DateTimeCommandLineOptionParser : ICommandLineOptionParser<DateTime>
+	{
+		/// <summary>
+		/// Parses the specified <see cref="System.String"/> into a <see cref="System.DateTime"/>.
+		/// </summary>
+		/// <param name="parsedOption"></param>
+		/// <returns></returns>
+		public DateTime Parse(ParsedOption parsedOption)
+		{
+			return DateTime.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
+		}
 
-        /// <summary>
-        /// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
-        /// </summary>
-        /// <param name="parsedOption"></param>
-        /// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-        public bool CanParse(ParsedOption parsedOption)
-        {
-            DateTime dtOut;
-            return DateTime.TryParse(parsedOption.Value, out dtOut);
-        }
-    }
+		/// <summary>
+		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
+		/// </summary>
+		/// <param name="parsedOption"></param>
+		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
+		public bool CanParse(ParsedOption parsedOption)
+		{
+			DateTime dtOut;
+			return DateTime.TryParse(parsedOption.Value, out dtOut);
+		}
+	}
 }

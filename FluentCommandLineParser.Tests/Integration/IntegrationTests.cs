@@ -29,123 +29,123 @@ using Xunit.Extensions;
 
 namespace Fclp.Tests.Integration
 {
-    public class IntegrationTests : TestContextBase<Fclp.FluentCommandLineParser>
-    {
-        [Theory]
-        [BoolInlineData("-b", true)]
-        [BoolInlineData("-b+", true)]
-        [BoolInlineData("-b-", false)]
-        [BoolInlineData("/b:true", true)]
-        [BoolInlineData("/b:false", false)]
-        [BoolInlineData("-b true", true)]
-        [BoolInlineData("-b false", false)]
-        [BoolInlineData("-b=true", true)]
-        [BoolInlineData("-b=false", false)]
-        [StringInlineData("-s {0}", "Hello World")]
-        [StringInlineData("-s:{0}", "Hello World")]
-        [StringInlineData("-s={0}", "Hello World")]
-        [Int32InlineData("-i 123", 123)]
-        [Int32InlineData("-i:123", 123)]
-        [Int32InlineData("-i=123", 123)]
-        [DoubleInlineData("-d 123.456", 123.456)]
-        [DoubleInlineData("-d:123.456", 123.456)]
-        [DoubleInlineData("-d=123.456", 123.456)]
-        public void SimpleShortOptionsAreParsedCorrectly(
-            string arguments,
-            bool? expectedBoolean,
-            string expectedString,
-            int? expectedInt32,
-            double? expectedDouble)
-        {
-            sut = new Fclp.FluentCommandLineParser();
+	public class IntegrationTests : TestContextBase<Fclp.FluentCommandLineParser>
+	{
+		[Theory]
+		[BoolInlineData("-b", true)]
+		[BoolInlineData("-b+", true)]
+		[BoolInlineData("-b-", false)]
+		[BoolInlineData("/b:true", true)]
+		[BoolInlineData("/b:false", false)]
+		[BoolInlineData("-b true", true)]
+		[BoolInlineData("-b false", false)]
+		[BoolInlineData("-b=true", true)]
+		[BoolInlineData("-b=false", false)]
+		[StringInlineData("-s {0}", "Hello World")]
+		[StringInlineData("-s:{0}", "Hello World")]
+		[StringInlineData("-s={0}", "Hello World")]
+		[Int32InlineData("-i 123", 123)]
+		[Int32InlineData("-i:123", 123)]
+		[Int32InlineData("-i=123", 123)]
+		[DoubleInlineData("-d 123.456", 123.456)]
+		[DoubleInlineData("-d:123.456", 123.456)]
+		[DoubleInlineData("-d=123.456", 123.456)]
+		public void SimpleShortOptionsAreParsedCorrectly(
+			string arguments,
+			bool? expectedBoolean,
+			string expectedString,
+			int? expectedInt32,
+			double? expectedDouble)
+		{
+			sut = new Fclp.FluentCommandLineParser();
 
-            bool? actualBoolean = null;
-            string actualString = null;
-            int? actualInt32 = null;
-            double? actualDouble = null;
+			bool? actualBoolean = null;
+			string actualString = null;
+			int? actualInt32 = null;
+			double? actualDouble = null;
 
-            sut.Setup<bool>("b").Callback(b => actualBoolean = b);
-            sut.Setup<string>("s").Callback(s => actualString = s);
-            sut.Setup<int>("i").Callback(i => actualInt32 = i);
-            sut.Setup<double>("d").Callback(d => actualDouble = d);
+			sut.Setup<bool>("b").Callback(b => actualBoolean = b);
+			sut.Setup<string>("s").Callback(s => actualString = s);
+			sut.Setup<int>("i").Callback(i => actualInt32 = i);
+			sut.Setup<double>("d").Callback(d => actualDouble = d);
 
-            var args = ParseArguments(arguments);
+			var args = ParseArguments(arguments);
 
-            var results = sut.Parse(args);
+			var results = sut.Parse(args);
 
-            results.HasErrors.ShouldBeFalse();
+			results.HasErrors.ShouldBeFalse();
 
-            actualBoolean.ShouldEqual(expectedBoolean);
-            actualString.ShouldEqual(expectedString);
-            actualInt32.ShouldEqual(expectedInt32);
-            actualDouble.ShouldEqual(expectedDouble);
-        }
+			actualBoolean.ShouldEqual(expectedBoolean);
+			actualString.ShouldEqual(expectedString);
+			actualInt32.ShouldEqual(expectedInt32);
+			actualDouble.ShouldEqual(expectedDouble);
+		}
 
-        [Theory]
-        [InlineData("-xyz", true)]
-        [InlineData("-xyz+", true)]
-        [InlineData("-xyz-", false)]
-        public void combined_bool_short_options_should_be_parsed_correctly(string arguments,bool expectedValue)
-        {
-            sut = new Fclp.FluentCommandLineParser();
+		[Theory]
+		[InlineData("-xyz", true)]
+		[InlineData("-xyz+", true)]
+		[InlineData("-xyz-", false)]
+		public void combined_bool_short_options_should_be_parsed_correctly(string arguments,bool expectedValue)
+		{
+			sut = new Fclp.FluentCommandLineParser();
 
-            bool? actualXValue = null;
-            bool? actualYValue = null;
-            bool? actualZValue = null;
+			bool? actualXValue = null;
+			bool? actualYValue = null;
+			bool? actualZValue = null;
 
-            sut.Setup<bool>("x").Callback(x => actualXValue = x);
-            sut.Setup<bool>("y").Callback(y => actualYValue = y);
-            sut.Setup<bool>("z").Callback(z => actualZValue = z);
+			sut.Setup<bool>("x").Callback(x => actualXValue = x);
+			sut.Setup<bool>("y").Callback(y => actualYValue = y);
+			sut.Setup<bool>("z").Callback(z => actualZValue = z);
 
-            var args = ParseArguments(arguments);
+			var args = ParseArguments(arguments);
 
-            var results = sut.Parse(args);
+			var results = sut.Parse(args);
 
-            results.HasErrors.ShouldBeFalse();
+			results.HasErrors.ShouldBeFalse();
 
-            actualXValue.HasValue.ShouldBeTrue();
-            actualYValue.HasValue.ShouldBeTrue();
-            actualZValue.HasValue.ShouldBeTrue();
+			actualXValue.HasValue.ShouldBeTrue();
+			actualYValue.HasValue.ShouldBeTrue();
+			actualZValue.HasValue.ShouldBeTrue();
 
-            actualXValue.Value.ShouldEqual(expectedValue);
-            actualYValue.Value.ShouldEqual(expectedValue);
-            actualZValue.Value.ShouldEqual(expectedValue);
-        }
+			actualXValue.Value.ShouldEqual(expectedValue);
+			actualYValue.Value.ShouldEqual(expectedValue);
+			actualZValue.Value.ShouldEqual(expectedValue);
+		}
 
-        [Theory]
-        [InlineData("-xyz 'apply this to x, y and z'", "apply this to x, y and z")]
-        [InlineData("-xyz salmon", "salmon")]
-        [InlineData("-xyz 'salmon'", "salmon")]
-        public void combined_short_options_should_have_the_same_value(string arguments, string expectedValue)
-        {
-            arguments = ReplaceWithDoubleQuotes(arguments);
-            expectedValue = ReplaceWithDoubleQuotes(expectedValue);
+		[Theory]
+		[InlineData("-xyz 'apply this to x, y and z'", "apply this to x, y and z")]
+		[InlineData("-xyz salmon", "salmon")]
+		[InlineData("-xyz 'salmon'", "salmon")]
+		public void combined_short_options_should_have_the_same_value(string arguments, string expectedValue)
+		{
+			arguments = ReplaceWithDoubleQuotes(arguments);
+			expectedValue = ReplaceWithDoubleQuotes(expectedValue);
 
-            sut = new Fclp.FluentCommandLineParser();
+			sut = new Fclp.FluentCommandLineParser();
 
-            string actualXValue = null;
-            string actualYValue = null;
-            string actualZValue = null;
+			string actualXValue = null;
+			string actualYValue = null;
+			string actualZValue = null;
 
-            sut.Setup<string>("x").Callback(x => actualXValue = x);
-            sut.Setup<string>("y").Callback(y => actualYValue = y);
-            sut.Setup<string>("z").Callback(z => actualZValue = z);
+			sut.Setup<string>("x").Callback(x => actualXValue = x);
+			sut.Setup<string>("y").Callback(y => actualYValue = y);
+			sut.Setup<string>("z").Callback(z => actualZValue = z);
 
-            var args = ParseArguments(arguments);
+			var args = ParseArguments(arguments);
 
-            var results = sut.Parse(args);
+			var results = sut.Parse(args);
 
-            results.HasErrors.ShouldBeFalse();
+			results.HasErrors.ShouldBeFalse();
 
-            actualXValue.ShouldEqual(expectedValue);
-            actualYValue.ShouldEqual(expectedValue);
-            actualZValue.ShouldEqual(expectedValue);
-        }
+			actualXValue.ShouldEqual(expectedValue);
+			actualYValue.ShouldEqual(expectedValue);
+			actualZValue.ShouldEqual(expectedValue);
+		}
 
-        [Fact]
-        public void DummyFactToGetTheoryToExecuteInNCrunch()
-        {
-            
-        }
-    }
+		[Fact]
+		public void DummyFactToGetTheoryToExecuteInNCrunch()
+		{
+			
+		}
+	}
 }

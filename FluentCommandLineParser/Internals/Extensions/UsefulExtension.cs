@@ -28,110 +28,110 @@ using System.Linq;
 
 namespace Fclp.Internals.Extensions
 {
-    /// <summary>
-    /// Contains some simple extension methods that are useful throughout the library.
-    /// </summary>
-    public static class UsefulExtension
-    {
-        /// <summary>
-        /// Indicates whether the specified <see cref="System.String"/> is <c>null</c>, <c>empty</c> or contains only <c>whitespace</c>.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <remarks>This method mimics the String.IsNullOrWhiteSpace method available in .Net 4 framework.</remarks>
-        public static bool IsNullOrWhiteSpace(this string value)
-        {
-            return string.IsNullOrEmpty(value) || string.IsNullOrEmpty(value.Trim());
-        }
+	/// <summary>
+	/// Contains some simple extension methods that are useful throughout the library.
+	/// </summary>
+	public static class UsefulExtension
+	{
+		/// <summary>
+		/// Indicates whether the specified <see cref="System.String"/> is <c>null</c>, <c>empty</c> or contains only <c>whitespace</c>.
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		/// <remarks>This method mimics the String.IsNullOrWhiteSpace method available in .Net 4 framework.</remarks>
+		public static bool IsNullOrWhiteSpace(this string value)
+		{
+			return string.IsNullOrEmpty(value) || string.IsNullOrEmpty(value.Trim());
+		}
 
-        /// <summary>
-        /// Indicates whether the specified <see cref="IEnumerable{T}"/> is <c>null</c> or contains no elements.
-        /// </summary>
-        /// <param name="enumerable">A <see cref="IEnumerable{T}"/> to check.</param>
-        /// <returns><c>true</c> if <paramref name="enumerable"/> is <c>null</c> or contains no elements; otherwise <c>false</c>.</returns>
-        public static bool IsNullOrEmpty<TSource>(this IEnumerable<TSource> enumerable)
-        {
-            return enumerable == null || enumerable.Any() == false;
-        }
+		/// <summary>
+		/// Indicates whether the specified <see cref="IEnumerable{T}"/> is <c>null</c> or contains no elements.
+		/// </summary>
+		/// <param name="enumerable">A <see cref="IEnumerable{T}"/> to check.</param>
+		/// <returns><c>true</c> if <paramref name="enumerable"/> is <c>null</c> or contains no elements; otherwise <c>false</c>.</returns>
+		public static bool IsNullOrEmpty<TSource>(this IEnumerable<TSource> enumerable)
+		{
+			return enumerable == null || enumerable.Any() == false;
+		}
 
-        /// <summary>
-        /// Performs the specified action on each element of the <see cref="IEnumerable{T}"/>.
-        /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <param name="enumerable">A <see cref="IEnumerable{T}"/> to iterate through all the available elements.</param>
-        /// <param name="action">The delegate to execute with on each element of the specified <see cref="IEnumerable{T}"/>.</param>
-        /// <exception cref="ArgumentNullException">if <paramref name="enumerable"/> is <c>null</c>.</exception>
-        public static void ForEach<TSource>(this IEnumerable<TSource> enumerable, Action<TSource> action)
-        {
-            foreach (var item in enumerable)
-            {
-                action(item);
-            }
-        }
+		/// <summary>
+		/// Performs the specified action on each element of the <see cref="IEnumerable{T}"/>.
+		/// </summary>
+		/// <typeparam name="TSource"></typeparam>
+		/// <param name="enumerable">A <see cref="IEnumerable{T}"/> to iterate through all the available elements.</param>
+		/// <param name="action">The delegate to execute with on each element of the specified <see cref="IEnumerable{T}"/>.</param>
+		/// <exception cref="ArgumentNullException">if <paramref name="enumerable"/> is <c>null</c>.</exception>
+		public static void ForEach<TSource>(this IEnumerable<TSource> enumerable, Action<TSource> action)
+		{
+			foreach (var item in enumerable)
+			{
+				action(item);
+			}
+		}
 
-        /// <summary>
-        /// Indicates whether the specified <see cref="System.String"/> contains <c>whitespace</c>.
-        /// </summary>
-        /// <param name="value">The <see cref="System.String"/> to examine.</param>
-        /// <returns><c>true</c> if <paramref name="value"/> contains at least one whitespace char; otherwise <c>false</c>.</returns>
-        public static bool ContainsWhitespace(this string value)
-        {
-            return string.IsNullOrEmpty(value) == false && value.Contains(" ");
-        }
+		/// <summary>
+		/// Indicates whether the specified <see cref="System.String"/> contains <c>whitespace</c>.
+		/// </summary>
+		/// <param name="value">The <see cref="System.String"/> to examine.</param>
+		/// <returns><c>true</c> if <paramref name="value"/> contains at least one whitespace char; otherwise <c>false</c>.</returns>
+		public static bool ContainsWhitespace(this string value)
+		{
+			return string.IsNullOrEmpty(value) == false && value.Contains(" ");
+		}
 
-        /// <summary>
-        /// Wraps the specified <see cref="System.String"/> in double quotes.
-        /// </summary>
-        public static string WrapInDoubleQuotes(this string str)
-        {
-            return string.Format(@"""{0}""", str);
-        }
+		/// <summary>
+		/// Wraps the specified <see cref="System.String"/> in double quotes.
+		/// </summary>
+		public static string WrapInDoubleQuotes(this string str)
+		{
+			return string.Format(@"""{0}""", str);
+		}
 
-        /// <summary>
-        /// Wraps the specified <see cref="System.String"/> in double quotes if it contains at least one whitespace character.
-        /// </summary>
-        /// <param name="str">The <see cref="System.String"/> to examine and wrap.</param>
-        public static string WrapInDoubleQuotesIfContainsWhitespace(this string str)
-        {
-            return str.ContainsWhitespace() && str.IsWrappedInDoubleQuotes() == false
-                ? str.WrapInDoubleQuotes()
-                : str;
-        }
+		/// <summary>
+		/// Wraps the specified <see cref="System.String"/> in double quotes if it contains at least one whitespace character.
+		/// </summary>
+		/// <param name="str">The <see cref="System.String"/> to examine and wrap.</param>
+		public static string WrapInDoubleQuotesIfContainsWhitespace(this string str)
+		{
+			return str.ContainsWhitespace() && str.IsWrappedInDoubleQuotes() == false
+				? str.WrapInDoubleQuotes()
+				: str;
+		}
 
-        /// <summary>
-        /// Determines whether the specified <see cref="System.String"/> starts and ends with a double quote.
-        /// </summary>
-        /// <param name="str">The <see cref="System.String"/> to examine.</param>
-        /// <returns><c>true</c> if <paramref name="str"/> is wrapped in double quotes; otherwise <c>false</c>.</returns>
-        public static bool IsWrappedInDoubleQuotes(this string str)
-        {
-            return str.IsNullOrWhiteSpace() == false && str.StartsWith("\"") && str.EndsWith("\"");
-        }
+		/// <summary>
+		/// Determines whether the specified <see cref="System.String"/> starts and ends with a double quote.
+		/// </summary>
+		/// <param name="str">The <see cref="System.String"/> to examine.</param>
+		/// <returns><c>true</c> if <paramref name="str"/> is wrapped in double quotes; otherwise <c>false</c>.</returns>
+		public static bool IsWrappedInDoubleQuotes(this string str)
+		{
+			return str.IsNullOrWhiteSpace() == false && str.StartsWith("\"") && str.EndsWith("\"");
+		}
 
-        /// <summary>
-        /// Splits the specified <see cref="System.String"/> when each whitespace char is encountered into a collection of substrings.
-        /// </summary>
-        /// <param name="value">The <see cref="System.String"/> to split.</param>
-        /// <returns>A collection of substrings taken from <paramref name="value"/>.</returns>
-        /// <remarks>If the whitespace is wrapped in double quotes then it is ignored.</remarks>
-        public static IEnumerable<string> SplitOnWhitespace(this string value)
-        {
-            if (string.IsNullOrEmpty(value)) return null;
+		/// <summary>
+		/// Splits the specified <see cref="System.String"/> when each whitespace char is encountered into a collection of substrings.
+		/// </summary>
+		/// <param name="value">The <see cref="System.String"/> to split.</param>
+		/// <returns>A collection of substrings taken from <paramref name="value"/>.</returns>
+		/// <remarks>If the whitespace is wrapped in double quotes then it is ignored.</remarks>
+		public static IEnumerable<string> SplitOnWhitespace(this string value)
+		{
+			if (string.IsNullOrEmpty(value)) return null;
 
-            char[] parmChars = value.ToCharArray();
+			char[] parmChars = value.ToCharArray();
 
-            bool inDoubleQuotes = false;
+			bool inDoubleQuotes = false;
 
-            for (int index = 0; index < parmChars.Length; index++)
-            {
-                if (parmChars[index] == '"')
-                    inDoubleQuotes = !inDoubleQuotes;
+			for (int index = 0; index < parmChars.Length; index++)
+			{
+				if (parmChars[index] == '"')
+					inDoubleQuotes = !inDoubleQuotes;
 
-                if (!inDoubleQuotes && parmChars[index] == ' ')
-                    parmChars[index] = '\n';
-            }
+				if (!inDoubleQuotes && parmChars[index] == ' ')
+					parmChars[index] = '\n';
+			}
 
-            return (new string(parmChars)).Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-        }
-    }
+			return (new string(parmChars)).Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+		}
+	}
 }
