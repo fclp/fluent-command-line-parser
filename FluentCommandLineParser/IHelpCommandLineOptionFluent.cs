@@ -46,6 +46,16 @@ namespace Fclp
 		/// </remarks>
 		IHelpCommandLineOptionFluent Callback(Action<string> callback);
 
+        /// <summary>
+        /// Specified the method to invoke when any of the setup help arguments are found. If a callback is not required
+        /// either do not call it, or specified <c>null</c>.
+        /// </summary>
+        /// <param name="callback">
+        /// The callback to execute. If you have also setup the other help callback this will be called last.
+        /// </param>
+        /// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
+        IHelpCommandLineOptionFluent Callback(Action callback);
+
 		/// <summary>
 		/// Registers a custom <see cref="ICommandLineOptionFormatter"/> to use to generate the help text.
 		/// </summary>

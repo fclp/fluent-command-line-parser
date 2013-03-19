@@ -601,6 +601,32 @@ namespace Fclp.Tests
             Assert.IsTrue(result.HelpCalled);
         }
 
+        [Test]
+        public void Setup_Help_And_Ensure_It_Is_Called()
+        {
+            var parser = new Fclp.FluentCommandLineParser();
+
+            var formatter = new Mock<ICommandLineOptionFormatter>();
+
+            var args = new[] { "/help", "i", "s" };
+            const string expectedCallbackResult = "blah";
+            bool wasCalled = false;
+
+            parser.SetupHelp("?", "HELP", "h")
+                  .Callback(() => wasCalled = true);
+
+            parser.Setup<int>("i");
+            parser.Setup<string>("s");
+
+            formatter.Setup(x => x.Format(parser.Options)).Returns(expectedCallbackResult);
+
+            var result = parser.Parse(args);
+
+            Assert.IsTrue(wasCalled);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsTrue(result.HelpCalled);
+        }
+
         #endregion
 
         #endregion Top Level Tests

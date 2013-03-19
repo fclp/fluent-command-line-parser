@@ -54,6 +54,8 @@ namespace Fclp.Internals
 		/// </summary>
 		internal Action<string> ReturnCallback { get; set; }
 
+        private Action ReturnCallbackWithoutParser { get; set; }
+
 		/// <summary>
 		/// Gets or sets any header to display at the top of the printed options.
 		/// </summary>
@@ -82,7 +84,21 @@ namespace Fclp.Internals
 			return this;
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Specified the method to invoke when any of the setup help arguments are found. If a callback is not required
+        /// either do not call it, or specified <c>null</c>.
+        /// </summary>
+        /// <param name="callback">
+        /// The callback to execute. If you have also setup the other help callback this will be called last.
+        /// </param>
+        /// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
+	    public IHelpCommandLineOptionFluent Callback(Action callback)
+	    {
+	        ReturnCallbackWithoutParser = callback;
+	        return this;
+	    }
+
+	    /// <summary>
 		/// Registers a custom <see cref="ICommandLineOptionFormatter"/> to use to generate the help text.
 		/// </summary>
 		/// <param name="formatter">The custom formatter to use. This must not be <c>null</c>.</param>
@@ -120,9 +136,16 @@ namespace Fclp.Internals
 		/// <param name="options">The options to generate the help text for.</param>
 		public void ShowHelp(IEnumerable<ICommandLineOption> options)
 		{
-			if (ReturnCallback == null) return;
-			var formattedOutput = this.OptionFormatter.Format(options);
-			this.ReturnCallback(formattedOutput);
+			if (ReturnCallback != null)
+		    {
+		        var formattedOutput = this.OptionFormatter.Format(options);
+                this.ReturnCallback(formattedOutput);    
+		    }
+
+            if (ReturnCallbackWithoutParser != null)
+            {
+                this.ReturnCallbackWithoutParser();
+            }
 		}
 	}
 }
