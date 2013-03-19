@@ -173,11 +173,11 @@ namespace Fclp
 		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
 		public ICommandLineParserResult Parse(string[] args)
 		{
-			var result = new CommandLineParserResult();
-
 			var parsedOptions = this.ParserEngine.Parse(args).ToList();
 
-			if (this.HelpOption.ShouldShowHelp(parsedOptions))
+            var result = new CommandLineParserResult { EmptyArgs = parsedOptions.IsNullOrEmpty() };
+
+		    if (this.HelpOption.ShouldShowHelp(parsedOptions))
 			{
 				result.HelpCalled = true;
 				this.HelpOption.ShowHelp(this.Options);

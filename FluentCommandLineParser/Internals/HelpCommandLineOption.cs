@@ -56,6 +56,8 @@ namespace Fclp.Internals
 
 		private Action ReturnCallbackWithoutParser { get; set; }
 
+        private bool ShouldUseForEmptyArgs { get; set; }
+
 		/// <summary>
 		/// Gets or sets any header to display at the top of the printed options.
 		/// </summary>
@@ -119,15 +121,32 @@ namespace Fclp.Internals
 			return this;
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Specifies that if empty arguments are found then the behaviour should be the same as when any help arguments
+        /// are found.
+        /// </summary>
+        /// <returns>A <see cref="IHelpCommandLineOptionFluent"/>.</returns>
+	    public IHelpCommandLineOptionFluent UseForEmptyArgs()
+        {
+            this.ShouldUseForEmptyArgs = true;
+            return this;
+        }
+
+	    /// <summary>
 		/// Determines whether the help text should be shown.
 		/// </summary>
 		/// <param name="parsedOptions">The parsed command line arguments</param>
 		/// <returns>true if the parser operation should cease and <see cref="ShowHelp"/> should be called; otherwise false if the parse operation to continue.</returns>
 		public bool ShouldShowHelp(IEnumerable<ParsedOption> parsedOptions)
-		{
-			parsedOptions = parsedOptions ?? new List<ParsedOption>();
-			return this.HelpArgs.Any(helpArg => parsedOptions.Any(cmdArg => helpArg.Equals(cmdArg.Key, StringComparison.CurrentCultureIgnoreCase)));
+	    {
+	        var parsed = parsedOptions != null ? parsedOptions.ToList() : new List<ParsedOption>();
+
+            if (parsed.Any() == false && ShouldUseForEmptyArgs)
+            {
+                return true;
+            }
+
+            return this.HelpArgs.Any(helpArg => parsed.Any(cmdArg => helpArg.Equals(cmdArg.Key, StringComparison.CurrentCultureIgnoreCase)));
 		}
 
 		/// <summary>

@@ -1,5 +1,5 @@
 ﻿#region License
-// ICommandLineParserResult.cs
+// HelpCommandLineOptionTests.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -24,42 +24,44 @@
 
 using System.Collections.Generic;
 using Fclp.Internals;
+using Machine.Specifications;
 
-namespace Fclp
+namespace Fclp.Tests.Internals
 {
-	/// <summary>
-	/// Represents all the information gained from the result of a parse operation.
-	/// </summary>
-	public interface ICommandLineParserResult
-	{
-		/// <summary>
-		/// Gets whether the parse operation encountered any errors.
-		/// </summary>
-		bool HasErrors { get; }
+    sealed class HelpCommandLineOptionTests
+    {
+        abstract class HelpCommandLineOptionTestContext : TestContextBase<HelpCommandLineOption> 
+        {
+            Establish context = () => CreatSut();    
+        }
 
-		/// <summary>
-		/// Gets whether the help text was called.
-		/// </summary>
-		bool HelpCalled { get; }
 
-        /// <summary>
-        /// Gets whether the parser was called with empty arguments.
-        /// </summary>
-        bool EmptyArgs { get; }
+        sealed class ShouldShowHelp
+        {
+            abstract class ShouldShowHelpTestContext : HelpCommandLineOptionTestContext
+            {
+                protected static bool actualResult;
+                protected static IEnumerable<ParsedOption> parsedOptions;
 
-		/// <summary>
-		/// Gets the errors which occurred during the parse operation.
-		/// </summary>
-		IEnumerable<ICommandLineParserError> Errors { get; }
+                Because of = () => actualResult = sut.ShouldShowHelp(parsedOptions);
+            }
 
-		/// <summary>
-		/// Contains a list of options that were specified in the args but not setup and therefore were not expected.
-		/// </summary>
-		IEnumerable<KeyValuePair<string, string>> AdditionalOptionsFound { get; }
+            class when_the_args_are_empty_and_the_option_is_setup_to_handle_empty_args_like_help_args : ShouldShowHelpTestContext
+            {
+                Establish context = () =>
+                {
+                    parsedOptions = null;
+                    sut.UseForEmptyArgs();
+                };
 
-		/// <summary>
-		/// Contains all the setup options that were not matched during the parse operation.
-		/// </summary>
-		IEnumerable<ICommandLineOption> UnMatchedOptions { get; }
-	}
+                It should_return_true = () => actualResult.ShouldBeTrue();
+            }
+            class when_the_args_are_empty_and_the_option_is_not_setup_to_handle_empty_args_like_help_args : ShouldShowHelpTestContext
+            {
+                Establish context = () => parsedOptions = null;
+
+                It should_return_false = () => actualResult.ShouldBeFalse();
+            }
+        }
+    }
 }

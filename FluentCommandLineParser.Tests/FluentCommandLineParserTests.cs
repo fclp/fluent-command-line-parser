@@ -509,6 +509,7 @@ namespace Fclp.Tests
             var result = parser.Parse(new string[0]);
 
             Assert.IsFalse(result.HasErrors);
+            Assert.IsTrue(result.EmptyArgs);
             Assert.IsFalse(result.Errors.Any());
         }
 
@@ -520,7 +521,38 @@ namespace Fclp.Tests
             var result = parser.Parse(null);
 
             Assert.IsFalse(result.HasErrors);
+            Assert.IsTrue(result.EmptyArgs);
             Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Defaults_Are_Called_When_Empty_Args_Specified()
+        {
+            var parser = CreateFluentParser();
+
+            const int expectedInt = 123;
+            const double expectedDouble = 123.456;
+            const string expectedString = "my string";
+            const bool expectedBool = true;
+
+            int actualInt = 0;
+            double actualDouble = 0;
+            string actualString = null;
+            bool actualBool = false;
+
+            parser.Setup<int>("i").Callback(i => actualInt = i).SetDefault(expectedInt);
+            parser.Setup<string>("s").Callback(s=> actualString = s).SetDefault(expectedString);
+            parser.Setup<bool>("b").Callback(b => actualBool = b).SetDefault(expectedBool);
+            parser.Setup<double>("d").Callback(d => actualDouble = d).SetDefault(expectedDouble);
+
+            var result = parser.Parse(null);
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsTrue(result.EmptyArgs);
+            Assert.AreEqual(expectedInt, actualInt);
+            Assert.AreEqual(expectedDouble, actualDouble);
+            Assert.AreEqual(expectedString, actualString);
+            Assert.AreEqual(expectedBool, actualBool);
         }
 
         #endregion No Args
