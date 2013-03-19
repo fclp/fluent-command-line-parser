@@ -98,6 +98,7 @@ namespace Fclp.Internals
 			if (!list.Any()) return this.NoOptionsText;
 
 			var sb = new StringBuilder();
+            sb.AppendLine();
 
 			// add headers first
 			if (ShowHeader)
