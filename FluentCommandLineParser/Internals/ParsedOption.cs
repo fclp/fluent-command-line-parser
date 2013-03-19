@@ -22,8 +22,6 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System;
-
 namespace Fclp.Internals
 {
     /// <summary>

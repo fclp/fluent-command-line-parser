@@ -22,7 +22,6 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals.Extensions;
