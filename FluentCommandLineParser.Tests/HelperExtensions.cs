@@ -39,7 +39,7 @@ namespace FluentCommandLineParser.Tests
 		/// <summary>
 		/// Returns the specified <see cref="CommandLineParserEngine"/> represented as its interface <see cref="ICommandLineParserEngine"/>
 		/// </summary>
-		public static ICommandLineParserEngine AsInterface(this CommandLineParserEngine parserEngine)
+		public static ICommandLineParserEngine AsInterface(this CommandLineParserEngineMark2 parserEngine)
 		{
 			return parserEngine;
 		}

@@ -474,8 +474,7 @@ namespace Fclp.Tests
 			var result = parser.Parse(new[] { "-s" });
 
 			Assert.AreSame(expected, actual);
-			Assert.IsFalse(result.HasErrors);
-			Assert.IsFalse(result.Errors.Any());
+			Assert.IsTrue(result.HasErrors);
 		}
 
 		[Test]

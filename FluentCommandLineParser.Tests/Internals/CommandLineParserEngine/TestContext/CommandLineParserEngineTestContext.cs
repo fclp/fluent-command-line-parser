@@ -31,17 +31,17 @@ namespace Fclp.Tests
 {
 	namespace CommandLineParserEngine
 	{
-		[Subject(typeof(Fclp.Internals.CommandLineParserEngine), "CommandLineParserEngine")]
-		public abstract class CommandLineParserEngineTestContext : TestContext<Fclp.Internals.CommandLineParserEngine>
+		[Subject(typeof(Fclp.Internals.CommandLineParserEngineMark2), "CommandLineParserEngine")]
+		public abstract class CommandLineParserEngineTestContext : TestContext<Fclp.Internals.CommandLineParserEngineMark2>
 		{
 			protected static IEnumerable<ParsedOption> results;
 			protected static string[] args;
 
-			Establish context = () => sut = new Fclp.Internals.CommandLineParserEngine();
+			Establish context = () => sut = new Fclp.Internals.CommandLineParserEngineMark2();
 
 			protected static void RunParserWith(string[] args)
 			{
-				CatchAnyError(() => results = sut.Parse(args).ToList());
+				CatchAnyError(() => results = sut.Parse(args).ParsedOptions.ToList());
 			}
 		}
 	}

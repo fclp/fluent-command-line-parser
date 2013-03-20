@@ -98,9 +98,8 @@
     <Compile Include="Integration\StringInlineDataAttribute.cs" />
     <Compile Include="Internals\CommandLineParserEngineMark2Tests.cs" />
     <Compile Include="Internals\CommandLineParserEngineMark2TestsXUnit.cs" />
-    <Compile Include="Internals\CommandLineParserEngine\when_args_contains_a_boolean_option_that_ends_with_negative_sign.cs" />
+    <Compile Include="Internals\CommandLineParserEngine\TestContext\CommandLineParserEngineTestContext.cs" />
     <Compile Include="Internals\CommandLineParserEngine\when_args_contains_a_boolean_option_that_ends_with_no_sign.cs" />
-    <Compile Include="Internals\CommandLineParserEngine\when_args_contains_a_boolean_option_that_ends_with_positive_sign.cs" />
     <Compile Include="Internals\HelpCommandLineOptionTests.cs" />
     <Compile Include="Internals\TestContextBase.cs" />
     <Compile Include="TestContext\TestContext.cs" />
@@ -135,9 +134,7 @@
     <Compile Include="Internals\CommandLineOptionFactoryTests.cs" />
     <Compile Include="Internals\CommandLineOptionParserFactoryTests.cs" />
     <Compile Include="Internals\CommandLineOptionTests.cs" />
-    <Compile Include="Internals\CommandLineParserEngineTests.cs" />
     <Compile Include="Internals\CommandLineParserEngine\Behaviour\NoResultsBehaviour.cs" />
-    <Compile Include="Internals\CommandLineParserEngine\TestContext\CommandLineParserEngineTestContext.cs" />
     <Compile Include="Internals\CommandLineParserEngine\when_arg_contains_key_and_value_assignment_but_no_value.cs" />
     <Compile Include="Internals\CommandLineParserEngine\when_a_new_instance_is_created.cs" />
     <Compile Include="Internals\CommandLineParserEngine\when_specified_args_are_empty.cs" />
