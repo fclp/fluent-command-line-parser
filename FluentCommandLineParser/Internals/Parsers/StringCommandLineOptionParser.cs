@@ -39,7 +39,7 @@ namespace Fclp.Internals.Parsers
 		/// <returns></returns>
 		public string Parse(ParsedOption parsedOption)
 		{
-			return parsedOption.Value.TrimStart('"').TrimEnd('"');
+			return parsedOption.Value.RemoveAnyWrappingDoubleQuotes();
 		}
 
 		/// <summary>

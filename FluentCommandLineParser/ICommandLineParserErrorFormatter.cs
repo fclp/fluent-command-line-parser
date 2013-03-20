@@ -1,5 +1,5 @@
-#region License
-// CommandLineParserErrorBase.cs
+﻿#region License
+// ICommandLineParserErrorFormatter.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,29 +22,27 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System;
+using System.Collections.Generic;
 
-namespace Fclp.Internals.Errors
+namespace Fclp
 {
 	/// <summary>
-	/// Contains error information regarding a failed parsing of a Option.
+	/// Represents a formatter used to format parser errors for display to the end user.
 	/// </summary>
-	public abstract class CommandLineParserErrorBase : ICommandLineParserError
+	public interface ICommandLineParserErrorFormatter
 	{
 		/// <summary>
-		/// Initialises a new instance of the <see cref="CommandLineParserErrorBase"/> class.
+		/// Formats the specified <see cref="ICommandLineParserError"/> to a <see cref="System.String"/> suitable for the end user.
 		/// </summary>
-		/// <param name="cmdOption">The <see cref="ICommandLineOption"/> this error relates too. This must not be <c>null</c>.</param>
-		/// <exception cref="ArgumentNullException">If <paramref name="cmdOption"/> is <c>null</c>.</exception>
-		protected CommandLineParserErrorBase(ICommandLineOption cmdOption)
-		{
-			if (cmdOption == null) throw new ArgumentNullException("cmdOption");
-			this.Option = cmdOption;
-		}
+		/// <param name="parserError">The error to format. This must not be null.</param>
+		/// <returns>A <see cref="System.String"/> describing the specified error.</returns>
+		string Format(ICommandLineParserError parserError);
 
 		/// <summary>
-		/// Gets the <see cref="ICommandLineOption"/> this error belongs too.
+		/// Formats the specified list of <see cref="ICommandLineParserError"/> to a <see cref="System.String"/> suitable for the end user.
 		/// </summary>
-		public virtual ICommandLineOption Option { get; private set; }
+		/// <param name="parserErrors">The errors to format.</param>
+		/// <returns>A <see cref="System.String"/> describing the specified errors.</returns>
+		string Format(IEnumerable<ICommandLineParserError> parserErrors);
 	}
 }

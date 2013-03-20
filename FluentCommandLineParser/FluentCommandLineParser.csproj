@@ -54,8 +54,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandLineParserErrorFormatter.cs" />
+    <Compile Include="ICommandLineParserErrorFormatter.cs" />
     <Compile Include="IHelpCommandLineOptionFluent.cs" />
-    <Compile Include="Internals\CommandLineParserEngine.cs" />
     <Compile Include="Internals\CommandLineParserEngineMark2.cs" />
     <Compile Include="Internals\EmptyHelpCommandLineOption.cs" />
     <Compile Include="Internals\Errors\OptionSyntaxParseError.cs" />

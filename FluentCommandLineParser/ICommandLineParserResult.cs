@@ -48,6 +48,11 @@ namespace Fclp
 		bool EmptyArgs { get; }
 
 		/// <summary>
+		/// Gets any formatted error for this result.
+		/// </summary>
+		string FormattedError { get; }
+
+		/// <summary>
 		/// Gets the errors which occurred during the parse operation.
 		/// </summary>
 		IEnumerable<ICommandLineParserError> Errors { get; }

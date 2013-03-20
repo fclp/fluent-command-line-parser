@@ -55,6 +55,7 @@ namespace Fclp.Internals
 
 				var parsedOption = new ParsedOption
 				{
+					RawKey = currentArg,
 					Prefix = prefix,
 					Key = currentArg.Remove(0, prefix.Length),
 					Suffix = ExtractSuffix(currentArg)

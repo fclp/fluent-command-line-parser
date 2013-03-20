@@ -88,6 +88,16 @@ namespace Fclp.Internals.Extensions
 		}
 
 		/// <summary>
+		/// Removes and double quotes wrapping the specified <see cref="System.String"/>.
+		/// </summary>
+		public static string RemoveAnyWrappingDoubleQuotes(this string str)
+		{
+			return str.IsNullOrWhiteSpace()
+				       ? str
+				       : str.TrimStart('"').TrimEnd('"');
+		}
+
+		/// <summary>
 		/// Wraps the specified <see cref="System.String"/> in double quotes if it contains at least one whitespace character.
 		/// </summary>
 		/// <param name="str">The <see cref="System.String"/> to examine and wrap.</param>

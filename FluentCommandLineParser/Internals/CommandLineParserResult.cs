@@ -98,5 +98,10 @@ namespace Fclp.Internals
 		/// Gets whether the parser was called with empty arguments.
 		/// </summary>
 		public bool EmptyArgs { get; set; }
+
+		/// <summary>
+		/// Gets or sets the formatted error for this result.
+		/// </summary>
+		public string FormattedError { get; set; }
 	}
 }

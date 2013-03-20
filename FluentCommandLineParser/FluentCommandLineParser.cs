@@ -42,6 +42,7 @@ namespace Fclp
 		ICommandLineParserEngine _parserEngine;
 		ICommandLineOptionFormatter _optionFormatter;
 		IHelpCommandLineOption _helpOption;
+		ICommandLineParserErrorFormatter _errorFormatter;
 
 		///// <summary>
 		///// Gets or sets whether the parser is case-sensitive. E.g. If <c>true</c> then <c>/a</c> will be treated as identical to <c>/A</c>.
@@ -72,6 +73,15 @@ namespace Fclp
 		{
 			get { return _optionFormatter ?? (_optionFormatter = new CommandLineOptionFormatter()); }
 			set { _optionFormatter = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the default option formatter.
+		/// </summary>
+		public ICommandLineParserErrorFormatter ErrorFormatter
+		{
+			get { return _errorFormatter ?? (_errorFormatter = new CommandLineParserErrorFormatter()); }
+			set { _errorFormatter = value; }
 		}
 
 		/// <summary>
@@ -201,13 +211,16 @@ namespace Fclp
 
 				if (match != null) // Step 2
 				{
+
 					try
 					{
 						option.Bind(match);
 					}
 					catch(OptionSyntaxException)
 					{
-						result.Errors.Add(new OptionSyntaxParseError(option));
+						result.Errors.Add(new OptionSyntaxParseError(option, match));
+						if(option.HasDefault)
+							option.BindDefault();
 					}
 
 					parsedOptions.Remove(match);
@@ -224,6 +237,8 @@ namespace Fclp
 			}
 
 			parsedOptions.ForEach(item => result.AdditionalOptionsFound.Add(new KeyValuePair<string, string>(item.Key, item.Value)));
+
+			result.FormattedError = ErrorFormatter.Format(result.Errors);
 
 			return result;
 		}

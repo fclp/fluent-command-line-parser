@@ -21,6 +21,9 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
+
+using System;
+
 namespace Fclp.Internals
 {
 	/// <summary>
@@ -73,5 +76,10 @@ namespace Fclp.Internals
 		/// Gets whether this <see cref="ICommandLineOption"/> has a default value setup.
 		/// </summary>
 		bool HasDefault { get; }
+
+		/// <summary>
+		/// Gets the setup <see cref="System.Type"/> for this option.
+		/// </summary>
+		Type SetupType { get; }
 	}
 }

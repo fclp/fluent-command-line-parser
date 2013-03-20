@@ -47,6 +47,11 @@ namespace Fclp.Internals
 		}
 
 		/// <summary>
+		/// Gets the raw key representing this option.
+		/// </summary>
+		public string RawKey { get; set; }
+
+		/// <summary>
 		/// Gets or sets the command line option key.
 		/// </summary>
 		public string Key { get; set; }

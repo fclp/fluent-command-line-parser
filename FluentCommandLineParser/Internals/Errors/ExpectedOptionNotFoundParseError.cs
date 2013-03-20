@@ -37,7 +37,7 @@ namespace Fclp.Internals.Errors
 		/// <param name="cmdOption">The <see cref="ICommandLineOption"/> this error relates too. This must not be <c>null</c>.</param>
 		/// <exception cref="ArgumentNullException">If <paramref name="cmdOption"/> is <c>null</c>.</exception>
 		public ExpectedOptionNotFoundParseError(ICommandLineOption cmdOption) :
-			base(cmdOption, "Expected Option was not specified.")
+			base(cmdOption)
 		{
 		}
 	}

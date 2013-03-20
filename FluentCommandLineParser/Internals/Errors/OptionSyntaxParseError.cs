@@ -32,13 +32,20 @@ namespace Fclp.Internals.Errors
 	public class OptionSyntaxParseError : CommandLineParserErrorBase
 	{
 		/// <summary>
+		/// Gets the parsed option that caused the error.
+		/// </summary>
+		public ParsedOption ParsedOption { get; private set; }
+
+		/// <summary>
 		/// Initialises a new instance of the <see cref="CommandLineParserErrorBase"/> class.
 		/// </summary>
 		/// <param name="cmdOption">The <see cref="ICommandLineOption"/> this error relates too. This must not be <c>null</c>.</param>
+		/// <param name="parsedOption">The parsed option that caused the error.</param>
 		/// <exception cref="ArgumentNullException">If <paramref name="cmdOption"/> is <c>null</c>.</exception>
-		public OptionSyntaxParseError(ICommandLineOption cmdOption) :
-			base(cmdOption, "Expected Option was not specified.")
+		public OptionSyntaxParseError(ICommandLineOption cmdOption, ParsedOption parsedOption) :
+			base(cmdOption)
 		{
+			ParsedOption = parsedOption;
 		}
 	}
 
@@ -53,8 +60,10 @@ namespace Fclp.Internals.Errors
 		/// <param name="cmdOption">The <see cref="ICommandLineOption"/> this error relates too. This must not be <c>null</c>.</param>
 		/// <exception cref="ArgumentNullException">If <paramref name="cmdOption"/> is <c>null</c>.</exception>
 		public UnexpectedValueParseError(ICommandLineOption cmdOption) :
-			base(cmdOption, "Expected Option was not specified.")
+			base(cmdOption)
 		{
 		}        
+
+
 	}
 }

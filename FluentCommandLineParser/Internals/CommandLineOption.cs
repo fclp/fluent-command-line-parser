@@ -94,6 +94,11 @@ namespace Fclp.Internals
 		public bool HasDefault { get; set; }
 
 		/// <summary>
+		/// Gets the setup <see cref="System.Type"/> for this option.
+		/// </summary>
+		public Type SetupType { get { return typeof (T); } }
+
+		/// <summary>
 		/// Gets whether this <see cref="ICommandLineOptionFluent{T}"/> has a long name.
 		/// </summary>
 		public bool HasLongName
@@ -119,12 +124,9 @@ namespace Fclp.Internals
 		/// <param name="value">The <see cref="System.String"/> to bind.</param>
 		public void Bind(ParsedOption value)
 		{
-			if(this.Parser.CanParse(value))
-				this.Bind(this.Parser.Parse(value));
-			else if(this.HasDefault)
-				this.Bind(this.Default);
-			else
-				throw new OptionSyntaxException();
+			if (this.Parser.CanParse(value) == false) throw new OptionSyntaxException();
+
+			this.Bind(this.Parser.Parse(value));
 		}
 
 		/// <summary>
