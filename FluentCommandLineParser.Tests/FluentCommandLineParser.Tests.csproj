@@ -116,9 +116,6 @@
     <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name.cs" />
     <Compile Include="FluentCommandLineParser\when_using_an_option_factory\that_has_been_set_to_null.cs" />
     <Compile Include="FluentCommandLineParser\when_executing_parse_operation\with_a_parser_engine_that_is_null.cs" />
-    <Compile Include="FluentCommandLineParser\when_creating_show_usage_text\with_a_formatter_that_is_custom.cs" />
-    <Compile Include="FluentCommandLineParser\when_creating_show_usage_text\with_a_formatter_that_is_null.cs" />
-    <Compile Include="FluentCommandLineParser\when_creating_show_usage_text\with_no_formatter.cs" />
     <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\and_the_option_factory\returns_a_null_option.cs" />
     <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_contains_an_equality_sign.cs" />
     <Compile Include="FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_contains_a_colon.cs" />

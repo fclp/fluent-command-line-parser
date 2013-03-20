@@ -40,7 +40,7 @@ namespace Fclp
 		List<ICommandLineOption> _options;
 		ICommandLineOptionFactory _optionFactory;
 		ICommandLineParserEngine _parserEngine;
-		ICommandLineOptionFormatter _defaultOptionFormatter;
+		ICommandLineOptionFormatter _optionFormatter;
 		IHelpCommandLineOption _helpOption;
 
 		///// <summary>
@@ -60,7 +60,7 @@ namespace Fclp
 		/// <summary>
 		/// Gets the list of Options
 		/// </summary>
-		internal List<ICommandLineOption> Options
+		public List<ICommandLineOption> Options
 		{
 			get { return _options ?? (_options = new List<ICommandLineOption>()); }
 		}
@@ -68,10 +68,10 @@ namespace Fclp
 		/// <summary>
 		/// Gets or sets the default option formatter.
 		/// </summary>
-		internal ICommandLineOptionFormatter DefaultOptionFormatter
+		public ICommandLineOptionFormatter OptionFormatter
 		{
-			get { return _defaultOptionFormatter ?? (_defaultOptionFormatter = new CommandLineOptionFormatter()); }
-			set { _defaultOptionFormatter = value; }
+			get { return _optionFormatter ?? (_optionFormatter = new CommandLineOptionFormatter()); }
+			set { _optionFormatter = value; }
 		}
 
 		/// <summary>
@@ -226,27 +226,6 @@ namespace Fclp
 			parsedOptions.ForEach(item => result.AdditionalOptionsFound.Add(new KeyValuePair<string, string>(item.Key, item.Value)));
 
 			return result;
-		}
-
-		/// <summary>
-		/// Constructs the show usage text from the existing setup Options using a <see cref="CommandLineOptionFormatter"/>.
-		/// </summary>
-		/// <returns>A <see cref="System.String"/> describing all the Options.</returns>
-		public string CreateShowUsageText()
-		{
-			return this.CreateShowUsageText(this.DefaultOptionFormatter);
-		}
-
-		/// <summary>
-		/// Constructs the show usage text from the existing setup Options using the specified <see cref="ICommandLineOptionFormatter"/>.
-		/// </summary>
-		/// <param name="formatter">The <see cref="ICommandLineOptionFormatter"/> to use to format the usage text. This must not be <c>null</c>.</param>
-		/// <returns>A <see cref="System.String"/> describing all the Options.</returns>
-		/// <exception cref="ArgumentNullException">If <paramref name="formatter"/> is <c>null</c>.</exception>
-		public string CreateShowUsageText(ICommandLineOptionFormatter formatter)
-		{
-			if (formatter == null) throw new ArgumentNullException("formatter");
-			return formatter.Format(this.Options);
 		}
 
 		/// <summary>

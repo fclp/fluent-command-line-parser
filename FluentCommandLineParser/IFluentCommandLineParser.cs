@@ -22,8 +22,6 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System;
-
 namespace Fclp
 {
 	/// <summary>
@@ -67,19 +65,5 @@ namespace Fclp
 		/// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
 		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
 		ICommandLineParserResult Parse(string[] args);
-
-		/// <summary>
-		/// Constructs the show usage text from the existing setup Options using the default formatter.
-		/// </summary>
-		/// <returns>A <see cref="System.String"/> describing all the Options.</returns>
-		string CreateShowUsageText();
-
-		/// <summary>
-		/// Constructs the show usage text from the existing setup Options using the specified <see cref="ICommandLineOptionFormatter"/>.
-		/// </summary>
-		/// <param name="formatter">The <see cref="ICommandLineOptionFormatter"/> to use to format the usage text. This must not be <c>null</c>.</param>
-		/// <returns>A <see cref="System.String"/> describing all the Options.</returns>
-		/// <exception cref="ArgumentNullException">If <paramref name="formatter"/> is <c>null</c>.</exception>
-		string CreateShowUsageText(ICommandLineOptionFormatter formatter);
 	}
 }
