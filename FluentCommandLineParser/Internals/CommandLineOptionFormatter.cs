@@ -53,7 +53,7 @@ namespace Fclp.Internals
 		/// <summary>
 		/// The text format used in this formatter.
 		/// </summary>
-		public const string TextFormat = "\t/{0}\t\t{1}\n";
+		public const string TextFormat = "\t{0}\t\t{1}\n";
 
 		/// <summary>
 		/// If true, outputs a header line above the option list. If false, the header is omitted. Default is true.
