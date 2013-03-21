@@ -21,6 +21,9 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
+
+using System.Linq;
+
 namespace Fclp.Internals
 {
 	/// <summary>
@@ -57,9 +60,19 @@ namespace Fclp.Internals
 		public string Key { get; set; }
 
 		/// <summary>
-		/// Gets or sets any value(s) matched with the key.
+		/// Gets or sets the first value matched with the key.
 		/// </summary>
 		public string Value { get; set; }
+
+		/// <summary>
+		/// Gets or sets all the values matched with this key.
+		/// </summary>
+		public string[] Values { get; set; }
+
+		/// <summary>
+		/// Gets or sets the additional values matched with this key.
+		/// </summary>
+		public string[] AddtionalValues { get; set; }
 
 		/// <summary>
 		/// Gets or sets the prefix for the key e.g. -, / or --.
@@ -133,7 +146,10 @@ namespace Fclp.Internals
 				Key = Key,
 				Prefix = Prefix,
 				Suffix = Suffix,
-				Value = Value
+				Value = Value,
+				AddtionalValues = AddtionalValues,
+				RawKey = RawKey,
+				Values = Values
 			};
 		}
 	}

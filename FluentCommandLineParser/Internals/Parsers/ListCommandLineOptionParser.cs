@@ -54,9 +54,7 @@ public class ListCommandLineOptionParser<T> : ICommandLineOptionParser<List<T>>
     {
         var parser = _parserFactory.CreateParser<T>();
 
-        var splitValues = parsedOption.Value.SplitOnWhitespace();
-
-        return splitValues.Select(value =>
+        return parsedOption.Values.Select(value =>
         {
             var clone = parsedOption.Clone();
             clone.Value = value;
@@ -76,12 +74,12 @@ public class ListCommandLineOptionParser<T> : ICommandLineOptionParser<List<T>>
 
         var parser = _parserFactory.CreateParser<T>();
 
-        var splitValues = parsedOption.Value.SplitOnWhitespace();
-
-        return splitValues.All(value =>
+        return parsedOption.Values.All(value =>
         {
             var clone = parsedOption.Clone();
             clone.Value = value;
+            clone.Values = new [] { value };
+            clone.AddtionalValues = new string[0];
             return parser.CanParse(clone);
         });
     }

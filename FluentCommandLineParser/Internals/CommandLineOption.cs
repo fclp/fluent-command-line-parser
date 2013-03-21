@@ -23,6 +23,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Fclp.Internals.Extensions;
 using Fclp.Internals.Parsers;
 
@@ -96,7 +98,15 @@ namespace Fclp.Internals
 		/// <summary>
 		/// Gets the setup <see cref="System.Type"/> for this option.
 		/// </summary>
-		public Type SetupType { get { return typeof (T); } }
+		public Type SetupType
+		{
+			get
+			{
+				var type = typeof (T);
+				var genericArgs = type.GetGenericArguments();
+				return genericArgs.Any() ? genericArgs.First() : type;
+			}
+		}
 
 		/// <summary>
 		/// Gets whether this <see cref="ICommandLineOptionFluent{T}"/> has a long name.
