@@ -39,6 +39,10 @@ namespace Fclp.Tests.Integration
 		[StringListInlineData("--list 'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
 		[StringListInlineData("-list 'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
 		[StringListInlineData("/list 'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
+		[StringListInlineData("/list='file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
+		[StringListInlineData("/list:'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
+		[StringListInlineData("--list:'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
+		[StringListInlineData("--list='file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
 		public void should_create_list_with_expected_strings(string arguments, IEnumerable<string> expectedItems)
 		{
 			should_contain_list_with_expected_items(arguments, expectedItems);
@@ -48,6 +52,10 @@ namespace Fclp.Tests.Integration
 		[Int32ListInlineData("--list 123 321 098", 123, 321, 098)]
 		[Int32ListInlineData("-list 123 321 098", 123, 321, 098)]
 		[Int32ListInlineData("/list 123 321 098", 123, 321, 098)]
+		[Int32ListInlineData("/list:123 321 098", 123, 321, 098)]
+		[Int32ListInlineData("/list=123 321 098", 123, 321, 098)]
+		[Int32ListInlineData("--list:123 321 098", 123, 321, 098)]
+		[Int32ListInlineData("--list=123 321 098", 123, 321, 098)]
 		public void should_create_list_with_expected_int32_items(string arguments, IEnumerable<int> expectedItems)
 		{
 			should_contain_list_with_expected_items(arguments, expectedItems);
@@ -57,6 +65,10 @@ namespace Fclp.Tests.Integration
 		[DoubleListInlineData("--list 123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
 		[DoubleListInlineData("-list 123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
 		[DoubleListInlineData("/list 123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
+		[DoubleListInlineData("/list:123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
+		[DoubleListInlineData("/list=123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
+		[DoubleListInlineData("--list:123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
+		[DoubleListInlineData("--list=123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
 		public void should_create_list_with_expected_double_items(string arguments, IEnumerable<double> expectedItems)
 		{
 			should_contain_list_with_expected_items(arguments, expectedItems);
@@ -66,6 +78,10 @@ namespace Fclp.Tests.Integration
 		[BoolListInlineData("--list true false true", true, false, true)]
 		[BoolListInlineData("-l true false true", true, false, true)]
 		[BoolListInlineData("/list true false true", true, false, true)]
+		[BoolListInlineData("/list:true false true", true, false, true)]
+		[BoolListInlineData("/list=true false true", true, false, true)]
+		[BoolListInlineData("--list:true false true", true, false, true)]
+		[BoolListInlineData("--list=true false true", true, false, true)]
 		public void should_create_list_with_expected_bool_items(string arguments, IEnumerable<bool> expectedItems)
 		{
 			should_contain_list_with_expected_items(arguments, expectedItems);
@@ -90,7 +106,7 @@ namespace Fclp.Tests.Integration
 		[Fact]
 		public void DummyTestSoNCrunchWorks()
 		{
-			
+
 		}
 	}
 }

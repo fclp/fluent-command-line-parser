@@ -81,7 +81,7 @@ namespace Fclp.Internals
 			return parsedOption.Key.Select(c =>
 			{
 				var clone = parsedOption.Clone();
-				clone.Key = new string(new[] {c});
+				clone.Key = new string(new[] { c });
 				return clone;
 			}).ToList();
 		}
@@ -106,19 +106,27 @@ namespace Fclp.Internals
 				TryGetValueFromKey(option);
 			}
 
+			var allValues = new List<string>();
+			var additionalValues = new List<string>();
+
 			var otherValues = CombineValuesUntilNextKey(args, currentIndex + 1);
 
-			if (otherValues != null)
+			if (option.HasValue) allValues.Add(option.Value);
+
+			if (otherValues.IsNullOrEmpty() == false)
 			{
-				if (option.Value == null)
+				allValues.AddRange(otherValues);
+				
+				if (otherValues.Count() > 1)
 				{
-					option.Value = otherValues;
-				}
-				else
-				{
-					option.Value += " " + otherValues;
+					additionalValues.AddRange(otherValues);
+					additionalValues.RemoveAt(0);
 				}
 			}
+
+			option.Value = allValues.FirstOrDefault();
+			option.Values = allValues.ToArray();
+			option.AddtionalValues = additionalValues.ToArray();
 		}
 
 		private static void TryGetValueFromKey(ParsedOption option)
@@ -131,28 +139,22 @@ namespace Fclp.Internals
 				option.Value = splitted[1].WrapInDoubleQuotesIfContainsWhitespace();
 		}
 
-		static string CombineValuesUntilNextKey(string[] args, int currentIndex)
+		static IEnumerable<string> CombineValuesUntilNextKey(string[] args, int currentIndex)
 		{
-			string values = null;
+			var values = new List<string>();
 
 			for (int index = currentIndex; index < args.Length; index++)
 			{
 				string currentArg = args[index];
 
-				// we only want to find keys at this point
+				// we only want to find values at this point
 				if (IsAKey(currentArg)) break;
 
 				currentArg = currentArg.WrapInDoubleQuotesIfContainsWhitespace();
 
-				if (values == null)
-				{
-					values = currentArg;
-				}
-				else
-				{
-					values += " " + currentArg;
-				}
+				values.Add(currentArg);
 			}
+
 			return values;
 		}
 
