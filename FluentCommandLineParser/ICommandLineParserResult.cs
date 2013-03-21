@@ -50,7 +50,7 @@ namespace Fclp
 		/// <summary>
 		/// Gets any formatted error for this result.
 		/// </summary>
-		string FormattedError { get; }
+		string ErrorText { get; }
 
 		/// <summary>
 		/// Gets the errors which occurred during the parse operation.

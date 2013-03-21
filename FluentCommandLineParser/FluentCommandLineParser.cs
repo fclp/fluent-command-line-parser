@@ -238,7 +238,7 @@ namespace Fclp
 
 			parsedOptions.ForEach(item => result.AdditionalOptionsFound.Add(new KeyValuePair<string, string>(item.Key, item.Value)));
 
-			result.FormattedError = ErrorFormatter.Format(result.Errors);
+			result.ErrorText = ErrorFormatter.Format(result.Errors);
 
 			return result;
 		}

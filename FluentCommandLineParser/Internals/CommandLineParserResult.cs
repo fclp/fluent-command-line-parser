@@ -102,6 +102,6 @@ namespace Fclp.Internals
 		/// <summary>
 		/// Gets or sets the formatted error for this result.
 		/// </summary>
-		public string FormattedError { get; set; }
+		public string ErrorText { get; set; }
 	}
 }
