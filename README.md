@@ -1,36 +1,36 @@
 Fluent Command Line Parser
 ==========================
 A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface.
-
 ### Download
+
+See what's new in [v1.1](https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap).
 
 You can download the latest release from [CodeBetter's TeamCity server](http://teamcity.codebetter.com/project.html?projectId=project314)
 
 You can also install using [NuGet](http://nuget.org/packages/FluentCommandLineParser/)
-
 ```
 PM> Install-Package FluentCommandLineParser
 ```
-Commands such as `updaterecord.exe /r 10 /v="Mr. Smith" /silent` can be captured using
-
+### Usage
+Commands such as `updaterecord.exe -r 10 -v="Mr. Smith" --silent` can be captured using
 ```
 static void Main(string[] args)
 {
-  IFluentCommandLineParser parser = new FluentCommandLineParser();
+  var p = new FluentCommandLineParser();
 
-  parser.Setup<int>("r")
-		.Callback(record => RecordID = record)
-		.Required();
+  p.Setup<int>("r")
+   .Callback(record => RecordID = record)
+   .Required();
 
-  parser.Setup<string>("v")
-		.Callback(value => NewValue = value)
-		.Required();
+  p.Setup<string>("v")
+   .Callback(value => NewValue = value)
+   .Required();
 
-  parser.Setup<bool>("s", "silent")
-		.Callback(silent => InSilentMode = silent)
-		.SetDefault(false);
+  p.Setup<bool>("s", "silent")
+   .Callback(silent => InSilentMode = silent)
+   .SetDefault(false);
 
-  parser.Parse(args);
+  p.Parse(args);
 }
 ```
 ### Parser Option Methods
@@ -47,37 +47,58 @@ static void Main(string[] args)
 
 `.WithDescription("Execute operation in silent mode without feedback")` Specify a help description for the option
 
-### Setup Help
+### Parsing To Collections
 
-Setup to print the available options to the console when any of the help args are found.
+Many arguments can be collected as part of a list. Types supported are `string`, `int`, `double` and `bool`
 
-```	
+For example arguments such as
+
+`--filenames C:\file1.txt C:\file2.txt C:\file3.txt`
+
+can be automatically parsed to a `List<string>` using
+```
 static void Main(string[] args)
 {
-   var parser = new FluentCommandLineParser();
+   var p = new FluentCommandLineParser();
 
-   parser.SetupHelp("h", "help", "?")
-         .Callback(Console.WriteLine);
+   var filenames = new List<string>();
 
-   var result = parser.Parse(args);
-   
-   if(result.HelpCalled) return;
+   p.Setup<List<string>>("f", "filenames")
+    .Callback(items => filenames = items);
+
+   p.Parse(args);
+
+   Console.WriteLine("Input file names:");
+
+   foreach (var filename in filenames)
+   {
+      Console.WriteLine(filename);
+   }
 }
 ```
-### Supported syntax
-
+output:
+```
+Input file names
+C:\file1.txt
+C:\file2.txt
+C:\file3.txt
+```
+### Supported Syntax
 `[-|--|/][switch_name][=|:| ][value]`
 
-Also supports boolean names
-
+Supports boolean names
 ```
-updaterecord.exe -s // enabled
-updaterecord.exe -s- // disabled
-updaterecord.exe -s+ // enabled
+example.exe -s  // enable
+example.exe -s- // disabled
+example.exe -s+ // enable
 ```
-
+Supports combined (grouped) options
+```
+example.exe -xyz  // enable option x, y and z
+example.exe -xyz- // disable option x, y and z
+example.exe -xyz+ // enable option x, y and z
+```
 ### Development
-
 Fclp is in the early stages of development. Please feel free to provide any feedback on feature support or the Api itself.
 
 If you would like to contribute, you may do so to the [develop branch](https://github.com/fclp/fluent-command-line-parser/tree/develop).
