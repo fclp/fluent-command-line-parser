@@ -356,9 +356,31 @@ namespace Fclp.Tests
 
 		#endregion DateTime Option
 
-		#region Required
+        #region Long Option Only
 
-		[Test]
+        [Test]
+        public void Can_have_long_option_only()
+        {
+            var parser = CreateFluentParser();
+            var s = "";
+
+            parser.Setup<string>(null, "my-feature")
+                  .Callback(val => s = val);
+
+            var result = parser.Parse(new[] { "--my-feature", "somevalue" });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
+
+            Assert.AreEqual("somevalue", s);
+        }
+
+        #endregion
+
+        #region Required
+
+        [Test]
 		public void Ensure_Expected_Error_Is_Returned_If_A_Option_Is_Required_And_Null_Args_Are_Specified()
 		{
 			var parser = CreateFluentParser();
@@ -558,48 +580,66 @@ namespace Fclp.Tests
 
 		#region Example
 
-		[Test]
-		public void Ensure_Example_Works_As_Expected()
-		{
-			const int expectedRecordId = 10;
-			const string expectedValue = "Mr. Smith";
-			const bool expectedSilentMode = true;
+        [Test]
+        public void Ensure_Example_Works_As_Expected()
+        {
+            const int expectedRecordId = 10;
+            const string expectedValue = "Mr. Smith";
+            const bool expectedSilentMode = true;
+            const bool expectedSwitchA = true;
+            const bool expectedSwitchB = true;
+            const bool expectedSwitchC = false;
 
-			var args = new[] { "-r", expectedRecordId.ToString(CultureInfo.InvariantCulture), "-v", "\"Mr. Smith\"", "--silent" };
+            var args = new[] { "-r", expectedRecordId.ToString(CultureInfo.InvariantCulture), "-v", "\"Mr. Smith\"", "--silent", "-ab", "-c-" };
 
-			int recordId = 0;
-			string newValue = null;
-			bool inSilentMode = false;
+            int recordId = 0;
+            string newValue = null;
+            bool inSilentMode = false;
+            bool switchA = false;
+            bool switchB = false;
+            bool switchC = true;
 
-			IFluentCommandLineParser parser = CreateFluentParser();
+            IFluentCommandLineParser parser = CreateFluentParser();
 
-			// create a new Option using a short and long name
-			parser.Setup<int>("r", "record")
-					.WithDescription("The record id to update (required)")
-					.Callback(record => recordId = record) // use callback to assign the record value to the local RecordID property
-					.Required(); // fail if this Option is not provided in the arguments
+            parser.Setup<bool>("a")
+                  .Callback(value => switchA = value);
 
-			parser.Setup<string>("v", "value")
-					.WithDescription("The new value for the record (required)") // used when help is requested e.g -? or --help 
-					.Callback(value => newValue = value)
-					.Required();
+            parser.Setup<bool>("b")
+                  .Callback(value => switchB = value);
 
-			// create an optional Option
-			parser.Setup<bool>("s", "silent")
-					.WithDescription("Execute the update in silent mode without feedback (default is false)")
-					.Callback(silent => inSilentMode = silent)
-					.SetDefault(false); // explicitly set the default value to use if this Option is not specified in the arguments
+            parser.Setup<bool>("c")
+                  .Callback(value => switchC = value);
 
-			// do the work
-			ICommandLineParserResult result = parser.Parse(args);
+            // create a new Option using a short and long name
+            parser.Setup<int>("r", "record")
+                    .WithDescription("The record id to update (required)")
+                    .Callback(record => recordId = record) // use callback to assign the record value to the local RecordID property
+                    .Required(); // fail if this Option is not provided in the arguments
 
-			Assert.IsFalse(result.HasErrors);
-			Assert.IsFalse(result.Errors.Any());
+            parser.Setup<bool>(null, "silent")
+                  .WithDescription("Execute the update in silent mode without feedback (default is false)")
+                  .Callback(silent => inSilentMode = silent)
+                  .SetDefault(false); // explicitly set the default value to use if this Option is not specified in the arguments
 
-			Assert.AreEqual(expectedRecordId, recordId);
-			Assert.AreEqual(expectedValue, newValue);
-			Assert.AreEqual(expectedSilentMode, inSilentMode);
-		}
+
+            parser.Setup<string>("v", "value")
+                    .WithDescription("The new value for the record (required)") // used when help is requested e.g -? or --help 
+                    .Callback(value => newValue = value)
+                    .Required();
+
+            // do the work
+            ICommandLineParserResult result = parser.Parse(args);
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+
+            Assert.AreEqual(expectedRecordId, recordId);
+            Assert.AreEqual(expectedValue, newValue);
+            Assert.AreEqual(expectedSilentMode, inSilentMode);
+            Assert.AreEqual(expectedSwitchA, switchA);
+            Assert.AreEqual(expectedSwitchB, switchB);
+            Assert.AreEqual(expectedSwitchC, switchC);
+        }
 
 		#endregion
 

@@ -123,10 +123,11 @@ namespace Fclp
 		{
 			EnsureIsValidShortName(shortOption);
 			EnsureIsValidLongName(longOption);
+		    EnsureHasShortNameOrLongName(shortOption, longOption);
 
 			foreach (var option in this.Options)
 			{
-				if (shortOption.Equals(option.ShortName, this.StringComparison))
+				if (shortOption != null && shortOption.Equals(option.ShortName, this.StringComparison))
 					throw new OptionAlreadyExistsException(shortOption);
 
 				if (longOption != null && longOption.Equals(option.LongName, this.StringComparison))
@@ -145,6 +146,8 @@ namespace Fclp
 
 		private static void EnsureIsValidShortName(string value)
 		{
+		    if (string.IsNullOrEmpty(value)) return;
+
 			var invalidChars = SpecialCharacters.ValueAssignments.Union(new[] { SpecialCharacters.Whitespace });
 			if (value.IsNullOrWhiteSpace() || invalidChars.Any(value.Contains) || value.Length > 1)
 				throw new ArgumentOutOfRangeException("value");
@@ -161,6 +164,12 @@ namespace Fclp
 			if (invalidChars.Any(value.Contains))
 				throw new ArgumentOutOfRangeException("value");
 		}
+
+        private static void EnsureHasShortNameOrLongName(string shortOption, string longOption)
+        {
+            if (shortOption.IsNullOrWhiteSpace() && longOption.IsNullOrWhiteSpace())
+                throw new ArgumentOutOfRangeException("shortOption", "Either shortOption or longOption must be specified");
+        }
 
 		/// <summary>
 		/// Setup a new <see cref="ICommandLineOptionFluent{T}"/> using the specified short Option name.
