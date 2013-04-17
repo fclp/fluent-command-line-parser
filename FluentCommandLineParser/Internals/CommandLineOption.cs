@@ -23,14 +23,13 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals.Extensions;
 using Fclp.Internals.Parsers;
 
 namespace Fclp.Internals
 {
-	/// <summary>
+    /// <summary>
 	/// A command line Option
 	/// </summary>
 	/// <typeparam name="T">The type of value this Option requires.</typeparam>
@@ -41,14 +40,16 @@ namespace Fclp.Internals
 		/// <summary>
 		/// Initialises a new instance of the <see cref="CommandLineOption{T}"/> class.
 		/// </summary>
-		/// <param name="shortName">The short name for this Option. This must not be <c>null</c>, <c>empty</c> or contain only <c>whitespace</c>.</param>
-		/// <param name="longName">The long name for this Option or <c>null</c> if not required.</param>
+		/// <param name="shortName">The short name for this Option or <c>null</c> if not required. Either <paramref name="shortName"/> or <paramref name="longName"/> must not be <c>null</c>, <c>empty</c> or contain only <c>whitespace</c>.</param>
+        /// <param name="longName">The long name for this Option or <c>null</c> if not required. Either <paramref name="shortName"/> or <paramref name="longName"/> must not be <c>null</c>, <c>empty</c> or contain only <c>whitespace</c>.</param>
 		/// <param name="parser">The parser to use for this Option.</param>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="shortName"/> is <c>null</c>, <c>empty</c> or contains only <c>whitespace</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if both <paramref name="shortName"/> and <paramref name="longName"/> are <c>null</c>, <c>empty</c> or contain only <c>whitespace</c>.</exception>
 		/// <exception cref="ArgumentNullException">If <paramref name="parser"/> is <c>null</c>.</exception>
 		public CommandLineOption(string shortName, string longName, ICommandLineOptionParser<T> parser)
 		{
-			if (shortName.IsNullOrWhiteSpace()) throw new ArgumentOutOfRangeException("shortName");
+		    if (shortName.IsNullOrWhiteSpace() && longName.IsNullOrWhiteSpace())
+		        throw new ArgumentOutOfRangeException("shortName", "shortName and longName cannot both be null");
+
 			if (parser == null) throw new ArgumentNullException("parser");
 
 			this.ShortName = shortName;

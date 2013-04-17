@@ -30,7 +30,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 {
 	namespace when_setting_up_a_new_option
 	{
-		public class with_a_short_name_that_is_empty : SettingUpAShortOptionTestContext
+		public class with_a_short_name_that_is_empty_and_a_long_name_that_is_empty : SettingUpAShortOptionTestContext
 		{
 			Establish context = AutoMockAll;
 
