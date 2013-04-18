@@ -34,7 +34,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 		{
 			Establish context = AutoMockAll;
 
-			Because of = () => SetupOptionWith(invalid_short_name_with_spaces);
+            Because of = () => SetupOptionWith(invalid_short_name_that_is_whitespace);
 
 			Behaves_like<InvalidOptionSetupBehaviour> a_failed_setup_option;
 		}

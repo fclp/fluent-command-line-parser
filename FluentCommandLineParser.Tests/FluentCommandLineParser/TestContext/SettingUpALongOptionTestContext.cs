@@ -35,9 +35,9 @@ namespace Fclp.Tests.FluentCommandLineParser
 			protected const string invalid_long_name_with_spaces = "long name";
 			protected const string invalid_long_name_with_colon = "long:name";
 			protected const string invalid_long_name_with_equality_sign = "long=name";
-			protected const string valid_long_name = "l";
+			protected const string valid_long_name = "long";
 
-			protected static void SetupOptionWith(string shortName, string longName)
+			protected static void SetupOptionWith(char shortName, string longName)
 			{
 				CatchAnyError(() =>
 											{
