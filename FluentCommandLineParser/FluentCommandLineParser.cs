@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Fclp.Internals;
 using Fclp.Internals.Errors;
@@ -119,45 +120,47 @@ namespace Fclp
 		/// A Option with the same <paramref name="shortOption"/> name or <paramref name="longOption"/> name
 		/// already exists in the <see cref="IFluentCommandLineParser"/>.
 		/// </exception>
-		public ICommandLineOptionFluent<T> Setup<T>(string shortOption, string longOption)
+		public ICommandLineOptionFluent<T> Setup<T>(char shortOption, string longOption)
 		{
-			EnsureIsValidShortName(shortOption);
-			EnsureIsValidLongName(longOption);
-		    EnsureHasShortNameOrLongName(shortOption, longOption);
+            EnsureIsValidShortName(shortOption);
+            EnsureIsValidLongName(longOption);
+            //EnsureHasShortNameOrLongName(shortOption, longOption);
 
-			foreach (var option in this.Options)
-			{
-				if (shortOption != null && shortOption.Equals(option.ShortName, this.StringComparison))
-					throw new OptionAlreadyExistsException(shortOption);
-
-				if (longOption != null && longOption.Equals(option.LongName, this.StringComparison))
-					throw new OptionAlreadyExistsException(longOption);
-			}
-
-			var argOption = this.OptionFactory.CreateOption<T>(shortOption, longOption);
-
-			if (argOption == null)
-				throw new InvalidOperationException("OptionFactory is producing unexpected results.");
-
-			this.Options.Add(argOption);
-
-			return argOption;
+		    return SetupInternal<T>(shortOption.ToString(CultureInfo.InvariantCulture), longOption);
 		}
 
-		private static void EnsureIsValidShortName(string value)
-		{
-		    if (string.IsNullOrEmpty(value)) return;
+        private ICommandLineOptionFluent<T> SetupInternal<T>(string shortOption, string longOption)
+        {
+            foreach (var option in this.Options)
+            {
+                if (shortOption != null && shortOption.Equals(option.ShortName, this.StringComparison))
+                    throw new OptionAlreadyExistsException(shortOption);
 
-			var invalidChars = SpecialCharacters.ValueAssignments.Union(new[] { SpecialCharacters.Whitespace });
-			if (value.IsNullOrWhiteSpace() || invalidChars.Any(value.Contains) || value.Length > 1)
-				throw new ArgumentOutOfRangeException("value");
+                if (longOption != null && longOption.Equals(option.LongName, this.StringComparison))
+                    throw new OptionAlreadyExistsException(longOption);
+            }
+
+            var argOption = this.OptionFactory.CreateOption<T>(shortOption, longOption);
+
+            if (argOption == null)
+                throw new InvalidOperationException("OptionFactory is producing unexpected results.");
+
+            this.Options.Add(argOption);
+
+            return argOption;
+        }
+
+		private static void EnsureIsValidShortName(char value)
+		{
+		    if (char.IsWhiteSpace(value) || char.IsControl(value) || value == ':' || value == '=')
+		        throw new ArgumentOutOfRangeException("value");
 		}
 
 		private static void EnsureIsValidLongName(string value)
 		{
 			if (string.IsNullOrEmpty(value)) return;
 
-			if (value.Trim() == string.Empty)
+			if (value.Trim().Length < 2)
 				throw new ArgumentOutOfRangeException("value");
 
 			var invalidChars = SpecialCharacters.ValueAssignments.Union(new[] { SpecialCharacters.Whitespace });
@@ -165,25 +168,39 @@ namespace Fclp
 				throw new ArgumentOutOfRangeException("value");
 		}
 
-        private static void EnsureHasShortNameOrLongName(string shortOption, string longOption)
+        private static void EnsureHasShortNameOrLongName(char shortOption, string longOption)
         {
-            if (shortOption.IsNullOrWhiteSpace() && longOption.IsNullOrWhiteSpace())
+            if (char.IsWhiteSpace(shortOption) && longOption.IsNullOrWhiteSpace())
                 throw new ArgumentOutOfRangeException("shortOption", "Either shortOption or longOption must be specified");
         }
 
 		/// <summary>
 		/// Setup a new <see cref="ICommandLineOptionFluent{T}"/> using the specified short Option name.
 		/// </summary>
-		/// <param name="shortOption">The short name for the Option. This must not be <c>null</c>, <c>empty</c> or only <c>whitespace</c>.</param>
+		/// <param name="shortOption">The short name for the Option. This must not be <c>whitespace</c> or a control character.</param>
 		/// <returns></returns>
 		/// <exception cref="OptionAlreadyExistsException">
-		/// A Option with the same <paramref name="shortOption"/> name 
-		/// already exists in the <see cref="IFluentCommandLineParser"/>.
+		/// A Option with the same <paramref name="shortOption"/> name aready exists in the <see cref="IFluentCommandLineParser"/>.
 		/// </exception>
-		public ICommandLineOptionFluent<T> Setup<T>(string shortOption)
+		public ICommandLineOptionFluent<T> Setup<T>(char shortOption)
 		{
-			return this.Setup<T>(shortOption, null);
+		    EnsureIsValidShortName(shortOption);
+		    return SetupInternal<T>(shortOption.ToString(CultureInfo.InvariantCulture), null);
 		}
+
+        /// <summary>
+        /// Setup a new <see cref="ICommandLineOptionFluent{T}"/> using the specified long Option name.
+        /// </summary>
+        /// <param name="longOption">The long name for the Option. This must not be <c>null</c>, <c>empty</c> or only <c>whitespace</c>.</param>
+        /// <returns></returns>
+        /// <exception cref="OptionAlreadyExistsException">
+        /// A Option with the same <paramref name="longOption"/> name already exists in the <see cref="IFluentCommandLineParser"/>.
+        /// </exception>
+        public ICommandLineOptionFluent<T> Setup<T>(string longOption)
+        {
+            EnsureIsValidLongName(longOption);
+            return SetupInternal<T>(null, longOption);
+        }
 
 		/// <summary>
 		/// Parses the specified <see><cref>T:System.String[]</cref></see> using the setup Options.

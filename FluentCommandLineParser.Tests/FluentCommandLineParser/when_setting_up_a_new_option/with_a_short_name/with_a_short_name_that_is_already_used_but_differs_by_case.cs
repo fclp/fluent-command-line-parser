@@ -22,6 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System.Globalization;
 using Fclp.Internals;
 using Fclp.Tests.FluentCommandLineParser.TestContext;
 using Machine.Specifications;
@@ -34,7 +35,8 @@ namespace Fclp.Tests.FluentCommandLineParser
 	{
 		public class with_a_short_name_that_is_already_used_but_differs_by_case : SettingUpAShortOptionTestContext
 		{
-			private const string existingShortName = "S";
+			private const char existingShortName = 'S';
+		    private const char existingShortNameLower = 's';
 			private static ICommandLineOption existingOption;
 
 			Establish context = () =>
@@ -42,14 +44,14 @@ namespace Fclp.Tests.FluentCommandLineParser
 				AutoMockAll();
 
 				var option = new Mock<ICommandLineOption>();
-				option.SetupGet(x => x.ShortName).Returns(existingShortName);
+				option.SetupGet(x => x.ShortName).Returns(existingShortName.ToString(CultureInfo.InvariantCulture));
 				existingOption = option.Object;
 			};
 
 			Because of = () =>
 			{
 				sut.Options.Add(existingOption);
-				SetupOptionWith(existingShortName.ToLower());
+				SetupOptionWith(existingShortNameLower);
 			};
 
 			It should_throw_an_error = () => error.ShouldBeOfType(typeof(OptionAlreadyExistsException));

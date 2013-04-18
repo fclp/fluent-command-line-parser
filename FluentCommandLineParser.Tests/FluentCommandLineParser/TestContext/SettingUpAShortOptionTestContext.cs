@@ -33,16 +33,15 @@ namespace Fclp.Tests.FluentCommandLineParser
 		[Subject(Subjects.setup_new_option)]
 		public abstract class SettingUpAShortOptionTestContext : FluentCommandLineParserTestContext
 		{
-			protected const string invalid_short_name_that_is_empty = "";
-			protected const string invalid_short_name_that_is_whitespace = " ";
-			protected const string invalid_short_name_with_spaces = "short name";
-			protected const string invalid_short_name_with_colon = "short:name";
-			protected const string invalid_short_name_with_equality_sign = "short=name";
-			protected const string valid_short_name = "s";
+			protected const char invalid_short_name_that_is_whitespace = ' ';
+		    protected const char invalid_short_name_with_colon = ':';
+		    protected const char invalid_short_name_with_equality_sign = '=';
+		    protected const char invalid_short_name_that_is_a_control_char = (char) 7;
+			protected const char valid_short_name = 's';
 
 			protected static ICommandLineOption option;
 
-			protected static void SetupOptionWith(string shortName)
+			protected static void SetupOptionWith(char shortName)
 			{
 				CatchAnyError(() =>
 				{
