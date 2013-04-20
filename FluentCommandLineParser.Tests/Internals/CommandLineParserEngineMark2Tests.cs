@@ -31,7 +31,7 @@ namespace Fclp.Tests.Internals
 {
 	abstract class CommandLineParserEngineMark2TestContext : TestContextBase<CommandLineParserEngineMark2>
 	{
-		Establish context = () => CreatSut();
+		Establish context = () => CreateSut();
 	}
 
 	sealed class Parse

@@ -32,7 +32,7 @@ namespace Fclp.Tests.Internals
 	{
 		abstract class HelpCommandLineOptionTestContext : TestContextBase<HelpCommandLineOption> 
 		{
-			Establish context = () => CreatSut();    
+			Establish context = () => CreateSut();    
 		}
 
 

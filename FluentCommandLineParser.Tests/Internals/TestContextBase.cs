@@ -49,7 +49,7 @@ namespace Fclp.Tests.Internals
 			return fixture;
 		}
 
-		protected static TSut CreatSut()
+		protected static TSut CreateSut()
 		{
 			sut = fixture.Create<TSut>();
 			return sut;
@@ -71,6 +71,16 @@ namespace Fclp.Tests.Internals
 		{
 			if (args == null) return null;
 			return args.Replace('\'', '"');
+		}
+
+		protected static void FreezeMock<TType>(out Mock<TType> obj) where TType : class
+		{
+			obj = fixture.Freeze<Mock<TType>>();
+		}
+
+		protected static void Create<TType>(out TType obj)
+		{
+			obj = fixture.Create<TType>();
 		}
 	}
 }

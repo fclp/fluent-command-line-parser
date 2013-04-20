@@ -104,7 +104,7 @@ namespace Fclp.Tests.Internals
 			expectedValue = ReplaceWithDoubleQuotes(expectedValue);
 
 			InitialiseFixture();
-			CreatSut();
+			CreateSut();
 
 			var result = sut.Parse(convertedArgs);
 
@@ -161,7 +161,7 @@ namespace Fclp.Tests.Internals
 			secondExpectedValue = ReplaceWithDoubleQuotes(secondExpectedValue);
 
 			InitialiseFixture();
-			CreatSut();
+			CreateSut();
 
 			var result = sut.Parse(convertedArgs);
 
@@ -201,7 +201,7 @@ namespace Fclp.Tests.Internals
 			var convertedArgs = ParseArguments(arguments);
 
 			InitialiseFixture();
-			CreatSut();
+			CreateSut();
 
 			var result = sut.Parse(convertedArgs);
 
@@ -234,7 +234,7 @@ namespace Fclp.Tests.Internals
 			expectedValue = ReplaceWithDoubleQuotes(expectedValue);
 
 			InitialiseFixture();
-			CreatSut();
+			CreateSut();
 
 			var result = sut.Parse(convertedArgs);
 
