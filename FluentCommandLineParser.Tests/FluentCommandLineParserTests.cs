@@ -107,7 +107,7 @@ namespace Fclp.Tests
 
 			const string expected = "my description";
 
-		    var cmdOption = parser.Setup<string>('s').WithDescription(expected);
+			var cmdOption = parser.Setup<string>('s').WithDescription(expected);
 
 			var actual = ((ICommandLineOption)cmdOption).Description;
 
@@ -356,39 +356,39 @@ namespace Fclp.Tests
 
 		#endregion DateTime Option
 
-        #region Long Option Only
+		#region Long Option Only
 
-        [Test]
-        public void Can_have_long_option_only()
-        {
-            var parser = CreateFluentParser();
-            var s = "";
+		[Test]
+		public void Can_have_long_option_only()
+		{
+			var parser = CreateFluentParser();
+			var s = "";
 
-            parser.Setup<string>("my-feature")
-                  .Callback(val => s = val);
+			parser.Setup<string>("my-feature")
+				  .Callback(val => s = val);
 
-            var result = parser.Parse(new[] { "--my-feature", "somevalue" });
+			var result = parser.Parse(new[] { "--my-feature", "somevalue" });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.EmptyArgs);
-            Assert.IsFalse(result.HelpCalled);
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
 
-            Assert.AreEqual("somevalue", s);
-        }
+			Assert.AreEqual("somevalue", s);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void Cannot_have_single_character_long_option()
-        {
-            var parser = CreateFluentParser();
-            parser.Setup<string>("s");
-        }
+		[Test]
+		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void Cannot_have_single_character_long_option()
+		{
+			var parser = CreateFluentParser();
+			parser.Setup<string>("s");
+		}
 
-        #endregion
+		#endregion
 
-        #region Required
+		#region Required
 
-        [Test]
+		[Test]
 		public void Ensure_Expected_Error_Is_Returned_If_A_Option_Is_Required_And_Null_Args_Are_Specified()
 		{
 			var parser = CreateFluentParser();
@@ -588,66 +588,66 @@ namespace Fclp.Tests
 
 		#region Example
 
-        [Test]
-        public void Ensure_Example_Works_As_Expected()
-        {
-            const int expectedRecordId = 10;
-            const string expectedValue = "Mr. Smith";
-            const bool expectedSilentMode = true;
-            const bool expectedSwitchA = true;
-            const bool expectedSwitchB = true;
-            const bool expectedSwitchC = false;
+		[Test]
+		public void Ensure_Example_Works_As_Expected()
+		{
+			const int expectedRecordId = 10;
+			const string expectedValue = "Mr. Smith";
+			const bool expectedSilentMode = true;
+			const bool expectedSwitchA = true;
+			const bool expectedSwitchB = true;
+			const bool expectedSwitchC = false;
 
-            var args = new[] { "-r", expectedRecordId.ToString(CultureInfo.InvariantCulture), "-v", "\"Mr. Smith\"", "--silent", "-ab", "-c-" };
+			var args = new[] { "-r", expectedRecordId.ToString(CultureInfo.InvariantCulture), "-v", "\"Mr. Smith\"", "--silent", "-ab", "-c-" };
 
-            var recordId = 0;
-            string newValue = null;
-            var inSilentMode = false;
-            var switchA = false;
-            var switchB = false;
-            var switchC = true;
+			var recordId = 0;
+			string newValue = null;
+			var inSilentMode = false;
+			var switchA = false;
+			var switchB = false;
+			var switchC = true;
 
-            var parser = CreateFluentParser();
+			var parser = CreateFluentParser();
 
-            parser.Setup<bool>('a')
-                  .Callback(value => switchA = value);
+			parser.Setup<bool>('a')
+				  .Callback(value => switchA = value);
 
-            parser.Setup<bool>('b')
-                  .Callback(value => switchB = value);
+			parser.Setup<bool>('b')
+				  .Callback(value => switchB = value);
 
-            parser.Setup<bool>('c')
-                  .Callback(value => switchC = value);
+			parser.Setup<bool>('c')
+				  .Callback(value => switchC = value);
 
-            // create a new Option using a short and long name
-            parser.Setup<int>('r', "record")
-                    .WithDescription("The record id to update (required)")
-                    .Callback(record => recordId = record) // use callback to assign the record value to the local RecordID property
-                    .Required(); // fail if this Option is not provided in the arguments
+			// create a new Option using a short and long name
+			parser.Setup<int>('r', "record")
+					.WithDescription("The record id to update (required)")
+					.Callback(record => recordId = record) // use callback to assign the record value to the local RecordID property
+					.Required(); // fail if this Option is not provided in the arguments
 
-            parser.Setup<bool>("silent")
-                  .WithDescription("Execute the update in silent mode without feedback (default is false)")
-                  .Callback(silent => inSilentMode = silent)
-                  .SetDefault(false); // explicitly set the default value to use if this Option is not specified in the arguments
+			parser.Setup<bool>("silent")
+				  .WithDescription("Execute the update in silent mode without feedback (default is false)")
+				  .Callback(silent => inSilentMode = silent)
+				  .SetDefault(false); // explicitly set the default value to use if this Option is not specified in the arguments
 
 
-            parser.Setup<string>('v', "value")
-                    .WithDescription("The new value for the record (required)") // used when help is requested e.g -? or --help 
-                    .Callback(value => newValue = value)
-                    .Required();
+			parser.Setup<string>('v', "value")
+					.WithDescription("The new value for the record (required)") // used when help is requested e.g -? or --help 
+					.Callback(value => newValue = value)
+					.Required();
 
-            // do the work
-            ICommandLineParserResult result = parser.Parse(args);
+			// do the work
+			ICommandLineParserResult result = parser.Parse(args);
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.Errors.Any());
 
-            Assert.AreEqual(expectedRecordId, recordId);
-            Assert.AreEqual(expectedValue, newValue);
-            Assert.AreEqual(expectedSilentMode, inSilentMode);
-            Assert.AreEqual(expectedSwitchA, switchA);
-            Assert.AreEqual(expectedSwitchB, switchB);
-            Assert.AreEqual(expectedSwitchC, switchC);
-        }
+			Assert.AreEqual(expectedRecordId, recordId);
+			Assert.AreEqual(expectedValue, newValue);
+			Assert.AreEqual(expectedSilentMode, inSilentMode);
+			Assert.AreEqual(expectedSwitchA, switchA);
+			Assert.AreEqual(expectedSwitchB, switchB);
+			Assert.AreEqual(expectedSwitchC, switchC);
+		}
 
 		#endregion
 
