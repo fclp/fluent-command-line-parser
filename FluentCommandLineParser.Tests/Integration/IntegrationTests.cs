@@ -64,10 +64,10 @@ namespace Fclp.Tests.Integration
 			int? actualInt32 = null;
 			double? actualDouble = null;
 
-			sut.Setup<bool>("b").Callback(b => actualBoolean = b);
-			sut.Setup<string>("s").Callback(s => actualString = s);
-			sut.Setup<int>("i").Callback(i => actualInt32 = i);
-			sut.Setup<double>("d").Callback(d => actualDouble = d);
+			sut.Setup<bool>('b').Callback(b => actualBoolean = b);
+			sut.Setup<string>('s').Callback(s => actualString = s);
+			sut.Setup<int>('i').Callback(i => actualInt32 = i);
+			sut.Setup<double>('d').Callback(d => actualDouble = d);
 
 			var args = ParseArguments(arguments);
 
@@ -93,9 +93,9 @@ namespace Fclp.Tests.Integration
 			bool? actualYValue = null;
 			bool? actualZValue = null;
 
-			sut.Setup<bool>("x").Callback(x => actualXValue = x);
-			sut.Setup<bool>("y").Callback(y => actualYValue = y);
-			sut.Setup<bool>("z").Callback(z => actualZValue = z);
+			sut.Setup<bool>('x').Callback(x => actualXValue = x);
+			sut.Setup<bool>('y').Callback(y => actualYValue = y);
+			sut.Setup<bool>('z').Callback(z => actualZValue = z);
 
 			var args = ParseArguments(arguments);
 
@@ -127,9 +127,9 @@ namespace Fclp.Tests.Integration
 			string actualYValue = null;
 			string actualZValue = null;
 
-			sut.Setup<string>("x").Callback(x => actualXValue = x);
-			sut.Setup<string>("y").Callback(y => actualYValue = y);
-			sut.Setup<string>("z").Callback(z => actualZValue = z);
+			sut.Setup<string>('x').Callback(x => actualXValue = x);
+			sut.Setup<string>('y').Callback(y => actualYValue = y);
+			sut.Setup<string>('z').Callback(z => actualZValue = z);
 
 			var args = ParseArguments(arguments);
 

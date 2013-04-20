@@ -81,7 +81,7 @@ namespace Fclp.Tests
 			var parser = CreateFluentParser();
 			T actual = default(T);
 
-			parser.Setup<T>("s", "long")
+			parser.Setup<T>('s', "long")
 				.Callback(val => actual = val);
 
 			var assert = new Action<string[], ICommandLineParserResult>((args, result) =>
@@ -107,7 +107,7 @@ namespace Fclp.Tests
 
 			const string expected = "my description";
 
-			var cmdOption = parser.Setup<string>("s").WithDescription(expected);
+		    var cmdOption = parser.Setup<string>('s').WithDescription(expected);
 
 			var actual = ((ICommandLineOption)cmdOption).Description;
 
@@ -154,7 +154,7 @@ namespace Fclp.Tests
 			var parser = CreateFluentParser();
 
 			parser
-				.Setup<string>("s", key)
+				.Setup<string>('s', key)
 				.Callback(val => actual = val);
 
 			CallParserWithAllKeyVariations(parser, key, expected, (args, result) =>
@@ -197,7 +197,7 @@ namespace Fclp.Tests
 		public void Ensure_Parser_Calls_The_Callback_With_Expected_Int32_When_Using_Long_option()
 		{
 			const int expected = int.MaxValue;
-			const string shortKey = "i";
+			const char shortKey = 'i';
 			const string longKey = "int32";
 			int actual = default(int);
 
@@ -246,7 +246,7 @@ namespace Fclp.Tests
 		public void Ensure_Parser_Calls_The_Callback_With_Expected_Double_When_Using_Long_option()
 		{
 			const double expected = 1.23456789d;
-			const string shortKey = "d";
+			const char shortKey = 'd';
 			const string longKey = "double";
 			double actual = default(double);
 
@@ -344,7 +344,7 @@ namespace Fclp.Tests
 			var parser = CreateFluentParser();
 
 			parser
-				.Setup<DateTime>("d", "datetime")
+				.Setup<DateTime>('d', "datetime")
 				.Callback(val => actual = val);
 
 			var result = parser.Parse(new[] { "--datetime", expected.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.CurrentCulture) });
@@ -364,7 +364,7 @@ namespace Fclp.Tests
             var parser = CreateFluentParser();
             var s = "";
 
-            parser.Setup<string>(null, "my-feature")
+            parser.Setup<string>("my-feature")
                   .Callback(val => s = val);
 
             var result = parser.Parse(new[] { "--my-feature", "somevalue" });
@@ -376,6 +376,14 @@ namespace Fclp.Tests
             Assert.AreEqual("somevalue", s);
         }
 
+        [Test]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void Cannot_have_single_character_long_option()
+        {
+            var parser = CreateFluentParser();
+            parser.Setup<string>("s");
+        }
+
         #endregion
 
         #region Required
@@ -385,7 +393,7 @@ namespace Fclp.Tests
 		{
 			var parser = CreateFluentParser();
 
-			parser.Setup<string>("s")
+			parser.Setup<string>('s')
 				.Required();
 
 			var result = parser.Parse(null);
@@ -402,7 +410,7 @@ namespace Fclp.Tests
 		{
 			var parser = CreateFluentParser();
 
-			parser.Setup<string>("s")
+			parser.Setup<string>('s')
 				.Required();
 
 			var result = parser.Parse(new string[0]);
@@ -419,7 +427,7 @@ namespace Fclp.Tests
 		{
 			var parser = CreateFluentParser();
 
-			parser.Setup<string>("s")
+			parser.Setup<string>('s')
 				.Required();
 
 			var result = parser.Parse(new[] { "-d" });
@@ -436,7 +444,7 @@ namespace Fclp.Tests
 		{
 			var parser = CreateFluentParser();
 
-			parser.Setup<string>("s");
+			parser.Setup<string>('s');
 
 			var result = parser.Parse(new[] { "-d" });
 
@@ -450,9 +458,9 @@ namespace Fclp.Tests
 		{
 			var parser = CreateFluentParser();
 
-			parser.Setup<string>("s", "string");
+			parser.Setup<string>('s', "string");
 
-			parser.Setup<int>("s", "int32");
+			parser.Setup<int>('s', "int32");
 		}
 
 		[Test]
@@ -461,9 +469,9 @@ namespace Fclp.Tests
 		{
 			var parser = CreateFluentParser();
 
-			parser.Setup<string>("s", "string");
+			parser.Setup<string>('s', "string");
 
-			parser.Setup<int>("s", "string");
+			parser.Setup<int>('s', "string");
 		}
 
 		[Test]
@@ -472,9 +480,9 @@ namespace Fclp.Tests
 		{
 			var parser = CreateFluentParser();
 
-			parser.Setup<string>("s", "string");
+			parser.Setup<string>('s', "string");
 
-			parser.Setup<int>("i", "string");
+			parser.Setup<int>('i', "string");
 		}
 
 		#endregion
@@ -489,7 +497,7 @@ namespace Fclp.Tests
 			const string expected = "my expected value";
 			string actual = null;
 
-			parser.Setup<string>("s")
+			parser.Setup<string>('s')
 				.Callback(s => actual = s)
 				.SetDefault(expected);
 
@@ -507,7 +515,7 @@ namespace Fclp.Tests
 			const string expected = "my expected value";
 			string actual = null;
 
-			parser.Setup<string>("s")
+			parser.Setup<string>('s')
 				.Callback(s => actual = s)
 				.SetDefault(expected);
 
@@ -561,10 +569,10 @@ namespace Fclp.Tests
 			string actualString = null;
 			bool actualBool = false;
 
-			parser.Setup<int>("i").Callback(i => actualInt = i).SetDefault(expectedInt);
-			parser.Setup<string>("s").Callback(s=> actualString = s).SetDefault(expectedString);
-			parser.Setup<bool>("b").Callback(b => actualBool = b).SetDefault(expectedBool);
-			parser.Setup<double>("d").Callback(d => actualDouble = d).SetDefault(expectedDouble);
+			parser.Setup<int>('i').Callback(i => actualInt = i).SetDefault(expectedInt);
+			parser.Setup<string>('s').Callback(s=> actualString = s).SetDefault(expectedString);
+			parser.Setup<bool>('b').Callback(b => actualBool = b).SetDefault(expectedBool);
+			parser.Setup<double>('d').Callback(d => actualDouble = d).SetDefault(expectedDouble);
 
 			var result = parser.Parse(null);
 
@@ -592,37 +600,37 @@ namespace Fclp.Tests
 
             var args = new[] { "-r", expectedRecordId.ToString(CultureInfo.InvariantCulture), "-v", "\"Mr. Smith\"", "--silent", "-ab", "-c-" };
 
-            int recordId = 0;
+            var recordId = 0;
             string newValue = null;
-            bool inSilentMode = false;
-            bool switchA = false;
-            bool switchB = false;
-            bool switchC = true;
+            var inSilentMode = false;
+            var switchA = false;
+            var switchB = false;
+            var switchC = true;
 
-            IFluentCommandLineParser parser = CreateFluentParser();
+            var parser = CreateFluentParser();
 
-            parser.Setup<bool>("a")
+            parser.Setup<bool>('a')
                   .Callback(value => switchA = value);
 
-            parser.Setup<bool>("b")
+            parser.Setup<bool>('b')
                   .Callback(value => switchB = value);
 
-            parser.Setup<bool>("c")
+            parser.Setup<bool>('c')
                   .Callback(value => switchC = value);
 
             // create a new Option using a short and long name
-            parser.Setup<int>("r", "record")
+            parser.Setup<int>('r', "record")
                     .WithDescription("The record id to update (required)")
                     .Callback(record => recordId = record) // use callback to assign the record value to the local RecordID property
                     .Required(); // fail if this Option is not provided in the arguments
 
-            parser.Setup<bool>(null, "silent")
+            parser.Setup<bool>("silent")
                   .WithDescription("Execute the update in silent mode without feedback (default is false)")
                   .Callback(silent => inSilentMode = silent)
                   .SetDefault(false); // explicitly set the default value to use if this Option is not specified in the arguments
 
 
-            parser.Setup<string>("v", "value")
+            parser.Setup<string>('v', "value")
                     .WithDescription("The new value for the record (required)") // used when help is requested e.g -? or --help 
                     .Callback(value => newValue = value)
                     .Required();
@@ -660,8 +668,8 @@ namespace Fclp.Tests
 					.Callback(s => callbackResult = s)
 					.WithCustomFormatter(formatter.Object);
 
-			parser.Setup<int>("i");
-			parser.Setup<string>("s");
+			parser.Setup<int>('i');
+			parser.Setup<string>('s');
 
 			formatter.Setup(x => x.Format(parser.Options)).Returns(expectedCallbackResult);
 
@@ -686,8 +694,8 @@ namespace Fclp.Tests
 			parser.SetupHelp("?", "HELP", "h")
 					.Callback(() => wasCalled = true);
 
-			parser.Setup<int>("i");
-			parser.Setup<string>("s");
+			parser.Setup<int>('i');
+			parser.Setup<string>('s');
 
 			formatter.Setup(x => x.Format(parser.Options)).Returns(expectedCallbackResult);
 
@@ -710,7 +718,7 @@ namespace Fclp.Tests
 			var parser = CreateFluentParser();
 
 			int? number = 0;
-			parser.Setup<int>("n").Callback(n => number = n);
+			parser.Setup<int>('n').Callback(n => number = n);
 
 			parser.Parse(new[] { "/n=1", "/n=2", "-n=3", "--n=4" });
 

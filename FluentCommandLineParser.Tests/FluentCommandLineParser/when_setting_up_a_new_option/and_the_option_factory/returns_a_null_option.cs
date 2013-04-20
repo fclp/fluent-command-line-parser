@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using Fclp.Internals;
 using Fclp.Tests.FluentCommandLineParser.TestContext;
 using Machine.Specifications;
@@ -41,7 +42,7 @@ namespace Fclp.Tests.FluentCommandLineParser.when_setting_up_a_new_option
 
 										var mockOptionFactoryThatReturnsNull = new Mock<ICommandLineOptionFactory>();
 										mockOptionFactoryThatReturnsNull
-											.Setup(x => x.CreateOption<TestType>(valid_short_name, valid_long_name))
+											.Setup(x => x.CreateOption<TestType>(valid_short_name.ToString(CultureInfo.InvariantCulture), valid_long_name))
 											.Returns(nullOption);
 
 										sut.OptionFactory = mockOptionFactoryThatReturnsNull.Object;

@@ -93,7 +93,7 @@ namespace Fclp.Tests.Integration
 
 			List<T> actualItems = null;
 
-			sut.Setup<List<T>>("l", "list").Callback(items => actualItems = items).Required();
+			sut.Setup<List<T>>('l', "list").Callback(items => actualItems = items).Required();
 
 			var args = ParseArguments(arguments);
 

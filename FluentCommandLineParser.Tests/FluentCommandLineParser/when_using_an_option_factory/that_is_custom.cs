@@ -22,6 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System.Globalization;
 using Fclp.Internals;
 using Fclp.Tests.FluentCommandLineParser.TestContext;
 using Machine.Specifications;
@@ -34,7 +35,8 @@ namespace Fclp.Tests.FluentCommandLineParser
 	{
 		public class that_is_custom : SettingUpALongOptionTestContext
 		{
-			static ICommandLineOptionFactory customOptionFactory { get { return mockedOptionFactory.Object; } }
+		    private const string valid_short_name_custom_factory = "s";
+		    static ICommandLineOptionFactory customOptionFactory { get { return mockedOptionFactory.Object; } }
 			static Mock<ICommandLineOptionFactory> mockedOptionFactory;
 
 			Establish context = () =>
@@ -43,7 +45,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 				mockedOptionFactory = new Mock<ICommandLineOptionFactory>();
 
 				mockedOptionFactory
-					.Setup(x => x.CreateOption<TestType>(valid_short_name, valid_long_name))
+                    .Setup(x => x.CreateOption<TestType>(valid_short_name_custom_factory, valid_long_name))
 					.Verifiable();
 			};
 
@@ -57,7 +59,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 				() => sut.OptionFactory.ShouldBeTheSameAs(customOptionFactory);
 
 			It should_be_used_to_create_the_options_objects =
-				() => mockedOptionFactory.Verify(x => x.CreateOption<TestType>(valid_short_name, valid_long_name));
+                () => mockedOptionFactory.Verify(x => x.CreateOption<TestType>(valid_short_name_custom_factory, valid_long_name));
 		}
 	}
 }
