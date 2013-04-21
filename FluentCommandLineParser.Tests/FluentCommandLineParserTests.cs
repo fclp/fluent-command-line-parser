@@ -570,7 +570,7 @@ namespace Fclp.Tests
 			bool actualBool = false;
 
 			parser.Setup<int>('i').Callback(i => actualInt = i).SetDefault(expectedInt);
-			parser.Setup<string>('s').Callback(s=> actualString = s).SetDefault(expectedString);
+			parser.Setup<string>('s').Callback(s => actualString = s).SetDefault(expectedString);
 			parser.Setup<bool>('b').Callback(b => actualBool = b).SetDefault(expectedBool);
 			parser.Setup<double>('d').Callback(d => actualDouble = d).SetDefault(expectedDouble);
 
@@ -660,7 +660,7 @@ namespace Fclp.Tests
 
 			var formatter = new Mock<ICommandLineOptionFormatter>();
 
-			var args = new[] {"/help", "i", "s"};
+			var args = new[] { "/help", "i", "s" };
 			const string expectedCallbackResult = "blah";
 			string callbackResult = null;
 
@@ -704,6 +704,49 @@ namespace Fclp.Tests
 			Assert.IsTrue(wasCalled);
 			Assert.IsFalse(result.HasErrors);
 			Assert.IsTrue(result.HelpCalled);
+		}
+
+		#endregion
+
+		#region Case Sensitive
+
+		[Test]
+		public void Ensure_Short_Options_Are_Case_Sensitive()
+		{
+			var parser = CreateFluentParser();
+
+			const string expectedSValue = "my expected value";
+			string SValue;
+			bool sValue = false;
+
+			parser.Setup<string>('S').Callback(str => SValue = str).Required();
+			parser.Setup<bool>('s').Callback(b => sValue = b).Required();
+
+			var result = parser.Parse(new[] { "-S", expectedSValue, "-s" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.AreEqual(expectedSValue, expectedSValue);
+			Assert.IsTrue(sValue);
+		}
+
+
+		[Test]
+		public void Ensure_Long_Options_Are_Case_Sensitive()
+		{
+			var parser = CreateFluentParser();
+
+			const string expectedSValue = "my expected value";
+			string SValue;
+			bool sValue = false;
+
+			parser.Setup<string>("LONGOPTION").Callback(str => SValue = str).Required();
+			parser.Setup<bool>("longoption").Callback(b => sValue = b).Required();
+
+			var result = parser.Parse(new[] { "--LONGOPTION", expectedSValue, "--longoption" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.AreEqual(expectedSValue, expectedSValue);
+			Assert.IsTrue(sValue);
 		}
 
 		#endregion

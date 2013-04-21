@@ -47,18 +47,12 @@ namespace Fclp
 		ICommandLineParserErrorFormatter _errorFormatter;
 		ICommandLineOptionValidator _optionValidator;
 
-		///// <summary>
-		///// Gets or sets whether the parser is case-sensitive. E.g. If <c>true</c> then <c>/a</c> will be treated as identical to <c>/A</c>.
-		///// </summary>
-		//public bool IsCaseSensitive { get; set; }
-
 		/// <summary>
 		/// Gets the <see cref="StringComparison"/> to use when matching values.
 		/// </summary>
 		internal StringComparison StringComparison
 		{
-			//get { return this.IsCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase; }
-			get { return StringComparison.CurrentCultureIgnoreCase; }
+			get { return StringComparison.CurrentCulture; }
 		}
 
 		/// <summary>
