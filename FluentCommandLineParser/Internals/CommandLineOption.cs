@@ -114,10 +114,18 @@ namespace Fclp.Internals
 		/// </summary>
 		public bool HasLongName
 		{
-			get { return !this.LongName.IsNullOrWhiteSpace(); }
+			get { return this.LongName.IsNullOrWhiteSpace() == false; }
 		}
 
 		/// <summary>
+		/// Gets whether this <see cref="ICommandLineOptionFluent{T}"/> has a short name.
+		/// </summary>
+	    public bool HasShortName
+	    {
+		    get { return this.ShortName.IsNullOrWhiteSpace() == false; }
+	    }
+
+	    /// <summary>
 		/// Gets whether this <see cred="ICommandLineOption"/> has a callback setup.
 		/// </summary>
 		public bool HasCallback

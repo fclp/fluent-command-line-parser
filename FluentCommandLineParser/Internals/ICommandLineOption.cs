@@ -68,6 +68,11 @@ namespace Fclp.Internals
 		bool HasLongName { get; }
 
 		/// <summary>
+		/// Gets whether this <see cref="ICommandLineOption"/> has a short name.
+		/// </summary>
+		bool HasShortName { get; }
+
+		/// <summary>
 		/// Gets whether this <see cred="ICommandLineOption"/> has a callback setup.
 		/// </summary>
 		bool HasCallback { get; }

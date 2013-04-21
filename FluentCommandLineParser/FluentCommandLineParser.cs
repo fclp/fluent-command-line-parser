@@ -180,7 +180,7 @@ namespace Fclp
 		/// <param name="shortOption">The short name for the Option. This must not be <c>whitespace</c> or a control character.</param>
 		/// <returns></returns>
 		/// <exception cref="OptionAlreadyExistsException">
-		/// A Option with the same <paramref name="shortOption"/> name aready exists in the <see cref="IFluentCommandLineParser"/>.
+		/// A Option with the same <paramref name="shortOption"/> name already exists in the <see cref="IFluentCommandLineParser"/>.
 		/// </exception>
 		public ICommandLineOptionFluent<T> Setup<T>(char shortOption)
 		{
@@ -278,6 +278,14 @@ namespace Fclp
 			var helpOption = this.OptionFactory.CreateHelpOption(helpArgs);
 			this.HelpOption = helpOption;
 			return helpOption;
+		}
+
+		/// <summary>
+		/// Returns the Options that have been setup for this parser.
+		/// </summary>
+		IEnumerable<ICommandLineOption> IFluentCommandLineParser.Options
+		{
+			get { return Options; }
 		}
 	}
 }

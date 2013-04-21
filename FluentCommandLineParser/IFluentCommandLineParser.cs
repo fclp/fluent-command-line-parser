@@ -23,6 +23,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using Fclp.Internals;
 
 namespace Fclp
 {
@@ -42,15 +44,15 @@ namespace Fclp
 		/// A Option with the same <paramref name="shortOption"/> name or <paramref name="longOption"/> name already exists in the <see cref="IFluentCommandLineParser"/>.
 		/// </exception>
 		/// <exception cref="ArgumentOutOfRangeException">
-        /// Either <paramref name="shortOption"/> or <paramref name="longOption"/> are not valid. <paramref name="shortOption"/> must not be <c>whitespace</c>
-        /// or a control character. <paramref name="longOption"/> must not be <c>null</c>, <c>empty</c> or only <c>whitespace</c>.
+		/// Either <paramref name="shortOption"/> or <paramref name="longOption"/> are not valid. <paramref name="shortOption"/> must not be <c>whitespace</c>
+		/// or a control character. <paramref name="longOption"/> must not be <c>null</c>, <c>empty</c> or only <c>whitespace</c>.
 		/// </exception>
 		ICommandLineOptionFluent<T> Setup<T>(char shortOption, string longOption);
 
 		/// <summary>
 		/// Setup a new <see cref="ICommandLineOptionFluent{T}"/> using the specified short Option name.
 		/// </summary>
-        /// <param name="shortOption">The short name for the Option. This must not be <c>whitespace</c> or a control character.</param>
+		/// <param name="shortOption">The short name for the Option. This must not be <c>whitespace</c> or a control character.</param>
 		/// <returns></returns>
 		/// <exception cref="OptionAlreadyExistsException">
 		/// A Option with the same <paramref name="shortOption"/> name 
@@ -58,15 +60,15 @@ namespace Fclp
 		/// </exception>
 		ICommandLineOptionFluent<T> Setup<T>(char shortOption);
 
-        /// <summary>
-        /// Setup a new <see cref="ICommandLineOptionFluent{T}"/> using the specified long Option name.
-        /// </summary>
-        /// <param name="longOption">The long name for the Option. This must not be <c>null</c>, <c>empty</c> or only <c>whitespace</c>.</param>
-        /// <returns></returns>
-        /// <exception cref="OptionAlreadyExistsException">
-        /// A Option with the same <paramref name="longOption"/> name already exists in the <see cref="IFluentCommandLineParser"/>.
-        /// </exception>
-        ICommandLineOptionFluent<T> Setup<T>(string longOption);
+		/// <summary>
+		/// Setup a new <see cref="ICommandLineOptionFluent{T}"/> using the specified long Option name.
+		/// </summary>
+		/// <param name="longOption">The long name for the Option. This must not be <c>null</c>, <c>empty</c> or only <c>whitespace</c>.</param>
+		/// <returns></returns>
+		/// <exception cref="OptionAlreadyExistsException">
+		/// A Option with the same <paramref name="longOption"/> name already exists in the <see cref="IFluentCommandLineParser"/>.
+		/// </exception>
+		ICommandLineOptionFluent<T> Setup<T>(string longOption);
 
 		/// <summary>
 		/// Setup the help args.
@@ -80,5 +82,10 @@ namespace Fclp
 		/// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
 		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
 		ICommandLineParserResult Parse(string[] args);
+
+		/// <summary>
+		/// Returns the Options that have been setup for this parser.
+		/// </summary>
+		IEnumerable<ICommandLineOption> Options { get; }
 	}
 }

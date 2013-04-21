@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals.Extensions;
 using Machine.Specifications;
@@ -80,7 +81,44 @@ namespace Fclp.Tests.Internals
 
 		protected static void Create<TType>(out TType obj)
 		{
-			obj = fixture.Create<TType>();
+			obj = Create<TType>();
+		}
+
+		protected static TType Create<TType>()
+		{
+			return fixture.Create<TType>();
+		}
+
+		protected static void CreateMock<TType>(out Mock<TType> obj) where TType : class
+		{
+			obj = CreateMock<TType>();
+		}
+
+		protected static Mock<TType> CreateMock<TType>() where TType : class
+		{
+			return fixture.CreateMock<TType>();
+		}
+
+		protected static List<TType> CreateEmptyList<TType>()
+		{
+			return new List<TType>();
+		}
+
+		protected static void CreateEmptyList<TType>(out List<TType> list)
+		{
+			list = CreateEmptyList<TType>();
+		}
+
+		protected static List<TType> CreateManyAsList<TType>(params TType[] additionalItemsToAdd)
+		{
+			var list = fixture.CreateMany<TType>(5).ToList();
+			list.AddRange(additionalItemsToAdd);
+			return list;
+		}
+
+		protected static string CreateStringOfLength(int length)
+		{
+			return new string(Create<char>(), length);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 ﻿#region License
-// that_is_custom.cs
+// CommandLineOptionValidator.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,43 +22,39 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Internals;
-using Fclp.Tests.FluentCommandLineParser.TestContext;
-using Machine.Specifications;
-using Moq;
-using It = Machine.Specifications.It;
+using System.Collections.Generic;
 
-namespace Fclp.Tests.FluentCommandLineParser
+namespace Fclp.Internals.Validators
 {
-	namespace when_using_an_option_factory
+	/// <summary>
+	/// Wrapping validator that executes all the individual validation rules.
+	/// </summary>
+	public class CommandLineOptionValidator : ICommandLineOptionValidator
 	{
-		public class that_is_custom : SettingUpALongOptionTestContext
+		private readonly IList<ICommandLineOptionValidator> _rules;
+
+		/// <summary>
+		/// Initialises a new instance of the <see cref="CommandLineOptionValidator"/> class.
+		/// </summary>
+		public CommandLineOptionValidator(IFluentCommandLineParser parser)
 		{
-		    private const string valid_short_name_custom_factory = "s";
-		    static ICommandLineOptionFactory customOptionFactory { get { return mockedOptionFactory.Object; } }
-			static Mock<ICommandLineOptionFactory> mockedOptionFactory;
-
-			Establish context = () =>
+			_rules = new List<ICommandLineOptionValidator>
 			{
-				sut = new Fclp.FluentCommandLineParser();
-				mockedOptionFactory = new Mock<ICommandLineOptionFactory>();
-
-				mockedOptionFactory
-                    .Setup(x => x.CreateOption<TestType>(valid_short_name_custom_factory, valid_long_name))
-					.Verifiable();
+				new OptionNameValidator(),
+				new NoDuplicateOptionValidator(parser)
 			};
+		}
 
-			Because of = () =>
+		/// <summary>
+		/// Validates the specified <see cref="ICommandLineOption"/> against all the registered rules.
+		/// </summary>
+		/// <param name="commandLineOption">The <see cref="ICommandLineOption"/> to validate.</param>
+		public void Validate(ICommandLineOption commandLineOption)
+		{
+			foreach (var rule in _rules)
 			{
-				sut.OptionFactory = customOptionFactory;
-				SetupOptionWith(valid_short_name, valid_long_name);
-			};
-
-			It should_replace_the_old_factory =
-				() => sut.OptionFactory.ShouldBeTheSameAs(customOptionFactory);
-
-			It should_be_used_to_create_the_options_objects =
-                () => mockedOptionFactory.Verify(x => x.CreateOption<TestType>(valid_short_name_custom_factory, valid_long_name));
+				rule.Validate(commandLineOption);
+			}
 		}
 	}
 }

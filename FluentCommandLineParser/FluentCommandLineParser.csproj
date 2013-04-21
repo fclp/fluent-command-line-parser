@@ -91,6 +91,10 @@
     <Compile Include="Internals\Parsers\ListCommandLineOptionParser.cs" />
     <Compile Include="Internals\Parsers\StringCommandLineOptionParser.cs" />
     <Compile Include="Internals\SpecialCharacters.cs" />
+    <Compile Include="Internals\Validators\CommandLineOptionValidator.cs" />
+    <Compile Include="Internals\Validators\ICommandLineOptionValidator.cs" />
+    <Compile Include="Internals\Validators\NoDuplicateOptionValidator.cs" />
+    <Compile Include="Internals\Validators\OptionNameValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Internals\Extensions\UsefulExtension.cs" />
     <Compile Include="OptionAlreadyExistsException.cs" />

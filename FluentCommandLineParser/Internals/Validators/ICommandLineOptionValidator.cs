@@ -1,5 +1,5 @@
 ﻿#region License
-// that_is_custom.cs
+// ICommandLineOptionValidator.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -21,44 +21,17 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
-
-using Fclp.Internals;
-using Fclp.Tests.FluentCommandLineParser.TestContext;
-using Machine.Specifications;
-using Moq;
-using It = Machine.Specifications.It;
-
-namespace Fclp.Tests.FluentCommandLineParser
+namespace Fclp.Internals.Validators
 {
-	namespace when_using_an_option_factory
+	/// <summary>
+	/// Represents a validator used to verify new setup command line options.
+	/// </summary>
+	public interface ICommandLineOptionValidator
 	{
-		public class that_is_custom : SettingUpALongOptionTestContext
-		{
-		    private const string valid_short_name_custom_factory = "s";
-		    static ICommandLineOptionFactory customOptionFactory { get { return mockedOptionFactory.Object; } }
-			static Mock<ICommandLineOptionFactory> mockedOptionFactory;
-
-			Establish context = () =>
-			{
-				sut = new Fclp.FluentCommandLineParser();
-				mockedOptionFactory = new Mock<ICommandLineOptionFactory>();
-
-				mockedOptionFactory
-                    .Setup(x => x.CreateOption<TestType>(valid_short_name_custom_factory, valid_long_name))
-					.Verifiable();
-			};
-
-			Because of = () =>
-			{
-				sut.OptionFactory = customOptionFactory;
-				SetupOptionWith(valid_short_name, valid_long_name);
-			};
-
-			It should_replace_the_old_factory =
-				() => sut.OptionFactory.ShouldBeTheSameAs(customOptionFactory);
-
-			It should_be_used_to_create_the_options_objects =
-                () => mockedOptionFactory.Verify(x => x.CreateOption<TestType>(valid_short_name_custom_factory, valid_long_name));
-		}
+		/// <summary>
+		/// Verifies that the proposed new <see cref="ICommandLineOption"/> is a valid new Option.
+		/// </summary>
+		/// <param name="commandLineOption">The <see cref="ICommandLineOption"/> to validate. This must not be null.</param>
+		void Validate(ICommandLineOption commandLineOption);
 	}
 }

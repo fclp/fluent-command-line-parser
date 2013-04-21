@@ -1,5 +1,5 @@
 ﻿#region License
-// SpecialCharacters.cs
+// NoDuplicateOptionValidator.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -21,36 +21,54 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
-namespace Fclp.Internals
+
+using System;
+
+namespace Fclp.Internals.Validators
 {
 	/// <summary>
-	/// Contains special characters used throughout the parser.
+	/// Validator used to ensure no there are duplicate Options setup.
 	/// </summary>
-	public static class SpecialCharacters
+	public class NoDuplicateOptionValidator : ICommandLineOptionValidator
 	{
-		/// <summary>
-		/// Characters used for value assignment.
-		/// </summary>
-		public static readonly char[] ValueAssignments = new[] { '=', ':' };
+		private readonly IFluentCommandLineParser _parser;
 
 		/// <summary>
-		/// Assign a name to the whitespace character.
+		/// Initialises a new instance of the <see cref="NoDuplicateOptionValidator"/> class.
 		/// </summary>
-		public const char Whitespace = ' ';
+		/// <param name="parser">The <see cref="IFluentCommandLineParser"/> containing the setup options. This must not be null.</param>
+		public NoDuplicateOptionValidator(IFluentCommandLineParser parser)
+		{
+			if (parser == null) throw new ArgumentNullException("parser");
+			_parser = parser;
+		}
 
 		/// <summary>
-		/// Characters that define the start of an option.
+		/// Verifies that the specified <see cref="ICommandLineOption"/> will not cause any duplication.
 		/// </summary>
-		public static readonly string[] OptionPrefix = new[] { "/", "--", "-" };
+		/// <param name="commandLineOption">The <see cref="ICommandLineOption"/> to validate.</param>
+		public void Validate(ICommandLineOption commandLineOption)
+		{
+			foreach (var option in _parser.Options)
+			{
+				if (commandLineOption.HasShortName)
+				{
+					ValuesAreEqual(commandLineOption.ShortName, option.ShortName);
+				}
 
-		/// <summary>
-		/// Characters that have special meaning at the end of an option key.
-		/// </summary>
-		public static readonly string[] OptionSuffix = new[] { "+", "-" };
+				if (commandLineOption.HasLongName)
+				{
+					ValuesAreEqual(commandLineOption.LongName, option.LongName);
+				}				
+			}
+		}
 
-		/// <summary>
-		/// Characters that define an explicit short option.
-		/// </summary>
-		public static readonly string[] ShortOptionPrefix = new[] { "-" };
+		private static void ValuesAreEqual(string value, string otherValue)
+		{
+			if (string.Equals(value, otherValue, StringComparison.CurrentCulture))
+			{
+				throw new OptionAlreadyExistsException(value);
+			}
+		}
 	}
 }

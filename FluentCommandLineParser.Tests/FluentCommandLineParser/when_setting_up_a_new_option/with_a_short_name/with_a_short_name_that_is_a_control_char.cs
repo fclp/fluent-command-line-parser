@@ -1,5 +1,5 @@
 ﻿#region License
-// with_a_short_name_that_is_empty.cs
+// with_a_short_name_that_is_a_control_char.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
