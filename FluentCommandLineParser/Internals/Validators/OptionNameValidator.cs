@@ -59,8 +59,9 @@ namespace Fclp.Internals.Validators
 
 		private static void ValidateLongName(string longName)
 		{
-			if (longName != null
-				&& longName.Length == 1)
+			if (string.IsNullOrEmpty(longName)) return;
+
+			if (longName.Length == 1)
 			{
 				throw new ArgumentOutOfRangeException();
 			}
@@ -73,8 +74,9 @@ namespace Fclp.Internals.Validators
 
 		private static void ValidateShortName(string shortName)
 		{
-			if (shortName != null
-				&& shortName.Length > 1)
+			if (string.IsNullOrEmpty(shortName)) return;
+
+			if (shortName.Length > 1)
 			{
 				throw new ArgumentOutOfRangeException();
 			}
@@ -83,9 +85,14 @@ namespace Fclp.Internals.Validators
 			{
 				throw new ArgumentOutOfRangeException();
 			}
+
+			if (char.IsControl(shortName, 0))
+			{
+				throw new ArgumentOutOfRangeException();
+			}
 		}
 
-		private static bool ContainsReserved(string value)
+		private static bool  ContainsReserved(string value)
 		{
 			return value != null 
 				&& ReservedChars.Any(value.Contains);

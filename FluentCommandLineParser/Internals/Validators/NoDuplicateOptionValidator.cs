@@ -51,12 +51,12 @@ namespace Fclp.Internals.Validators
 		{
 			foreach (var option in _parser.Options)
 			{
-				if (commandLineOption.HasShortName)
+				if (string.IsNullOrEmpty(commandLineOption.ShortName) == false)
 				{
 					ValuesAreEqual(commandLineOption.ShortName, option.ShortName);
 				}
 
-				if (commandLineOption.HasLongName)
+				if (string.IsNullOrEmpty(commandLineOption.LongName) == false)
 				{
 					ValuesAreEqual(commandLineOption.LongName, option.LongName);
 				}				

@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using Fclp.Internals;
 using Fclp.Internals.Validators;
 using Machine.Specifications;
@@ -101,6 +102,14 @@ namespace Fclp.Tests.Internals.Validators
 					SetupOptionWith(shortName: string.Empty);
 
 				It should_not_throw_an_error = () => error.ShouldBeNull();
+			}
+
+			class when_the_short_name_is_a_control_char : ValidateTestContext
+			{
+				Establish context = () =>
+					SetupOptionWith(shortName: ((char)7).ToString(CultureInfo.InvariantCulture));
+
+				It should_throw_an_error = () => error.ShouldBeOfType<ArgumentOutOfRangeException>();
 			}
 
 			class when_the_short_name_is_longer_than_one_char : ValidateTestContext

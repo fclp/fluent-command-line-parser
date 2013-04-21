@@ -29,6 +29,7 @@ using System.Linq;
 using Fclp.Internals;
 using Fclp.Internals.Errors;
 using Fclp.Internals.Extensions;
+using Fclp.Internals.Validators;
 
 namespace Fclp
 {
@@ -44,6 +45,7 @@ namespace Fclp
 		ICommandLineOptionFormatter _optionFormatter;
 		IHelpCommandLineOption _helpOption;
 		ICommandLineParserErrorFormatter _errorFormatter;
+		ICommandLineOptionValidator _optionValidator;
 
 		///// <summary>
 		///// Gets or sets whether the parser is case-sensitive. E.g. If <c>true</c> then <c>/a</c> will be treated as identical to <c>/A</c>.
@@ -96,6 +98,15 @@ namespace Fclp
 		}
 
 		/// <summary>
+		/// Gets or sets the <see cref="ICommandLineOptionValidator"/> used to validate each setup Option.
+		/// </summary>
+		public ICommandLineOptionValidator OptionValidator
+		{
+			get { return _optionValidator ?? (_optionValidator = new CommandLineOptionValidator(this)); }
+			set { _optionValidator = value; }
+		}
+
+		/// <summary>
 		/// Gets or sets the <see cref="ICommandLineParserEngine"/> to use for parsing the command line args.
 		/// </summary>
 		public ICommandLineParserEngine ParserEngine
@@ -122,56 +133,21 @@ namespace Fclp
 		/// </exception>
 		public ICommandLineOptionFluent<T> Setup<T>(char shortOption, string longOption)
 		{
-			EnsureIsValidShortName(shortOption);
-			EnsureIsValidLongName(longOption);
-			//EnsureHasShortNameOrLongName(shortOption, longOption);
-
 			return SetupInternal<T>(shortOption.ToString(CultureInfo.InvariantCulture), longOption);
 		}
 
 		private ICommandLineOptionFluent<T> SetupInternal<T>(string shortOption, string longOption)
 		{
-			foreach (var option in this.Options)
-			{
-				if (shortOption != null && shortOption.Equals(option.ShortName, this.StringComparison))
-					throw new OptionAlreadyExistsException(shortOption);
-
-				if (longOption != null && longOption.Equals(option.LongName, this.StringComparison))
-					throw new OptionAlreadyExistsException(longOption);
-			}
-
 			var argOption = this.OptionFactory.CreateOption<T>(shortOption, longOption);
 
 			if (argOption == null)
 				throw new InvalidOperationException("OptionFactory is producing unexpected results.");
 
+			OptionValidator.Validate(argOption);
+
 			this.Options.Add(argOption);
 
 			return argOption;
-		}
-
-		private static void EnsureIsValidShortName(char value)
-		{
-			if (char.IsWhiteSpace(value) || char.IsControl(value) || value == ':' || value == '=')
-				throw new ArgumentOutOfRangeException("value");
-		}
-
-		private static void EnsureIsValidLongName(string value)
-		{
-			if (string.IsNullOrEmpty(value)) return;
-
-			if (value.Trim().Length < 2)
-				throw new ArgumentOutOfRangeException("value");
-
-			var invalidChars = SpecialCharacters.ValueAssignments.Union(new[] { SpecialCharacters.Whitespace });
-			if (invalidChars.Any(value.Contains))
-				throw new ArgumentOutOfRangeException("value");
-		}
-
-		private static void EnsureHasShortNameOrLongName(char shortOption, string longOption)
-		{
-			if (char.IsWhiteSpace(shortOption) && longOption.IsNullOrWhiteSpace())
-				throw new ArgumentOutOfRangeException("shortOption", "Either shortOption or longOption must be specified");
 		}
 
 		/// <summary>
@@ -184,7 +160,6 @@ namespace Fclp
 		/// </exception>
 		public ICommandLineOptionFluent<T> Setup<T>(char shortOption)
 		{
-			EnsureIsValidShortName(shortOption);
 			return SetupInternal<T>(shortOption.ToString(CultureInfo.InvariantCulture), null);
 		}
 
@@ -198,7 +173,6 @@ namespace Fclp
 		/// </exception>
 		public ICommandLineOptionFluent<T> Setup<T>(string longOption)
 		{
-			EnsureIsValidLongName(longOption);
 			return SetupInternal<T>(null, longOption);
 		}
 
@@ -242,10 +216,10 @@ namespace Fclp
 					{
 						option.Bind(match);
 					}
-					catch(OptionSyntaxException)
+					catch (OptionSyntaxException)
 					{
 						result.Errors.Add(new OptionSyntaxParseError(option, match));
-						if(option.HasDefault)
+						if (option.HasDefault)
 							option.BindDefault();
 					}
 
