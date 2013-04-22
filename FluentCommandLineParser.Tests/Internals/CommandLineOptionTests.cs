@@ -126,8 +126,7 @@ namespace FluentCommandLineParser.Tests.Internals
 		}
 
 		[Test]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
-		public void Ensure_Cannot_Be_Constructed_With_Null_ShortName_And_Null_LongName()
+		public void Ensure_Can_Be_Constructed_With_Null_ShortName_And_Null_LongName()
 		{
 			const string invalidShortName = null;
 			const string invalidLongName = null;
@@ -138,8 +137,7 @@ namespace FluentCommandLineParser.Tests.Internals
 		}
 
 		[Test]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
-		public void Ensure_Cannot_Be_Constructed_With_Empty_ShortName_And_Null_LongName()
+		public void Ensure_Can_Be_Constructed_With_Empty_ShortName_And_Null_LongName()
 		{
 			const string invalidShortName = "";
 			const string invalidLongName = null;
@@ -150,8 +148,7 @@ namespace FluentCommandLineParser.Tests.Internals
 		}
 
 		[Test]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
-		public void Ensure_Cannot_Be_Constructed_With_WhiteSpaceOnly_ShortName_And_Null_LongName()
+		public void Ensure_Can_Be_Constructed_With_WhiteSpaceOnly_ShortName_And_Null_LongName()
 		{
 			const string invalidShortName = " ";
 			const string invalidLongName = null;
@@ -217,8 +214,7 @@ namespace FluentCommandLineParser.Tests.Internals
 		}
 
 		[Test]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
-		public void Ensure_Cannot_Be_Constructed_With_WhiteSpaceOnly_ShortName_And_WhiteSpaceOnly_LongName()
+		public void Ensure_Canot_Be_Constructed_With_WhiteSpaceOnly_ShortName_And_WhiteSpaceOnly_LongName()
 		{
 			const string invalidShortName = " ";
 			const string invalidLongName = " ";
