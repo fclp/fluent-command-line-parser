@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace Fclp.Internals.Validators
@@ -53,7 +54,7 @@ namespace Fclp.Internals.Validators
 		{
 			if (string.IsNullOrEmpty(shortName) && string.IsNullOrEmpty(longName))
 			{
-				throw new ArgumentOutOfRangeException();
+				ThrowInvalid(string.Empty, "A short or long name must be provided.");
 			}
 		}
 
@@ -61,14 +62,11 @@ namespace Fclp.Internals.Validators
 		{
 			if (string.IsNullOrEmpty(longName)) return;
 
+			VerifyDoesNotContainsReservedChar(longName);
+
 			if (longName.Length == 1)
 			{
-				throw new ArgumentOutOfRangeException();
-			}
-
-			if (ContainsReserved(longName))
-			{
-				throw new ArgumentOutOfRangeException();
+				ThrowInvalid(longName, "Long names must be longer than a single character. Single characters are reserved for short options only.");
 			}
 		}
 
@@ -78,24 +76,34 @@ namespace Fclp.Internals.Validators
 
 			if (shortName.Length > 1)
 			{
-				throw new ArgumentOutOfRangeException();
+				ThrowInvalid(shortName, "Short names must be a single character only.");
 			}
 
-			if (ContainsReserved(shortName))
-			{
-				throw new ArgumentOutOfRangeException();
-			}
+			VerifyDoesNotContainsReservedChar(shortName);
 
 			if (char.IsControl(shortName, 0))
 			{
-				throw new ArgumentOutOfRangeException();
+				ThrowInvalid(shortName, "The character '" + shortName + "' is not valid for a short name.");
 			}
 		}
 
-		private static bool  ContainsReserved(string value)
+		private static void VerifyDoesNotContainsReservedChar(string value)
 		{
-			return value != null 
-				&& ReservedChars.Any(value.Contains);
+			if (string.IsNullOrEmpty(value)) return;
+
+			foreach (char reservedChar in ReservedChars)
+			{
+				if (value.Contains(reservedChar))
+				{
+					ThrowInvalid(value, "The character '" + reservedChar + "' is not valid for a short or long name.");
+				}
+			}
+		}
+
+		private static void ThrowInvalid(string value, string message)
+		{
+			throw new InvalidOptionNameException(
+				string.Format(CultureInfo.InvariantCulture, "Invalid option name '{0}'. {1}", value, message));
 		}
 	}
 }

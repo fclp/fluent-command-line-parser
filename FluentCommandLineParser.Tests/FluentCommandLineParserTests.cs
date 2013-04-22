@@ -377,7 +377,7 @@ namespace Fclp.Tests
 		}
 
 		[Test]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		[ExpectedException(typeof(InvalidOptionNameException))]
 		public void Cannot_have_single_character_long_option()
 		{
 			var parser = CreateFluentParser();
