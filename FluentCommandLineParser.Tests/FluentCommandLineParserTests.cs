@@ -715,18 +715,20 @@ namespace Fclp.Tests
 		{
 			var parser = CreateFluentParser();
 
-			const string expectedSValue = "my expected value";
-			string SValue;
-			bool sValue = false;
+			const string expectedUpperCaseValue = "UPPERCASE VALUE";
+			const string expectedLowerCaseValue = "LOWERCASE VALUE";
 
-			parser.Setup<string>('S').Callback(str => SValue = str).Required();
-			parser.Setup<bool>('s').Callback(b => sValue = b).Required();
+			string upperCaseValue = null;
+			string lowerCaseValue = null;
 
-			var result = parser.Parse(new[] { "-S", expectedSValue, "-s" });
+			parser.Setup<string>('S').Callback(str => upperCaseValue = str).Required();
+			parser.Setup<string>('s').Callback(str => lowerCaseValue = str).Required();
+
+			var result = parser.Parse(new[] { "-S", expectedUpperCaseValue, "-s", expectedLowerCaseValue });
 
 			Assert.IsFalse(result.HasErrors);
-			Assert.AreEqual(expectedSValue, expectedSValue);
-			Assert.IsTrue(sValue);
+			Assert.AreEqual(expectedUpperCaseValue, upperCaseValue);
+			Assert.AreEqual(expectedLowerCaseValue, lowerCaseValue);
 		}
 
 
@@ -735,18 +737,20 @@ namespace Fclp.Tests
 		{
 			var parser = CreateFluentParser();
 
-			const string expectedSValue = "my expected value";
-			string SValue;
-			bool sValue = false;
+			const string expectedUpperCaseValue = "UPPERCASE VALUE";
+			const string expectedLowerCaseValue = "LOWERCASE VALUE";
 
-			parser.Setup<string>("LONGOPTION").Callback(str => SValue = str).Required();
-			parser.Setup<bool>("longoption").Callback(b => sValue = b).Required();
+			string upperCaseValue = null;
+			string lowerCaseValue = null;
 
-			var result = parser.Parse(new[] { "--LONGOPTION", expectedSValue, "--longoption" });
+			parser.Setup<string>("LONGOPTION").Callback(str => upperCaseValue = str).Required();
+			parser.Setup<string>("longoption").Callback(str => lowerCaseValue = str).Required();
+
+			var result = parser.Parse(new[] { "--LONGOPTION", expectedUpperCaseValue, "--longoption", expectedLowerCaseValue });
 
 			Assert.IsFalse(result.HasErrors);
-			Assert.AreEqual(expectedSValue, expectedSValue);
-			Assert.IsTrue(sValue);
+			Assert.AreEqual(expectedUpperCaseValue, upperCaseValue);
+			Assert.AreEqual(expectedLowerCaseValue, lowerCaseValue);
 		}
 
 		#endregion
