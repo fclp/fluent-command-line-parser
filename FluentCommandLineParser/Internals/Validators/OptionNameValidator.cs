@@ -95,7 +95,7 @@ namespace Fclp.Internals.Validators
 			{
 				if (value.Contains(reservedChar))
 				{
-					ThrowInvalid(value, "The character '" + reservedChar + "' is not valid for a short or long name.");
+					ThrowInvalid(value, "The character '" + reservedChar + "' is not valid within a short or long name.");
 				}
 			}
 		}
