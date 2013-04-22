@@ -43,7 +43,7 @@ namespace Fclp
 		/// <exception cref="OptionAlreadyExistsException">
 		/// A Option with the same <paramref name="shortOption"/> name or <paramref name="longOption"/> name already exists in the <see cref="IFluentCommandLineParser"/>.
 		/// </exception>
-		/// <exception cref="ArgumentOutOfRangeException">
+		/// <exception cref="InvalidOptionNameException">
 		/// Either <paramref name="shortOption"/> or <paramref name="longOption"/> are not valid. <paramref name="shortOption"/> must not be <c>whitespace</c>
 		/// or a control character. <paramref name="longOption"/> must not be <c>null</c>, <c>empty</c> or only <c>whitespace</c>.
 		/// </exception>
@@ -54,6 +54,7 @@ namespace Fclp
 		/// </summary>
 		/// <param name="shortOption">The short name for the Option. This must not be <c>whitespace</c> or a control character.</param>
 		/// <returns></returns>
+		/// <exception cref="InvalidOptionNameException">if <paramref name="shortOption"/> is invalid for a short option.</exception>
 		/// <exception cref="OptionAlreadyExistsException">
 		/// A Option with the same <paramref name="shortOption"/> name 
 		/// already exists in the <see cref="IFluentCommandLineParser"/>.
@@ -64,7 +65,7 @@ namespace Fclp
 		/// Setup a new <see cref="ICommandLineOptionFluent{T}"/> using the specified long Option name.
 		/// </summary>
 		/// <param name="longOption">The long name for the Option. This must not be <c>null</c>, <c>empty</c> or only <c>whitespace</c>.</param>
-		/// <returns></returns>
+		/// <exception cref="InvalidOptionNameException">if <paramref name="longOption"/> is invalid for a long option.</exception>
 		/// <exception cref="OptionAlreadyExistsException">
 		/// A Option with the same <paramref name="longOption"/> name already exists in the <see cref="IFluentCommandLineParser"/>.
 		/// </exception>
