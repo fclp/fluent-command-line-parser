@@ -1,5 +1,5 @@
 ﻿#region License
-// CommandLineOptionNameValidatorTests.cs
+// OptionNameValidatorTests.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -31,7 +31,7 @@ using It = Machine.Specifications.It;
 
 namespace Fclp.Tests.Internals.Validators
 {
-	class CommandLineOptionNameValidatorTests
+	class OptionNameValidatorTests
 	{
 		[Subject(typeof(OptionNameValidator))]
 		abstract class CommandLineOptionNameValidatorTestContext : TestContextBase<OptionNameValidator>

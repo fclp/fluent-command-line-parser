@@ -105,7 +105,7 @@
     <Compile Include="Internals\CommandLineParserEngine\when_args_contains_a_boolean_option_that_ends_with_no_sign.cs" />
     <Compile Include="Internals\HelpCommandLineOptionTests.cs" />
     <Compile Include="Internals\TestContextBase.cs" />
-    <Compile Include="Internals\Validators\CommandLineOptionNameValidatorTests.cs" />
+    <Compile Include="Internals\Validators\OptionNameValidatorTests.cs" />
     <Compile Include="Internals\Validators\NoDuplicateOptionValidatorTests.cs" />
     <Compile Include="TestContext\TestContext.cs" />
     <Compile Include="FluentCommandLineParser\TestContext\TestType.cs" />
