@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineOptionFormatterTests.cs" />
+    <Compile Include="FluentCommandLineParserBuilderTests.cs" />
     <Compile Include="FluentCommandLineParserTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -107,6 +108,7 @@
     <Compile Include="Internals\TestContextBase.cs" />
     <Compile Include="Internals\Validators\OptionNameValidatorTests.cs" />
     <Compile Include="Internals\Validators\NoDuplicateOptionValidatorTests.cs" />
+    <Compile Include="TestApplicationArgs.cs" />
     <Compile Include="TestContext\TestContext.cs" />
     <Compile Include="FluentCommandLineParser\TestContext\TestType.cs" />
     <Compile Include="FluentCommandLineParser\when_executing_parse_operation\with_options_that_have_not_been_setup.cs" />

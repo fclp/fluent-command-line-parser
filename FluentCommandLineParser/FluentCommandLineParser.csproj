@@ -55,8 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineParserErrorFormatter.cs" />
+    <Compile Include="FluentCommandLineBuilder.cs" />
+    <Compile Include="ICommandLineOptionBuilderFluent.cs" />
     <Compile Include="ICommandLineParserErrorFormatter.cs" />
     <Compile Include="IHelpCommandLineOptionFluent.cs" />
+    <Compile Include="Internals\CommandLineOptionBuilderFluent.cs" />
     <Compile Include="Internals\CommandLineParserEngineMark2.cs" />
     <Compile Include="Internals\EmptyHelpCommandLineOption.cs" />
     <Compile Include="Internals\Errors\OptionSyntaxParseError.cs" />
