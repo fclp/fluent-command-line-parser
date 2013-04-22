@@ -18,15 +18,15 @@ static void Main(string[] args)
 {
   var p = new FluentCommandLineParser();
 
-  p.Setup<int>("r")
+  p.Setup<int>('r')
    .Callback(record => RecordID = record)
    .Required();
 
-  p.Setup<string>("v")
+  p.Setup<string>('v')
    .Callback(value => NewValue = value)
    .Required();
 
-  p.Setup<bool>("s", "silent")
+  p.Setup<bool>('s', "silent")
    .Callback(silent => InSilentMode = silent)
    .SetDefault(false);
 
@@ -35,9 +35,9 @@ static void Main(string[] args)
 ```
 ### Parser Option Methods
 
-`.Setup<int>("r")` Setup an option using a short name, 
+`.Setup<int>('r')` Setup an option using a short name, 
 
-`.Setup<int>("r", "record")` or short and long name.
+`.Setup<int>('r', "record")` or short and long name.
 
 `.Required()` Indicate the option is required and an error should be raised if it is not provided.
 
@@ -53,7 +53,7 @@ Many arguments can be collected as part of a list. Types supported are `string`,
 
 For example arguments such as
 
-`--filenames C:\file1.txt C:\file2.txt C:\file3.txt`
+`--filenames C:\file1.txt C:\file2.txt "C:\other file.txt"`
 
 can be automatically parsed to a `List<string>` using
 ```
@@ -63,7 +63,7 @@ static void Main(string[] args)
 
    var filenames = new List<string>();
 
-   p.Setup<List<string>>("f", "filenames")
+   p.Setup<List<string>>('f', "filenames")
     .Callback(items => filenames = items);
 
    p.Parse(args);
@@ -81,7 +81,7 @@ output:
 Input file names
 C:\file1.txt
 C:\file2.txt
-C:\file3.txt
+C:\other file.txt
 ```
 ### Supported Syntax
 `[-|--|/][switch_name][=|:| ][value]`
