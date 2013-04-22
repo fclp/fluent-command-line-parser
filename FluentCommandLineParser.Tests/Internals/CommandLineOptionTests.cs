@@ -98,7 +98,7 @@ namespace FluentCommandLineParser.Tests.Internals
 
 			var cmdOption = new CommandLineOption<object>(expectedShortName, expectedLongName, mockParser);
 
-            Assert.AreEqual(expectedShortName, cmdOption.ShortName, "Could not instantiate with null ShortName");
+			Assert.AreEqual(expectedShortName, cmdOption.ShortName, "Could not instantiate with null ShortName");
 		}
 
 		[Test]
@@ -110,7 +110,7 @@ namespace FluentCommandLineParser.Tests.Internals
 
 			var cmdOption = new CommandLineOption<object>(expectedShortName, expectedLongName, mockParser);
 
-            Assert.AreEqual(expectedShortName, cmdOption.ShortName, "Could not instantiate with empty ShortName");
+			Assert.AreEqual(expectedShortName, cmdOption.ShortName, "Could not instantiate with empty ShortName");
 		}
 
 		[Test]
@@ -122,117 +122,112 @@ namespace FluentCommandLineParser.Tests.Internals
 
 			var cmdOption = new CommandLineOption<object>(expectedShortName, expectedLongName, mockParser);
 
-            Assert.AreEqual(expectedShortName, cmdOption.ShortName, "Could not instantiate with whitespace only ShortName");
+			Assert.AreEqual(expectedShortName, cmdOption.ShortName, "Could not instantiate with whitespace only ShortName");
 		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void Ensure_Cannot_Be_Constructed_With_Null_ShortName_And_Null_LongName()
-        {
-            const string invalidShortName = null;
-            const string invalidLongName = null;
-            
-            var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
+		[Test]
+		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void Ensure_Cannot_Be_Constructed_With_Null_ShortName_And_Null_LongName()
+		{
+			const string invalidShortName = null;
+			const string invalidLongName = null;
+			
+			var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
 
-            new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
-        }
+			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void Ensure_Cannot_Be_Constructed_With_Empty_ShortName_And_Null_LongName()
-        {
-            const string invalidShortName = "";
-            const string invalidLongName = null;
+		[Test]
+		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void Ensure_Cannot_Be_Constructed_With_Empty_ShortName_And_Null_LongName()
+		{
+			const string invalidShortName = "";
+			const string invalidLongName = null;
 
-            var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
+			var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
 
-            new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
-        }
+			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void Ensure_Cannot_Be_Constructed_With_WhiteSpaceOnly_ShortName_And_Null_LongName()
-        {
-            const string invalidShortName = " ";
-            const string invalidLongName = null;
+		[Test]
+		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void Ensure_Cannot_Be_Constructed_With_WhiteSpaceOnly_ShortName_And_Null_LongName()
+		{
+			const string invalidShortName = " ";
+			const string invalidLongName = null;
 
-            var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
+			var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
 
-            new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
-        }
+			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void Ensure_Cannot_Be_Constructed_With_Null_ShortName_And_Empty_LongName()
-        {
-            const string invalidShortName = null;
-            const string invalidLongName = "";
+		[Test]
+		public void Ensure_Can_Be_Constructed_With_Null_ShortName_And_Empty_LongName()
+		{
+			const string invalidShortName = null;
+			const string invalidLongName = "";
 
-            var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
+			var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
 
-            new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
-        }
+			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void Ensure_Cannot_Be_Constructed_With_Empty_ShortName_And_Empty_LongName()
-        {
-            const string invalidShortName = "";
-            const string invalidLongName = "";
+		[Test]
+		public void Ensure_Can_Be_Constructed_With_Empty_ShortName_And_Empty_LongName()
+		{
+			const string invalidShortName = "";
+			const string invalidLongName = "";
 
-            var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
+			var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
 
-            new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
-        }
+			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void Ensure_Cannot_Be_Constructed_With_WhiteSpaceOnly_ShortName_And_Empty_LongName()
-        {
-            const string invalidShortName = " ";
-            const string invalidLongName = "";
+		[Test]
+		public void Ensure_Can_Be_Constructed_With_WhiteSpaceOnly_ShortName_And_Empty_LongName()
+		{
+			const string invalidShortName = " ";
+			const string invalidLongName = "";
 
-            var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
+			var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
 
-            new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
-        }
+			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void Ensure_Cannot_Be_Constructed_With_Null_ShortName_And_WhiteSpaceOnly_LongName()
-        {
-            const string invalidShortName = null;
-            const string invalidLongName = " ";
+		[Test]
+		public void Ensure_Can_Be_Constructed_With_Null_ShortName_And_WhiteSpaceOnly_LongName()
+		{
+			const string invalidShortName = null;
+			const string invalidLongName = " ";
 
-            var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
+			var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
 
-            new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
-        }
+			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void Ensure_Cannot_Be_Constructed_With_Empty_ShortName_And_WhiteSpaceOnly_LongName()
-        {
-            const string invalidShortName = "";
-            const string invalidLongName = " ";
+		[Test]
+		public void Ensure_Can_Be_Constructed_With_Empty_ShortName_And_WhiteSpaceOnly_LongName()
+		{
+			const string invalidShortName = "";
+			const string invalidLongName = " ";
 
-            var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
+			var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
 
-            new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
-        }
+			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void Ensure_Cannot_Be_Constructed_With_WhiteSpaceOnly_ShortName_And_WhiteSpaceOnly_LongName()
-        {
-            const string invalidShortName = " ";
-            const string invalidLongName = " ";
+		[Test]
+		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void Ensure_Cannot_Be_Constructed_With_WhiteSpaceOnly_ShortName_And_WhiteSpaceOnly_LongName()
+		{
+			const string invalidShortName = " ";
+			const string invalidLongName = " ";
 
-            var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
+			var mockParser = Mock.Of<ICommandLineOptionParser<object>>();
 
-            new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
-        }
-        
+			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
+		}
+		
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void Ensure_Cannot_Be_Constructed_With_Null_Parser()

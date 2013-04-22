@@ -755,6 +755,72 @@ namespace Fclp.Tests
 
 		#endregion
 
+		#region Obsolete
+
+		[Test]
+		public void Ensure_Obsolete_Setup_With_Only_Short_Option()
+		{
+			var parser = CreateFluentParser();
+			parser.Setup<string>("s", null);
+			var option = parser.Options.Single();
+			Assert.IsNull(option.LongName);
+			Assert.AreEqual("s", option.ShortName);
+		}
+
+		[Test]
+		public void Ensure_Obsolete_Setup_With_Only_Long_Option()
+		{
+			var parser = CreateFluentParser();
+			parser.Setup<string>(null, "long");
+			var option = parser.Options.Single();
+			Assert.AreEqual("long", option.LongName);
+			Assert.IsNull(option.ShortName);
+		}
+
+		[Test]
+		public void Ensure_Obsolete_Setup_With_Short_And_Long_Option()
+		{
+			var parser = CreateFluentParser();
+			parser.Setup<string>("s", "long");
+			var option = parser.Options.Single();
+			Assert.AreEqual("long", option.LongName);
+			Assert.AreEqual("s", option.ShortName);
+		}
+
+		[Test]
+		[ExpectedException(typeof(InvalidOptionNameException))]
+		public void Ensure_Obsolete_Setup_Does_Not_Allow_Null_Short_And_Long_Options()
+		{
+			var parser = CreateFluentParser();
+			parser.Setup<string>(null, null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(InvalidOptionNameException))]
+		public void Ensure_Obsolete_Setup_Does_Not_Allow_Empty_Short_And_Long_Options()
+		{
+			var parser = CreateFluentParser();
+			parser.Setup<string>(string.Empty, string.Empty);
+		}
+
+		[Test]
+		[ExpectedException(typeof(InvalidOptionNameException))]
+		public void Ensure_Obsolete_Setup_Does_Not_Allow_Short_Option_With_More_Than_One_Char()
+		{
+			var parser = CreateFluentParser();
+			parser.Setup<string>("ab", null);			
+		}
+
+		[Test]
+		[ExpectedException(typeof(InvalidOptionNameException))]
+		public void Ensure_Obsolete_Setup_Does_Not_Allow_Long_Option_With_One_Char()
+		{
+			var parser = CreateFluentParser();
+			parser.Setup<string>(null, "s");
+		}
+
+		#endregion
+
 		#endregion Top Level Tests
 
 		#region Duplicate Options Tests
