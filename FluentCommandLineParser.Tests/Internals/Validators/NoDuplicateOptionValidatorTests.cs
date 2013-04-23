@@ -22,7 +22,6 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System;
 using Fclp.Internals;
 using Fclp.Internals.Validators;
 using Machine.Specifications;
