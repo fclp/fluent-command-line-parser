@@ -136,8 +136,11 @@ namespace Fclp.Internals
 		/// Determines whether the help text should be shown.
 		/// </summary>
 		/// <param name="parsedOptions">The parsed command line arguments</param>
-		/// <returns>true if the parser operation should cease and <see cref="ShowHelp"/> should be called; otherwise false if the parse operation to continue.</returns>
-		public bool ShouldShowHelp(IEnumerable<ParsedOption> parsedOptions)
+		/// <param name="comparisonType">The type of comparison to use when comparing Option names.</param>
+		/// <returns>
+		/// true if the parser operation should cease and <see cref="ShowHelp" /> should be called; otherwise false if the parse operation to continue.
+		/// </returns>
+		public bool ShouldShowHelp(IEnumerable<ParsedOption> parsedOptions, StringComparison comparisonType)
 		{
 			var parsed = parsedOptions != null ? parsedOptions.ToList() : new List<ParsedOption>();
 
@@ -146,7 +149,7 @@ namespace Fclp.Internals
 				return true;
 			}
 
-			return this.HelpArgs.Any(helpArg => parsed.Any(cmdArg => helpArg.Equals(cmdArg.Key, StringComparison.CurrentCultureIgnoreCase)));
+			return this.HelpArgs.Any(helpArg => parsed.Any(cmdArg => helpArg.Equals(cmdArg.Key, comparisonType)));
 		}
 
 		/// <summary>

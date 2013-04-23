@@ -35,7 +35,10 @@ namespace Fclp.Internals
 		/// <summary>
 		/// Always returns false.
 		/// </summary>
-		public bool ShouldShowHelp(IEnumerable<ParsedOption> commandLineArgs)
+		/// <param name="commandLineArgs">The command line args.</param>
+		/// <param name="comparisonType">Type of the comparison.</param>
+		/// <returns></returns>
+		public bool ShouldShowHelp(IEnumerable<ParsedOption> commandLineArgs, StringComparison comparisonType)
 		{
 			return false;
 		}

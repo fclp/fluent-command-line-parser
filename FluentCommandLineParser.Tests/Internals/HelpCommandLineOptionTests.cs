@@ -22,6 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using Fclp.Internals;
 using Machine.Specifications;
@@ -42,8 +43,12 @@ namespace Fclp.Tests.Internals
 			{
 				protected static bool actualResult;
 				protected static IEnumerable<ParsedOption> parsedOptions;
+				protected static StringComparison comparisonType;
 
-				Because of = () => actualResult = sut.ShouldShowHelp(parsedOptions);
+				Establish context = () =>
+					comparisonType = StringComparison.CurrentCulture;
+
+				Because of = () => actualResult = sut.ShouldShowHelp(parsedOptions, comparisonType);
 			}
 
 			class when_the_args_are_empty_and_the_option_is_setup_to_handle_empty_args_like_help_args : ShouldShowHelpTestContext

@@ -641,6 +641,8 @@ namespace Fclp.Tests
 		{
 			var parser = new Fclp.FluentCommandLineParser();
 
+			parser.IsCaseSensitive = false;
+
 			var formatter = new Mock<ICommandLineOptionFormatter>();
 
 			var args = new[] { "/help", "i", "s" };
@@ -668,6 +670,8 @@ namespace Fclp.Tests
 		{
 			var parser = new Fclp.FluentCommandLineParser();
 
+			parser.IsCaseSensitive = false;
+
 			var formatter = new Mock<ICommandLineOptionFormatter>();
 
 			var args = new[] { "/help", "i", "s" };
@@ -694,9 +698,11 @@ namespace Fclp.Tests
 		#region Case Sensitive
 
 		[Test]
-		public void Ensure_Short_Options_Are_Case_Sensitive()
+		public void Ensure_Short_Options_Are_Case_Sensitive_When_Enabled()
 		{
 			var parser = CreateFluentParser();
+
+			parser.IsCaseSensitive = true;
 
 			const string expectedUpperCaseValue = "UPPERCASE VALUE";
 			const string expectedLowerCaseValue = "LOWERCASE VALUE";
@@ -714,11 +720,12 @@ namespace Fclp.Tests
 			Assert.AreEqual(expectedLowerCaseValue, lowerCaseValue);
 		}
 
-
 		[Test]
-		public void Ensure_Long_Options_Are_Case_Sensitive()
+		public void Ensure_Long_Options_Are_Case_Sensitive_When_Enabled()
 		{
 			var parser = CreateFluentParser();
+
+			parser.IsCaseSensitive = true;
 
 			const string expectedUpperCaseValue = "UPPERCASE VALUE";
 			const string expectedLowerCaseValue = "LOWERCASE VALUE";
@@ -734,6 +741,44 @@ namespace Fclp.Tests
 			Assert.IsFalse(result.HasErrors);
 			Assert.AreEqual(expectedUpperCaseValue, upperCaseValue);
 			Assert.AreEqual(expectedLowerCaseValue, lowerCaseValue);
+		}
+
+		[Test]
+		public void Ensure_Short_Options_Ignore_Case_When_Disabled()
+		{
+			var parser = CreateFluentParser();
+
+			parser.IsCaseSensitive = false;
+
+			const string expectedValue = "expected value";
+
+			string actualValue = null;
+
+			parser.Setup<string>('s').Callback(str => actualValue = str).Required();
+
+			var result = parser.Parse(new[] { "--S", expectedValue });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.AreEqual(expectedValue, actualValue);
+		}
+
+		[Test]
+		public void Ensure_Long_Options_Ignore_Case_When_Disabled()
+		{
+			var parser = CreateFluentParser();
+
+			parser.IsCaseSensitive = false;
+
+			const string expectedValue = "expected value";
+
+			string actualValue = null;
+
+			parser.Setup<string>("longoption").Callback(str => actualValue = str).Required();
+
+			var result = parser.Parse(new[] { "--LONGOPTION", expectedValue });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.AreEqual(expectedValue, actualValue);
 		}
 
 		#endregion

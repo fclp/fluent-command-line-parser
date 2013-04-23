@@ -8,8 +8,7 @@ namespace Fclp.Tests
 		[Subject(typeof(Fclp.FluentCommandLineParser))]
 		abstract class FluentCommandLineParserTestContext : TestContextBase<Fclp.FluentCommandLineParser>
 		{
-			Establish context = () =>
-				CreateSut();
+			Establish context = () => CreateSut();
 		}
 
 		sealed class IsCaseSensitive

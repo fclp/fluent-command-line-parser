@@ -216,7 +216,7 @@ namespace Fclp
 
 			var result = new CommandLineParserResult { EmptyArgs = parsedOptions.IsNullOrEmpty() };
 
-			if (this.HelpOption.ShouldShowHelp(parsedOptions))
+			if (this.HelpOption.ShouldShowHelp(parsedOptions, StringComparison))
 			{
 				result.HelpCalled = true;
 				this.HelpOption.ShowHelp(this.Options);
