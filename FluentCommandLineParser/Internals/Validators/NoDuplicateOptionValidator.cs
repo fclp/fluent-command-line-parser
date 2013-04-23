@@ -48,17 +48,11 @@ namespace Fclp.Internals.Validators
 		/// <summary>
 		/// Gets the <see cref="StringComparison"/> type used for duplicates.
 		/// </summary>
-		public StringComparison ComparisonType { get; private set; }
-		
-		/// <summary>
-		/// Gets or sets whether values that differ by case are considered different. 
-		/// </summary>
-		public bool IsCaseSensitive
+		private StringComparison ComparisonType
 		{
-			get { return ComparisonType == StringComparison.CurrentCulture; }
-			set { ComparisonType = value ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase; }
+			get { return _parser.IsCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase; }
 		}
-
+		
 		/// <summary>
 		/// Verifies that the specified <see cref="ICommandLineOption"/> will not cause any duplication.
 		/// </summary>

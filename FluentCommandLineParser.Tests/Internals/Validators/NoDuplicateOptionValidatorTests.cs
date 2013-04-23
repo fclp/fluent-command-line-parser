@@ -45,34 +45,6 @@ namespace Fclp.Tests.Internals.Validators
 			};
 		}
 
-		sealed class IsCaseSensitive
-		{
-			abstract class IsCaseSensitiveTestContext : NoDuplicateOptionValidatorTestContext 
-			{ }
-
-			class when_enabled : IsCaseSensitiveTestContext
-			{
-				Because of = () =>  sut.IsCaseSensitive = true;
-
-				It should_return_enabled = () => 
-					sut.IsCaseSensitive.ShouldBeTrue();
-
-				It should_set_the_comparison_type_to_case_sensitive = () => 
-					sut.ComparisonType.ShouldEqual(StringComparison.CurrentCulture);
-			}
-
-			class when_disabled : IsCaseSensitiveTestContext
-			{
-				Because of = () =>  sut.IsCaseSensitive = false;
-				
-				It should_return_enabled = () => 
-					sut.IsCaseSensitive.ShouldBeFalse();
-
-				It should_set_the_comparison_type_to_ignore_case = () => 
-					sut.ComparisonType.ShouldEqual(StringComparison.CurrentCultureIgnoreCase);
-			}
-		}
-
 		sealed class Validate
 		{
 			[Subject("Validate")]
@@ -106,7 +78,7 @@ namespace Fclp.Tests.Internals.Validators
 
 					existingOption.SetupGet(it => it.HasLongName).Returns(longName != null);
 					existingOption.SetupGet(it => it.HasShortName).Returns(shortName != null);
-					existingOption.SetupGet(it => it.ShortName).Returns(shortName);	
+					existingOption.SetupGet(it => it.ShortName).Returns(shortName);
 					existingOption.SetupGet(it => it.LongName).Returns(longName);
 
 					return existingOption.Object;
@@ -125,7 +97,7 @@ namespace Fclp.Tests.Internals.Validators
 			{
 				abstract class CaseSensitiveTestContext : ValidateTestContext
 				{
-					Establish context = () => sut.IsCaseSensitive = true;
+					Establish context = () => parser.SetupGet(it => it.IsCaseSensitive).Returns(true);
 				}
 
 				class when_an_existing_option_contains_the_same_short_name_but_it_differs_by_case : CaseSensitiveTestContext
@@ -204,14 +176,14 @@ namespace Fclp.Tests.Internals.Validators
 					};
 
 					It should_throw_an_error = () => error.ShouldNotBeNull();
-				}				
+				}
 			}
 
 			sealed class when_ignore_case
 			{
 				abstract class IgnoreCaseTestContext : ValidateTestContext
 				{
-					Establish context = () => sut.IsCaseSensitive = false;
+					Establish context = () => parser.SetupGet(it => it.IsCaseSensitive).Returns(false);
 				}
 
 				class when_an_existing_option_contains_the_same_short_name_but_it_differs_by_case : IgnoreCaseTestContext
@@ -290,7 +262,7 @@ namespace Fclp.Tests.Internals.Validators
 					};
 
 					It should_throw_an_error = () => error.ShouldNotBeNull();
-				}				
+				}
 			}
 		}
 	}

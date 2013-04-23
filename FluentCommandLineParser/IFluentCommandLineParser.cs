@@ -104,5 +104,10 @@ namespace Fclp
 		/// Returns the Options that have been setup for this parser.
 		/// </summary>
 		IEnumerable<ICommandLineOption> Options { get; }
+
+		/// <summary>
+		/// Gets or sets whether values that differ by case are considered different. 
+		/// </summary>
+		bool IsCaseSensitive { get; set; }
 	}
 }

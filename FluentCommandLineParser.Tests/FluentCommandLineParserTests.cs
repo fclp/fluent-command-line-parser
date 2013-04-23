@@ -125,23 +125,6 @@ namespace Fclp.Tests
 		{
 			const string expected = "my-expected-string";
 			RunTest(expected, expected);
-
-			//const string key = "s";
-			//string actual = null;
-
-			//var parser = CreateFluentParser();
-
-			//parser
-			//    .Setup<string>(key)
-			//    .Callback(val => actual = val);
-
-			//CallParserWithAllKeyVariations(parser, key, expected, (args, result) =>
-			//{
-			//    string msg = "Executed with args: " + FormatArgs(args);
-			//    Assert.AreEqual(expected, actual, msg);
-			//    Assert.IsFalse(result.HasErrors, msg);
-			//    Assert.IsFalse(result.Errors.Any(), msg);
-			//});
 		}
 
 		[Test]

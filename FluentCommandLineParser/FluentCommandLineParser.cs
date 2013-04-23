@@ -39,6 +39,16 @@ namespace Fclp
 	/// </summary>
 	public class FluentCommandLineParser : IFluentCommandLineParser
 	{
+		/// <summary>
+		/// The <see cref="StringComparison"/> type used for case sensitive comparisons.
+		/// </summary>
+		public const StringComparison CaseSensitiveComparison = StringComparison.CurrentCulture;
+
+		/// <summary>
+		/// The <see cref="StringComparison"/> type used for case in-sensitive comparisons.
+		/// </summary>
+		public const StringComparison IgnoreCaseComparison = StringComparison.CurrentCultureIgnoreCase;
+
 		List<ICommandLineOption> _options;
 		ICommandLineOptionFactory _optionFactory;
 		ICommandLineParserEngine _parserEngine;
@@ -48,12 +58,18 @@ namespace Fclp
 		ICommandLineOptionValidator _optionValidator;
 
 		/// <summary>
+		/// Gets or sets whether values that differ by case are considered different. 
+		/// </summary>
+		public bool IsCaseSensitive
+		{
+			get { return StringComparison == CaseSensitiveComparison; }
+			set { StringComparison = value ? CaseSensitiveComparison : IgnoreCaseComparison; }
+		}
+
+		/// <summary>
 		/// Gets the <see cref="StringComparison"/> to use when matching values.
 		/// </summary>
-		internal StringComparison StringComparison
-		{
-			get { return StringComparison.CurrentCulture; }
-		}
+		internal StringComparison StringComparison { get; private set; }
 
 		/// <summary>
 		/// Gets the list of Options

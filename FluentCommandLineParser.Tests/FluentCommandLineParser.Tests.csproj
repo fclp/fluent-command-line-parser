@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="CommandLineOptionFormatterTests.cs" />
     <Compile Include="FluentCommandLineParserBuilderTests.cs" />
+    <Compile Include="FluentCommandLineParserMSpecTests.cs" />
     <Compile Include="FluentCommandLineParserTests.cs">
       <SubType>Code</SubType>
     </Compile>
