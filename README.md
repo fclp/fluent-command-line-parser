@@ -47,6 +47,47 @@ static void Main(string[] args)
 
 `.WithDescription("Execute operation in silent mode without feedback")` Specify a help description for the option
 
+### Parsing Using Fluent Command Line Builder
+
+Instead of assigning parsed values to variables you can use the Fluent Command Line Builder to automatically create a defined object type and setup individual Options for each strongly-typed property. Because the builder is simply a wrapper around the parser you can still use the Fluent Command Line Parser Api to define the behaviour for each Option.
+
+The Fluent Command Line Builder can build a type and populate the properties with parsed values such as in the following example: 
+```
+public class ApplicationArguments
+{
+   public int RecordId { get; set; }
+   public bool Silent { get; set; }
+   public string NewValue { get; set; }
+}
+
+static void Main(string[] args)
+{
+   // create a builder for the ApplicationArguments type
+   var b = new FluentCommandLineBuilder<ApplicationArguments>();
+
+   // specify which property the value will be assigned too.
+   b.Setup(arg => arg.RecordId)
+    .As('r', "record") // define the short and long option name
+    .Required(); // using the standard fluent Api to declare this Option as required.
+
+   b.Setup(arg => arg.NewValue)
+    .As('v', "value")
+    .Required();
+
+   b.Setup(arg => arg.Silent)
+    .As('s', "silent")
+    .SetDefault(false); // use the standard fluent Api to define a default value if non is specified in the arguments
+
+   var result = b.Parse(args);
+
+   if(result.HasErrors == false)
+   {
+      // use the instantiated ApplicationArguments object from the Object property on the builder.
+      application.Run(b.Object);
+   }
+}
+```
+
 ### Parsing To Collections
 
 Many arguments can be collected as part of a list. Types supported are `string`, `int`, `double` and `bool`
