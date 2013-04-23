@@ -693,6 +693,23 @@ namespace Fclp.Tests
 			Assert.IsTrue(result.HelpCalled);
 		}
 
+		[Test]
+		public void Setup_Help_With_Symbol()
+		{
+			var parser = CreateFluentParser();
+
+			string callbackResult = null;
+
+			parser.SetupHelp("?").Callback(s => callbackResult = s);
+
+			var args = new[] { "-?" };
+
+			var result = parser.Parse(args);
+
+			Assert.IsTrue(result.HelpCalled);
+			Assert.IsNotNullOrEmpty(callbackResult);
+		}
+
 		#endregion
 
 		#region Case Sensitive
@@ -836,7 +853,7 @@ namespace Fclp.Tests
 		public void Ensure_Obsolete_Setup_Does_Not_Allow_Short_Option_With_More_Than_One_Char()
 		{
 			var parser = CreateFluentParser();
-			parser.Setup<string>("ab", null);			
+			parser.Setup<string>("ab", null);
 		}
 
 		[Test]
