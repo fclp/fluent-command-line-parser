@@ -33,6 +33,8 @@ namespace Fclp.Internals.Validators
 	{
 		private readonly IFluentCommandLineParser _parser;
 
+		
+
 		/// <summary>
 		/// Initialises a new instance of the <see cref="NoDuplicateOptionValidator"/> class.
 		/// </summary>
@@ -41,6 +43,20 @@ namespace Fclp.Internals.Validators
 		{
 			if (parser == null) throw new ArgumentNullException("parser");
 			_parser = parser;
+		}
+
+		/// <summary>
+		/// Gets the <see cref="StringComparison"/> type used for duplicates.
+		/// </summary>
+		public StringComparison ComparisonType { get; private set; }
+		
+		/// <summary>
+		/// Gets or sets whether values that differ by case are considered different. 
+		/// </summary>
+		public bool IsCaseSensitive
+		{
+			get { return ComparisonType == StringComparison.CurrentCulture; }
+			set { ComparisonType = value ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase; }
 		}
 
 		/// <summary>
@@ -63,9 +79,9 @@ namespace Fclp.Internals.Validators
 			}
 		}
 
-		private static void ValuesAreEqual(string value, string otherValue)
+		private void ValuesAreEqual(string value, string otherValue)
 		{
-			if (string.Equals(value, otherValue, StringComparison.CurrentCulture))
+			if (string.Equals(value, otherValue, ComparisonType))
 			{
 				throw new OptionAlreadyExistsException(value);
 			}
