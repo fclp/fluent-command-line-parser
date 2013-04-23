@@ -11,6 +11,36 @@ namespace Fclp.Tests
 			Establish context = () => CreateSut();
 		}
 
+		sealed class Constructor
+		{
+			class when_initialised : FluentCommandLineParserTestContext
+			{
+				It should_enable_case_sensitive = () =>
+					sut.IsCaseSensitive.ShouldBeTrue();
+
+				It should_have_an_error_formatter = () => 
+					sut.ErrorFormatter.ShouldNotBeNull();
+
+				It should_have_a_help_option = () => 
+					sut.HelpOption.ShouldNotBeNull();
+
+				It should_have_a_option_factory = () => 
+					sut.OptionFactory.ShouldNotBeNull();
+
+				It should_have_a_option_formatter = () => 
+					sut.OptionFormatter.ShouldNotBeNull();
+
+				It should_have_a_option_validator = () => 
+					sut.OptionValidator.ShouldNotBeNull();
+
+				It should_not_have_any_options_setup = () => 
+					sut.Options.ShouldBeEmpty();
+
+				It should_have_an_parser_engine = () => 
+					sut.ParserEngine.ShouldNotBeNull();
+			}
+		}
+
 		sealed class IsCaseSensitive
 		{
 			abstract class IsCaseSensitiveTestContext : FluentCommandLineParserTestContext { }
