@@ -40,6 +40,14 @@ namespace Fclp
 	public class FluentCommandLineParser : IFluentCommandLineParser
 	{
 		/// <summary>
+		/// Initialises a new instance of the <see cref="FluentCommandLineParser"/> class.
+		/// </summary>
+		public FluentCommandLineParser()
+		{
+			IsCaseSensitive = true;
+		}
+
+		/// <summary>
 		/// The <see cref="StringComparison"/> type used for case sensitive comparisons.
 		/// </summary>
 		public const StringComparison CaseSensitiveComparison = StringComparison.CurrentCulture;
