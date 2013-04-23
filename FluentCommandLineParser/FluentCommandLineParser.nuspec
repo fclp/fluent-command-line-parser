@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>FluentCommandLineParser</id>
+    <id>Fluent Command Line Parser</id>
     <version>$version$</version>
     <authors>siywilliams</authors>
     <owners>siywilliams</owners>
