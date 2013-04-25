@@ -1,5 +1,5 @@
 ﻿#region License
-// FluentCommandLineBuilder.cs
+// IFluentCommandLineBuilder.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -24,68 +24,40 @@
 
 using System;
 using System.Linq.Expressions;
-using Fclp.Internals;
 
 namespace Fclp
 {
 	/// <summary>
 	/// Parser that constructs and populates the specified type of object from command line arguments.
 	/// </summary>
-	public class FluentCommandLineBuilder<TBuildType> : IFluentCommandLineBuilder<TBuildType> where TBuildType : new()
+	public interface IFluentCommandLineBuilder<TBuildType> where TBuildType : new()
 	{
-		/// <summary>
-		/// Gets the <see cref="IFluentCommandLineParser"/>.
-		/// </summary>
-		public IFluentCommandLineParser Parser { get; private set; }
-
 		/// <summary>
 		/// Gets the constructed object.
 		/// </summary>
-		public TBuildType Object { get; private set; }
-
-		/// <summary>
-		/// Initialises a new instance of the <see cref="FluentCommandLineBuilder{TBuildType}"/> class.
-		/// </summary>
-		public FluentCommandLineBuilder()
-		{
-			Object = new TBuildType();
-			Parser = new FluentCommandLineParser();
-		}
+		TBuildType Object { get; }
 
 		/// <summary>
 		/// Sets up an Option for a write-able property on the type being built.
 		/// </summary>
-		public ICommandLineOptionBuilderFluent<TProperty> Setup<TProperty>(Expression<Func<TBuildType, TProperty>> propertyPicker)
-		{
-			return new CommandLineOptionBuilderFluent<TBuildType, TProperty>(Parser, Object, propertyPicker);
-		}
+		ICommandLineOptionBuilderFluent<TProperty> Setup<TProperty>(Expression<Func<TBuildType, TProperty>> propertyPicker);
 
 		/// <summary>
 		/// Parses the specified <see><cref>T:System.String[]</cref></see> using the setup Options.
 		/// </summary>
 		/// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
 		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
-		public ICommandLineParserResult Parse(string[] args)
-		{
-			return Parser.Parse(args);
-		}
+		ICommandLineParserResult Parse(string[] args);
 
 		/// <summary>
 		/// Setup the help args.
 		/// </summary>
 		/// <param name="helpArgs">The help arguments to register.</param>
-		public IHelpCommandLineOptionFluent SetupHelp(params string[] helpArgs)
-		{
-			return Parser.SetupHelp(helpArgs);
-		}
+		IHelpCommandLineOptionFluent SetupHelp(params string[] helpArgs);
 
 		/// <summary>
 		/// Gets or sets whether values that differ by case are considered different. 
 		/// </summary>
-		public bool IsCaseSensitive
-		{
-			get { return Parser.IsCaseSensitive; }
-			set { Parser.IsCaseSensitive = value; }
-		}
+		bool IsCaseSensitive { get; set; }
 	}
 }
