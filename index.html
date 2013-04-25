@@ -33,7 +33,7 @@
         <section id="main_content">
           <h3>Download</h3>
 
-<p>See what's new in <a href="https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap">v1.1</a>.</p>
+<p>See what's new in <a href="https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap">v1.2</a>.</p>
 
 <p>You can download the latest release from <a href="http://teamcity.codebetter.com/project.html?projectId=project314">CodeBetter's TeamCity server</a></p>
 
@@ -50,15 +50,15 @@
 {
   var p = new FluentCommandLineParser();
 
-  p.Setup&lt;int&gt;("r")
+  p.Setup&lt;int&gt;('r')
    .Callback(record =&gt; RecordID = record)
    .Required();
 
-  p.Setup&lt;string&gt;("v")
+  p.Setup&lt;string&gt;('v')
    .Callback(value =&gt; NewValue = value)
    .Required();
 
-  p.Setup&lt;bool&gt;("s", "silent")
+  p.Setup&lt;bool&gt;('s', "silent")
    .Callback(silent =&gt; InSilentMode = silent)
    .SetDefault(false);
 
@@ -68,9 +68,9 @@
 
 <h3>Parser Option Methods</h3>
 
-<p><code>.Setup&lt;int&gt;("r")</code> Setup an option using a short name, </p>
+<p><code>.Setup&lt;int&gt;('r')</code> Setup an option using a short name, </p>
 
-<p><code>.Setup&lt;int&gt;("r", "record")</code> or short and long name.</p>
+<p><code>.Setup&lt;int&gt;('r', "record")</code> or short and long name.</p>
 
 <p><code>.Required()</code> Indicate the option is required and an error should be raised if it is not provided.</p>
 
@@ -80,13 +80,54 @@
 
 <p><code>.WithDescription("Execute operation in silent mode without feedback")</code> Specify a help description for the option</p>
 
+<h3>Parsing Using Fluent Command Line Builder</h3>
+
+<p>Instead of assigning parsed values to variables you can use the Fluent Command Line Builder to automatically create a defined object type and setup individual Options for each strongly-typed property. Because the builder is simply a wrapper around the parser you can still use the Fluent Command Line Parser Api to define the behaviour for each Option.</p>
+
+<p>The Fluent Command Line Builder can build a type and populate the properties with parsed values such as in the following example: </p>
+
+<pre><code>public class ApplicationArguments
+{
+   public int RecordId { get; set; }
+   public bool Silent { get; set; }
+   public string NewValue { get; set; }
+}
+
+static void Main(string[] args)
+{
+   // create a builder for the ApplicationArguments type
+   var b = new FluentCommandLineBuilder&lt;ApplicationArguments&gt;();
+
+   // specify which property the value will be assigned too.
+   b.Setup(arg =&gt; arg.RecordId)
+    .As('r', "record") // define the short and long option name
+    .Required(); // using the standard fluent Api to declare this Option as required.
+
+   b.Setup(arg =&gt; arg.NewValue)
+    .As('v', "value")
+    .Required();
+
+   b.Setup(arg =&gt; arg.Silent)
+    .As('s', "silent")
+    .SetDefault(false); // use the standard fluent Api to define a default value if non is specified in the arguments
+
+   var result = b.Parse(args);
+
+   if(result.HasErrors == false)
+   {
+      // use the instantiated ApplicationArguments object from the Object property on the builder.
+      application.Run(b.Object);
+   }
+}
+</code></pre>
+
 <h3>Parsing To Collections</h3>
 
 <p>Many arguments can be collected as part of a list. Types supported are <code>string</code>, <code>int</code>, <code>double</code> and <code>bool</code></p>
 
 <p>For example arguments such as</p>
 
-<p><code>--filenames C:\file1.txt C:\file2.txt C:\file3.txt</code></p>
+<p><code>--filenames C:\file1.txt C:\file2.txt "C:\other file.txt"</code></p>
 
 <p>can be automatically parsed to a <code>List&lt;string&gt;</code> using</p>
 
@@ -96,7 +137,7 @@
 
    var filenames = new List&lt;string&gt;();
 
-   p.Setup&lt;List&lt;string&gt;&gt;("f", "filenames")
+   p.Setup&lt;List&lt;string&gt;&gt;('f', "filenames")
     .Callback(items =&gt; filenames = items);
 
    p.Parse(args);
@@ -115,7 +156,7 @@
 <pre><code>Input file names
 C:\file1.txt
 C:\file2.txt
-C:\file3.txt
+C:\other file.txt
 </code></pre>
 
 <h3>Supported Syntax</h3>
