@@ -107,7 +107,11 @@ namespace Fclp.Internals
 				sb.AppendLine();
 			}
 
-			foreach (var cmdOption in list.OrderBy(x => x.ShortName))
+			var ordered = (from option in list
+						  orderby option.ShortName.IsNullOrWhiteSpace() == false descending , option.ShortName
+						  select option).ToList();
+
+			foreach (var cmdOption in ordered)
 				sb.AppendFormat(CultureInfo.CurrentUICulture, TextFormat, FormatValue(cmdOption), cmdOption.Description);
 
 			return sb.ToString();
@@ -118,9 +122,18 @@ namespace Fclp.Internals
 		/// </summary>
 		static string FormatValue(ICommandLineOption cmdOption)
 		{
-			return cmdOption.LongName.IsNullOrWhiteSpace()
-						? cmdOption.ShortName
-						: cmdOption.ShortName + ":" + cmdOption.LongName;
+			if (cmdOption.ShortName.IsNullOrWhiteSpace())
+			{
+				return cmdOption.LongName;
+			}
+			
+			if (cmdOption.LongName.IsNullOrWhiteSpace())
+			{
+				return cmdOption.ShortName;
+			}
+
+			return cmdOption.ShortName + ":" + cmdOption.LongName;
 		}
+		// string = [-|/]f[:|=| ]|[-|/|--]filename[:|=| ] value 
 	}
 }
