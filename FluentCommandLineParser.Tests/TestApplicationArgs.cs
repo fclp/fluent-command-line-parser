@@ -21,6 +21,10 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
+
+using System;
+using System.Collections.Generic;
+
 namespace Fclp.Tests
 {
 	/// <summary>
@@ -28,19 +32,26 @@ namespace Fclp.Tests
 	/// </summary>
 	public class TestApplicationArgs
 	{
-		/// <summary>
-		/// Gets or sets the record id.
-		/// </summary>
 		public int RecordId { get; set; }
-
-		/// <summary>
-		/// Gets or sets a value indicating whether this <see cref="ApplicationArgs"/> is silent.
-		/// </summary>
 		public bool Silent { get; set; }
-
-		/// <summary>
-		/// Gets or sets the new value.
-		/// </summary>
 		public string NewValue { get; set; }
+	}
+
+	public class ListTestApplicationArgs
+	{
+		public List<int> Integers { get; set; }
+		public List<string> Strings { get; set; }
+		public List<bool> Booleans { get; set; }
+		public List<double> Doubles { get; set; }
+		public List<DateTime> DateTimes { get; set; } 
+	}
+
+	public class EnumerableApplicationArgs
+	{
+		public List<int> Integers { get; set; } 
+		public List<string> Strings { get; set; } 
+		public List<bool> Booleans { get; set; } 
+		public List<double> Doubles { get; set; } 
+		public List<DateTime> DateTimes { get; set; } 
 	}
 }
