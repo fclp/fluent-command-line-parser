@@ -26,7 +26,7 @@ namespace Fclp.Internals.Parsers
 	/// <summary>
 	/// Represents a parser for a Option that can convert a value into the required type.
 	/// </summary>
-	public interface ICommandLineOptionParser<out T>
+	public interface ICommandLineOptionParser<T>
 	{
 		/// <summary>
 		/// Parses the specified <see cref="System.String"/> into the return type.

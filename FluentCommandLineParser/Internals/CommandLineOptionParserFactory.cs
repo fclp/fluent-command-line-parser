@@ -44,12 +44,11 @@ namespace Fclp.Internals
 			this.AddOrReplace(new StringCommandLineOptionParser());
 			this.AddOrReplace(new DateTimeCommandLineOptionParser());
 			this.AddOrReplace(new DoubleCommandLineOptionParser());
-
-			this.AddOrReplaceList(new ListCommandLineOptionParser<string>(this));
-			this.AddOrReplaceList(new ListCommandLineOptionParser<int>(this));
-			this.AddOrReplaceList(new ListCommandLineOptionParser<double>(this));
-			this.AddOrReplaceList(new ListCommandLineOptionParser<DateTime>(this));
-			this.AddOrReplaceList(new ListCommandLineOptionParser<bool>(this));
+			this.AddOrReplace(new ListCommandLineOptionParser<string>(this));
+			this.AddOrReplace(new ListCommandLineOptionParser<int>(this));
+			this.AddOrReplace(new ListCommandLineOptionParser<double>(this));
+			this.AddOrReplace(new ListCommandLineOptionParser<DateTime>(this));
+			this.AddOrReplace(new ListCommandLineOptionParser<bool>(this));
 		}
 
 		internal Dictionary<Type, object> Parsers { get; set; }
@@ -71,14 +70,6 @@ namespace Fclp.Internals
 			this.Parsers.Remove(parserType);
 
 			this.Parsers.Add(parserType, parser);
-		}
-
-		private void AddOrReplaceList<T>(ICommandLineOptionParser<List<T>> parser)
-		{
-			AddOrReplace(parser);
-			AddOrReplace<IEnumerable<T>>(parser);
-			AddOrReplace<IList<T>>(parser);
-			AddOrReplace<ICollection<T>>(parser);
 		}
 
 		/// <summary>
