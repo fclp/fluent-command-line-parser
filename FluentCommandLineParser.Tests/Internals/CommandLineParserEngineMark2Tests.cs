@@ -29,42 +29,45 @@ using Machine.Specifications;
 
 namespace Fclp.Tests.Internals
 {
-	abstract class CommandLineParserEngineMark2TestContext : TestContextBase<CommandLineParserEngineMark2>
+	sealed class CommandLineParserEnginerMark2Tests
 	{
-		Establish context = () => CreateSut();
-	}
-
-	sealed class Parse
-	{
-		abstract class ParseTestContext : CommandLineParserEngineMark2TestContext
+		abstract class CommandLineParserEngineMark2TestContext : TestContextBase<CommandLineParserEngineMark2>
 		{
-			protected static string[] args;
-			protected static ParserEngineResult result;
+			Establish context = () => CreateSut();
+		}
 
-			protected static void SetupArgs(string arguments)
+		sealed class Parse
+		{
+			abstract class ParseTestContext : CommandLineParserEngineMark2TestContext
 			{
-				args = arguments.SplitOnWhitespace().ToArray();
+				protected static string[] args;
+				protected static ParserEngineResult result;
+
+				protected static void SetupArgs(string arguments)
+				{
+					args = arguments.SplitOnWhitespace().ToArray();
+				}
+
+				Because of = () =>
+					result = sut.Parse(args);
 			}
 
-			Because of = () =>
-				result = sut.Parse(args);
-		}
-
-		class when_args_is_null : ParseTestContext
-		{
-			Establish context = () => args = null;
+			class when_args_is_null : ParseTestContext
+			{
+				Establish context = () => args = null;
 			
-			It should_return_a_result_with_no_parsed_options = () =>
-				result.ParsedOptions.ShouldBeEmpty();
+				It should_return_a_result_with_no_parsed_options = () =>
+					result.ParsedOptions.ShouldBeEmpty();
 
-			It should_return_a_result_with_no_additional_values = () =>
-				result.AdditionalValues.ShouldBeEmpty();
-		}
+				It should_return_a_result_with_no_additional_values = () =>
+					result.AdditionalValues.ShouldBeEmpty();
+			}
 
-		class when_ : ParseTestContext
-		{
-			Establish context = () => SetupArgs("");
-		}
+			class when_ : ParseTestContext
+			{
+				Establish context = () => SetupArgs("");
+			}
+		} 
 	}
 	
 }
