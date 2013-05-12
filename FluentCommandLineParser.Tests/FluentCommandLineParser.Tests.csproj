@@ -101,6 +101,7 @@
     <Compile Include="Integration\NCrunchExcelDataAttribute.cs" />
     <Compile Include="Integration\StringInlineDataAttribute.cs" />
     <Compile Include="Internals\AnonymousMock.cs" />
+    <Compile Include="Internals\CommandLineOptionGrouperTests.cs" />
     <Compile Include="Internals\CommandLineParserEngineMark2Tests.cs" />
     <Compile Include="Internals\CommandLineParserEngineMark2TestsXUnit.cs" />
     <Compile Include="Internals\CommandLineParserEngine\TestContext\CommandLineParserEngineTestContext.cs" />

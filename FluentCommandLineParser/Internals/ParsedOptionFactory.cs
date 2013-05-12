@@ -1,5 +1,5 @@
 ﻿#region License
-// SpecialCharacters.cs
+// ParsedOptionFactory.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -21,42 +21,51 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
+
+using System.Linq;
+
 namespace Fclp.Internals
 {
 	/// <summary>
-	/// Contains special characters used throughout the parser.
+	/// Factory used to created parsed option meta data.
 	/// </summary>
-	public static class SpecialCharacters
+	public static class ParsedOptionFactory
 	{
 		/// <summary>
-		/// Characters used for value assignment.
+		/// Creates parsed option meta data for the specified raw key.
 		/// </summary>
-		public static readonly char[] ValueAssignments = new[] { '=', ':' };
+		public static ParsedOption Create(string rawKey)
+		{
+			var prefix = ExtractPrefix(rawKey);
+
+			return new ParsedOption
+			{
+				RawKey = rawKey,
+				Prefix = prefix,
+				Key = rawKey.Remove(0, prefix.Length),
+				Suffix = ExtractSuffix(rawKey)
+			};			
+		}
+
 
 		/// <summary>
-		/// Assign a name to the whitespace character.
+		/// Extracts the key identifier from the specified <see cref="System.String"/>.
 		/// </summary>
-		public const char Whitespace = ' ';
+		/// <param name="arg">The <see cref="System.String"/> to extract the key identifier from.</param>
+		/// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
+		static string ExtractPrefix(string arg)
+		{
+			return arg != null ? SpecialCharacters.OptionPrefix.FirstOrDefault(arg.StartsWith) : null;
+		}
 
 		/// <summary>
-		/// Characters that define the start of an option.
+		/// Extracts the key identifier from the specified <see cref="System.String"/>.
 		/// </summary>
-		public static readonly string[] OptionPrefix = new[] { "/", "--", "-" };
-
-		/// <summary>
-		/// Characters that have special meaning at the end of an option key.
-		/// </summary>
-		public static readonly string[] OptionSuffix = new[] { "+", "-" };
-
-		/// <summary>
-		/// Characters that define an explicit short option.
-		/// </summary>
-		public static readonly string[] ShortOptionPrefix = new[] { "-" };
-
-		/// <summary>
-		/// The key that indicates the end of any options.
-		/// Any following arguments should be treated as operands, even if they begin with the '-' character.
-		/// </summary>
-		public static readonly string EndOfOptionsKey = "--";
+		/// <param name="arg">The <see cref="System.String"/> to extract the key identifier from.</param>
+		/// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
+		static string ExtractSuffix(string arg)
+		{
+			return arg != null ? SpecialCharacters.OptionSuffix.FirstOrDefault(arg.EndsWith) : null;
+		}
 	}
 }

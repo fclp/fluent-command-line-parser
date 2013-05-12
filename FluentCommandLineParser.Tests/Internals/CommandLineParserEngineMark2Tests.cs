@@ -31,6 +31,7 @@ namespace Fclp.Tests.Internals
 {
 	sealed class CommandLineParserEnginerMark2Tests
 	{
+		[Subject(typeof(CommandLineParserEngineMark2))]
 		abstract class CommandLineParserEngineMark2TestContext : TestContextBase<CommandLineParserEngineMark2>
 		{
 			Establish context = () => CreateSut();
@@ -63,9 +64,62 @@ namespace Fclp.Tests.Internals
 					result.AdditionalValues.ShouldBeEmpty();
 			}
 
-			class when_ : ParseTestContext
+			class when_args_is_empty : ParseTestContext
 			{
-				Establish context = () => SetupArgs("");
+				Establish context = () => args = CreateEmptyList<string>().ToArray();
+
+				It should_return_a_result_with_no_parsed_options = () =>
+					result.ParsedOptions.ShouldBeEmpty();
+
+				It should_return_a_result_with_no_additional_values = () =>
+					result.AdditionalValues.ShouldBeEmpty();
+			}
+
+			class when_args_contains_negative_argument_seperated_with_a_colon : ParseTestContext
+			{
+				Establish context = () => SetupArgs("--int:-1");
+
+				It should_return_a_single_option = () =>
+					result.ParsedOptions.Count().ShouldEqual(1);
+
+				It should_set_the_parsed_option_value_to_the_negative_number = () =>
+					result.ParsedOptions.First().Value.ShouldEqual("-1");
+			}
+
+			class when_args_contains_negative_argument_seperated_with_a_equals : ParseTestContext
+			{
+				Establish context = () => SetupArgs("--int=-123");
+
+				It should_return_a_single_option = () =>
+					result.ParsedOptions.Count().ShouldEqual(1);
+
+				It should_set_the_parsed_option_value_to_the_negative_number = () =>
+					result.ParsedOptions.First().Value.ShouldEqual("-123");
+			}
+
+			class when_args_contains_negative_arguments_seperated_with_double_dash : ParseTestContext
+			{
+				Establish context = () => SetupArgs("--int -- -4321");
+
+				It should_return_a_single_option = () =>
+					result.ParsedOptions.Count().ShouldEqual(1);
+
+				It should_set_the_parsed_option_value_to_the_negative_number = () =>
+					result.ParsedOptions.First().Value.ShouldEqual("-4321");
+			}
+
+			class when_args_contains_single_switch : ParseTestContext
+			{
+				Establish context = () => SetupArgs("-b");
+
+				It should_return_a_single_option = () =>
+					result.ParsedOptions.Count().ShouldEqual(1);
+
+				It should_set_the_parsed_key_to_the_correct_value = () =>
+					result.ParsedOptions.First().Key.ShouldEqual("b");
+
+				It should_set_the_parsed_raw_key_to_the_correct_value = () =>
+					result.ParsedOptions.First().RawKey.ShouldEqual("-b");
 			}
 		} 
 	}

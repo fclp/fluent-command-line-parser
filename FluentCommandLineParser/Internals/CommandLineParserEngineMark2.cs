@@ -22,10 +22,9 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fclp.Internals.Extensions;
+using Fclp.Internals.Parsing;
 
 namespace Fclp.Internals
 {
@@ -34,6 +33,9 @@ namespace Fclp.Internals
 	/// </summary>
 	public class CommandLineParserEngineMark2 : ICommandLineParserEngine
 	{
+		private readonly List<string> _additionalOptionsFound = new List<string>();
+		private readonly List<ParsedOption> _parsedOptions = new List<ParsedOption>();
+
 		/// <summary>
 		/// Parses the specified <see><cref>T:System.String[]</cref></see> into appropriate <see cref="ParsedOption"/> objects..
 		/// </summary>
@@ -42,48 +44,63 @@ namespace Fclp.Internals
 		public ParserEngineResult Parse(string[] args)
 		{
 			args = args ?? new string[0];
-			var list = new List<ParsedOption>();
 
-			for (int index = 0; index < args.Length; index++)
+			var grouper = new CommandLineOptionGrouper();
+
+			foreach (var optionGroup in grouper.GroupByOption(args))
 			{
-				string currentArg = args[index];
+				string rawKey = optionGroup.First();
+				ParseGroupIntoOption(rawKey, optionGroup.Skip(1));
+			}
 
-				// we only want to find keys at this point
-				string prefix = ExtractPrefix(currentArg);
+			return new ParserEngineResult(_parsedOptions, _additionalOptionsFound);
+		}
 
-				if (prefix == null) continue;
-
-				var parsedOption = new ParsedOption
-				{
-					RawKey = currentArg,
-					Prefix = prefix,
-					Key = currentArg.Remove(0, prefix.Length),
-					Suffix = ExtractSuffix(currentArg)
-				};
+		private void ParseGroupIntoOption(string rawKey, IEnumerable<string> optionGroup)
+		{
+			if (IsAKey(rawKey))
+			{
+				var parsedOption = ParsedOptionFactory.Create(rawKey);
 
 				TrimSuffix(parsedOption);
 
-				DetermineOptionValue(args, index, parsedOption);
+				new OptionArgumentParser().ParseArguments(optionGroup, parsedOption);
 
-				var needToSplitKey = PrefixIsShortOption(prefix) && parsedOption.Key.Length > 1;
-
-				if (needToSplitKey)
-					list.AddRange(CloneAndSplit(parsedOption));
-				else
-					list.Add(parsedOption);
+				AddParsedOptionToList(parsedOption);
 			}
+			else
+			{
+				_additionalOptionsFound.AddRange(optionGroup);
+			}
+		}
 
-			return new ParserEngineResult(list, null);
+		private void AddParsedOptionToList(ParsedOption parsedOption)
+		{
+			if (ShortOptionNeedsToBeSplit(parsedOption))
+			{
+				_parsedOptions.AddRange(CloneAndSplit(parsedOption));
+			}
+			else
+			{
+				_parsedOptions.Add(parsedOption);
+			}
+		}
+
+		private static bool ShortOptionNeedsToBeSplit(ParsedOption parsedOption)
+		{
+			return PrefixIsShortOption(parsedOption.Prefix) && parsedOption.Key.Length > 1;
 		}
 
 		private static IEnumerable<ParsedOption> CloneAndSplit(ParsedOption parsedOption)
 		{
-			return parsedOption.Key.Select(c =>
-			{
-				var clone = parsedOption.Clone();
-				clone.Key = new string(new[] { c });
-				return clone;
-			}).ToList();
+			return parsedOption.Key.Select(c => Clone(parsedOption, c)).ToList();
+		}
+
+		private static ParsedOption Clone(ParsedOption toClone, char c)
+		{
+			var clone = toClone.Clone();
+			clone.Key = new string(new[] { c });
+			return clone;
 		}
 
 		private static bool PrefixIsShortOption(string key)
@@ -99,65 +116,6 @@ namespace Fclp.Internals
 			}
 		}
 
-		static void DetermineOptionValue(string[] args, int currentIndex, ParsedOption option)
-		{
-			if (SpecialCharacters.ValueAssignments.Any(option.Key.Contains))
-			{
-				TryGetValueFromKey(option);
-			}
-
-			var allValues = new List<string>();
-			var additionalValues = new List<string>();
-
-			var otherValues = CombineValuesUntilNextKey(args, currentIndex + 1);
-
-			if (option.HasValue) allValues.Add(option.Value);
-
-			if (otherValues.IsNullOrEmpty() == false)
-			{
-				allValues.AddRange(otherValues);
-				
-				if (otherValues.Count() > 1)
-				{
-					additionalValues.AddRange(otherValues);
-					additionalValues.RemoveAt(0);
-				}
-			}
-
-			option.Value = allValues.FirstOrDefault();
-			option.Values = allValues.ToArray();
-			option.AddtionalValues = additionalValues.ToArray();
-		}
-
-		private static void TryGetValueFromKey(ParsedOption option)
-		{
-			var splitted = option.Key.Split(SpecialCharacters.ValueAssignments, 2, StringSplitOptions.RemoveEmptyEntries);
-
-			option.Key = splitted[0];
-
-			if (splitted.Length > 1)
-				option.Value = splitted[1].WrapInDoubleQuotesIfContainsWhitespace();
-		}
-
-		static IEnumerable<string> CombineValuesUntilNextKey(string[] args, int currentIndex)
-		{
-			var values = new List<string>();
-
-			for (int index = currentIndex; index < args.Length; index++)
-			{
-				string currentArg = args[index];
-
-				// we only want to find values at this point
-				if (IsAKey(currentArg)) break;
-
-				currentArg = currentArg.WrapInDoubleQuotesIfContainsWhitespace();
-
-				values.Add(currentArg);
-			}
-
-			return values;
-		}
-
 		/// <summary>
 		/// Gets whether the specified <see cref="System.String"/> is a Option key.
 		/// </summary>
@@ -169,16 +127,6 @@ namespace Fclp.Internals
 		}
 
 		/// <summary>
-		/// Extracts the key identifier from the specified <see cref="System.String"/>.
-		/// </summary>
-		/// <param name="arg">The <see cref="System.String"/> to extract the key identifier from.</param>
-		/// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
-		static string ExtractPrefix(string arg)
-		{
-			return arg != null ? SpecialCharacters.OptionPrefix.FirstOrDefault(arg.StartsWith) : null;
-		}
-
-		/// <summary>
 		/// Parses the specified <see><cref>T:System.String[]</cref></see> into key value pairs.
 		/// </summary>
 		/// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
@@ -186,26 +134,6 @@ namespace Fclp.Internals
 		IEnumerable<ParsedOption> ICommandLineParserEngine.Parse(string[] args)
 		{
 			return Parse(args).ParsedOptions;
-		}
-
-		/// <summary>
-		/// Gets whether the specified <see cref="System.String"/> has a special suffix;
-		/// </summary>
-		/// <param name="arg">The <see cref="System.String"/> to examine.</param>
-		/// <returns><c>true</c> if the <paramref name="arg"/> ends with a special suffix; otherwise <c>false</c>.</returns>
-		static bool HasSpecialSuffix(string arg)
-		{
-			return arg != null && SpecialCharacters.OptionSuffix.Any(arg.EndsWith);
-		}
-
-		/// <summary>
-		/// Extracts the key identifier from the specified <see cref="System.String"/>.
-		/// </summary>
-		/// <param name="arg">The <see cref="System.String"/> to extract the key identifier from.</param>
-		/// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
-		static string ExtractSuffix(string arg)
-		{
-			return arg != null ? SpecialCharacters.OptionSuffix.FirstOrDefault(arg.EndsWith) : null;
 		}
 	}
 }
