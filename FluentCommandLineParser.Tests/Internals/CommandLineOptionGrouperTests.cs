@@ -44,7 +44,7 @@ namespace Fclp.Tests.Internals
 
 			Because of = () =>
 				error = Catch.Exception(() =>
-					actualResult = sut.GroupByOption(args));
+					actualResult = sut.GroupArgumentsByOption(args));
 		}
 
 		class when_double_dashes_are_used_to_terminate_option_parsing : GroupByOptionTestContext

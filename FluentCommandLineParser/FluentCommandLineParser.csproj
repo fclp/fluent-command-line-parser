@@ -95,9 +95,8 @@
     <Compile Include="Internals\Parsers\Int32CommandLineOptionParser.cs" />
     <Compile Include="Internals\Parsers\ListCommandLineOptionParser.cs" />
     <Compile Include="Internals\Parsers\StringCommandLineOptionParser.cs" />
-    <Compile Include="Internals\Parsing\CommandLineOptionGrouper.cs" />
     <Compile Include="Internals\Parsing\OptionArgumentParser.cs" />
-    <Compile Include="Internals\Parsing\Something.cs" />
+    <Compile Include="Internals\Parsing\CommandLineOptionGrouper.cs" />
     <Compile Include="Internals\SpecialCharacters.cs" />
     <Compile Include="Internals\Validators\CommandLineOptionValidator.cs" />
     <Compile Include="Internals\Validators\ICommandLineOptionValidator.cs" />

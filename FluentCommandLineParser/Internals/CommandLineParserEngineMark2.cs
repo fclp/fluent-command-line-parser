@@ -47,7 +47,7 @@ namespace Fclp.Internals
 
 			var grouper = new CommandLineOptionGrouper();
 
-			foreach (var optionGroup in grouper.GroupByOption(args))
+			foreach (var optionGroup in grouper.GroupArgumentsByOption(args))
 			{
 				string rawKey = optionGroup.First();
 				ParseGroupIntoOption(rawKey, optionGroup.Skip(1));
