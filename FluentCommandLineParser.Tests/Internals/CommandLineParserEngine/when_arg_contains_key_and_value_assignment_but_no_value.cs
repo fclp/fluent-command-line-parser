@@ -22,7 +22,6 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Internals;
 using Fclp.Internals.Parsing;
 using Fclp.Tests.CommandLineParserEngine;
 using Machine.Specifications;

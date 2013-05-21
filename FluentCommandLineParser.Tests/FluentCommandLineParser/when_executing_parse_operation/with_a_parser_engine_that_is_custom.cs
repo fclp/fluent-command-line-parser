@@ -23,7 +23,6 @@
 #endregion
 
 using System.Collections.Generic;
-using Fclp.Internals;
 using Fclp.Internals.Parsing;
 using Fclp.Tests.FluentCommandLineParser.TestContext;
 using Machine.Specifications;

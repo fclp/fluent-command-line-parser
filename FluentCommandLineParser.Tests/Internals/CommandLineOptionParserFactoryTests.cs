@@ -24,7 +24,6 @@
 
 using System;
 using Fclp;
-using Fclp.Internals;
 using Fclp.Internals.Parsing.OptionParsers;
 using Moq;
 using NUnit.Framework;
