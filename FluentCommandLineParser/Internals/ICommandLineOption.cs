@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using Fclp.Internals.Parsing;
 
 namespace Fclp.Internals
 {

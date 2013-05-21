@@ -1,5 +1,5 @@
 #region License
-// DateTimeCommandLineOptionParser.cs
+// Int32CommandLineOptionParser.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,24 +22,23 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System;
 using System.Globalization;
 
-namespace Fclp.Internals.Parsers
+namespace Fclp.Internals.Parsing.OptionParsers
 {
 	/// <summary>
-	/// Parser used to convert to <see cref="System.DateTime"/>.
+	/// Parser used to convert to <see cref="System.Int32"/>.
 	/// </summary>
-	public class DateTimeCommandLineOptionParser : ICommandLineOptionParser<DateTime>
+	public class Int32CommandLineOptionParser : ICommandLineOptionParser<int>
 	{
 		/// <summary>
-		/// Parses the specified <see cref="System.String"/> into a <see cref="System.DateTime"/>.
+		/// Converts the string representation of a number in a specified culture-specific format to its 32-bit signed integer equivalent.
 		/// </summary>
 		/// <param name="parsedOption"></param>
 		/// <returns></returns>
-		public DateTime Parse(ParsedOption parsedOption)
+		public int Parse(ParsedOption parsedOption)
 		{
-			return DateTime.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
+			return int.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
 		}
 
 		/// <summary>
@@ -49,8 +48,8 @@ namespace Fclp.Internals.Parsers
 		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
 		public bool CanParse(ParsedOption parsedOption)
 		{
-			DateTime dtOut;
-			return DateTime.TryParse(parsedOption.Value, out dtOut);
+			int result;
+			return int.TryParse(parsedOption.Value, out result);
 		}
 	}
 }

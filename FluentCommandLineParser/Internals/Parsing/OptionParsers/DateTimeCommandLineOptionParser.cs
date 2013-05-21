@@ -1,5 +1,5 @@
-﻿#region License
-// ParserEngineResult.cs
+#region License
+// DateTimeCommandLineOptionParser.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,34 +22,35 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Collections.Generic;
+using System;
+using System.Globalization;
 
-namespace Fclp.Internals
+namespace Fclp.Internals.Parsing.OptionParsers
 {
 	/// <summary>
-	/// Contains the results of the parse operation
+	/// Parser used to convert to <see cref="System.DateTime"/>.
 	/// </summary>
-	public class ParserEngineResult
+	public class DateTimeCommandLineOptionParser : ICommandLineOptionParser<DateTime>
 	{
 		/// <summary>
-		/// Initialises a new instance of the <see cref="ParserEngineResult"/> class;
+		/// Parses the specified <see cref="System.String"/> into a <see cref="System.DateTime"/>.
 		/// </summary>
-		/// <param name="parsedOptions">The parsed options.</param>
-		/// <param name="additionalValues">Any additional values that could not be translated into options.</param>
-		public ParserEngineResult(IEnumerable<ParsedOption> parsedOptions, IEnumerable<string> additionalValues)
+		/// <param name="parsedOption"></param>
+		/// <returns></returns>
+		public DateTime Parse(ParsedOption parsedOption)
 		{
-			ParsedOptions = parsedOptions ?? new List<ParsedOption>();
-			AdditionalValues = additionalValues ?? new List<string>();
+			return DateTime.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
 		}
 
 		/// <summary>
-		/// Gets the parsed options.
+		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
 		/// </summary>
-		public IEnumerable<ParsedOption> ParsedOptions { get; private set; }
-
-		/// <summary>
-		/// Gets any additional values that could not be translated into options.
-		/// </summary>
-		public IEnumerable<string> AdditionalValues { get; private set; }
+		/// <param name="parsedOption"></param>
+		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
+		public bool CanParse(ParsedOption parsedOption)
+		{
+			DateTime dtOut;
+			return DateTime.TryParse(parsedOption.Value, out dtOut);
+		}
 	}
 }

@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using Fclp.Internals;
+using Fclp.Internals.Parsing;
 using Machine.Specifications;
 
 namespace Fclp.Tests

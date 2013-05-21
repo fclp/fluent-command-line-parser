@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 // ParsedOptionFactory.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
@@ -24,7 +24,7 @@
 
 using System.Linq;
 
-namespace Fclp.Internals
+namespace Fclp.Internals.Parsing
 {
 	/// <summary>
 	/// Factory used to created parsed option meta data.

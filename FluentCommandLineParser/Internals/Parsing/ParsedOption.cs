@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 // ParsedOption.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
@@ -21,7 +21,7 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
-namespace Fclp.Internals
+namespace Fclp.Internals.Parsing
 {
 	/// <summary>
 	/// Contains information about a single parsed option and any value.

@@ -1,5 +1,5 @@
-﻿#region License
-// ICommandLineOptionParser.cs
+#region License
+// BoolCommandLineOptionParser.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -21,25 +21,50 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
-namespace Fclp.Internals.Parsers
+
+using Fclp.Internals.Extensions;
+
+namespace Fclp.Internals.Parsing.OptionParsers
 {
 	/// <summary>
-	/// Represents a parser for a Option that can convert a value into the required type.
+	/// Parser used to convert to <see cref="System.Boolean"/>.
 	/// </summary>
-	public interface ICommandLineOptionParser<T>
+	/// <remarks>For <see cref="System.Boolean"/> types the value is optional. If no value is provided for the Option then <c>true</c> is returned.</remarks>
+	public class BoolCommandLineOptionParser : ICommandLineOptionParser<bool>
 	{
 		/// <summary>
-		/// Parses the specified <see cref="System.String"/> into the return type.
+		/// Parses the specified <see cref="System.String"/> into a <see cref="System.Boolean"/>.
 		/// </summary>
 		/// <param name="parsedOption"></param>
-		/// <returns>The parsed value.</returns>
-		T Parse(ParsedOption parsedOption);
+		/// <returns>
+		/// A <see cref="System.Boolean"/> representing the parsed value.
+		/// The value is optional. If no value is provided then <c>true</c> is returned.
+		/// </returns>
+		public bool Parse(ParsedOption parsedOption)
+		{
+			if (parsedOption.Value.IsNullOrWhiteSpace())
+			{
+				// for the suffix:
+				//  "-" means the value should be false
+				//  "+" or any other suffix means the value should be true.
+				// if we don't have a 
+				return parsedOption.HasSuffix == false || parsedOption.Suffix != "-";
+			}
+			
+			return bool.Parse(parsedOption.Value);
+		}
 
 		/// <summary>
 		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
 		/// </summary>
 		/// <param name="parsedOption"></param>
 		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-		bool CanParse(ParsedOption parsedOption);
+		public bool CanParse(ParsedOption parsedOption)
+		{
+			// if the key exists with no value then this translates as true.
+			// if the key exists but has a value then we must try to parse the value
+			bool result;
+			return parsedOption.Value.IsNullOrWhiteSpace() || bool.TryParse(parsedOption.Value, out result);
+		}
 	}
 }

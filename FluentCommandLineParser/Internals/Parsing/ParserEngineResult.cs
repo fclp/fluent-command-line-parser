@@ -1,5 +1,5 @@
-#region License
-// Int32CommandLineOptionParser.cs
+﻿#region License
+// ParserEngineResult.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,34 +22,34 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Globalization;
+using System.Collections.Generic;
 
-namespace Fclp.Internals.Parsers
+namespace Fclp.Internals.Parsing
 {
 	/// <summary>
-	/// Parser used to convert to <see cref="System.Int32"/>.
+	/// Contains the results of the parse operation
 	/// </summary>
-	public class Int32CommandLineOptionParser : ICommandLineOptionParser<int>
+	public class ParserEngineResult
 	{
 		/// <summary>
-		/// Converts the string representation of a number in a specified culture-specific format to its 32-bit signed integer equivalent.
+		/// Initialises a new instance of the <see cref="ParserEngineResult"/> class;
 		/// </summary>
-		/// <param name="parsedOption"></param>
-		/// <returns></returns>
-		public int Parse(ParsedOption parsedOption)
+		/// <param name="parsedOptions">The parsed options.</param>
+		/// <param name="additionalValues">Any additional values that could not be translated into options.</param>
+		public ParserEngineResult(IEnumerable<ParsedOption> parsedOptions, IEnumerable<string> additionalValues)
 		{
-			return int.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
+			ParsedOptions = parsedOptions ?? new List<ParsedOption>();
+			AdditionalValues = additionalValues ?? new List<string>();
 		}
 
 		/// <summary>
-		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
+		/// Gets the parsed options.
 		/// </summary>
-		/// <param name="parsedOption"></param>
-		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-		public bool CanParse(ParsedOption parsedOption)
-		{
-			int result;
-			return int.TryParse(parsedOption.Value, out result);
-		}
+		public IEnumerable<ParsedOption> ParsedOptions { get; private set; }
+
+		/// <summary>
+		/// Gets any additional values that could not be translated into options.
+		/// </summary>
+		public IEnumerable<string> AdditionalValues { get; private set; }
 	}
 }

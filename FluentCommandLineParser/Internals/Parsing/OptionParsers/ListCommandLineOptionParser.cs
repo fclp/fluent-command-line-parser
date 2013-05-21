@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 // ListCommandLineOptionParser.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
@@ -25,7 +25,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Fclp.Internals.Parsers
+namespace Fclp.Internals.Parsing.OptionParsers
 {
 /// <summary>
 /// 

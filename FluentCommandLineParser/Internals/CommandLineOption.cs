@@ -25,7 +25,8 @@
 using System;
 using System.Linq;
 using Fclp.Internals.Extensions;
-using Fclp.Internals.Parsers;
+using Fclp.Internals.Parsing;
+using Fclp.Internals.Parsing.OptionParsers;
 
 namespace Fclp.Internals
 {

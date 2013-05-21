@@ -157,7 +157,9 @@
       <Name>FluentCommandLineParser</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Internals\Parsing\OptionParsers\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="FluentCommandLineParserTests.snk" />

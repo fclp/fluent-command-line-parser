@@ -1,5 +1,5 @@
 #region License
-// StringCommandLineOptionParser.cs
+// ICommandLineOptionParser.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,41 +22,25 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Linq;
-using Fclp.Internals.Extensions;
-
-namespace Fclp.Internals.Parsers
+namespace Fclp.Internals.Parsing.OptionParsers
 {
 	/// <summary>
-	/// Parser used to convert to <see cref="System.String"/>.
+	/// Represents a parser for a Option that can convert a value into the required type.
 	/// </summary>
-	public class StringCommandLineOptionParser : ICommandLineOptionParser<string>
+	public interface ICommandLineOptionParser<T>
 	{
 		/// <summary>
-		/// Parses the specified <see cref="System.String"/> into a <see cref="System.String"/>.
+		/// Parses the specified <see cref="System.String"/> into the return type.
 		/// </summary>
 		/// <param name="parsedOption"></param>
-		/// <returns></returns>
-		public string Parse(ParsedOption parsedOption)
-		{
-			return parsedOption.Value.RemoveAnyWrappingDoubleQuotes();
-		}
+		/// <returns>The parsed value.</returns>
+		T Parse(ParsedOption parsedOption);
 
 		/// <summary>
 		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
 		/// </summary>
 		/// <param name="parsedOption"></param>
 		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-		public bool CanParse(ParsedOption parsedOption)
-		{
-			if (parsedOption.Value.IsNullOrWhiteSpace()) return false;
-			if (parsedOption.HasValue == false) return false;
-
-			string value = parsedOption.Value.Trim();
-
-			var items = value.SplitOnWhitespace();
-
-			return items.Count() == 1;
-		}
+		bool CanParse(ParsedOption parsedOption);
 	}
 }

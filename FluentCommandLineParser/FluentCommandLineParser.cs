@@ -29,6 +29,7 @@ using System.Linq;
 using Fclp.Internals;
 using Fclp.Internals.Errors;
 using Fclp.Internals.Extensions;
+using Fclp.Internals.Parsing;
 using Fclp.Internals.Validators;
 
 namespace Fclp

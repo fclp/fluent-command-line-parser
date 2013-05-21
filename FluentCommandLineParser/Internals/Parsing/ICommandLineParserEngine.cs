@@ -1,5 +1,5 @@
-#region License
-// DoubleCommandLineOptionParser.cs
+﻿#region License
+// ICommandLineParserEngine.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,34 +22,20 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Globalization;
+using System.Collections.Generic;
 
-namespace Fclp.Internals.Parsers
+namespace Fclp.Internals.Parsing
 {
 	/// <summary>
-	/// Parser used to convert to <see cref="System.Double"/>.
+	/// Responsible for parsing command line arguments into simple key and value pairs.
 	/// </summary>
-	public class DoubleCommandLineOptionParser : ICommandLineOptionParser<double>
+	public interface ICommandLineParserEngine
 	{
 		/// <summary>
-		/// Parses the specified <see cref="System.String"/> into a <see cref="System.Double"/>.
+		/// Parses the specified <see><cref>T:System.String[]</cref></see> into key value pairs.
 		/// </summary>
-		/// <param name="parsedOption"></param>
-		/// <returns></returns>
-		public double Parse(ParsedOption parsedOption)
-		{
-			return double.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
-		}
-
-		/// <summary>
-		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
-		/// </summary>
-		/// <param name="parsedOption"></param>
-		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-		public bool CanParse(ParsedOption parsedOption)
-		{
-			double result;
-			return double.TryParse(parsedOption.Value, out result);
-		}
+		/// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
+		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
+		IEnumerable<ParsedOption> Parse(string[] args);
 	}
 }

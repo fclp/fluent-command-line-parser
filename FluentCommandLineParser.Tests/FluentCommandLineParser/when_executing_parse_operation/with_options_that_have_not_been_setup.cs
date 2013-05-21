@@ -25,6 +25,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals;
+using Fclp.Internals.Parsing;
 using Fclp.Tests.FluentCommandLineParser.TestContext;
 using Machine.Specifications;
 using Moq;
@@ -51,7 +52,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 
 				args = CreateArgsFromKvp(additionalOptions);
 
-				var mockEngine = new Mock<Fclp.Internals.ICommandLineParserEngine>();
+				var mockEngine = new Mock<ICommandLineParserEngine>();
 				mockEngine.Setup(x => x.Parse(args)).Returns(additionalOptions);
 				sut.ParserEngine = mockEngine.Object;
 			};

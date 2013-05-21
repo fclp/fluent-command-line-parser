@@ -1,5 +1,5 @@
 #region License
-// ICommandLineOptionParserFactory.cs
+// DoubleCommandLineOptionParser.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,21 +22,34 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Internals.Parsers;
+using System.Globalization;
 
-namespace Fclp.Internals
+namespace Fclp.Internals.Parsing.OptionParsers
 {
 	/// <summary>
-	/// Represents a factory capable of creating <see cref="ICommandLineOptionParser{T}"/>.
+	/// Parser used to convert to <see cref="System.Double"/>.
 	/// </summary>
-	public interface ICommandLineOptionParserFactory
+	public class DoubleCommandLineOptionParser : ICommandLineOptionParser<double>
 	{
 		/// <summary>
-		/// Creates a <see cref="ICommandLineOptionParser{T}"/> to handle the specified type.
+		/// Parses the specified <see cref="System.String"/> into a <see cref="System.Double"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of parser to create.</typeparam>
-		/// <returns>A <see cref="ICommandLineOptionParser{T}"/> suitable for the specified type.</returns>
-		/// <exception cref="UnsupportedTypeException">If the specified type is not supported by this factory.</exception>
-		ICommandLineOptionParser<T> CreateParser<T>();
+		/// <param name="parsedOption"></param>
+		/// <returns></returns>
+		public double Parse(ParsedOption parsedOption)
+		{
+			return double.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
+		}
+
+		/// <summary>
+		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
+		/// </summary>
+		/// <param name="parsedOption"></param>
+		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
+		public bool CanParse(ParsedOption parsedOption)
+		{
+			double result;
+			return double.TryParse(parsedOption.Value, out result);
+		}
 	}
 }

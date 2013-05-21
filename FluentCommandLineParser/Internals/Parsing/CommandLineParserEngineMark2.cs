@@ -24,9 +24,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Fclp.Internals.Parsing;
 
-namespace Fclp.Internals
+namespace Fclp.Internals.Parsing
 {
 	/// <summary>
 	/// More advanced parser for transforming command line arguments into appropriate <see cref="ParsedOption"/>.

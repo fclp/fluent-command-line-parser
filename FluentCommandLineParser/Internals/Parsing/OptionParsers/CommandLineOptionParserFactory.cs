@@ -24,9 +24,8 @@
 
 using System;
 using System.Collections.Generic;
-using Fclp.Internals.Parsers;
 
-namespace Fclp.Internals
+namespace Fclp.Internals.Parsing.OptionParsers
 {
 	/// <summary>
 	/// 

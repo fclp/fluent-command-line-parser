@@ -25,19 +25,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals;
+using Fclp.Internals.Parsing;
 using Machine.Specifications;
 
 namespace Fclp.Tests
 {
 	namespace CommandLineParserEngine
 	{
-		[Subject(typeof(Fclp.Internals.CommandLineParserEngineMark2), "CommandLineParserEngine")]
-		public abstract class CommandLineParserEngineTestContext : TestContext<Fclp.Internals.CommandLineParserEngineMark2>
+		[Subject(typeof(CommandLineParserEngineMark2), "CommandLineParserEngine")]
+		public abstract class CommandLineParserEngineTestContext : TestContext<CommandLineParserEngineMark2>
 		{
 			protected static IEnumerable<ParsedOption> results;
 			protected static string[] args;
 
-			Establish context = () => sut = new Fclp.Internals.CommandLineParserEngineMark2();
+			Establish context = () => sut = new CommandLineParserEngineMark2();
 
 			protected static void RunParserWith(string[] args)
 			{

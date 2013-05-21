@@ -1,5 +1,5 @@
-﻿#region License
-// ICommandLineParserEngine.cs
+#region License
+// ICommandLineOptionParserFactory.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,20 +22,21 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Collections.Generic;
+using Fclp.Internals.Parsing.OptionParsers;
 
-namespace Fclp.Internals
+namespace Fclp.Internals.Parsing
 {
 	/// <summary>
-	/// Responsible for parsing command line arguments into simple key and value pairs.
+	/// Represents a factory capable of creating <see cref="ICommandLineOptionParser{T}"/>.
 	/// </summary>
-	public interface ICommandLineParserEngine
+	public interface ICommandLineOptionParserFactory
 	{
 		/// <summary>
-		/// Parses the specified <see><cref>T:System.String[]</cref></see> into key value pairs.
+		/// Creates a <see cref="ICommandLineOptionParser{T}"/> to handle the specified type.
 		/// </summary>
-		/// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
-		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
-		IEnumerable<ParsedOption> Parse(string[] args);
+		/// <typeparam name="T">The type of parser to create.</typeparam>
+		/// <returns>A <see cref="ICommandLineOptionParser{T}"/> suitable for the specified type.</returns>
+		/// <exception cref="UnsupportedTypeException">If the specified type is not supported by this factory.</exception>
+		ICommandLineOptionParser<T> CreateParser<T>();
 	}
 }
