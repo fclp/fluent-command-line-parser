@@ -38,7 +38,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		/// <returns></returns>
 		public double Parse(ParsedOption parsedOption)
 		{
-			return double.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
+			return double.Parse(parsedOption.Value, CultureInfo.InvariantCulture);
 		}
 
 		/// <summary>
@@ -49,7 +49,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		public bool CanParse(ParsedOption parsedOption)
 		{
 			double result;
-			return double.TryParse(parsedOption.Value, out result);
+            return double.TryParse(parsedOption.Value, System.Globalization.NumberStyles.Number, CultureInfo.InvariantCulture, out result);
 		}
 	}
 }
