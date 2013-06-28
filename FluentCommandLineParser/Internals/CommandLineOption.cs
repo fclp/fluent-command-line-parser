@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals.Extensions;
 using Fclp.Internals.Parsing;
@@ -71,6 +72,8 @@ namespace Fclp.Internals
 		public string Description { get; set; }
 
 		internal Action<T> ReturnCallback { get; set; }
+
+		internal Action<IEnumerable<string>> ReturnAdditionalArgumentsCallback { get; set; }
 
 		internal T Default { get; set; }
 
@@ -124,11 +127,19 @@ namespace Fclp.Internals
 		}
 
 		/// <summary>
-		/// Gets whether this <see cred="ICommandLineOption"/> has a callback setup.
+		/// Gets whether this <see cref="ICommandLineOption"/> has a callback setup.
 		/// </summary>
 		public bool HasCallback
 		{
 			get { return this.ReturnCallback != null; }
+		}
+
+		/// <summary>
+		/// Gets whether this <see cref="ICommandLineOption"/> has an additional arguments callback setup.
+		/// </summary>
+		public bool HasAdditionalArgumentsCallback
+		{
+			get { return this.ReturnAdditionalArgumentsCallback != null; }
 		}
 
 		#endregion Properties
@@ -173,7 +184,7 @@ namespace Fclp.Internals
 		}
 
 		/// <summary>
-		/// Declares that this <see cref="ICommandLineOptionFluent{T}"/> is required and a value must be specified to fulfill it.
+		/// Declares that this <see cref="ICommandLineOptionFluent{T}"/> is required and a value must be specified to fulfil it.
 		/// </summary>
 		/// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
 		public ICommandLineOptionFluent<T> Required()
@@ -203,6 +214,18 @@ namespace Fclp.Internals
 		{
 			this.Default = value;
 			this.HasDefault = true;
+			return this;
+		}
+
+		/// <summary>
+		/// Specified the method to invoke with any addition arguments parsed with the Option.
+		/// If additional arguments are not required either do not call it, or specify <c>null</c>.
+		/// </summary>
+		/// <param name="callback">The return callback to execute with the parsed addition arguments found for this Option.</param>
+		/// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
+		public ICommandLineOptionFluent<T> AdditionalArgumentsCallback(Action<IEnumerable<string>> callback)
+		{
+			this.ReturnAdditionalArgumentsCallback = callback;
 			return this;
 		}
 
