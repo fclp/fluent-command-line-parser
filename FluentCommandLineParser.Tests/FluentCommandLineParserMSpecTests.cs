@@ -84,7 +84,7 @@ namespace Fclp.Tests
 			{
 				Because of = () => sut.IsCaseSensitive = false;
 
-				It should_return_enabled = () =>
+				It should_return_disabled = () =>
 					sut.IsCaseSensitive.ShouldBeFalse();
 
 				It should_set_the_comparison_type_to_ignore_case = () =>
