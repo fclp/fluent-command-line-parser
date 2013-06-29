@@ -60,7 +60,7 @@ namespace Fclp.Tests
 				It should_not_have_any_options_setup = () => 
 					sut.Options.ShouldBeEmpty();
 
-				It should_have_an_parser_engine = () => 
+				It should_have_a_parser_engine = () => 
 					sut.ParserEngine.ShouldNotBeNull();
 			}
 		}
