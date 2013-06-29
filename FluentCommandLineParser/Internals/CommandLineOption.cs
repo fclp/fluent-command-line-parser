@@ -73,7 +73,7 @@ namespace Fclp.Internals
 
 		internal Action<T> ReturnCallback { get; set; }
 
-		internal Action<IEnumerable<string>> ReturnAdditionalArgumentsCallback { get; set; }
+		internal Action<IEnumerable<string>> AdditionalArgumentsCallback { get; set; }
 
 		internal T Default { get; set; }
 
@@ -139,7 +139,7 @@ namespace Fclp.Internals
 		/// </summary>
 		public bool HasAdditionalArgumentsCallback
 		{
-			get { return this.ReturnAdditionalArgumentsCallback != null; }
+			get { return this.AdditionalArgumentsCallback != null; }
 		}
 
 		#endregion Properties
@@ -223,9 +223,9 @@ namespace Fclp.Internals
 		/// </summary>
 		/// <param name="callback">The return callback to execute with the parsed addition arguments found for this Option.</param>
 		/// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
-		public ICommandLineOptionFluent<T> AdditionalArgumentsCallback(Action<IEnumerable<string>> callback)
+		public ICommandLineOptionFluent<T> CaptureAdditionalArguments(Action<IEnumerable<string>> callback)
 		{
-			this.ReturnAdditionalArgumentsCallback = callback;
+			this.AdditionalArgumentsCallback = callback;
 			return this;
 		}
 

@@ -67,6 +67,6 @@ namespace Fclp
 		/// </summary>
 		/// <param name="callback">The return callback to execute with the parsed addition arguments found for this Option.</param>
 		/// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
-		ICommandLineOptionFluent<T> AdditionalArgumentsCallback(Action<IEnumerable<string>> callback);
+		ICommandLineOptionFluent<T> CaptureAdditionalArguments(Action<IEnumerable<string>> callback);
 	}
 }
