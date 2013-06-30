@@ -32,8 +32,8 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		/// Parses the specified <see cref="System.String"/> into the return type.
 		/// </summary>
 		/// <param name="parsedOption"></param>
-		/// <returns>The parsed value.</returns>
-		T Parse(ParsedOption parsedOption);
+		/// <returns>The parse result.</returns>
+        CommandLineOptionParserResult<T> Parse(ParsedOption parsedOption);
 
 		/// <summary>
 		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.

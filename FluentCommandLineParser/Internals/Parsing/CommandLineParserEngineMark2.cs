@@ -46,11 +46,14 @@ namespace Fclp.Internals.Parsing
 
 			var grouper = new CommandLineOptionGrouper();
 
-			foreach (var optionGroup in grouper.GroupArgumentsByOption(args))
+            var result=grouper.GroupArgumentsByOption(args);
+            foreach (var optionGroup in result.MatchedArgumentsOptionGroups)
 			{
 				string rawKey = optionGroup.First();
 				ParseGroupIntoOption(rawKey, optionGroup.Skip(1));
 			}
+
+            _additionalOptionsFound.AddRange(result.UnmatchedArgs);
 
 			return new ParserEngineResult(_parsedOptions, _additionalOptionsFound);
 		}
@@ -92,7 +95,8 @@ namespace Fclp.Internals.Parsing
 
 		private static IEnumerable<ParsedOption> CloneAndSplit(ParsedOption parsedOption)
 		{
-			return parsedOption.Key.Select(c => Clone(parsedOption, c)).ToList();
+            return parsedOption.Key.ToCharArray().Select(c => Clone(parsedOption, c)).ToList();
+            
 		}
 
 		private static ParsedOption Clone(ParsedOption toClone, char c)
@@ -130,9 +134,9 @@ namespace Fclp.Internals.Parsing
 		/// </summary>
 		/// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> containing the results of the parse operation.</returns>
-		IEnumerable<ParsedOption> ICommandLineParserEngine.Parse(string[] args)
+        ParserEngineResult ICommandLineParserEngine.Parse(string[] args)
 		{
-			return Parse(args).ParsedOptions;
+			return Parse(args);
 		}
 	}
 }

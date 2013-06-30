@@ -93,7 +93,7 @@ namespace Fclp.Internals.Validators
 
 			foreach (char reservedChar in ReservedChars)
 			{
-				if (value.Contains(reservedChar))
+				if (value.Contains(reservedChar.ToString()))
 				{
 					ThrowInvalid(value, "The character '" + reservedChar + "' is not valid within a short or long name.");
 				}

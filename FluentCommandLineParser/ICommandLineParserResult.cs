@@ -66,5 +66,10 @@ namespace Fclp
 		/// Contains all the setup options that were not matched during the parse operation.
 		/// </summary>
 		IEnumerable<ICommandLineOption> UnMatchedOptions { get; }
+
+        /// <summary>
+        /// Contains all arguments that could not be matched to any option
+        /// </summary>
+        IEnumerable<string> UnMatchedArgs { get; }
 	}
 }

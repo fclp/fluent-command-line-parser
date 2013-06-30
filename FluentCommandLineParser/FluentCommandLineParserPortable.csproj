@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0FBC96D2-68F6-4A40-9182-37265883E5BD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FluentCommandLineParserPortable</RootNamespace>
+    <AssemblyName>FluentCommandLineParserPortable</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile88</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="CommandLineParserErrorFormatter.cs" />
+    <Compile Include="FluentCommandLineBuilder.cs" />
+    <Compile Include="FluentCommandLineParser.cs" />
+    <Compile Include="ICommandLineOptionBuilderFluent.cs" />
+    <Compile Include="ICommandLineOptionFluent.cs" />
+    <Compile Include="ICommandLineOptionFormatter.cs" />
+    <Compile Include="ICommandLineParserError.cs" />
+    <Compile Include="ICommandLineParserErrorFormatter.cs" />
+    <Compile Include="ICommandLineParserResult.cs" />
+    <Compile Include="IFluentCommandLineBuilder.cs" />
+    <Compile Include="IFluentCommandLineParser.cs" />
+    <Compile Include="IHelpCommandLineOptionFluent.cs" />
+    <Compile Include="Internals\CommandLineOption.cs" />
+    <Compile Include="Internals\CommandLineOptionBuilderFluent.cs" />
+    <Compile Include="Internals\CommandLineOptionFactory.cs" />
+    <Compile Include="Internals\CommandLineOptionFormatter.cs" />
+    <Compile Include="Internals\EmptyHelpCommandLineOption.cs" />
+    <Compile Include="Internals\Errors\CommandLineParserErrorBase.cs" />
+    <Compile Include="Internals\Errors\ExpectedOptionNotFoundParseError.cs" />
+    <Compile Include="Internals\Errors\OptionSyntaxParseError.cs" />
+    <Compile Include="Internals\Extensions\UsefulExtension.cs" />
+    <Compile Include="Internals\HelpCommandLineOption.cs" />
+    <Compile Include="Internals\ICommandLineOption.cs" />
+    <Compile Include="Internals\ICommandLineOptionFactory.cs" />
+    <Compile Include="Internals\ICommandLineOptionResult.cs" />
+    <Compile Include="Internals\IHelpCommandLineOption.cs" />
+    <Compile Include="Internals\IHelpCommandLineOptionResult.cs" />
+    <Compile Include="Internals\Parsing\CommandLineOptionGrouper.cs" />
+    <Compile Include="Internals\Parsing\CommandLineParserEngineMark2.cs" />
+    <Compile Include="Internals\Parsing\CommandLineParserResult.cs" />
+    <Compile Include="Internals\Parsing\GroupArgumentsByOptionResult.cs" />
+    <Compile Include="Internals\Parsing\ICommandLineOptionParserFactory.cs" />
+    <Compile Include="Internals\Parsing\ICommandLineParserEngine.cs" />
+    <Compile Include="Internals\Parsing\OptionArgumentParser.cs" />
+    <Compile Include="Internals\Parsing\OptionParsers\BoolCommandLineOptionParser.cs" />
+    <Compile Include="Internals\Parsing\OptionParsers\CommandLineOptionParserFactory.cs" />
+    <Compile Include="Internals\Parsing\OptionParsers\CommandLineOptionParserResult.cs" />
+    <Compile Include="Internals\Parsing\OptionParsers\DateTimeCommandLineOptionParser.cs" />
+    <Compile Include="Internals\Parsing\OptionParsers\DoubleCommandLineOptionParser.cs" />
+    <Compile Include="Internals\Parsing\OptionParsers\ICommandLineOptionParser.cs" />
+    <Compile Include="Internals\Parsing\OptionParsers\Int32CommandLineOptionParser.cs" />
+    <Compile Include="Internals\Parsing\OptionParsers\ListCommandLineOptionParser.cs" />
+    <Compile Include="Internals\Parsing\OptionParsers\StringCommandLineOptionParser.cs" />
+    <Compile Include="Internals\Parsing\ParsedOption.cs" />
+    <Compile Include="Internals\Parsing\ParsedOptionFactory.cs" />
+    <Compile Include="Internals\Parsing\ParserEngineResult.cs" />
+    <Compile Include="Internals\SpecialCharacters.cs" />
+    <Compile Include="Internals\Validators\CommandLineOptionValidator.cs" />
+    <Compile Include="Internals\Validators\ICommandLineOptionValidator.cs" />
+    <Compile Include="Internals\Validators\NoDuplicateOptionValidator.cs" />
+    <Compile Include="Internals\Validators\OptionNameValidator.cs" />
+    <Compile Include="InvalidOptionNameException.cs" />
+    <Compile Include="OptionAlreadyExistsException.cs" />
+    <Compile Include="OptionSyntaxException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnsupportedTypeException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FluentCommandLineParser.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

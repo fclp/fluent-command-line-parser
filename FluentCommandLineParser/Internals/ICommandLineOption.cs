@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using Fclp.Internals.Parsing;
 
 namespace Fclp.Internals
@@ -46,7 +47,8 @@ namespace Fclp.Internals
 		/// Binds the specified <see cref="System.String"/> to this <see cref="ICommandLineOption"/>.
 		/// </summary>
 		/// <param name="value">The <see cref="System.String"/> to bind.</param>
-		void Bind(ParsedOption value);
+        /// <returns>the unmatched values</returns>
+		IEnumerable<string> Bind(ParsedOption value);
 
 		/// <summary>
 		/// Binds the default value for this <see cref="ICommandLineOption"/> if available.

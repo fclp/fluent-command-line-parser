@@ -31,15 +31,16 @@ namespace Fclp.Internals.Parsing.OptionParsers
 	/// </summary>
 	public class DoubleCommandLineOptionParser : ICommandLineOptionParser<double>
 	{
-		/// <summary>
-		/// Parses the specified <see cref="System.String"/> into a <see cref="System.Double"/>.
-		/// </summary>
-		/// <param name="parsedOption"></param>
-		/// <returns></returns>
-		public double Parse(ParsedOption parsedOption)
-		{
-			return double.Parse(parsedOption.Value, CultureInfo.InvariantCulture);
-		}
+        /// <summary>
+        /// Parses the specified <see cref="System.String"/> into a <see cref="System.Double"/>.
+        /// </summary>
+        /// <param name="parsedOption"></param>
+        /// <returns></returns>
+        public CommandLineOptionParserResult<double> Parse(ParsedOption parsedOption)
+        {
+            double parsedValue = double.Parse(parsedOption.Value, CultureInfo.InvariantCulture);
+            return new CommandLineOptionParserResult<double>(parsedValue, parsedOption.AddtionalValues);
+        }
 
 		/// <summary>
 		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.

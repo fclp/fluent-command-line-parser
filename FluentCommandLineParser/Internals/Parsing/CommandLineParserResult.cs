@@ -103,5 +103,10 @@ namespace Fclp.Internals.Parsing
 		/// Gets or sets the formatted error for this result.
 		/// </summary>
 		public string ErrorText { get; set; }
-	}
+
+        /// <summary>
+        /// Contains all arguments that could not be matched to any option
+        /// </summary>
+        public IEnumerable<string> UnMatchedArgs { get; set; }
+    }
 }

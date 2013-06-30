@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals.Extensions;
+using FluentCommandLineParser.Internals.Parsing;
 
 namespace Fclp.Internals.Parsing
 {
@@ -37,16 +38,19 @@ namespace Fclp.Internals.Parsing
 		private string[] _args;
 		private int _currentOptionLookupIndex;
 		private int[] _foundOptionLookup;
+        //lookup indexed by arg id which indicates if arg is matched into an option
+        private bool[] _matchedArgsLookup;
 		private int _currentOptionIndex;
 
 		/// <summary>
 		/// Groups the specified arguments by the associated Option.
 		/// </summary>
-		public string[][] GroupArgumentsByOption(string[] args)
+        public GroupArgumentsByOptionResult GroupArgumentsByOption(string[] args)
 		{
-			if (args.IsNullOrEmpty()) return new string[0][];
+            if (args.IsNullOrEmpty()) return new GroupArgumentsByOptionResult(new string[0][], new string[0]);
 
 			_args = args;
+            _matchedArgsLookup = new bool[args.Length];
 
 			_currentOptionIndex = -1;
 			_currentOptionLookupIndex = -1;
@@ -54,11 +58,7 @@ namespace Fclp.Internals.Parsing
 
 			var options = new List<string[]>();
 
-			if (this.ArgsContainsOptions() == false)
-			{
-				options.Add(this.CreateGroupForCurrent());
-			}
-			else
+			if (this.ArgsContainsOptions())
 			{
 				while (MoveToNextOption())
 				{
@@ -66,7 +66,9 @@ namespace Fclp.Internals.Parsing
 				}
 			}
 
-			return options.ToArray();
+            var unmatchedArgs = args.Where((arg, argIdx) => !_matchedArgsLookup[argIdx]);
+
+            return new GroupArgumentsByOptionResult(options.ToArray(), unmatchedArgs.ToArray());
 		}
 
 		private string[] CreateGroupForCurrent()
@@ -78,6 +80,11 @@ namespace Fclp.Internals.Parsing
 				: _args.Length - 1;
 
 			var length = optionEndIndex - (_currentOptionIndex - 1);
+
+            for (int i = _currentOptionIndex; i < _currentOptionIndex+length; i++)
+            {
+                _matchedArgsLookup[i] = true;
+            }
 
 			return _args.Skip(_currentOptionIndex)
 						.Take(length)
@@ -137,7 +144,7 @@ namespace Fclp.Internals.Parsing
 		/// </summary>
 		static bool IsEndOfOptionsKey(string arg)
 		{
-			return string.Equals(arg, SpecialCharacters.EndOfOptionsKey, StringComparison.InvariantCultureIgnoreCase);
+			return string.Equals(arg, SpecialCharacters.EndOfOptionsKey, StringComparison.OrdinalIgnoreCase);
 		}
 	}
 }

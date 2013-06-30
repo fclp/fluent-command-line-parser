@@ -118,26 +118,53 @@ namespace Fclp.Internals.Extensions
 			return str.IsNullOrWhiteSpace() == false && str.StartsWith("\"") && str.EndsWith("\"");
 		}
 
+        /// <summary>
+        /// permet de parser une chaine contenant les arguments
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static string[] ParseArguments(this string args)
+        {
+            args = ReplaceWithDoubleQuotes(args);
+            return args.SplitOnWhitespace().ToArray();
+        }
+
+        private static string ReplaceWithDoubleQuotes(string args)
+        {
+            if (args == null) return null;
+            return args.Replace('\'', '"');
+        }
+
 		/// <summary>
 		/// Splits the specified <see cref="System.String"/> when each whitespace char is encountered into a collection of substrings.
 		/// </summary>
 		/// <param name="value">The <see cref="System.String"/> to split.</param>
 		/// <returns>A collection of substrings taken from <paramref name="value"/>.</returns>
-		/// <remarks>If the whitespace is wrapped in double quotes then it is ignored.</remarks>
+		/// <remarks>If the whitespace is wrapped in double quotes or quotes then it is ignored.</remarks>
 		public static IEnumerable<string> SplitOnWhitespace(this string value)
 		{
-			if (string.IsNullOrEmpty(value)) return null;
+            if (string.IsNullOrEmpty(value)) return Enumerable.Empty<string>();
 
 			char[] parmChars = value.ToCharArray();
 
-			bool inDoubleQuotes = false;
+            //checking if we are between quotes (simple or double)
+            bool inDblQuotes = false;
+            bool inSmplQuote = false;
 
 			for (int index = 0; index < parmChars.Length; index++)
 			{
-				if (parmChars[index] == '"')
-					inDoubleQuotes = !inDoubleQuotes;
+                if (parmChars[index] == '"')
+                {
+                    inDblQuotes = !inDblQuotes;
+                }
+                else if (parmChars[index] == '\'')
+                {
+                    inSmplQuote = !inSmplQuote;
+                }
 
-				if (!inDoubleQuotes && parmChars[index] == ' ')
+                bool inQuotes = inDblQuotes || inSmplQuote;
+                
+				if (!inQuotes && parmChars[index] == ' ')
 					parmChars[index] = '\n';
 			}
 

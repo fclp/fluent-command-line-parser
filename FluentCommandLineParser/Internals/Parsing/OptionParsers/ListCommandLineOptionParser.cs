@@ -49,16 +49,19 @@ public class ListCommandLineOptionParser<T> : ICommandLineOptionParser<List<T>>
     /// </summary>
     /// <param name="parsedOption"></param>
     /// <returns>The parsed value.</returns>
-    public List<T> Parse(ParsedOption parsedOption)
+    public CommandLineOptionParserResult<List<T>> Parse(ParsedOption parsedOption)
     {
         var parser = _parserFactory.CreateParser<T>();
-
-        return parsedOption.Values.Select(value =>
+        
+        List<T> parsedValues= parsedOption.Values.Select(value =>
         {
             var clone = parsedOption.Clone();
             clone.Value = value;
-            return parser.Parse(clone);
+            return parser.Parse(clone).ParsedValue;
         }).ToList();
+
+        return new CommandLineOptionParserResult<List<T>>(parsedValues);
+
     }
 
     /// <summary>

@@ -152,7 +152,7 @@ namespace Fclp
 		/// </exception>
 		public ICommandLineOptionFluent<T> Setup<T>(char shortOption, string longOption)
 		{
-			return SetupInternal<T>(shortOption.ToString(CultureInfo.InvariantCulture), longOption);
+			return SetupInternal<T>(shortOption.ToString(), longOption);
 		}
 
 		/// <summary>
@@ -198,7 +198,7 @@ namespace Fclp
 		/// </exception>
 		public ICommandLineOptionFluent<T> Setup<T>(char shortOption)
 		{
-			return SetupInternal<T>(shortOption.ToString(CultureInfo.InvariantCulture), null);
+			return SetupInternal<T>(shortOption.ToString(), null);
 		}
 
 		/// <summary>
@@ -221,9 +221,11 @@ namespace Fclp
 		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
 		public ICommandLineParserResult Parse(string[] args)
 		{
-			var parsedOptions = this.ParserEngine.Parse(args).ToList();
+			var parsedRes = this.ParserEngine.Parse(args);
+            var parsedOptions=parsedRes.ParsedOptions.ToList();
 
 			var result = new CommandLineParserResult { EmptyArgs = parsedOptions.IsNullOrEmpty() };
+            result.UnMatchedArgs=parsedRes.AdditionalValues;
 
 			if (this.HelpOption.ShouldShowHelp(parsedOptions, StringComparison))
 			{
@@ -252,7 +254,8 @@ namespace Fclp
 
 					try
 					{
-						option.Bind(match);
+					    IEnumerable<string> unmatchedArgs=option.Bind(match);
+                        result.UnMatchedArgs = result.UnMatchedArgs.Concat(unmatchedArgs);
 					}
 					catch (OptionSyntaxException)
 					{

@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals.Extensions;
 using Fclp.Internals.Parsing;
@@ -139,11 +140,12 @@ namespace Fclp.Internals
 		/// Binds the specified <see cref="System.String"/> to the Option.
 		/// </summary>
 		/// <param name="value">The <see cref="System.String"/> to bind.</param>
-		public void Bind(ParsedOption value)
+		public IEnumerable<string> Bind(ParsedOption value)
 		{
 			if (this.Parser.CanParse(value) == false) throw new OptionSyntaxException();
-
-			this.Bind(this.Parser.Parse(value));
+            var parseRes = this.Parser.Parse(value);
+            this.Bind(parseRes.ParsedValue);
+            return parseRes.UnMatchedValues;
 		}
 
 		/// <summary>
