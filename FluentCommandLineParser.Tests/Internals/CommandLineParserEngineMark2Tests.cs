@@ -121,6 +121,39 @@ namespace Fclp.Tests.Internals
 				It should_set_the_parsed_raw_key_to_the_correct_value = () =>
 					result.ParsedOptions.First().RawKey.ShouldEqual("-b");
 			}
+
+			class when_args_contains_only_the_double_dash_option_prefix : ParseTestContext
+			{
+				Establish context = () => SetupArgs("--");
+
+				It should_return_no_parsed_options = () =>
+					result.ParsedOptions.ShouldBeEmpty();
+
+				It should_return_it_as_an_additional = () =>
+					result.AdditionalValues.ShouldContainOnly("--");
+			}
+
+			class when_args_contains_only_the_single_dash_option_prefix : ParseTestContext
+			{
+				Establish context = () => SetupArgs("-");
+
+				It should_return_no_parsed_options = () =>
+					result.ParsedOptions.ShouldBeEmpty();
+
+				It should_return_it_as_an_additional = () =>
+					result.AdditionalValues.ShouldContainOnly("-");
+			}
+
+			class when_args_contains_only_the_slash_option_prefix : ParseTestContext
+			{
+				Establish context = () => SetupArgs("/");
+
+				It should_return_no_parsed_options = () =>
+					result.ParsedOptions.ShouldBeEmpty();
+
+				It should_return_it_as_an_additional = () =>
+					result.AdditionalValues.ShouldContainOnly("/");
+			}
 		} 
 	}
 	

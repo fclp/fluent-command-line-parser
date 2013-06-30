@@ -69,6 +69,7 @@ namespace Fclp.Internals.Parsing
 			}
 			else
 			{
+				_additionalOptionsFound.Add(rawKey);
 				_additionalOptionsFound.AddRange(optionGroup);
 			}
 		}
@@ -122,7 +123,9 @@ namespace Fclp.Internals.Parsing
 		/// <returns><c>true</c> if <paramref name="arg"/> is a Option key; otherwise <c>false</c>.</returns>
 		static bool IsAKey(string arg)
 		{
-			return arg != null && SpecialCharacters.OptionPrefix.Any(arg.StartsWith);
+			return arg != null 
+				&& SpecialCharacters.OptionPrefix.Any(arg.StartsWith)
+				&& SpecialCharacters.OptionPrefix.Any(arg.Equals) == false;
 		}
 
 		/// <summary>
