@@ -108,7 +108,7 @@ namespace Fclp.Tests.Internals
 					result.ParsedOptions.First().Value.ShouldEqual("-4321");
 			}
 
-			class when_args_contains_single_switch : ParseTestContext
+			class when_args_contains_a_single_switch : ParseTestContext
 			{
 				Establish context = () => SetupArgs("-b");
 
@@ -129,8 +129,8 @@ namespace Fclp.Tests.Internals
 				It should_return_no_parsed_options = () =>
 					result.ParsedOptions.ShouldBeEmpty();
 
-				It should_return_it_as_an_additional = () =>
-					result.AdditionalValues.ShouldContainOnly("--");
+				It should_return_no_additional = () =>
+					result.AdditionalValues.ShouldBeEmpty();
 			}
 
 			class when_args_contains_only_the_single_dash_option_prefix : ParseTestContext
@@ -153,6 +153,28 @@ namespace Fclp.Tests.Internals
 
 				It should_return_it_as_an_additional = () =>
 					result.AdditionalValues.ShouldContainOnly("/");
+			}
+
+			class when_args_contains_only_arguments_and_no_options : ParseTestContext
+			{
+				Establish context = () => SetupArgs("arg1 arg2 arg3");
+
+				It should_return_no_parsed_options = () =>
+					result.ParsedOptions.ShouldBeEmpty();
+
+				It should_return_it_as_an_additional = () =>
+					result.AdditionalValues.ShouldContainOnly("arg1", "arg2", "arg3");				
+			}
+
+			class when_args_starts_with_a_double_dash : ParseTestContext
+			{
+				Establish context = () => SetupArgs("-- --int 1 2 3 -a -b ");
+
+				It should_return_no_parsed_options = () =>
+					result.ParsedOptions.ShouldBeEmpty();
+
+				It should_return_all_but_the_double_dash_as_an_additional = () =>
+					result.AdditionalValues.ShouldContainOnly("--int", "1", "2", "3", "-a", "-b");			
 			}
 		} 
 	}

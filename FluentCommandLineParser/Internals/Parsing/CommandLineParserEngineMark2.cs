@@ -22,8 +22,10 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fclp.Internals.Extensions;
 
 namespace Fclp.Internals.Parsing
 {
@@ -32,8 +34,9 @@ namespace Fclp.Internals.Parsing
 	/// </summary>
 	public class CommandLineParserEngineMark2 : ICommandLineParserEngine
 	{
-		private readonly List<string> _additionalOptionsFound = new List<string>();
+		private readonly List<string> _additionalArgumentsFound = new List<string>();
 		private readonly List<ParsedOption> _parsedOptions = new List<ParsedOption>();
+		private readonly OptionArgumentParser _optionArgumentParser = new OptionArgumentParser();
 
 		/// <summary>
 		/// Parses the specified <see><cref>T:System.String[]</cref></see> into appropriate <see cref="ParsedOption"/> objects..
@@ -52,7 +55,7 @@ namespace Fclp.Internals.Parsing
 				ParseGroupIntoOption(rawKey, optionGroup.Skip(1));
 			}
 
-			return new ParserEngineResult(_parsedOptions, _additionalOptionsFound);
+			return new ParserEngineResult(_parsedOptions, _additionalArgumentsFound);
 		}
 
 		private void ParseGroupIntoOption(string rawKey, IEnumerable<string> optionGroup)
@@ -63,14 +66,14 @@ namespace Fclp.Internals.Parsing
 
 				TrimSuffix(parsedOption);
 
-				new OptionArgumentParser().ParseArguments(optionGroup, parsedOption);
+				_optionArgumentParser.ParseArguments(optionGroup, parsedOption);
 
 				AddParsedOptionToList(parsedOption);
 			}
 			else
 			{
-				_additionalOptionsFound.Add(rawKey);
-				_additionalOptionsFound.AddRange(optionGroup);
+				AddAdditionArgument(rawKey);
+				optionGroup.ForEach(AddAdditionArgument);
 			}
 		}
 
@@ -83,6 +86,14 @@ namespace Fclp.Internals.Parsing
 			else
 			{
 				_parsedOptions.Add(parsedOption);
+			}
+		}
+
+		private void AddAdditionArgument(string argument)
+		{
+			if (IsEndOfOptionsKey(argument) == false)
+			{
+				_additionalArgumentsFound.Add(argument);
 			}
 		}
 
@@ -122,10 +133,18 @@ namespace Fclp.Internals.Parsing
 		/// <param name="arg">The <see cref="System.String"/> to examine.</param>
 		/// <returns><c>true</c> if <paramref name="arg"/> is a Option key; otherwise <c>false</c>.</returns>
 		static bool IsAKey(string arg)
-		{
+		{ // TODO: push related special char operations into there own object
 			return arg != null 
 				&& SpecialCharacters.OptionPrefix.Any(arg.StartsWith)
 				&& SpecialCharacters.OptionPrefix.Any(arg.Equals) == false;
+		}
+
+		/// <summary>
+		/// Determines whether the specified string indicates the end of parsed options.
+		/// </summary>
+		static bool IsEndOfOptionsKey(string arg)
+		{
+			return string.Equals(arg, SpecialCharacters.EndOfOptionsKey, StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		/// <summary>
