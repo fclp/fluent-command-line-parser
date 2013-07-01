@@ -81,6 +81,11 @@ namespace Fclp.Internals
 		bool HasCallback { get; }
 
 		/// <summary>
+		/// Gets whether this <see cref="ICommandLineOption"/> has an additional arguments callback setup.
+		/// </summary>
+		bool HasAdditionalArgumentsCallback { get; }
+
+		/// <summary>
 		/// Gets whether this <see cref="ICommandLineOption"/> has a default value setup.
 		/// </summary>
 		bool HasDefault { get; }

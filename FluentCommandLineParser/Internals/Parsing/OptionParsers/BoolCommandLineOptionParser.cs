@@ -56,7 +56,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
                 value=bool.Parse(parsedOption.Value);
             }
 
-            return new CommandLineOptionParserResult<bool>(value, parsedOption.AddtionalValues);
+            return new CommandLineOptionParserResult<bool>(value, parsedOption.AdditionalValues);
 		}
 
 		/// <summary>

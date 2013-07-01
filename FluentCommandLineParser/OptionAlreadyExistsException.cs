@@ -35,22 +35,7 @@ namespace Fclp
 		/// <summary>
 		/// Initialises a new instance of the <see cref="OptionAlreadyExistsException"/> class.
 		/// </summary>
-		public OptionAlreadyExistsException() { }
-
-		/// <summary>
-		/// Initialises a new instance of the <see cref="OptionAlreadyExistsException"/> class.
-		/// </summary>
 		/// <param name="optionName"></param>
 		public OptionAlreadyExistsException(string optionName) : base(optionName) { }
-		
-		
-		/// <summary>
-		/// Initialises a new instance of the <see cref="OptionAlreadyExistsException"/> class.
-		/// </summary>
-		/// <param name="optionName"></param>
-		/// <param name="innerException"></param>
-		public OptionAlreadyExistsException(string optionName, Exception innerException)
-			: base(optionName, innerException) { }
-
 	}
 }

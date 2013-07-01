@@ -39,7 +39,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
         public CommandLineOptionParserResult<double> Parse(ParsedOption parsedOption)
         {
             double parsedValue = double.Parse(parsedOption.Value, CultureInfo.InvariantCulture);
-            return new CommandLineOptionParserResult<double>(parsedValue, parsedOption.AddtionalValues);
+            return new CommandLineOptionParserResult<double>(parsedValue, parsedOption.AdditionalValues);
         }
 
 		/// <summary>

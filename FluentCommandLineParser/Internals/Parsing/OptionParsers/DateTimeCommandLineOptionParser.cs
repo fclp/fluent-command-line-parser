@@ -40,7 +40,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		public CommandLineOptionParserResult<DateTime> Parse(ParsedOption parsedOption)
 		{
             DateTime parsedValue = DateTime.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
-            return new CommandLineOptionParserResult<DateTime>(parsedValue, parsedOption.AddtionalValues);
+            return new CommandLineOptionParserResult<DateTime>(parsedValue, parsedOption.AdditionalValues);
 		}
 
 		/// <summary>

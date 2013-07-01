@@ -81,7 +81,7 @@ public class ListCommandLineOptionParser<T> : ICommandLineOptionParser<List<T>>
             var clone = parsedOption.Clone();
             clone.Value = value;
             clone.Values = new [] { value };
-            clone.AddtionalValues = new string[0];
+            clone.AdditionalValues = new string[0];
             return parser.CanParse(clone);
         });
     }

@@ -40,7 +40,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		public CommandLineOptionParserResult<int> Parse(ParsedOption parsedOption)
 		{
             int parsedValue = int.Parse(parsedOption.Value, CultureInfo.InvariantCulture);
-            return new CommandLineOptionParserResult<int>(parsedValue, parsedOption.AddtionalValues);
+            return new CommandLineOptionParserResult<int>(parsedValue, parsedOption.AdditionalValues);
 		}
 
 		/// <summary>

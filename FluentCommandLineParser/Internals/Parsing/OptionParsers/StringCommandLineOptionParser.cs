@@ -40,7 +40,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
         public CommandLineOptionParserResult<string> Parse(ParsedOption parsedOption)
 		{
             string parsedValue = parsedOption.Value.RemoveAnyWrappingDoubleQuotes();
-            return new CommandLineOptionParserResult<string>(parsedValue, parsedOption.AddtionalValues);
+            return new CommandLineOptionParserResult<string>(parsedValue, parsedOption.AdditionalValues);
 		}
 
 		/// <summary>

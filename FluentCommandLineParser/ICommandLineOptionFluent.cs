@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace Fclp
 {
@@ -47,6 +48,7 @@ namespace Fclp
 		/// <summary>
 		/// Specifies the method to invoke when the <see cref="ICommandLineOptionFluent{T}"/>. 
 		/// is parsed. If a callback is not required either do not call it, or specify <c>null</c>.
+		/// Do no use this if you are using the Fluent Command Line Builder.
 		/// </summary>
 		/// <param name="callback">The return callback to execute with the parsed value of the Option.</param>
 		/// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
@@ -58,5 +60,13 @@ namespace Fclp
 		/// <param name="value">The value to use.</param>
 		/// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
 		ICommandLineOptionFluent<T> SetDefault(T value);
+
+		/// <summary>
+		/// Specified the method to invoke with any addition arguments parsed with the Option.
+		/// If additional arguments are not required either do not call it, or specify <c>null</c>.
+		/// </summary>
+		/// <param name="callback">The return callback to execute with the parsed addition arguments found for this Option.</param>
+		/// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
+		ICommandLineOptionFluent<T> CaptureAdditionalArguments(Action<IEnumerable<string>> callback);
 	}
 }
