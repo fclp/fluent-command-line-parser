@@ -979,6 +979,43 @@ namespace Fclp.Tests
 			Assert.IsFalse(result.HelpCalled);
 		}
 
+		[Test]
+		public void Ensure_Additional_Args_Can_Be_Captured_For_Different_Options()
+		{
+			var parser = CreateFluentParser();
+
+			var option1AddArgs = new List<string>();
+			var option2AddArgs = new List<string>();
+
+			string option1Value = null;
+			string option2Value = null;
+
+			parser.Setup<string>("option-one")
+				  .Callback(s => option1Value = s)
+				  .CaptureAdditionalArguments(option1AddArgs.AddRange);
+
+			parser.Setup<string>("option-two")
+				  .Callback(s => option2Value = s)
+				  .CaptureAdditionalArguments(option2AddArgs.AddRange);
+
+			var result = parser.Parse(new[] { "--option-one", "value-one", "addArg1", "addArg2", "--option-two", "value-two", "addArg3", "addArg4" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+
+			Assert.AreEqual("value-one", option1Value);
+			Assert.AreEqual("value-two", option2Value);
+
+			Assert.AreEqual(2, option1AddArgs.Count());
+			Assert.IsTrue(option1AddArgs.Contains("addArg1"));
+			Assert.IsTrue(option1AddArgs.Contains("addArg2"));
+
+			Assert.AreEqual(2, option1AddArgs.Count());
+			Assert.IsTrue(option2AddArgs.Contains("addArg3"));
+			Assert.IsTrue(option2AddArgs.Contains("addArg4"));
+		}
+
 		#endregion
 
 		#region Lists
