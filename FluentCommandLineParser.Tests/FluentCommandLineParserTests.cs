@@ -199,6 +199,25 @@ namespace Fclp.Tests
 			});
 		}
 
+		[Test]
+		public void Ensure_Negative_Integer_Can_Be_Specified_With_Unix_Style()
+		{
+			var parser = CreateFluentParser();
+
+			int actual = 0;
+
+			parser.Setup<int>("integer")
+				  .Callback(i => actual = i);
+
+			var result = parser.Parse(new[] { "--integer", "--", "-123" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+
+			Assert.AreEqual(-123, actual);
+		}
+
 		#endregion Int32 Option
 
 		#region Double Option
@@ -245,6 +264,25 @@ namespace Fclp.Tests
 				Assert.IsFalse(result.HasErrors, FormatArgs(args));
 				Assert.IsFalse(result.Errors.Any(), FormatArgs(args));
 			});
+		}
+
+		[Test]
+		public void Ensure_Negative_Double_Can_Be_Specified_With_Unix_Style()
+		{
+			var parser = CreateFluentParser();
+
+			double actual = 0;
+
+			parser.Setup<double>("double")
+				  .Callback(i => actual = i);
+
+			var result = parser.Parse(new[] { "--double", "--", "-123.456" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+
+			Assert.AreEqual(-123.456, actual);
 		}
 
 		#endregion Double Option
@@ -862,6 +900,110 @@ namespace Fclp.Tests
 		{
 			var parser = CreateFluentParser();
 			parser.Setup<string>(null, "s");
+		}
+
+		#endregion
+
+		#region Addtional Arguments
+
+		[Test]
+		public void Ensure_Additional_Arguments_Callback_Called_When_Additional_Args_Provided()
+		{
+			var parser = CreateFluentParser();
+
+			var capturedAdditionalArgs = new List<string>();
+
+			parser.Setup<string>("my-option")
+				  .CaptureAdditionalArguments(capturedAdditionalArgs.AddRange);
+
+			var result = parser.Parse(new[] { "--my-option", "value", "--", "addArg1", "addArg2" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+
+			Assert.AreEqual(2, capturedAdditionalArgs.Count());
+			Assert.IsTrue(capturedAdditionalArgs.Contains("addArg1"));
+			Assert.IsTrue(capturedAdditionalArgs.Contains("addArg2"));
+		}
+
+		[Test]
+		public void Ensure_Additional_Arguments_Callback_Not_Called_When_No_Additional_Args_Provided()
+		{
+			var parser = CreateFluentParser();
+
+			var capturedAdditionalArgs = new List<string>();
+
+			parser.Setup<string>("my-option")
+				  .CaptureAdditionalArguments(capturedAdditionalArgs.AddRange);
+
+			var result = parser.Parse(new[] { "--my-option", "value" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+
+			Assert.IsEmpty(capturedAdditionalArgs);
+		}
+
+		[Test]
+		public void Ensure_Additional_Arguments_Callback_Not_Called_When_No_Additional_Args_Follow_A_Double_Dash()
+		{
+			var parser = CreateFluentParser();
+
+			var capturedAdditionalArgs = new List<string>();
+
+			parser.Setup<string>("my-option")
+				  .CaptureAdditionalArguments(capturedAdditionalArgs.AddRange);
+
+			var result = parser.Parse(new[] { "--my-option", "value", "--" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+
+			Assert.IsEmpty(capturedAdditionalArgs);
+		}
+
+		[Test]
+		public void Ensure_Stable_When_Additional_Args_Are_Provided_But_Capture_Additional_Arguments_Has_Not_Been_Setup()
+		{
+			var parser = CreateFluentParser();
+
+			parser.Setup<string>("my-option");
+
+			var result = parser.Parse(new[] { "--my-option", "value", "--", "addArg1", "addArg2" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+		}
+
+		#endregion
+
+		#region Lists
+
+		[Test]
+		public void Ensure_Can_Parse_Mulitple_Arguments_Containing_Negative_Integers_To_A_List()
+		{
+			var parser = CreateFluentParser();
+
+			var actual = new List<int>();
+
+			parser.Setup<List<int>>("integers")
+				  .Callback(actual.AddRange);
+
+			var result = parser.Parse(new[] { "--integers", "--", "123", "-123", "-321", "321" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+
+			Assert.AreEqual(4, actual.Count());
+			Assert.IsTrue(actual.Contains(123));
+			Assert.IsTrue(actual.Contains(-123));
+			Assert.IsTrue(actual.Contains(-321));
+			Assert.IsTrue(actual.Contains(321));
 		}
 
 		#endregion
