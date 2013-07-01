@@ -255,10 +255,7 @@ namespace Fclp
 					try
 					{
 					    IEnumerable<string> unmatchedArgs=option.Bind(match);
-                        if (unmatchedArgs != null)
-                        {
-                            result.UnMatchedArgs = result.UnMatchedArgs.Concat(unmatchedArgs);
-                        }          
+                        result.UnMatchedArgs = result.UnMatchedArgs.Concat(unmatchedArgs);
 					}
 					catch (OptionSyntaxException)
 					{

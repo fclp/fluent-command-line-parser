@@ -66,8 +66,7 @@ namespace Fclp.Internals.Parsing
 				}
 			}
 
-            var unmatchedArgs = args.Where((arg, argIdx) => !_matchedArgsLookup[argIdx])
-                .Where(arg=>!IsEndOfOptionsKey(arg));
+            var unmatchedArgs = args.Where((arg, argIdx) => !_matchedArgsLookup[argIdx]);
 
             return new GroupArgumentsByOptionResult(options.ToArray(), unmatchedArgs.ToArray());
 		}
