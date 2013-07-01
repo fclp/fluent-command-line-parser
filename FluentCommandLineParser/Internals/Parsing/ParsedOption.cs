@@ -69,7 +69,7 @@ namespace Fclp.Internals.Parsing
 		/// <summary>
 		/// Gets or sets the additional values matched with this key.
 		/// </summary>
-		public string[] AddtionalValues { get; set; }
+		public string[] AdditionalValues { get; set; }
 
 		/// <summary>
 		/// Gets or sets the prefix for the key e.g. -, / or --.
@@ -144,7 +144,7 @@ namespace Fclp.Internals.Parsing
 				Prefix = Prefix,
 				Suffix = Suffix,
 				Value = Value,
-				AddtionalValues = AddtionalValues,
+				AdditionalValues = AdditionalValues,
 				RawKey = RawKey,
 				Values = Values
 			};

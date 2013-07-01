@@ -66,7 +66,7 @@ namespace Fclp.Internals.Parsing
 
 			option.Value = allArguments.FirstOrDefault();
 			option.Values = allArguments.ToArray();
-			option.AddtionalValues = additionalArguments.ToArray();
+			option.AdditionalValues = additionalArguments.ToArray();
 		}
 
 		private static void TryGetArgumentFromKey(ParsedOption option)
