@@ -155,6 +155,8 @@ namespace Fclp.Internals
 			if (this.Parser.CanParse(value) == false) throw new OptionSyntaxException();
 
 			this.Bind(this.Parser.Parse(value));
+
+			this.BindAnyAdditionalArgs(value);
 		}
 
 		/// <summary>
@@ -170,6 +172,16 @@ namespace Fclp.Internals
 		{
 			if (this.HasCallback)
 				this.ReturnCallback(value);
+		}
+
+		void BindAnyAdditionalArgs(ParsedOption option)
+		{
+			if (!this.HasAdditionalArgumentsCallback) return;
+
+			if (option.AdditionalValues.Any())
+			{
+				this.AdditionalArgumentsCallback(option.AdditionalValues);
+			}
 		}
 
 		/// <summary>
