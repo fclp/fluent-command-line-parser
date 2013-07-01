@@ -932,10 +932,10 @@ namespace Fclp.Tests
 		{
 			var parser = CreateFluentParser();
 
-			var capturedAdditionalArgs = new List<string>();
+			bool wasCalled = false;
 
 			parser.Setup<string>("my-option")
-				  .CaptureAdditionalArguments(capturedAdditionalArgs.AddRange);
+				  .CaptureAdditionalArguments(addArgs => wasCalled = true);
 
 			var result = parser.Parse(new[] { "--my-option", "value" });
 
@@ -943,7 +943,7 @@ namespace Fclp.Tests
 			Assert.IsFalse(result.EmptyArgs);
 			Assert.IsFalse(result.HelpCalled);
 
-			Assert.IsEmpty(capturedAdditionalArgs);
+			Assert.IsFalse(wasCalled);
 		}
 
 		[Test]
@@ -951,10 +951,10 @@ namespace Fclp.Tests
 		{
 			var parser = CreateFluentParser();
 
-			var capturedAdditionalArgs = new List<string>();
+			bool wasCalled = false;
 
 			parser.Setup<string>("my-option")
-				  .CaptureAdditionalArguments(capturedAdditionalArgs.AddRange);
+				  .CaptureAdditionalArguments(addArgs => wasCalled = true);
 
 			var result = parser.Parse(new[] { "--my-option", "value", "--" });
 
@@ -962,7 +962,7 @@ namespace Fclp.Tests
 			Assert.IsFalse(result.EmptyArgs);
 			Assert.IsFalse(result.HelpCalled);
 
-			Assert.IsEmpty(capturedAdditionalArgs);
+			Assert.IsFalse(wasCalled);
 		}
 
 		[Test]
@@ -1011,7 +1011,7 @@ namespace Fclp.Tests
 			Assert.IsTrue(option1AddArgs.Contains("addArg1"));
 			Assert.IsTrue(option1AddArgs.Contains("addArg2"));
 
-			Assert.AreEqual(2, option1AddArgs.Count());
+			Assert.AreEqual(2, option2AddArgs.Count());
 			Assert.IsTrue(option2AddArgs.Contains("addArg3"));
 			Assert.IsTrue(option2AddArgs.Contains("addArg4"));
 		}
