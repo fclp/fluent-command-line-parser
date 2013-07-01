@@ -23,6 +23,7 @@
 #endregion
 
 using Fclp.Internals.Parsing;
+using FluentCommandLineParser.Internals.Parsing;
 using Machine.Specifications;
 
 namespace Fclp.Tests.Internals
@@ -38,7 +39,7 @@ namespace Fclp.Tests.Internals
 
 		abstract class GroupByOptionTestContext : CommandLineOptionGrouperTestContext
 		{
-			protected static string[][] actualResult;
+            protected static GroupArgumentsByOptionResult actualResult;
 			protected static string[] args;
 
 			Because of = () =>
@@ -59,16 +60,16 @@ namespace Fclp.Tests.Internals
 			};
 
 			It should_return_three_sets = () =>
-				actualResult.Length.ShouldEqual(3);
+				actualResult.MatchedArgumentsOptionGroups.Length.ShouldEqual(3);
 
 			It should_group_the_A_elements = () =>
-				actualResult[0].ShouldContainOnly("-A", "1", "2", "3"); 
+                actualResult.MatchedArgumentsOptionGroups[0].ShouldContainOnly("-A", "1", "2", "3"); 
 
 			It should_group_the_B_elements = () =>
-				actualResult[1].ShouldContainOnly("-B", "a", "b", "c"); 
+                actualResult.MatchedArgumentsOptionGroups[1].ShouldContainOnly("-B", "a", "b", "c"); 
 
 			It should_group_the_C_elements = () =>
-				actualResult[2].ShouldContainOnly("-C", "--", "-a", "-1", "-b"); 
+                actualResult.MatchedArgumentsOptionGroups[2].ShouldContainOnly("-C", "--", "-a", "-1", "-b"); 
 		}
 
 		class when_double_dashes_are_used_immediately_to_terminate_option_parsing : GroupByOptionTestContext
@@ -82,10 +83,10 @@ namespace Fclp.Tests.Internals
 				};
 
 			It should_return_a_single_set = () =>
-				actualResult.Length.ShouldEqual(1);
+                actualResult.MatchedArgumentsOptionGroups.Length.ShouldEqual(1);
 
 			It should_group_the_A_elements = () =>
-				actualResult[0].ShouldContainOnly("--", "-A", "1", "2", "3", "-B", "a", "b", "c", "-C", "-a", "-1", "-b"); 
+                actualResult.MatchedArgumentsOptionGroups[0].ShouldContainOnly("--", "-A", "1", "2", "3", "-B", "a", "b", "c", "-C", "-a", "-1", "-b"); 
 		}
 
 		class when_there_are_only_arguments_and_no_options : GroupByOptionTestContext
@@ -94,10 +95,10 @@ namespace Fclp.Tests.Internals
 				args = new[] { "0", "1", "2", "3" };
 
 			It should_return_a_single_set = () =>
-				actualResult.Length.ShouldEqual(1);
+                actualResult.MatchedArgumentsOptionGroups.Length.ShouldEqual(1);
 
 			It should_group_all_the_provided_elements = () =>
-				actualResult[0].ShouldContainOnly("0", "1", "2", "3"); 
+                actualResult.MatchedArgumentsOptionGroups[0].ShouldContainOnly("0", "1", "2", "3"); 
 		}
 
 		class when_there_is_a_double_dash_but_no_options_before_it : GroupByOptionTestContext
@@ -106,10 +107,10 @@ namespace Fclp.Tests.Internals
 				args = new[] { "--", "-A", "1", "2", "3" };
 
 			It should_return_a_single_set = () =>
-				actualResult.Length.ShouldEqual(1);
+                actualResult.MatchedArgumentsOptionGroups.Length.ShouldEqual(1);
 
 			It should_group_all_the_provided_elements = () =>
-				actualResult[0].ShouldContainOnly("--", "-A", "1", "2", "3"); 
+                actualResult.MatchedArgumentsOptionGroups[0].ShouldContainOnly("--", "-A", "1", "2", "3"); 
 		}
 
 		class when_there_is_a_double_dash_at_the_end : GroupByOptionTestContext
@@ -123,16 +124,16 @@ namespace Fclp.Tests.Internals
 				};
 
 			It should_return_three_sets = () =>
-				actualResult.Length.ShouldEqual(3);
+                actualResult.MatchedArgumentsOptionGroups.Length.ShouldEqual(3);
 
 			It should_group_the_A_elements = () =>
-				actualResult[0].ShouldContainOnly("-A", "1", "2", "3");
+                actualResult.MatchedArgumentsOptionGroups[0].ShouldContainOnly("-A", "1", "2", "3");
 
 			It should_group_the_B_elements = () =>
-				actualResult[1].ShouldContainOnly("-B", "a", "b", "c");
+                actualResult.MatchedArgumentsOptionGroups[1].ShouldContainOnly("-B", "a", "b", "c");
 
 			It should_group_the_C_elements = () =>
-				actualResult[2].ShouldContainOnly("-C", "a1", "b1", "c1", "--"); 
+                actualResult.MatchedArgumentsOptionGroups[2].ShouldContainOnly("-C", "a1", "b1", "c1", "--"); 
 		}
 
 		class when_options_are_repeated : GroupByOptionTestContext
@@ -141,13 +142,13 @@ namespace Fclp.Tests.Internals
 				args = new[] { "-A", "1", "2", "3", "-A", "4", "5", "6" };
 
 			It should_return_two_sets = () =>
-				actualResult.Length.ShouldEqual(2);
+                actualResult.MatchedArgumentsOptionGroups.Length.ShouldEqual(2);
 
 			It should_group_the_first_elements = () =>
-				actualResult[0].ShouldContainOnly("-A", "1", "2", "3"); 
+                actualResult.MatchedArgumentsOptionGroups[0].ShouldContainOnly("-A", "1", "2", "3"); 
 
 			It should_group_the_second_repeated_elements = () =>
-				actualResult[1].ShouldContainOnly("-A", "4", "5", "6"); 
+                actualResult.MatchedArgumentsOptionGroups[1].ShouldContainOnly("-A", "4", "5", "6"); 
 		}
 
 		class when_the_args_is_empty : GroupByOptionTestContext
@@ -159,7 +160,7 @@ namespace Fclp.Tests.Internals
 				error.ShouldBeNull();
 
 			It should_return_empty_args = () =>
-				actualResult.ShouldBeEmpty();
+                actualResult.MatchedArgumentsOptionGroups.ShouldBeEmpty();
 		}
 	}
 }

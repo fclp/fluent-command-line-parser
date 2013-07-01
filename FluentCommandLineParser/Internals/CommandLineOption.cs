@@ -150,13 +150,14 @@ namespace Fclp.Internals
 		/// Binds the specified <see cref="System.String"/> to the Option.
 		/// </summary>
 		/// <param name="value">The <see cref="System.String"/> to bind.</param>
-		public void Bind(ParsedOption value)
+		public IEnumerable<string> Bind(ParsedOption value)
 		{
 			if (this.Parser.CanParse(value) == false) throw new OptionSyntaxException();
+            var parseRes = this.Parser.Parse(value);
+            this.Bind(parseRes.ParsedValue);
+            this.BindAnyAdditionalArgs(value);
 
-			this.Bind(this.Parser.Parse(value));
-
-			this.BindAnyAdditionalArgs(value);
+            return parseRes.UnMatchedValues;		
 		}
 
 		/// <summary>

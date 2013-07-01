@@ -52,6 +52,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineParserErrorFormatter.cs" />
@@ -82,12 +83,14 @@
     <Compile Include="IFluentCommandLineParser.cs" />
     <Compile Include="Internals\Parsing\CommandLineParserEngineMark2.cs" />
     <Compile Include="Internals\Parsing\CommandLineParserResult.cs" />
+    <Compile Include="Internals\Parsing\GroupArgumentsByOptionResult.cs" />
     <Compile Include="Internals\Parsing\ICommandLineOptionParserFactory.cs" />
     <Compile Include="Internals\Parsing\ICommandLineParserEngine.cs" />
     <Compile Include="Internals\Parsing\OptionArgumentParser.cs" />
     <Compile Include="Internals\Parsing\CommandLineOptionGrouper.cs" />
     <Compile Include="Internals\Parsing\OptionParsers\BoolCommandLineOptionParser.cs" />
     <Compile Include="Internals\Parsing\OptionParsers\CommandLineOptionParserFactory.cs" />
+    <Compile Include="Internals\Parsing\OptionParsers\CommandLineOptionParserResult.cs" />
     <Compile Include="Internals\Parsing\OptionParsers\DateTimeCommandLineOptionParser.cs" />
     <Compile Include="Internals\Parsing\OptionParsers\DoubleCommandLineOptionParser.cs" />
     <Compile Include="Internals\Parsing\OptionParsers\ICommandLineOptionParser.cs" />

@@ -37,9 +37,10 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		/// </summary>
 		/// <param name="parsedOption"></param>
 		/// <returns></returns>
-		public DateTime Parse(ParsedOption parsedOption)
+		public CommandLineOptionParserResult<DateTime> Parse(ParsedOption parsedOption)
 		{
-			return DateTime.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
+            DateTime parsedValue = DateTime.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
+            return new CommandLineOptionParserResult<DateTime>(parsedValue, parsedOption.AdditionalValues);
 		}
 
 		/// <summary>

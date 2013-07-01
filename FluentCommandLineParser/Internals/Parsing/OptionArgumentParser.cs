@@ -41,7 +41,8 @@ namespace Fclp.Internals.Parsing
 		/// <param name="option">The option.</param>
 		public void ParseArguments(IEnumerable<string> args, ParsedOption option)
 		{
-			if (SpecialCharacters.ValueAssignments.Any(option.Key.Contains))
+
+			if (SpecialCharacters.ValueAssignments.Any(c=>option.Key.Contains(c.ToString())))
 			{
 				TryGetArgumentFromKey(option);
 			}
@@ -53,16 +54,15 @@ namespace Fclp.Internals.Parsing
 
 			if (option.HasValue) allArguments.Add(option.Value);
 
-			if (otherArguments.Any())
-			{
-				allArguments.AddRange(otherArguments);
+            if (otherArguments.Any())
+            {
+                allArguments.AddRange(otherArguments);
+                additionalArguments.AddRange(otherArguments);
 
-				if (otherArguments.Count() > 1)
-				{
-					additionalArguments.AddRange(otherArguments);
-					additionalArguments.RemoveAt(0);
-				}
-			}
+                if (!(option.HasValue) && additionalArguments.Count > 0)
+                    additionalArguments.RemoveAt(0);
+
+            }
 
 			option.Value = allArguments.FirstOrDefault();
 			option.Values = allArguments.ToArray();
@@ -71,7 +71,12 @@ namespace Fclp.Internals.Parsing
 
 		private static void TryGetArgumentFromKey(ParsedOption option)
 		{
-			var split = option.Key.Split(SpecialCharacters.ValueAssignments, 2, StringSplitOptions.RemoveEmptyEntries);
+            var split = option.Key.Split(SpecialCharacters.ValueAssignments, StringSplitOptions.RemoveEmptyEntries);
+            //don't split in more than two parts
+            if (split.Length > 2)
+            {
+                split = new string[] { split[0], option.Key.Substring(split[0].Length+1) };
+            }
 
 			option.Key = split[0];
 			option.Value = split.Length > 1 
@@ -91,7 +96,7 @@ namespace Fclp.Internals.Parsing
 		/// </summary>
 		static bool IsEndOfOptionsKey(string arg)
 		{
-			return string.Equals(arg, SpecialCharacters.EndOfOptionsKey, StringComparison.InvariantCultureIgnoreCase);
+			return string.Equals(arg, SpecialCharacters.EndOfOptionsKey, StringComparison.CurrentCultureIgnoreCase);
 		}
 	}
 }

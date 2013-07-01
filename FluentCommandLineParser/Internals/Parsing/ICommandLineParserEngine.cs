@@ -36,6 +36,6 @@ namespace Fclp.Internals.Parsing
 		/// </summary>
 		/// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
 		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
-		IEnumerable<ParsedOption> Parse(string[] args);
+        ParserEngineResult Parse(string[] args);
 	}
 }

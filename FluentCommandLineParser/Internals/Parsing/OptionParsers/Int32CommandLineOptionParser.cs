@@ -23,6 +23,7 @@
 #endregion
 
 using System.Globalization;
+using System.Linq;
 
 namespace Fclp.Internals.Parsing.OptionParsers
 {
@@ -36,9 +37,10 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		/// </summary>
 		/// <param name="parsedOption"></param>
 		/// <returns></returns>
-		public int Parse(ParsedOption parsedOption)
+		public CommandLineOptionParserResult<int> Parse(ParsedOption parsedOption)
 		{
-			return int.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
+            int parsedValue = int.Parse(parsedOption.Value, CultureInfo.InvariantCulture);
+            return new CommandLineOptionParserResult<int>(parsedValue, parsedOption.AdditionalValues);
 		}
 
 		/// <summary>

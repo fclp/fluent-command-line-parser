@@ -40,18 +40,23 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		/// A <see cref="System.Boolean"/> representing the parsed value.
 		/// The value is optional. If no value is provided then <c>true</c> is returned.
 		/// </returns>
-		public bool Parse(ParsedOption parsedOption)
+		public CommandLineOptionParserResult<bool> Parse(ParsedOption parsedOption)
 		{
-			if (parsedOption.Value.IsNullOrWhiteSpace())
-			{
-				// for the suffix:
-				//  "-" means the value should be false
-				//  "+" or any other suffix means the value should be true.
-				// if we don't have a 
-				return parsedOption.HasSuffix == false || parsedOption.Suffix != "-";
-			}
-			
-			return bool.Parse(parsedOption.Value);
+            bool value;
+            if (parsedOption.Value.IsNullOrWhiteSpace())
+            {
+                // for the suffix:
+                //  "-" means the value should be false
+                //  "+" or any other suffix means the value should be true.
+                // if we don't have a 
+                value= parsedOption.HasSuffix == false || parsedOption.Suffix != "-";
+            }
+            else
+            {
+                value=bool.Parse(parsedOption.Value);
+            }
+
+            return new CommandLineOptionParserResult<bool>(value, parsedOption.AdditionalValues);
 		}
 
 		/// <summary>

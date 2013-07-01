@@ -48,7 +48,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 
 										mockedEngine
 											.Setup(x => x.Parse(args))
-											.Returns(new List<ParsedOption>())
+                                            .Returns(new ParserEngineResult(new List<ParsedOption>(), new string[0]))
 											.Verifiable();
 									};
 
