@@ -146,15 +146,5 @@ namespace Fclp.Internals.Parsing
 		{
 			return string.Equals(arg, SpecialCharacters.EndOfOptionsKey, StringComparison.InvariantCultureIgnoreCase);
 		}
-
-		/// <summary>
-		/// Parses the specified <see><cref>T:System.String[]</cref></see> into key value pairs.
-		/// </summary>
-		/// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
-		/// <returns>An <see cref="IEnumerable{T}"/> containing the results of the parse operation.</returns>
-		IEnumerable<ParsedOption> ICommandLineParserEngine.Parse(string[] args)
-		{
-			return Parse(args).ParsedOptions;
-		}
 	}
 }

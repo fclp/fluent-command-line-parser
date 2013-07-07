@@ -221,7 +221,8 @@ namespace Fclp
 		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
 		public ICommandLineParserResult Parse(string[] args)
 		{
-			var parsedOptions = this.ParserEngine.Parse(args).ToList();
+			var parserEngineResult = this.ParserEngine.Parse(args);
+			var parsedOptions = parserEngineResult.ParsedOptions.ToList();
 
 			var result = new CommandLineParserResult { EmptyArgs = parsedOptions.IsNullOrEmpty() };
 

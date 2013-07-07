@@ -76,14 +76,16 @@ namespace Fclp.Tests.FluentCommandLineParser
 				_blankOption.Setup(x => x.Bind(_parsedBlankOption)).Verifiable();
 				sut.Options.Add(_blankOption.Object);
 
-				var parserEngineResult = new List<ParsedOption>
+				var parsedOptions = new List<ParsedOption>
 				{
 					_parsedOptionThatHasCallback,
 					_parsedOptionThatIsRequired,
 					_parsedBlankOption
 				};
 
-				args = CreateArgsFromKvp(parserEngineResult);
+				var parserEngineResult = new ParserEngineResult(parsedOptions, CreateEmptyList<string>());
+
+				args = CreateArgsFromKvp(parsedOptions);
 
 				var parserEngineMock = new Mock<ICommandLineParserEngine>();
 				parserEngineMock.Setup(x => x.Parse(args)).Returns(parserEngineResult);

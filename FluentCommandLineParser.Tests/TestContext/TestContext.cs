@@ -27,15 +27,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Fclp.Internals.Parsing;
+using Fclp.Tests.Internals;
 using Machine.Specifications;
 
 namespace Fclp.Tests
 {
-	public abstract class TestContext<T>
+	public abstract class TestContext<T> : TestContextBase<T> where T : class
 	{
-		protected static T sut;
-		protected static Exception error;
-
 		protected static void CatchAnyError(Action test)
 		{
 			error = Catch.Exception(test);
