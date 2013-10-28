@@ -1,0 +1,111 @@
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using Fclp;
+using Fclp.Internals;
+
+namespace MyXero.PriceChangeMigration
+{
+	public class CommandLineOptionFormatterMarkII : ICommandLineOptionFormatter
+	{
+		public CommandLineOptionFormatterMarkII()
+		{
+			Header = "Options:";
+			ValueText = "Value";
+			DescriptionText = "Description";
+			NoOptionsText = "No options have been setup";
+			MinOptionPadding = 2;
+			LeftPadding = 2;
+		}
+
+		public const string TextFormat = "\t{0}\t\t{1}\n";
+
+		private bool ShowHeader
+		{
+			get { return Header != null; }
+		}
+
+		public string Header { get; set; }
+
+		public string ValueText { get; set; }
+
+		public string DescriptionText { get; set; }
+
+		public string NoOptionsText { get; set; }
+
+		public int MinOptionPadding { get; set; }
+
+		public int LeftPadding { get; set; }
+
+		public string Format(System.Collections.Generic.IEnumerable<ICommandLineOption> options)
+		{
+			if (options == null) throw new ArgumentNullException("options");
+
+			var list = options.ToList();
+
+			if (!list.Any()) return this.NoOptionsText;
+
+			var sb = new StringBuilder();
+			sb.AppendLine();
+
+			// add headers first
+			if (ShowHeader)
+			{
+				sb.AppendLine(Header);
+				sb.AppendLine();
+			}
+
+			var ordered = (from option in list
+						   orderby string.IsNullOrWhiteSpace(option.ShortName) == false descending, option.ShortName
+						   select option).ToList();
+
+			var minPadding = FindLongestLongOption(list) + MinOptionPadding;
+
+			foreach (var cmdOption in ordered)
+				AppendWithPadding(sb, FormatValue(cmdOption), cmdOption.Description, minPadding);
+
+			return sb.ToString();
+		}
+
+		static int FindLongestLongOption(System.Collections.Generic.IEnumerable<ICommandLineOption> options)
+		{
+			return options.Select(option => FormatValue(option).Length).OrderByDescending(len => len).First();
+		}
+
+		void AppendWithPadding(StringBuilder sb, string optionText, string descriptionText, int minOptionPadding)
+		{
+			var requiredPadding = minOptionPadding - optionText.Length;
+
+			var leftPadding = new string(' ', LeftPadding);
+			var optionPadding = new string(' ', requiredPadding);
+
+			sb.AppendFormat(CultureInfo.CurrentUICulture, "{0}{1}{2}{3}\n", leftPadding, optionText, optionPadding, descriptionText);
+		}
+
+		static string FormatValue(ICommandLineOption cmdOption)
+		{
+			if (string.IsNullOrWhiteSpace(cmdOption.ShortName))
+			{
+				return FormatLong(cmdOption.LongName);
+			}
+
+			if (string.IsNullOrWhiteSpace(cmdOption.LongName))
+			{
+				return FormatShort(cmdOption.ShortName);
+			}
+
+			return FormatShort(cmdOption.ShortName) + ", " + FormatLong(cmdOption.LongName);
+		}
+
+		static string FormatShort(string shortOption)
+		{
+			return "-" + shortOption; 
+		}
+
+		static string FormatLong(string longOption)
+		{
+			return "--" + longOption; 
+		}
+	}
+}
