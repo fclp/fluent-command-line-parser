@@ -90,6 +90,7 @@
     <Compile Include="Internals\Parsing\OptionParsers\CommandLineOptionParserFactory.cs" />
     <Compile Include="Internals\Parsing\OptionParsers\DateTimeCommandLineOptionParser.cs" />
     <Compile Include="Internals\Parsing\OptionParsers\DoubleCommandLineOptionParser.cs" />
+    <Compile Include="Internals\Parsing\OptionParsers\EnumCommandLineOptionParser.cs" />
     <Compile Include="Internals\Parsing\OptionParsers\ICommandLineOptionParser.cs" />
     <Compile Include="Internals\Parsing\OptionParsers\Int32CommandLineOptionParser.cs" />
     <Compile Include="Internals\Parsing\OptionParsers\ListCommandLineOptionParser.cs" />

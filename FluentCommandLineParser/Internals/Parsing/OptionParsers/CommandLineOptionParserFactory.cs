@@ -81,7 +81,20 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		{
 			var type = typeof(T);
 
-			if (!this.Parsers.ContainsKey(type)) throw new UnsupportedTypeException();
+		    if (!this.Parsers.ContainsKey(type))
+		    {
+		        if (! typeof(T).IsEnum)
+		        {
+                    throw new UnsupportedTypeException();
+		        }
+
+                type = typeof(EnumCommandLineOptionParser<T>);
+                if (!this.Parsers.ContainsKey(type))
+		        {
+		            this.AddOrReplace(new EnumCommandLineOptionParser<T>());
+		        }
+		        type = typeof(T);
+		    }
 
 			return (ICommandLineOptionParser<T>)this.Parsers[type];
 		}
