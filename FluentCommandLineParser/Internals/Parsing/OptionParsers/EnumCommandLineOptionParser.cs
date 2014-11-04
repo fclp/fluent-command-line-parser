@@ -28,40 +28,40 @@ using Fclp.Internals.Extensions;
 
 namespace Fclp.Internals.Parsing.OptionParsers
 {
-    /// <summary>
-    /// Parser used to convert to <see cref="Enum"/>.
-    /// </summary>
-    /// <remarks>For <see cref="System.Boolean"/> types the value is optional. If no value is provided for the Option then <c>true</c> is returned.</remarks>
-    public class EnumCommandLineOptionParser<T> : ICommandLineOptionParser<T>
-    {
-        /// <summary>
-        /// Parses the specified <see cref="System.String"/> into a <see cref="System.Boolean"/>.
-        /// </summary>
-        /// <param name="parsedOption"></param>
-        /// <returns>
-        /// A <see cref="System.Boolean"/> representing the parsed value.
-        /// The value is optional. If no value is provided then <c>true</c> is returned.
-        /// </returns>
-        public T Parse(ParsedOption parsedOption)
-        {
-            return (T)Enum.Parse(typeof(T), parsedOption.Value);
-        }
+	/// <summary>
+	/// Parser used to convert to <see cref="Enum"/>.
+	/// </summary>
+	/// <remarks>For <see cref="System.Boolean"/> types the value is optional. If no value is provided for the Option then <c>true</c> is returned.</remarks>
+	public class EnumCommandLineOptionParser<T> : ICommandLineOptionParser<T>
+	{
+		/// <summary>
+		/// Parses the specified <see cref="System.String"/> into a <see cref="System.Boolean"/>.
+		/// </summary>
+		/// <param name="parsedOption"></param>
+		/// <returns>
+		/// A <see cref="System.Boolean"/> representing the parsed value.
+		/// The value is optional. If no value is provided then <c>true</c> is returned.
+		/// </returns>
+		public T Parse(ParsedOption parsedOption)
+		{
+			return (T)Enum.Parse(typeof(T), parsedOption.Value);
+		}
 
-        /// <summary>
-        /// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
-        /// </summary>
-        /// <param name="parsedOption"></param>
-        /// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-        public bool CanParse(ParsedOption parsedOption)
-        {
-            if (parsedOption.Value.IsNullOrWhiteSpace()) return false;
-            if (parsedOption.HasValue == false) return false;
+		/// <summary>
+		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
+		/// </summary>
+		/// <param name="parsedOption"></param>
+		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
+		public bool CanParse(ParsedOption parsedOption)
+		{
+			if (parsedOption.Value.IsNullOrWhiteSpace()) return false;
+			if (parsedOption.HasValue == false) return false;
 
-            string value = parsedOption.Value.Trim();
+			string value = parsedOption.Value.Trim();
 
-            var items = value.SplitOnWhitespace();
+			var items = value.SplitOnWhitespace();
 
-            return items.Count() == 1;
-        }
-    }
+			return items.Count() == 1;
+		}
+	}
 }
