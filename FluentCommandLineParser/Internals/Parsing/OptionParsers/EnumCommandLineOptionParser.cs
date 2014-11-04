@@ -44,7 +44,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		/// </returns>
 		public T Parse(ParsedOption parsedOption)
 		{
-			return (T)Enum.Parse(typeof(T), parsedOption.Value);
+			return (T)Enum.Parse(typeof(T), parsedOption.Value, true);
 		}
 
 		/// <summary>

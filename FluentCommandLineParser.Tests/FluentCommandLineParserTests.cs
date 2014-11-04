@@ -308,7 +308,7 @@ namespace Fclp.Tests
                 .Setup<TestEnum>('e')
                 .Callback(val => actual = val);
 
-            parser.Parse(new[] { "-e", expected.ToString() });
+            parser.Parse(new[] { "-e", expected.ToString().ToLowerInvariant() });
 
             Assert.AreEqual(expected, actual);
         }
@@ -326,7 +326,7 @@ namespace Fclp.Tests
                 .Setup<TestEnum>("e", "enum")
                 .Callback(val => actual = val);
 
-            parser.Parse(new[] { "--enum", expected.ToString() });
+            parser.Parse(new[] { "--enum", expected.ToString().ToLowerInvariant() });
 
             Assert.AreEqual(expected, actual);
         }
