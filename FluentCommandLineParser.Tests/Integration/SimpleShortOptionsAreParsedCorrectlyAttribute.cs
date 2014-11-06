@@ -1,6 +1,6 @@
 ﻿#region License
-// DoubleInlineDataAttribute.cs
-// Copyright (c) 2013, Simon Williams
+// SimpleShortOptionsAreParsedCorrectlyAttribute.cs
+// Copyright (c) 2014, Simon Williams
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are permitted provide
@@ -22,13 +22,23 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using Fclp.Tests.FluentCommandLineParser;
+using Xunit.Extensions;
+
 namespace Fclp.Tests.Integration
 {
-    public class DoubleInlineDataAttribute : SimpleShortOptionsAreParsedCorrectlyAttribute
-	{
-		public DoubleInlineDataAttribute(string args, double expected)
-            : base(args, expectedDouble: expected)
-		{
-		}
-	}
+    public class SimpleShortOptionsAreParsedCorrectlyAttribute : InlineDataAttribute
+    {
+        public SimpleShortOptionsAreParsedCorrectlyAttribute(
+            string arguments,
+            bool? expectedBoolean = null,
+            string expectedString = null,
+            int? expectedInt32 = null,
+            double? expectedDouble = null,
+            TestEnum? expectedEnum = null)
+            : base(arguments, expectedBoolean, expectedString, expectedInt32, expectedDouble, expectedEnum)
+        {
+            
+        }
+    }
 }

@@ -83,6 +83,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FluentCommandLineParser\Behaviour\InvalidOptionSetupBehaviour.cs" />
+    <Compile Include="FluentCommandLineParser\TestContext\TestEnum.cs" />
     <Compile Include="FluentCommandLineParser\TestContext\TestException.cs" />
     <Compile Include="FluentCommandLineParser\TestContext\FluentCommandLineParserTestContext.cs" />
     <Compile Include="FluentCommandLineParser\TestContext\SettingUpALongOptionTestContext.cs" />
@@ -91,6 +92,8 @@
     <Compile Include="FluentCommandLineParser\when_executing_parse_operation\with_options_that_are_specified_in_the_args.cs" />
     <Compile Include="Integration\BoolInlineDataAttribute.cs" />
     <Compile Include="Integration\DoubleInlineDataAttribute.cs" />
+    <Compile Include="Integration\EnumInlineDataAttribute.cs" />
+    <Compile Include="Integration\Int32EnumInlineDataAttribute.cs" />
     <Compile Include="Integration\Int32InlineDataAttribute.cs" />
     <Compile Include="Integration\IntegrationTests.cs" />
     <Compile Include="Integration\Lists\ArgumentInlineDataAttribute.cs" />
@@ -100,6 +103,7 @@
     <Compile Include="Integration\Lists\ListTests.cs" />
     <Compile Include="Integration\Lists\StringListInlineDataAttribute.cs" />
     <Compile Include="Integration\NCrunchExcelDataAttribute.cs" />
+    <Compile Include="Integration\SimpleShortOptionsAreParsedCorrectlyAttribute.cs" />
     <Compile Include="Integration\StringInlineDataAttribute.cs" />
     <Compile Include="Internals\AnonymousMock.cs" />
     <Compile Include="Internals\CommandLineOptionGrouperTests.cs" />
@@ -167,6 +171,9 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

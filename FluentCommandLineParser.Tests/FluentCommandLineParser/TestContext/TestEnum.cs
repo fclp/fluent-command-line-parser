@@ -1,6 +1,6 @@
 ﻿#region License
-// DoubleInlineDataAttribute.cs
-// Copyright (c) 2013, Simon Williams
+// TestEnum.cs
+// Copyright (c) 2014, Simon Williams
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are permitted provide
@@ -22,13 +22,11 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-namespace Fclp.Tests.Integration
+namespace Fclp.Tests.FluentCommandLineParser
 {
-    public class DoubleInlineDataAttribute : SimpleShortOptionsAreParsedCorrectlyAttribute
-	{
-		public DoubleInlineDataAttribute(string args, double expected)
-            : base(args, expectedDouble: expected)
-		{
-		}
-	}
+    public enum TestEnum
+    {
+        Value0 = 0,
+        Value1 = 1
+    }
 }
