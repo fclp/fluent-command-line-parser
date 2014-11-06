@@ -126,6 +126,24 @@ C:\file1.txt
 C:\file2.txt
 C:\other file.txt
 ```
+### Enum support
+Since v1.2.3 enum types are now supported. 
+```
+public enum Mode
+{
+	Simple = 0,
+	Complex = 1
+}
+```
+```
+p.Setup<Mode>('m', "mode")
+ .Callback(m => mode = m);
+```
+To specify 'Complex' mode either the text can be provided or the enum integer.
+```
+dosomething.exe --mode Complex
+dosomething.exe --mode 1
+```
 ### Supported Syntax
 `[-|--|/][switch_name][=|:| ][value]`
 
