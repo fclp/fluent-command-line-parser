@@ -289,47 +289,47 @@ namespace Fclp.Tests
 
 		#region Enum Option
 
-		//enum TestEnum
-		//{
-		//    Value0 = 0,
-		//    Value1 = 1
-		//}
+        enum TestEnum
+        {
+            Value0 = 0,
+            Value1 = 1
+        }
 
-		//[Test]
-		//public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option()
-		//{
-		//    const TestEnum expected = TestEnum.Value1;
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option()
+        {
+            const TestEnum expected = TestEnum.Value1;
 
-		//    TestEnum actual = TestEnum.Value0;
+            TestEnum actual = TestEnum.Value0;
 
-		//    IFluentCommandLineParser parser = new FluentCommandLineParser();
+            var parser = CreateFluentParser();
 
-		//    parser
-		//        .Setup<TestEnum>("e")
-		//        .Callback(val => actual = val);
+            parser
+                .Setup<TestEnum>('e')
+                .Callback(val => actual = val);
 
-		//    parser.Parse(new[] { "-e", expected.ToString() });
+            parser.Parse(new[] { "-e", expected.ToString().ToLowerInvariant() });
 
-		//    Assert.AreEqual(expected, actual);
-		//}
+            Assert.AreEqual(expected, actual);
+        }
 
-		//[Test]
-		//public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option()
-		//{
-		//    const TestEnum expected = TestEnum.Value1;
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option()
+        {
+            const TestEnum expected = TestEnum.Value1;
 
-		//    TestEnum actual = TestEnum.Value0;
+            TestEnum actual = TestEnum.Value0;
 
-		//    IFluentCommandLineParser parser = new FluentCommandLineParser();
+            var parser = CreateFluentParser();
 
-		//    parser
-		//        .Setup<TestEnum>("e", "enum")
-		//        .Callback(val => actual = val);
+            parser
+                .Setup<TestEnum>("e", "enum")
+                .Callback(val => actual = val);
 
-		//    parser.Parse(new[] { "--enum", expected.ToString() });
+            parser.Parse(new[] { "--enum", expected.ToString().ToLowerInvariant() });
 
-		//    Assert.AreEqual(expected, actual);
-		//}
+            Assert.AreEqual(expected, actual);
+        }
 
 		#endregion Enum Option
 
