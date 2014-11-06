@@ -23,8 +23,8 @@
 #endregion
 
 using System.Linq;
-using Fclp.Internals;
 using Fclp.Internals.Extensions;
+using Fclp.Internals.Parsing;
 using Machine.Specifications;
 using Xunit;
 using Xunit.Extensions;

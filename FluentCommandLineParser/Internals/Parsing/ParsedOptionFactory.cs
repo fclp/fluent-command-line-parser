@@ -1,5 +1,5 @@
-﻿#region License
-// TestApplicationArgs.cs
+#region License
+// ParsedOptionFactory.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,33 +22,50 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Tests.FluentCommandLineParser;
+using System.Linq;
 
-namespace Fclp.Tests
+namespace Fclp.Internals.Parsing
 {
 	/// <summary>
-	/// 
+	/// Factory used to created parsed option meta data.
 	/// </summary>
-	public class TestApplicationArgs
+	public static class ParsedOptionFactory
 	{
 		/// <summary>
-		/// Gets or sets the record id.
+		/// Creates parsed option meta data for the specified raw key.
 		/// </summary>
-		public int RecordId { get; set; }
+		public static ParsedOption Create(string rawKey)
+		{
+			var prefix = ExtractPrefix(rawKey);
+
+			return new ParsedOption
+			{
+				RawKey = rawKey,
+				Prefix = prefix,
+				Key = rawKey.Remove(0, prefix.Length),
+				Suffix = ExtractSuffix(rawKey)
+			};			
+		}
+
 
 		/// <summary>
-		/// Gets or sets a value indicating whether this <see cref="ApplicationArgs"/> is silent.
+		/// Extracts the key identifier from the specified <see cref="System.String"/>.
 		/// </summary>
-		public bool Silent { get; set; }
+		/// <param name="arg">The <see cref="System.String"/> to extract the key identifier from.</param>
+		/// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
+		static string ExtractPrefix(string arg)
+		{
+			return arg != null ? SpecialCharacters.OptionPrefix.FirstOrDefault(arg.StartsWith) : null;
+		}
 
 		/// <summary>
-		/// Gets or sets the new value.
+		/// Extracts the key identifier from the specified <see cref="System.String"/>.
 		/// </summary>
-		public string NewValue { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Enum value.
-        /// </summary>
-		public TestEnum Enum { get; set; }
+		/// <param name="arg">The <see cref="System.String"/> to extract the key identifier from.</param>
+		/// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
+		static string ExtractSuffix(string arg)
+		{
+			return arg != null ? SpecialCharacters.OptionSuffix.FirstOrDefault(arg.EndsWith) : null;
+		}
 	}
 }

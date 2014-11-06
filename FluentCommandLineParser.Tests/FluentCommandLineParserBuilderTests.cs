@@ -22,6 +22,8 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System.Globalization;
+using Fclp.Tests.FluentCommandLineParser;
 using Fclp.Tests.Internals;
 using Machine.Specifications;
 
@@ -33,6 +35,48 @@ namespace Fclp.Tests
 		abstract class FluentCommandLineParserBuilderTestContext : TestContextBase<FluentCommandLineBuilder<TestApplicationArgs>>
 		{
 			Establish context = () => CreateSut();
+		}
+
+		sealed class Constructor
+		{
+			class when_initialised : FluentCommandLineParserBuilderTestContext
+			{
+				It should_enable_case_sensitive = () =>
+					sut.IsCaseSensitive.ShouldBeTrue();
+
+				It should_have_the_fluent_parser_by_default = () =>
+					sut.Parser.ShouldBeOfType<IFluentCommandLineParser>();
+
+				It should_have_initialised_the_object = () =>
+					sut.Object.ShouldNotBeNull();
+			}
+		}
+
+		sealed class IsCaseSensitive
+		{
+			abstract class IsCaseSensitiveTestContext : FluentCommandLineParserBuilderTestContext { }
+
+			class when_enabled : IsCaseSensitiveTestContext
+			{
+				Because of = () => sut.IsCaseSensitive = true;
+
+				It should_return_enabled = () =>
+					sut.IsCaseSensitive.ShouldBeTrue();
+
+				It should_enable_case_sensitivity_on_the_parser = () =>
+					sut.Parser.IsCaseSensitive.ShouldBeTrue();
+			}
+
+			class when_disabled : IsCaseSensitiveTestContext
+			{
+				Because of = () => sut.IsCaseSensitive = false;
+
+				It should_return_disabled = () =>
+					sut.IsCaseSensitive.ShouldBeFalse();
+
+				It should_disable_case_sensitivity_on_the_parser = () =>
+					sut.Parser.IsCaseSensitive.ShouldBeFalse();
+			}
 		}
 
 		sealed class Parse
@@ -89,7 +133,7 @@ namespace Fclp.Tests
 
 			class when_default_is_specified_on_an_option_that_is_not_specified : ParseTestContext
 			{
-				protected static string expectedDefaultValue;
+				static string expectedDefaultValue;
 
 				Establish context = () =>
 				{
@@ -111,6 +155,24 @@ namespace Fclp.Tests
 				It should_assign_the_specified_default_as_the_new_value = () =>
 					sut.Object.NewValue.ShouldEqual(expectedDefaultValue);
 
+			}
+
+			class when_enum_is_specified : ParseTestContext
+			{
+				static TestEnum expectedTestEnum;
+
+				Establish context = () =>
+				{
+					expectedTestEnum = TestEnum.Value1;
+
+					sut.Setup(x => x.Enum)
+						.As('e', "enum");
+
+					args = new[] {"-e", expectedTestEnum.ToString()};
+				};
+
+				It should_assign_the_expected_enum_value_to_the_args = () =>
+					sut.Object.Enum.ShouldEqual(expectedTestEnum);
 			}
 		}
 	}

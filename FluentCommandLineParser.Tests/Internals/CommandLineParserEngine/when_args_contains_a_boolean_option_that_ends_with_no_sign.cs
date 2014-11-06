@@ -22,7 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Internals;
+using Fclp.Internals.Parsing;
 using Machine.Specifications;
 
 namespace Fclp.Tests

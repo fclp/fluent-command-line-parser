@@ -25,7 +25,7 @@
 using System.Linq;
 using Fclp.Internals.Extensions;
 
-namespace Fclp.Internals.Parsers
+namespace Fclp.Internals.Parsing.OptionParsers
 {
 	/// <summary>
 	/// Parser used to convert to <see cref="System.String"/>.

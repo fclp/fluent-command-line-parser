@@ -28,6 +28,7 @@ using System.Globalization;
 using System.Linq;
 using Fclp.Internals;
 using Fclp.Internals.Errors;
+using Fclp.Tests.FluentCommandLineParser;
 using Moq;
 using NUnit.Framework;
 
@@ -199,6 +200,25 @@ namespace Fclp.Tests
 			});
 		}
 
+		[Test]
+		public void Ensure_Negative_Integer_Can_Be_Specified_With_Unix_Style()
+		{
+			var parser = CreateFluentParser();
+
+			int actual = 0;
+
+			parser.Setup<int>("integer")
+				  .Callback(i => actual = i);
+
+			var result = parser.Parse(new[] { "--integer", "--", "-123" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+
+			Assert.AreEqual(-123, actual);
+		}
+
 		#endregion Int32 Option
 
 		#region Double Option
@@ -247,51 +267,172 @@ namespace Fclp.Tests
 			});
 		}
 
+		[Test]
+		public void Ensure_Negative_Double_Can_Be_Specified_With_Unix_Style()
+		{
+			var parser = CreateFluentParser();
+
+			double actual = 0;
+
+			parser.Setup<double>("double")
+				  .Callback(i => actual = i);
+
+			var result = parser.Parse(new[] { "--double", "--", "-123.456" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+
+			Assert.AreEqual(-123.456, actual);
+		}
+
 		#endregion Double Option
 
 		#region Enum Option
 
-		//enum TestEnum
-		//{
-		//    Value0 = 0,
-		//    Value1 = 1
-		//}
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option()
+        {
+            const TestEnum expected = TestEnum.Value1;
 
-		//[Test]
-		//public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option()
-		//{
-		//    const TestEnum expected = TestEnum.Value1;
+            TestEnum actual = TestEnum.Value0;
 
-		//    TestEnum actual = TestEnum.Value0;
+            var parser = CreateFluentParser();
 
-		//    IFluentCommandLineParser parser = new FluentCommandLineParser();
+            parser
+                .Setup<TestEnum>('e')
+                .Callback(val => actual = val);
 
-		//    parser
-		//        .Setup<TestEnum>("e")
-		//        .Callback(val => actual = val);
+            parser.Parse(new[] { "-e", expected.ToString() });
 
-		//    parser.Parse(new[] { "-e", expected.ToString() });
+            Assert.AreEqual(expected, actual);
+        }
+        
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option()
+        {
+            const TestEnum expected = TestEnum.Value1;
 
-		//    Assert.AreEqual(expected, actual);
-		//}
+            TestEnum actual = TestEnum.Value0;
 
-		//[Test]
-		//public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option()
-		//{
-		//    const TestEnum expected = TestEnum.Value1;
+            var parser = CreateFluentParser();
 
-		//    TestEnum actual = TestEnum.Value0;
+            parser
+                .Setup<TestEnum>('e', "enum")
+                .Callback(val => actual = val);
 
-		//    IFluentCommandLineParser parser = new FluentCommandLineParser();
+            parser.Parse(new[] { "--enum", expected.ToString() });
 
-		//    parser
-		//        .Setup<TestEnum>("e", "enum")
-		//        .Callback(val => actual = val);
+            Assert.AreEqual(expected, actual);
+        }
 
-		//    parser.Parse(new[] { "--enum", expected.ToString() });
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option_And_Int32_Enum()
+        {
+            const TestEnum expected = TestEnum.Value1;
 
-		//    Assert.AreEqual(expected, actual);
-		//}
+            TestEnum actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum>('e')
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "-e", ((int)expected).ToString(CultureInfo.InvariantCulture) });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option_And_Int32_Enum()
+        {
+            const TestEnum expected = TestEnum.Value1;
+
+            TestEnum actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum>('e', "enum")
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "--enum", ((int)expected).ToString(CultureInfo.InvariantCulture) });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option_And_Lowercase_String()
+        {
+            const TestEnum expected = TestEnum.Value1;
+
+            TestEnum actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum>('e')
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "-e", expected.ToString().ToLowerInvariant() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option_And_Int32_Enum_And_Lowercase_String()
+        {
+            const TestEnum expected = TestEnum.Value1;
+
+            TestEnum actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum>('e', "enum")
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "--enum", expected.ToString().ToLowerInvariant() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option_And_Uppercase_String()
+        {
+            const TestEnum expected = TestEnum.Value1;
+
+            TestEnum actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum>('e')
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "-e", expected.ToString().ToUpperInvariant() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option_And_Int32_Enum_And_Uppercase_String()
+        {
+            const TestEnum expected = TestEnum.Value1;
+
+            TestEnum actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum>('e', "enum")
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "--enum", expected.ToString().ToUpperInvariant() });
+
+            Assert.AreEqual(expected, actual);
+        }
 
 		#endregion Enum Option
 
@@ -862,6 +1003,147 @@ namespace Fclp.Tests
 		{
 			var parser = CreateFluentParser();
 			parser.Setup<string>(null, "s");
+		}
+
+		#endregion
+
+		#region Addtional Arguments
+
+		[Test]
+		public void Ensure_Additional_Arguments_Callback_Called_When_Additional_Args_Provided()
+		{
+			var parser = CreateFluentParser();
+
+			var capturedAdditionalArgs = new List<string>();
+
+			parser.Setup<string>("my-option")
+				  .CaptureAdditionalArguments(capturedAdditionalArgs.AddRange);
+
+			var result = parser.Parse(new[] { "--my-option", "value", "--", "addArg1", "addArg2" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+
+			Assert.AreEqual(2, capturedAdditionalArgs.Count());
+			Assert.IsTrue(capturedAdditionalArgs.Contains("addArg1"));
+			Assert.IsTrue(capturedAdditionalArgs.Contains("addArg2"));
+		}
+
+		[Test]
+		public void Ensure_Additional_Arguments_Callback_Not_Called_When_No_Additional_Args_Provided()
+		{
+			var parser = CreateFluentParser();
+
+			bool wasCalled = false;
+
+			parser.Setup<string>("my-option")
+				  .CaptureAdditionalArguments(addArgs => wasCalled = true);
+
+			var result = parser.Parse(new[] { "--my-option", "value" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+
+			Assert.IsFalse(wasCalled);
+		}
+
+		[Test]
+		public void Ensure_Additional_Arguments_Callback_Not_Called_When_No_Additional_Args_Follow_A_Double_Dash()
+		{
+			var parser = CreateFluentParser();
+
+			bool wasCalled = false;
+
+			parser.Setup<string>("my-option")
+				  .CaptureAdditionalArguments(addArgs => wasCalled = true);
+
+			var result = parser.Parse(new[] { "--my-option", "value", "--" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+
+			Assert.IsFalse(wasCalled);
+		}
+
+		[Test]
+		public void Ensure_Stable_When_Additional_Args_Are_Provided_But_Capture_Additional_Arguments_Has_Not_Been_Setup()
+		{
+			var parser = CreateFluentParser();
+
+			parser.Setup<string>("my-option");
+
+			var result = parser.Parse(new[] { "--my-option", "value", "--", "addArg1", "addArg2" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+		}
+
+		[Test]
+		public void Ensure_Additional_Args_Can_Be_Captured_For_Different_Options()
+		{
+			var parser = CreateFluentParser();
+
+			var option1AddArgs = new List<string>();
+			var option2AddArgs = new List<string>();
+
+			string option1Value = null;
+			string option2Value = null;
+
+			parser.Setup<string>("option-one")
+				  .Callback(s => option1Value = s)
+				  .CaptureAdditionalArguments(option1AddArgs.AddRange);
+
+			parser.Setup<string>("option-two")
+				  .Callback(s => option2Value = s)
+				  .CaptureAdditionalArguments(option2AddArgs.AddRange);
+
+			var result = parser.Parse(new[] { "--option-one", "value-one", "addArg1", "addArg2", "--option-two", "value-two", "addArg3", "addArg4" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+
+			Assert.AreEqual("value-one", option1Value);
+			Assert.AreEqual("value-two", option2Value);
+
+			Assert.AreEqual(2, option1AddArgs.Count());
+			Assert.IsTrue(option1AddArgs.Contains("addArg1"));
+			Assert.IsTrue(option1AddArgs.Contains("addArg2"));
+
+			Assert.AreEqual(2, option2AddArgs.Count());
+			Assert.IsTrue(option2AddArgs.Contains("addArg3"));
+			Assert.IsTrue(option2AddArgs.Contains("addArg4"));
+		}
+
+		#endregion
+
+		#region Lists
+
+		[Test]
+		public void Ensure_Can_Parse_Mulitple_Arguments_Containing_Negative_Integers_To_A_List()
+		{
+			var parser = CreateFluentParser();
+
+			var actual = new List<int>();
+
+			parser.Setup<List<int>>("integers")
+				  .Callback(actual.AddRange);
+
+			var result = parser.Parse(new[] { "--integers", "--", "123", "-123", "-321", "321" });
+
+			Assert.IsFalse(result.HasErrors);
+			Assert.IsFalse(result.EmptyArgs);
+			Assert.IsFalse(result.HelpCalled);
+
+			Assert.AreEqual(4, actual.Count());
+			Assert.IsTrue(actual.Contains(123));
+			Assert.IsTrue(actual.Contains(-123));
+			Assert.IsTrue(actual.Contains(-321));
+			Assert.IsTrue(actual.Contains(321));
 		}
 
 		#endregion

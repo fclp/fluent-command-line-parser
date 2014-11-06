@@ -119,16 +119,18 @@ namespace FluentCommandLineParser.Tests
 			//  Short1          Description1
 			//  Short2:Long2    Description2 
 
-			var mockOption1 = CreateMockOption("Short1", null, "Description1");
-			var mockOption2 = CreateMockOption("Short2", "Long2", "Description2");
+			var mockOptionA = CreateMockOption("a", "aaa", "a-description");
+			var mockOptionB = CreateMockOption("b", null, "b-description1");
+			var mockOptionC = CreateMockOption(null, "ccc", "c-description");
 
 			var expectedSb = new StringBuilder();
 			expectedSb.AppendLine();
-			expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOption1.ShortName, mockOption1.Description);
-			expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOption2.ShortName + ":" + mockOption2.LongName, mockOption2.Description);
+			expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOptionA.ShortName + ":" + mockOptionA.LongName, mockOptionA.Description);
+			expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOptionB.ShortName, mockOptionB.Description);
+			expectedSb.AppendFormat(CultureInfo.CurrentUICulture, CommandLineOptionFormatter.TextFormat, mockOptionC.LongName, mockOptionC.Description);
 
 			var expected = expectedSb.ToString();
-			var actual = formatter.Format(new[] { mockOption1, mockOption2 });
+			var actual = formatter.Format(new[] { mockOptionB, mockOptionA, mockOptionC });
 
 			Assert.AreEqual(expected, actual, "Formatter returned unexpected string");
 		}

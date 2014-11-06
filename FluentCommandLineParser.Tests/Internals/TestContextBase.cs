@@ -118,7 +118,8 @@ namespace Fclp.Tests.Internals
 
 		protected static string CreateStringOfLength(int length)
 		{
-			return new string(Create<char>(), length);
+			var str = Create<string>();
+			return new string(str.Take(length).ToArray());
 		}
 	}
 }

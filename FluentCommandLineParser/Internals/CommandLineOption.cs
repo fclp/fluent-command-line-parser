@@ -23,9 +23,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals.Extensions;
-using Fclp.Internals.Parsers;
+using Fclp.Internals.Parsing;
+using Fclp.Internals.Parsing.OptionParsers;
 
 namespace Fclp.Internals
 {
@@ -70,6 +72,8 @@ namespace Fclp.Internals
 		public string Description { get; set; }
 
 		internal Action<T> ReturnCallback { get; set; }
+
+		internal Action<IEnumerable<string>> AdditionalArgumentsCallback { get; set; }
 
 		internal T Default { get; set; }
 
@@ -123,11 +127,19 @@ namespace Fclp.Internals
 		}
 
 		/// <summary>
-		/// Gets whether this <see cred="ICommandLineOption"/> has a callback setup.
+		/// Gets whether this <see cref="ICommandLineOption"/> has a callback setup.
 		/// </summary>
 		public bool HasCallback
 		{
 			get { return this.ReturnCallback != null; }
+		}
+
+		/// <summary>
+		/// Gets whether this <see cref="ICommandLineOption"/> has an additional arguments callback setup.
+		/// </summary>
+		public bool HasAdditionalArgumentsCallback
+		{
+			get { return this.AdditionalArgumentsCallback != null; }
 		}
 
 		#endregion Properties
@@ -143,6 +155,8 @@ namespace Fclp.Internals
 			if (this.Parser.CanParse(value) == false) throw new OptionSyntaxException();
 
 			this.Bind(this.Parser.Parse(value));
+
+			this.BindAnyAdditionalArgs(value);
 		}
 
 		/// <summary>
@@ -160,6 +174,16 @@ namespace Fclp.Internals
 				this.ReturnCallback(value);
 		}
 
+		void BindAnyAdditionalArgs(ParsedOption option)
+		{
+			if (!this.HasAdditionalArgumentsCallback) return;
+
+			if (option.AdditionalValues.Any())
+			{
+				this.AdditionalArgumentsCallback(option.AdditionalValues);
+			}
+		}
+
 		/// <summary>
 		/// Adds the specified description to the <see cref="ICommandLineOptionFluent{T}"/>.
 		/// </summary>
@@ -172,7 +196,7 @@ namespace Fclp.Internals
 		}
 
 		/// <summary>
-		/// Declares that this <see cref="ICommandLineOptionFluent{T}"/> is required and a value must be specified to fulfill it.
+		/// Declares that this <see cref="ICommandLineOptionFluent{T}"/> is required and a value must be specified to fulfil it.
 		/// </summary>
 		/// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
 		public ICommandLineOptionFluent<T> Required()
@@ -202,6 +226,18 @@ namespace Fclp.Internals
 		{
 			this.Default = value;
 			this.HasDefault = true;
+			return this;
+		}
+
+		/// <summary>
+		/// Specified the method to invoke with any addition arguments parsed with the Option.
+		/// If additional arguments are not required either do not call it, or specify <c>null</c>.
+		/// </summary>
+		/// <param name="callback">The return callback to execute with the parsed addition arguments found for this Option.</param>
+		/// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
+		public ICommandLineOptionFluent<T> CaptureAdditionalArguments(Action<IEnumerable<string>> callback)
+		{
+			this.AdditionalArgumentsCallback = callback;
 			return this;
 		}
 

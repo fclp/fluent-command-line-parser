@@ -1,6 +1,6 @@
-#region License
-// ICommandLineOptionParserFactory.cs
-// Copyright (c) 2013, Simon Williams
+﻿#region License
+// EnumInlineDataAttribute.cs
+// Copyright (c) 2014, Simon Williams
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are permitted provide
@@ -22,21 +22,15 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Internals.Parsers;
+using Fclp.Tests.FluentCommandLineParser;
 
-namespace Fclp.Internals
+namespace Fclp.Tests.Integration
 {
-	/// <summary>
-	/// Represents a factory capable of creating <see cref="ICommandLineOptionParser{T}"/>.
-	/// </summary>
-	public interface ICommandLineOptionParserFactory
-	{
-		/// <summary>
-		/// Creates a <see cref="ICommandLineOptionParser{T}"/> to handle the specified type.
-		/// </summary>
-		/// <typeparam name="T">The type of parser to create.</typeparam>
-		/// <returns>A <see cref="ICommandLineOptionParser{T}"/> suitable for the specified type.</returns>
-		/// <exception cref="UnsupportedTypeException">If the specified type is not supported by this factory.</exception>
-		ICommandLineOptionParser<T> CreateParser<T>();
-	}
+    public class EnumInlineDataAttribute : SimpleShortOptionsAreParsedCorrectlyAttribute
+    {
+        public EnumInlineDataAttribute(string args, TestEnum expected)
+            : base(args, expectedEnum: expected)
+        {
+        }
+    }
 }

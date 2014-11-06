@@ -1,5 +1,5 @@
 ﻿#region License
-// with_a_long_name.cs
+// ICommandLineParserEngine.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,28 +22,18 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Globalization;
-using Fclp.Tests.FluentCommandLineParser.TestContext;
-using Machine.Specifications;
-
-namespace Fclp.Tests.FluentCommandLineParser
+namespace Fclp.Internals.Parsing
 {
-	namespace when_setting_up_a_new_option
+	/// <summary>
+	/// Responsible for parsing command line arguments into simple key and value pairs.
+	/// </summary>
+	public interface ICommandLineParserEngine
 	{
-		public class with_a_long_name : SettingUpALongOptionTestContext
-		{
-			Establish context = AutoMockAll;
-
-			Because of = () => SetupOptionWith(valid_short_name, valid_long_name);
-
-			It should_return_a_new_option = () => option.ShouldNotBeNull();
-			It should_have_the_given_short_name = () => option.ShortName.ShouldMatch(valid_short_name.ToString(CultureInfo.InvariantCulture));
-			It should_have_the_given_long_name = () => option.LongName.ShouldMatch(valid_long_name);
-			It should_not_be_a_required_option = () => option.IsRequired.ShouldBeFalse();
-			It should_have_no_callback = () => option.HasCallback.ShouldBeFalse();
-			It should_have_no_additional_args_callback = () => option.HasAdditionalArgumentsCallback.ShouldBeFalse();
-			It should_have_no_description = () => option.Description.ShouldBeNull();
-			It should_have_no_default_value = () => option.HasDefault.ShouldBeFalse();
-		}
+		/// <summary>
+		/// Parses the specified <see><cref>T:System.String[]</cref></see> into key value pairs.
+		/// </summary>
+		/// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
+		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
+		ParserEngineResult Parse(string[] args);
 	}
 }

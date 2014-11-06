@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 // ListCommandLineOptionParser.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
@@ -25,7 +25,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Fclp.Internals.Parsers
+namespace Fclp.Internals.Parsing.OptionParsers
 {
 /// <summary>
 /// 
@@ -78,7 +78,7 @@ public class ListCommandLineOptionParser<T> : ICommandLineOptionParser<List<T>>
             var clone = parsedOption.Clone();
             clone.Value = value;
             clone.Values = new [] { value };
-            clone.AddtionalValues = new string[0];
+            clone.AdditionalValues = new string[0];
             return parser.CanParse(clone);
         });
     }

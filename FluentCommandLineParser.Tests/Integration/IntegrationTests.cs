@@ -22,6 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using Fclp.Tests.FluentCommandLineParser;
 using Fclp.Tests.Internals;
 using Machine.Specifications;
 using Xunit;
@@ -50,12 +51,19 @@ namespace Fclp.Tests.Integration
 		[DoubleInlineData("-d 123.456", 123.456)]
 		[DoubleInlineData("-d:123.456", 123.456)]
 		[DoubleInlineData("-d=123.456", 123.456)]
+		[Int32EnumInlineData("-e 1", TestEnum.Value1)]
+		[Int32EnumInlineData("-e:1", TestEnum.Value1)]
+		[Int32EnumInlineData("-e=1", TestEnum.Value1)]
+		[EnumInlineData("-e Value1", TestEnum.Value1)]
+		[EnumInlineData("-e:Value1", TestEnum.Value1)]
+		[EnumInlineData("-e=Value1", TestEnum.Value1)]
 		public void SimpleShortOptionsAreParsedCorrectly(
 			string arguments,
 			bool? expectedBoolean,
 			string expectedString,
 			int? expectedInt32,
-			double? expectedDouble)
+			double? expectedDouble,
+			TestEnum? expectedEnum)
 		{
 			sut = new Fclp.FluentCommandLineParser();
 
@@ -63,11 +71,13 @@ namespace Fclp.Tests.Integration
 			string actualString = null;
 			int? actualInt32 = null;
 			double? actualDouble = null;
+			TestEnum? actualEnum = null;
 
 			sut.Setup<bool>('b').Callback(b => actualBoolean = b);
 			sut.Setup<string>('s').Callback(s => actualString = s);
 			sut.Setup<int>('i').Callback(i => actualInt32 = i);
 			sut.Setup<double>('d').Callback(d => actualDouble = d);
+			sut.Setup<TestEnum>('e').Callback(d => actualEnum = d);
 
 			var args = ParseArguments(arguments);
 
@@ -79,6 +89,7 @@ namespace Fclp.Tests.Integration
 			actualString.ShouldEqual(expectedString);
 			actualInt32.ShouldEqual(expectedInt32);
 			actualDouble.ShouldEqual(expectedDouble);
+			actualEnum.ShouldEqual(expectedEnum);
 		}
 
 		[Theory]

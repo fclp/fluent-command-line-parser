@@ -1,6 +1,6 @@
 ﻿#region License
-// ICommandLineOptionParser.cs
-// Copyright (c) 2013, Simon Williams
+// Int32EnumInlineDataAttribute.cs
+// Copyright (c) 2014, Simon Williams
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are permitted provide
@@ -21,25 +21,16 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
-namespace Fclp.Internals.Parsers
-{
-	/// <summary>
-	/// Represents a parser for a Option that can convert a value into the required type.
-	/// </summary>
-	public interface ICommandLineOptionParser<T>
-	{
-		/// <summary>
-		/// Parses the specified <see cref="System.String"/> into the return type.
-		/// </summary>
-		/// <param name="parsedOption"></param>
-		/// <returns>The parsed value.</returns>
-		T Parse(ParsedOption parsedOption);
 
-		/// <summary>
-		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
-		/// </summary>
-		/// <param name="parsedOption"></param>
-		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-		bool CanParse(ParsedOption parsedOption);
-	}
+using Fclp.Tests.FluentCommandLineParser;
+
+namespace Fclp.Tests.Integration
+{
+    public class Int32EnumInlineDataAttribute : SimpleShortOptionsAreParsedCorrectlyAttribute
+    {
+        public Int32EnumInlineDataAttribute(string args, TestEnum expected)
+            : base(args, expectedEnum: expected)
+        {
+        }
+    }
 }

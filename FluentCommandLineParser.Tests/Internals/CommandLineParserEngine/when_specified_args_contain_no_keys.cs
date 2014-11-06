@@ -43,7 +43,8 @@ namespace Fclp.Tests
 															};
 											};
 		
-			Because of = () => RunParserWith(args);
+			Because of = () => 
+				RunParserWith(args);
 
 			Behaves_like<NoResultsBehaviour> there_are_no_keys_found;
 		}

@@ -1,5 +1,5 @@
 #region License
-// DoubleCommandLineOptionParser.cs
+// ICommandLineOptionParserFactory.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,34 +22,21 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Globalization;
+using Fclp.Internals.Parsing.OptionParsers;
 
-namespace Fclp.Internals.Parsers
+namespace Fclp.Internals.Parsing
 {
 	/// <summary>
-	/// Parser used to convert to <see cref="System.Double"/>.
+	/// Represents a factory capable of creating <see cref="ICommandLineOptionParser{T}"/>.
 	/// </summary>
-	public class DoubleCommandLineOptionParser : ICommandLineOptionParser<double>
+	public interface ICommandLineOptionParserFactory
 	{
 		/// <summary>
-		/// Parses the specified <see cref="System.String"/> into a <see cref="System.Double"/>.
+		/// Creates a <see cref="ICommandLineOptionParser{T}"/> to handle the specified type.
 		/// </summary>
-		/// <param name="parsedOption"></param>
-		/// <returns></returns>
-		public double Parse(ParsedOption parsedOption)
-		{
-			return double.Parse(parsedOption.Value, CultureInfo.InvariantCulture);
-		}
-
-		/// <summary>
-		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
-		/// </summary>
-		/// <param name="parsedOption"></param>
-		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-		public bool CanParse(ParsedOption parsedOption)
-		{
-			double result;
-            return double.TryParse(parsedOption.Value, System.Globalization.NumberStyles.Number, CultureInfo.InvariantCulture, out result);
-		}
+		/// <typeparam name="T">The type of parser to create.</typeparam>
+		/// <returns>A <see cref="ICommandLineOptionParser{T}"/> suitable for the specified type.</returns>
+		/// <exception cref="UnsupportedTypeException">If the specified type is not supported by this factory.</exception>
+		ICommandLineOptionParser<T> CreateParser<T>();
 	}
 }

@@ -1,6 +1,6 @@
 ﻿#region License
-// with_a_long_name.cs
-// Copyright (c) 2013, Simon Williams
+// SimpleShortOptionsAreParsedCorrectlyAttribute.cs
+// Copyright (c) 2014, Simon Williams
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are permitted provide
@@ -22,28 +22,23 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Globalization;
-using Fclp.Tests.FluentCommandLineParser.TestContext;
-using Machine.Specifications;
+using Fclp.Tests.FluentCommandLineParser;
+using Xunit.Extensions;
 
-namespace Fclp.Tests.FluentCommandLineParser
+namespace Fclp.Tests.Integration
 {
-	namespace when_setting_up_a_new_option
-	{
-		public class with_a_long_name : SettingUpALongOptionTestContext
-		{
-			Establish context = AutoMockAll;
-
-			Because of = () => SetupOptionWith(valid_short_name, valid_long_name);
-
-			It should_return_a_new_option = () => option.ShouldNotBeNull();
-			It should_have_the_given_short_name = () => option.ShortName.ShouldMatch(valid_short_name.ToString(CultureInfo.InvariantCulture));
-			It should_have_the_given_long_name = () => option.LongName.ShouldMatch(valid_long_name);
-			It should_not_be_a_required_option = () => option.IsRequired.ShouldBeFalse();
-			It should_have_no_callback = () => option.HasCallback.ShouldBeFalse();
-			It should_have_no_additional_args_callback = () => option.HasAdditionalArgumentsCallback.ShouldBeFalse();
-			It should_have_no_description = () => option.Description.ShouldBeNull();
-			It should_have_no_default_value = () => option.HasDefault.ShouldBeFalse();
-		}
-	}
+    public class SimpleShortOptionsAreParsedCorrectlyAttribute : InlineDataAttribute
+    {
+        public SimpleShortOptionsAreParsedCorrectlyAttribute(
+            string arguments,
+            bool? expectedBoolean = null,
+            string expectedString = null,
+            int? expectedInt32 = null,
+            double? expectedDouble = null,
+            TestEnum? expectedEnum = null)
+            : base(arguments, expectedBoolean, expectedString, expectedInt32, expectedDouble, expectedEnum)
+        {
+            
+        }
+    }
 }

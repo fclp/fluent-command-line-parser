@@ -24,7 +24,7 @@
 
 using System.Collections.Generic;
 
-namespace Fclp.Internals
+namespace Fclp.Internals.Parsing
 {
 	/// <summary>
 	/// Contains the results of the parse operation

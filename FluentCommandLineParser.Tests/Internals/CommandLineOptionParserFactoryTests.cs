@@ -24,8 +24,8 @@
 
 using System;
 using Fclp;
-using Fclp.Internals;
-using Fclp.Internals.Parsers;
+using Fclp.Internals.Parsing.OptionParsers;
+using Fclp.Tests.FluentCommandLineParser;
 using Moq;
 using NUnit.Framework;
 
@@ -106,5 +106,40 @@ namespace FluentCommandLineParser.Tests.Internals
 			Assert.IsInstanceOf<DateTimeCommandLineOptionParser>(dtParser);
 			Assert.IsInstanceOf<BoolCommandLineOptionParser>(boolParser);
 		}
+
+	    [Test]
+	    public void Ensure_Factory_Supports_Enum()
+	    {
+            var factory = new CommandLineOptionParserFactory();
+
+	        var enumParser = factory.CreateParser<TestEnum>();
+
+            Assert.IsInstanceOf<EnumCommandLineOptionParser<TestEnum>>(enumParser);
+	    }
+
+        [Test]
+	    public void Ensure_Factory_Returns_Custom_Enum_Formatter()
+	    {
+            var factory = new CommandLineOptionParserFactory();
+
+            var customParser = new CustomEnumCommandLineOptionParser();
+            factory.AddOrReplace(customParser);
+
+            var enumParser = factory.CreateParser<TestEnum>();
+            Assert.AreSame(customParser, enumParser);
+	    }
 	}
+
+    public class CustomEnumCommandLineOptionParser : ICommandLineOptionParser<TestEnum>
+    {
+        public TestEnum Parse(Fclp.Internals.Parsing.ParsedOption parsedOption)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CanParse(Fclp.Internals.Parsing.ParsedOption parsedOption)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

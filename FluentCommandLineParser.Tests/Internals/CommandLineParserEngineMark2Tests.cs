@@ -23,48 +23,160 @@
 #endregion
 
 using System.Linq;
-using Fclp.Internals;
 using Fclp.Internals.Extensions;
+using Fclp.Internals.Parsing;
 using Machine.Specifications;
 
 namespace Fclp.Tests.Internals
 {
-	abstract class CommandLineParserEngineMark2TestContext : TestContextBase<CommandLineParserEngineMark2>
+	sealed class CommandLineParserEnginerMark2Tests
 	{
-		Establish context = () => CreateSut();
-	}
-
-	sealed class Parse
-	{
-		abstract class ParseTestContext : CommandLineParserEngineMark2TestContext
+		[Subject(typeof(CommandLineParserEngineMark2))]
+		abstract class CommandLineParserEngineMark2TestContext : TestContextBase<CommandLineParserEngineMark2>
 		{
-			protected static string[] args;
-			protected static ParserEngineResult result;
+			Establish context = () => CreateSut();
+		}
 
-			protected static void SetupArgs(string arguments)
+		sealed class Parse
+		{
+			abstract class ParseTestContext : CommandLineParserEngineMark2TestContext
 			{
-				args = arguments.SplitOnWhitespace().ToArray();
+				protected static string[] args;
+				protected static ParserEngineResult result;
+
+				protected static void SetupArgs(string arguments)
+				{
+					args = arguments.SplitOnWhitespace().ToArray();
+				}
+
+				Because of = () =>
+					result = sut.Parse(args);
 			}
 
-			Because of = () =>
-				result = sut.Parse(args);
-		}
-
-		class when_args_is_null : ParseTestContext
-		{
-			Establish context = () => args = null;
+			class when_args_is_null : ParseTestContext
+			{
+				Establish context = () => args = null;
 			
-			It should_return_a_result_with_no_parsed_options = () =>
-				result.ParsedOptions.ShouldBeEmpty();
+				It should_return_a_result_with_no_parsed_options = () =>
+					result.ParsedOptions.ShouldBeEmpty();
 
-			It should_return_a_result_with_no_additional_values = () =>
-				result.AdditionalValues.ShouldBeEmpty();
-		}
+				It should_return_a_result_with_no_additional_values = () =>
+					result.AdditionalValues.ShouldBeEmpty();
+			}
 
-		class when_ : ParseTestContext
-		{
-			Establish context = () => SetupArgs("");
-		}
+			class when_args_is_empty : ParseTestContext
+			{
+				Establish context = () => args = CreateEmptyList<string>().ToArray();
+
+				It should_return_a_result_with_no_parsed_options = () =>
+					result.ParsedOptions.ShouldBeEmpty();
+
+				It should_return_a_result_with_no_additional_values = () =>
+					result.AdditionalValues.ShouldBeEmpty();
+			}
+
+			class when_args_contains_negative_argument_seperated_with_a_colon : ParseTestContext
+			{
+				Establish context = () => SetupArgs("--int:-1");
+
+				It should_return_a_single_option = () =>
+					result.ParsedOptions.Count().ShouldEqual(1);
+
+				It should_set_the_parsed_option_value_to_the_negative_number = () =>
+					result.ParsedOptions.First().Value.ShouldEqual("-1");
+			}
+
+			class when_args_contains_negative_argument_seperated_with_a_equals : ParseTestContext
+			{
+				Establish context = () => SetupArgs("--int=-123");
+
+				It should_return_a_single_option = () =>
+					result.ParsedOptions.Count().ShouldEqual(1);
+
+				It should_set_the_parsed_option_value_to_the_negative_number = () =>
+					result.ParsedOptions.First().Value.ShouldEqual("-123");
+			}
+
+			class when_args_contains_negative_arguments_seperated_with_double_dash : ParseTestContext
+			{
+				Establish context = () => SetupArgs("--int -- -4321");
+
+				It should_return_a_single_option = () =>
+					result.ParsedOptions.Count().ShouldEqual(1);
+
+				It should_set_the_parsed_option_value_to_the_negative_number = () =>
+					result.ParsedOptions.First().Value.ShouldEqual("-4321");
+			}
+
+			class when_args_contains_a_single_switch : ParseTestContext
+			{
+				Establish context = () => SetupArgs("-b");
+
+				It should_return_a_single_option = () =>
+					result.ParsedOptions.Count().ShouldEqual(1);
+
+				It should_set_the_parsed_key_to_the_correct_value = () =>
+					result.ParsedOptions.First().Key.ShouldEqual("b");
+
+				It should_set_the_parsed_raw_key_to_the_correct_value = () =>
+					result.ParsedOptions.First().RawKey.ShouldEqual("-b");
+			}
+
+			class when_args_contains_only_the_double_dash_option_prefix : ParseTestContext
+			{
+				Establish context = () => SetupArgs("--");
+
+				It should_return_no_parsed_options = () =>
+					result.ParsedOptions.ShouldBeEmpty();
+
+				It should_return_no_additional = () =>
+					result.AdditionalValues.ShouldBeEmpty();
+			}
+
+			class when_args_contains_only_the_single_dash_option_prefix : ParseTestContext
+			{
+				Establish context = () => SetupArgs("-");
+
+				It should_return_no_parsed_options = () =>
+					result.ParsedOptions.ShouldBeEmpty();
+
+				It should_return_it_as_an_additional = () =>
+					result.AdditionalValues.ShouldContainOnly("-");
+			}
+
+			class when_args_contains_only_the_slash_option_prefix : ParseTestContext
+			{
+				Establish context = () => SetupArgs("/");
+
+				It should_return_no_parsed_options = () =>
+					result.ParsedOptions.ShouldBeEmpty();
+
+				It should_return_it_as_an_additional = () =>
+					result.AdditionalValues.ShouldContainOnly("/");
+			}
+
+			class when_args_contains_only_arguments_and_no_options : ParseTestContext
+			{
+				Establish context = () => SetupArgs("arg1 arg2 arg3");
+
+				It should_return_no_parsed_options = () =>
+					result.ParsedOptions.ShouldBeEmpty();
+
+				It should_return_it_as_an_additional = () =>
+					result.AdditionalValues.ShouldContainOnly("arg1", "arg2", "arg3");				
+			}
+
+			class when_args_starts_with_a_double_dash : ParseTestContext
+			{
+				Establish context = () => SetupArgs("-- --int 1 2 3 -a -b ");
+
+				It should_return_no_parsed_options = () =>
+					result.ParsedOptions.ShouldBeEmpty();
+
+				It should_return_all_but_the_double_dash_as_an_additional = () =>
+					result.AdditionalValues.ShouldContainOnly("--int", "1", "2", "3", "-a", "-b");			
+			}
+		} 
 	}
 	
 }
