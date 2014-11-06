@@ -21,6 +21,9 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
+
+using Fclp.Tests.FluentCommandLineParser;
+
 namespace Fclp.Tests
 {
 	/// <summary>
@@ -42,5 +45,10 @@ namespace Fclp.Tests
 		/// Gets or sets the new value.
 		/// </summary>
 		public string NewValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Enum value.
+        /// </summary>
+		public TestEnum Enum { get; set; }
 	}
 }
