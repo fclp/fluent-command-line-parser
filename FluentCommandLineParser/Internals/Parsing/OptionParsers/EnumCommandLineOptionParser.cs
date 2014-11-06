@@ -34,7 +34,16 @@ namespace Fclp.Internals.Parsing.OptionParsers
 	/// <remarks>For <see cref="System.Boolean"/> types the value is optional. If no value is provided for the Option then <c>true</c> is returned.</remarks>
 	public class EnumCommandLineOptionParser<T> : ICommandLineOptionParser<T>
 	{
-		/// <summary>
+        /// <summary>
+        /// 
+        /// </summary>
+	    public EnumCommandLineOptionParser()
+        {
+            var type = typeof (T);
+            if (!type.IsEnum) throw new ArgumentException(string.Format("T must be an enum but is '{0}'", type));
+	    }
+
+	    /// <summary>
 		/// Parses the specified <see cref="System.String"/> into a <see cref="System.Boolean"/>.
 		/// </summary>
 		/// <param name="parsedOption"></param>

@@ -63,7 +63,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		{
 			if (parser == null) throw new ArgumentNullException("parser");
 
-			var parserType = typeof (T); 
+			var parserType = typeof(T);
 
 			// remove existing
 			this.Parsers.Remove(parserType);
@@ -83,20 +83,64 @@ namespace Fclp.Internals.Parsing.OptionParsers
 
 			if (!this.Parsers.ContainsKey(type))
 			{
-				if (! typeof(T).IsEnum)
+				if (! TryAddAsSpecialParser<T>(type))
 				{
 					throw new UnsupportedTypeException();
 				}
-
-				type = typeof(EnumCommandLineOptionParser<T>);
-				if (!this.Parsers.ContainsKey(type))
-				{
-					this.AddOrReplace(new EnumCommandLineOptionParser<T>());
-				}
-				type = typeof(T);
 			}
 
 			return (ICommandLineOptionParser<T>)this.Parsers[type];
+		}
+
+		/// <summary>
+		/// Attempts to add a special case parser, such as Enum or List{TEnum} parser.
+		/// </summary>
+		/// <returns>True if a special parser was added for the type; otherwise false.</returns>
+		private bool TryAddAsSpecialParser<T>(Type type)
+		{
+			if (type.IsEnum)
+			{
+				var enumParserType = typeof(EnumCommandLineOptionParser<T>);
+				if (!this.Parsers.ContainsKey(enumParserType))
+				{
+					this.AddOrReplace(new EnumCommandLineOptionParser<T>());
+				}
+				return true;
+			}
+			
+			if (type.IsGenericType)
+			{
+				var genericType = TryGetListGenericType(type);
+
+				if (genericType != null && genericType.IsEnum)
+				{
+					var enumListParserType = typeof(ListCommandLineOptionParser<>).MakeGenericType(genericType);
+					var parser = (ICommandLineOptionParser<T>)Activator.CreateInstance(enumListParserType, this);
+
+					if (!this.Parsers.ContainsKey(type))
+					{
+						this.AddOrReplace(parser);
+					}
+
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Attemps to get the type of generic from a generic list.
+		/// </summary>
+		private static Type TryGetListGenericType(Type type)
+		{
+			if (type.IsGenericType && type.GetGenericTypeDefinition()
+				== typeof(List<>))
+			{
+				return type.GetGenericArguments()[0];
+			}
+
+			return null;
 		}
 	}
 }

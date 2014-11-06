@@ -129,21 +129,37 @@ C:\other file.txt
 ### Enum support
 Since v1.2.3 enum types are now supported. 
 ```
-public enum Mode
+public enum Direction
 {
-	Simple = 0,
-	Complex = 1
+	Left = 0,
+	Right = 1,
+	Up = 3,
+	Down = 4
 }
 ```
 ```
-p.Setup<Mode>('m', "mode")
- .Callback(m => mode = m);
+p.Setup<Direction>('d', "direction")
+ .Callback(d => direction = d);
 ```
-To specify 'Complex' mode either the text can be provided or the enum integer.
+To specify 'Right' direction either the text can be provided or the enum integer.
 ```
-dosomething.exe --mode Complex
-dosomething.exe --mode 1
+dosomething.exe --direction Right
+dosomething.exe --direction 1
 ```
+
+You can also collect multiple Enum values into a List<TEnum>
+```
+List<Direction> direction;
+
+p.Setup<List<Direction>>('d', "direction")
+ .Callback(d => direction = d);
+```
+For example, specifiying 'Right' and 'Up' values
+```
+dosomething.exe --direction Right Up
+dosomething.exe --direction 1 3
+```
+
 ### Supported Syntax
 `[-|--|/][switch_name][=|:| ][value]`
 
