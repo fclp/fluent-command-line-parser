@@ -159,7 +159,24 @@ For example, specifiying 'Right' and 'Up' values
 dosomething.exe --direction Right Up
 dosomething.exe --direction 1 3
 ```
+And the generic FluentCommandLineParser<T> (previously known as FluentCommandLineBuilder) also supports enums.
 
+```
+public class Args
+{
+   public Direction Direction { get;set; }
+   public List<Direction> Directions { get;set; }
+}
+```
+```
+var p = new FluentCommandLineParser<Args>();
+
+p.Setup(args => args.Direction)
+ .As('d', "direction");
+
+p.Setup(args => args.Directions)
+ .As("directions");
+```
 ### Supported Syntax
 `[-|--|/][switch_name][=|:| ][value]`
 
