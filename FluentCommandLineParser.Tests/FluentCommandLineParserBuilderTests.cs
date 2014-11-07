@@ -32,8 +32,8 @@ namespace Fclp.Tests
 {
 	public class FluentCommandLineParserBuilderTests
 	{
-		[Subject(typeof(FluentCommandLineBuilder<>))]
-		abstract class FluentCommandLineParserBuilderTestContext : TestContextBase<FluentCommandLineBuilder<TestApplicationArgs>>
+		[Subject(typeof(FluentCommandLineParser<>))]
+		abstract class FluentCommandLineParserBuilderTestContext : TestContextBase<FluentCommandLineParser<TestApplicationArgs>>
 		{
 			Establish context = () => CreateSut();
 		}
