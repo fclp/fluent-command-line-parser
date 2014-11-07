@@ -1,6 +1,6 @@
 ﻿#region License
-// BoolCommandLineOptionParser.cs
-// Copyright (c) 2013, Simon Williams
+// EnumCommandLineOptionParser.cs
+// Copyright (c) 2014, Simon Williams
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are permitted provide
@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals.Extensions;
 
@@ -32,18 +33,28 @@ namespace Fclp.Internals.Parsing.OptionParsers
 	/// Parser used to convert to <see cref="Enum"/>.
 	/// </summary>
 	/// <remarks>For <see cref="System.Boolean"/> types the value is optional. If no value is provided for the Option then <c>true</c> is returned.</remarks>
-	public class EnumCommandLineOptionParser<T> : ICommandLineOptionParser<T>
+	/// /// <typeparam name="TEnum">The <see cref="System.Enum"/> that will be parsed by this parser.</typeparam>
+	public class EnumCommandLineOptionParser<TEnum> : ICommandLineOptionParser<TEnum>
 	{
-        /// <summary>
-        /// 
-        /// </summary>
-	    public EnumCommandLineOptionParser()
-        {
-            var type = typeof (T);
-            if (!type.IsEnum) throw new ArgumentException(string.Format("T must be an enum but is '{0}'", type));
-	    }
+		private readonly IList<TEnum> _all;
+		private readonly Dictionary<string, TEnum> _insensitiveNames;
+		private readonly Dictionary<int, TEnum> _values;
 
-	    /// <summary>
+		/// <summary>
+		/// Initialises a new instance of the <see cref="EnumCommandLineOptionParser{TEnum}"/> class.
+		/// </summary>
+		/// <exception cref="ArgumentException">If {TEnum} is not a <see cref="System.Enum"/>.</exception>
+		public EnumCommandLineOptionParser()
+		{
+			var type = typeof(TEnum);
+			if (!type.IsEnum) throw new ArgumentException(string.Format("T must be an System.Enum but is '{0}'", type));
+
+			_all = Enum.GetValues(typeof(TEnum)).Cast<TEnum>().ToList();
+			_insensitiveNames = _all.ToDictionary(k => Enum.GetName(typeof(TEnum), k).ToLowerInvariant());
+			_values = _all.ToDictionary(k => Convert.ToInt32(k));
+		}
+
+		/// <summary>
 		/// Parses the specified <see cref="System.String"/> into a <see cref="System.Boolean"/>.
 		/// </summary>
 		/// <param name="parsedOption"></param>
@@ -51,9 +62,9 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		/// A <see cref="System.Boolean"/> representing the parsed value.
 		/// The value is optional. If no value is provided then <c>true</c> is returned.
 		/// </returns>
-		public T Parse(ParsedOption parsedOption)
+		public TEnum Parse(ParsedOption parsedOption)
 		{
-			return (T)Enum.Parse(typeof(T), parsedOption.Value, true);
+			return (TEnum)Enum.Parse(typeof(TEnum), parsedOption.Value.ToLowerInvariant(), true);
 		}
 
 		/// <summary>
@@ -63,14 +74,32 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
 		public bool CanParse(ParsedOption parsedOption)
 		{
-			if (parsedOption.Value.IsNullOrWhiteSpace()) return false;
 			if (parsedOption.HasValue == false) return false;
+			if (parsedOption.Value.IsNullOrWhiteSpace()) return false;
+			return IsDefined(parsedOption.Value);
+		}
 
-			string value = parsedOption.Value.Trim();
+		/// <summary>
+		/// Determines whether the specified <paramref name="value"/> can be parsed into {TEnum}.
+		/// </summary>
+		/// <param name="value">The value to be parsed</param>
+		/// <returns>true if <paramref name="value"/> can be parsed; otherwise false.</returns>
+		private bool IsDefined(string value)
+		{
+			int asInt;
+			return int.TryParse(value, out asInt) 
+				? IsDefined(asInt) 
+				: _insensitiveNames.Keys.Contains(value.ToLowerInvariant());
+		}
 
-			var items = value.SplitOnWhitespace();
-
-			return items.Count() == 1;
+		/// <summary>
+		/// Determines whether the specified <paramref name="value"/> represents a {TEnum} value.
+		/// </summary>
+		/// <param name="value">The <see cref="System.Int32"/> that represents a {TEnum} value.</param>
+		/// <returns>true if <paramref name="value"/> represents a {TEnum} value; otherwise false.</returns>
+		private bool IsDefined(int value)
+		{
+			return _values.Keys.Contains(value);
 		}
 	}
 }

@@ -31,6 +31,7 @@ namespace Fclp
 	/// <summary>
 	/// Parser that constructs and populates the specified type of object from command line arguments.
 	/// </summary>
+	/// <typeparam name="TBuildType">The object type containing the argument properties to populate from parsed command line arguments.</typeparam>
 	public class FluentCommandLineBuilder<TBuildType> : IFluentCommandLineBuilder<TBuildType> where TBuildType : new()
 	{
 		/// <summary>

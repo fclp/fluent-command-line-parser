@@ -23,6 +23,7 @@
 #endregion
 
 using System.Globalization;
+using System.Linq;
 using Fclp.Tests.FluentCommandLineParser;
 using Fclp.Tests.Internals;
 using Machine.Specifications;
@@ -157,22 +158,63 @@ namespace Fclp.Tests
 
 			}
 
-			class when_enum_is_specified : ParseTestContext
+
+			class ParseEnum
 			{
-				static TestEnum expectedTestEnum;
-
-				Establish context = () =>
+				abstract class ParseEnumTestContext : ParseTestContext
 				{
-					expectedTestEnum = TestEnum.Value1;
+					protected static TestEnum expectedTestEnum;
 
-					sut.Setup(x => x.Enum)
-						.As('e', "enum");
+					Establish context = () =>
+					{
+						expectedTestEnum = TestEnum.Value1;
 
-					args = new[] {"-e", expectedTestEnum.ToString()};
-				};
+						sut.Setup(x => x.Enum)
+							.As('e', "enum");
+					};
+				}
 
-				It should_assign_the_expected_enum_value_to_the_args = () =>
-					sut.Object.Enum.ShouldEqual(expectedTestEnum);
+				class when_enum_is_specified_as_valid_string : ParseEnumTestContext
+				{
+					Establish context = () =>
+						args = new[] { "-e", expectedTestEnum.ToString() };
+
+					It should_assign_the_expected_enum_value_to_the_args = () =>
+						sut.Object.Enum.ShouldEqual(expectedTestEnum);
+				}
+
+                class when_enum_is_specified_as_valid_int32 : ParseEnumTestContext
+				{
+					Establish context = () =>
+						args = new[] { "-e", ((int)expectedTestEnum).ToString(CultureInfo.InvariantCulture) };
+
+					It should_assign_the_expected_enum_value_to_the_args = () =>
+						sut.Object.Enum.ShouldEqual(expectedTestEnum);
+				}
+
+				class when_enum_is_specified_as_invalid_string : ParseEnumTestContext
+				{
+					Establish context = () =>
+						args = new[] { "-e", "not-a-valid-enum" };
+
+				    It should_return_an_error_as_part_of_the_result = () =>
+				        result.HasErrors.ShouldBeTrue();
+
+                    It should_return_an_error_for_the_enum_option = () =>
+                        result.Errors.Single().Option.ShortName.ShouldEqual("e");
+				}
+
+                class when_enum_is_specified_as_invalid_int32 : ParseEnumTestContext
+				{
+					Establish context = () =>
+						args = new[] { "-e", "123456" };
+
+				    It should_return_an_error_as_part_of_the_result = () =>
+				        result.HasErrors.ShouldBeTrue();
+
+                    It should_return_an_error_for_the_enum_option = () =>
+                        result.Errors.Single().Option.ShortName.ShouldEqual("e");
+				}
 			}
 		}
 	}
