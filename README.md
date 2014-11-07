@@ -49,11 +49,11 @@ static void Main(string[] args)
 
 `.WithDescription("Execute operation in silent mode without feedback")` Specify a help description for the option
 
-### Parsing Using Fluent Command Line Builder
+### Parsing Using the Generic Fluent Command Line Parser
 
-Instead of assigning parsed values to variables you can use the Fluent Command Line Builder to automatically create a defined object type and setup individual Options for each strongly-typed property. Because the builder is simply a wrapper around the parser you can still use the Fluent Command Line Parser Api to define the behaviour for each Option.
+Instead of assigning parsed values to variables you can use the generic Fluent Command Line Parser to automatically create a defined object type and setup individual Options for each strongly-typed property. Because the generic parser is simply a wrapper around the standard fluent parser you can still use the Fluent Command Line Parser Api to define the behaviour for each Option.
 
-The Fluent Command Line Builder can build a type and populate the properties with parsed values such as in the following example: 
+The generic Fluent Command Line Parser can build a type and populate the properties with parsed values such as in the following example: 
 ```
 public class ApplicationArguments
 {
@@ -64,28 +64,28 @@ public class ApplicationArguments
 
 static void Main(string[] args)
 {
-   // create a builder for the ApplicationArguments type
-   var b = new FluentCommandLineBuilder<ApplicationArguments>();
+   // create a generic parser for the ApplicationArguments type
+   var p = new FluentCommandLineParser<ApplicationArguments>();
 
    // specify which property the value will be assigned too.
-   b.Setup(arg => arg.RecordId)
+   p.Setup(arg => arg.RecordId)
     .As('r', "record") // define the short and long option name
     .Required(); // using the standard fluent Api to declare this Option as required.
 
-   b.Setup(arg => arg.NewValue)
+   p.Setup(arg => arg.NewValue)
     .As('v', "value")
     .Required();
 
-   b.Setup(arg => arg.Silent)
+   p.Setup(arg => arg.Silent)
     .As('s', "silent")
     .SetDefault(false); // use the standard fluent Api to define a default value if non is specified in the arguments
 
-   var result = b.Parse(args);
+   var result = p.Parse(args);
 
    if(result.HasErrors == false)
    {
-      // use the instantiated ApplicationArguments object from the Object property on the builder.
-      application.Run(b.Object);
+      // use the instantiated ApplicationArguments object from the Object property on the parser.
+      application.Run(p.Object);
    }
 }
 ```
