@@ -3,7 +3,7 @@ Fluent Command Line Parser
 A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface.
 ### Download
 
-See what's new in [v1.2](https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap).
+See what's new in [v1.3](https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap).
 
 You can download the latest release from [CodeBetter's TeamCity server](http://teamcity.codebetter.com/project.html?projectId=project314)
 
