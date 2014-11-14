@@ -4,9 +4,9 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -31,9 +31,15 @@
         <hr>
 
         <section id="main_content">
-          <h3>Download</h3>
+          <h1>
+<a id="fluent-command-line-parser" class="anchor" href="#fluent-command-line-parser" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fluent Command Line Parser</h1>
 
-<p>See what's new in <a href="https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap">v1.2</a>.</p>
+<p>A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface.</p>
+
+<h3>
+<a id="download" class="anchor" href="#download" aria-hidden="true"><span class="octicon octicon-link"></span></a>Download</h3>
+
+<p>See what's new in <a href="https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap">v1.3</a>.</p>
 
 <p>You can download the latest release from <a href="http://teamcity.codebetter.com/project.html?projectId=project314">CodeBetter's TeamCity server</a></p>
 
@@ -42,9 +48,10 @@
 <pre><code>PM&gt; Install-Package FluentCommandLineParser
 </code></pre>
 
-<h3>Usage</h3>
+<h3>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
 
-<p>See <a href="https://github.com/fclp/fluent-command-line-parser/wiki/So,-how-does-FCLP-compare-to-other-parsers%3F">here for a side-by-side syntax comparison</a> between other command line parsers.</p>
+<p>See <a href="https://github.com/fclp/fluent-command-line-parser/wiki/So,-how-does-FCLP-compare-to-other-parsers%3F">here</a> for a side-by-side syntax comparison between other command line parsers.</p>
 
 <p>Commands such as <code>updaterecord.exe -r 10 -v="Mr. Smith" --silent</code> can be captured using</p>
 
@@ -68,7 +75,8 @@
 }
 </code></pre>
 
-<h3>Parser Option Methods</h3>
+<h3>
+<a id="parser-option-methods" class="anchor" href="#parser-option-methods" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parser Option Methods</h3>
 
 <p><code>.Setup&lt;int&gt;('r')</code> Setup an option using a short name, </p>
 
@@ -82,11 +90,12 @@
 
 <p><code>.WithDescription("Execute operation in silent mode without feedback")</code> Specify a help description for the option</p>
 
-<h3>Parsing Using Fluent Command Line Builder</h3>
+<h3>
+<a id="parsing-using-the-generic-fluent-command-line-parser" class="anchor" href="#parsing-using-the-generic-fluent-command-line-parser" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parsing Using the Generic Fluent Command Line Parser</h3>
 
-<p>Instead of assigning parsed values to variables you can use the Fluent Command Line Builder to automatically create a defined object type and setup individual Options for each strongly-typed property. Because the builder is simply a wrapper around the parser you can still use the Fluent Command Line Parser Api to define the behaviour for each Option.</p>
+<p>Instead of assigning parsed values to variables you can use the generic Fluent Command Line Parser to automatically create a defined object type and setup individual Options for each strongly-typed property. Because the generic parser is simply a wrapper around the standard fluent parser you can still use the Fluent Command Line Parser Api to define the behaviour for each Option.</p>
 
-<p>The Fluent Command Line Builder can build a type and populate the properties with parsed values such as in the following example: </p>
+<p>The generic Fluent Command Line Parser can build a type and populate the properties with parsed values such as in the following example: </p>
 
 <pre><code>public class ApplicationArguments
 {
@@ -97,33 +106,34 @@
 
 static void Main(string[] args)
 {
-   // create a builder for the ApplicationArguments type
-   var b = new FluentCommandLineBuilder&lt;ApplicationArguments&gt;();
+   // create a generic parser for the ApplicationArguments type
+   var p = new FluentCommandLineParser&lt;ApplicationArguments&gt;();
 
    // specify which property the value will be assigned too.
-   b.Setup(arg =&gt; arg.RecordId)
+   p.Setup(arg =&gt; arg.RecordId)
     .As('r', "record") // define the short and long option name
     .Required(); // using the standard fluent Api to declare this Option as required.
 
-   b.Setup(arg =&gt; arg.NewValue)
+   p.Setup(arg =&gt; arg.NewValue)
     .As('v', "value")
     .Required();
 
-   b.Setup(arg =&gt; arg.Silent)
+   p.Setup(arg =&gt; arg.Silent)
     .As('s', "silent")
     .SetDefault(false); // use the standard fluent Api to define a default value if non is specified in the arguments
 
-   var result = b.Parse(args);
+   var result = p.Parse(args);
 
    if(result.HasErrors == false)
    {
-      // use the instantiated ApplicationArguments object from the Object property on the builder.
-      application.Run(b.Object);
+      // use the instantiated ApplicationArguments object from the Object property on the parser.
+      application.Run(p.Object);
    }
 }
 </code></pre>
 
-<h3>Parsing To Collections</h3>
+<h3>
+<a id="parsing-to-collections" class="anchor" href="#parsing-to-collections" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parsing To Collections</h3>
 
 <p>Many arguments can be collected as part of a list. Types supported are <code>string</code>, <code>int</code>, <code>double</code> and <code>bool</code></p>
 
@@ -161,7 +171,64 @@ C:\file2.txt
 C:\other file.txt
 </code></pre>
 
-<h3>Supported Syntax</h3>
+<h3>
+<a id="enum-support" class="anchor" href="#enum-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Enum support</h3>
+
+<p>Since v1.2.3 enum types are now supported. </p>
+
+<pre><code>public enum Direction
+{
+    Left = 0,
+    Right = 1,
+    Up = 3,
+    Down = 4
+}
+</code></pre>
+
+<pre><code>p.Setup&lt;Direction&gt;('d', "direction")
+ .Callback(d =&gt; direction = d);
+</code></pre>
+
+<p>To specify 'Right' direction either the text can be provided or the enum integer.</p>
+
+<pre><code>dosomething.exe --direction Right
+dosomething.exe --direction 1
+</code></pre>
+
+<p>You can also collect multiple Enum values into a List</p>
+
+<pre><code>List&lt;Direction&gt; direction;
+
+p.Setup&lt;List&lt;Direction&gt;&gt;('d', "direction")
+ .Callback(d =&gt; direction = d);
+</code></pre>
+
+<p>For example, specifiying 'Right' and 'Up' values</p>
+
+<pre><code>dosomething.exe --direction Right Up
+dosomething.exe --direction 1 3
+</code></pre>
+
+<p>And the generic FluentCommandLineParser (previously known as FluentCommandLineBuilder) also supports enums.</p>
+
+<pre><code>public class Args
+{
+   public Direction Direction { get;set; }
+   public List&lt;Direction&gt; Directions { get;set; }
+}
+</code></pre>
+
+<pre><code>var p = new FluentCommandLineParser&lt;Args&gt;();
+
+p.Setup(args =&gt; args.Direction)
+ .As('d', "direction");
+
+p.Setup(args =&gt; args.Directions)
+ .As("directions");
+</code></pre>
+
+<h3>
+<a id="supported-syntax" class="anchor" href="#supported-syntax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Supported Syntax</h3>
 
 <p><code>[-|--|/][switch_name][=|:| ][value]</code></p>
 
@@ -179,7 +246,8 @@ example.exe -xyz- // disable option x, y and z
 example.exe -xyz+ // enable option x, y and z
 </code></pre>
 
-<h3>Development</h3>
+<h3>
+<a id="development" class="anchor" href="#development" aria-hidden="true"><span class="octicon octicon-link"></span></a>Development</h3>
 
 <p>Fclp is in the early stages of development. Please feel free to provide any feedback on feature support or the Api itself.</p>
 
@@ -188,7 +256,7 @@ example.exe -xyz+ // enable option x, y and z
 
         <footer>
           Fluent Command Line Parser is maintained by <a href="https://github.com/fclp">fclp</a><br>
-          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
         </footer>
 
                   <script type="text/javascript">
