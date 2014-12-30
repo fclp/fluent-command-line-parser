@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="FluentCommandLineParser\Behaviour\InvalidOptionSetupBehaviour.cs" />
     <Compile Include="FluentCommandLineParser\TestContext\TestEnum.cs" />
+    <Compile Include="FluentCommandLineParser\TestContext\TestEnumFlag.cs" />
     <Compile Include="FluentCommandLineParser\TestContext\TestException.cs" />
     <Compile Include="FluentCommandLineParser\TestContext\FluentCommandLineParserTestContext.cs" />
     <Compile Include="FluentCommandLineParser\TestContext\SettingUpALongOptionTestContext.cs" />

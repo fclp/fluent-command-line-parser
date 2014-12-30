@@ -118,6 +118,16 @@ namespace FluentCommandLineParser.Tests.Internals
 	    }
 
         [Test]
+        public void Ensure_Factory_Supports_EnumFlags()
+        {
+            var factory = new CommandLineOptionParserFactory();
+
+            var enumParser = factory.CreateParser<TestEnumFlag>();
+
+            Assert.IsInstanceOf<EnumFlagCommandLineOptionParser<TestEnumFlag>>(enumParser);
+        }
+
+        [Test]
 	    public void Ensure_Factory_Returns_Custom_Enum_Formatter()
 	    {
             var factory = new CommandLineOptionParserFactory();
