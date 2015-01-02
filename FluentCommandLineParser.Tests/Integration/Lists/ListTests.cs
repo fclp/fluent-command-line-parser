@@ -123,11 +123,5 @@ namespace Fclp.Tests.Integration
 			results.HasErrors.ShouldBeFalse();
 			actualItems.ShouldContainOnly(expectedItems);
 		}
-
-		[Fact]
-		public void DummyTestSoNCrunchWorks()
-		{
-
-		}
 	}
 }

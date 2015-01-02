@@ -152,11 +152,5 @@ namespace Fclp.Tests.Integration
 			actualYValue.ShouldEqual(expectedValue);
 			actualZValue.ShouldEqual(expectedValue);
 		}
-
-		[Fact]
-		public void DummyFactToGetTheoryToExecuteInNCrunch()
-		{
-			
-		}
 	}
 }

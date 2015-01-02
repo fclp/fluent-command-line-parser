@@ -262,11 +262,5 @@ namespace Fclp.Tests.Internals
 			third.Prefix.ShouldEqual(expectedPrefix);
 			third.Suffix.ShouldEqual(expectedSuffix);
 		}
-
-		[Fact]
-		public void DummyFactToGetTheoryToExecuteInNCrunch()
-		{
-
-		}
 	}
 }
