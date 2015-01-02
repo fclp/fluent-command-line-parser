@@ -27,120 +27,133 @@ using System.Collections.Generic;
 
 namespace Fclp.Internals.Parsing.OptionParsers
 {
-	/// <summary>
-	/// 
-	/// </summary>
-	public class CommandLineOptionParserFactory : ICommandLineOptionParserFactory
-	{
-		/// <summary>
-		/// Initialises a new instance of the <see cref="CommandLineOptionParserFactory"/> class.
-		/// </summary>
-		public CommandLineOptionParserFactory()
-		{
-			this.Parsers = new Dictionary<Type, object>();
-			this.AddOrReplace(new BoolCommandLineOptionParser());
-			this.AddOrReplace(new Int32CommandLineOptionParser());
-			this.AddOrReplace(new StringCommandLineOptionParser());
-			this.AddOrReplace(new DateTimeCommandLineOptionParser());
-			this.AddOrReplace(new DoubleCommandLineOptionParser());
-			this.AddOrReplace(new ListCommandLineOptionParser<string>(this));
-			this.AddOrReplace(new ListCommandLineOptionParser<int>(this));
-			this.AddOrReplace(new ListCommandLineOptionParser<double>(this));
-			this.AddOrReplace(new ListCommandLineOptionParser<DateTime>(this));
-			this.AddOrReplace(new ListCommandLineOptionParser<bool>(this));
-		}
+    /// <summary>
+    /// 
+    /// </summary>
+    public class CommandLineOptionParserFactory : ICommandLineOptionParserFactory
+    {
+        /// <summary>
+        /// Initialises a new instance of the <see cref="CommandLineOptionParserFactory"/> class.
+        /// </summary>
+        public CommandLineOptionParserFactory()
+        {
+            this.Parsers = new Dictionary<Type, object>();
+            this.AddOrReplace(new BoolCommandLineOptionParser());
+            this.AddOrReplace(new Int32CommandLineOptionParser());
+            this.AddOrReplace(new StringCommandLineOptionParser());
+            this.AddOrReplace(new DateTimeCommandLineOptionParser());
+            this.AddOrReplace(new DoubleCommandLineOptionParser());
+            this.AddOrReplace(new ListCommandLineOptionParser<string>(this));
+            this.AddOrReplace(new ListCommandLineOptionParser<int>(this));
+            this.AddOrReplace(new ListCommandLineOptionParser<double>(this));
+            this.AddOrReplace(new ListCommandLineOptionParser<DateTime>(this));
+            this.AddOrReplace(new ListCommandLineOptionParser<bool>(this));
+        }
 
-		internal Dictionary<Type, object> Parsers { get; set; }
+        internal Dictionary<Type, object> Parsers { get; set; }
 
-		/// <summary>
-		/// Adds the specified <see cref="ICommandLineOptionParser{T}"/> to this factories list of supported parsers.
-		/// If an existing parser has already been registered for the type then it will be replaced.
-		/// </summary>
-		/// <typeparam name="T">The type which the <see cref="ICommandLineOptionParser{T}"/> will be returned for.</typeparam>
-		/// <param name="parser">The parser to return for the specified type.</param>
-		/// <exception cref="ArgumentNullException">If <paramref name="parser"/> is <c>null</c>.</exception>
-		public void AddOrReplace<T>(ICommandLineOptionParser<T> parser)
-		{
-			if (parser == null) throw new ArgumentNullException("parser");
+        /// <summary>
+        /// Adds the specified <see cref="ICommandLineOptionParser{T}"/> to this factories list of supported parsers.
+        /// If an existing parser has already been registered for the type then it will be replaced.
+        /// </summary>
+        /// <typeparam name="T">The type which the <see cref="ICommandLineOptionParser{T}"/> will be returned for.</typeparam>
+        /// <param name="parser">The parser to return for the specified type.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="parser"/> is <c>null</c>.</exception>
+        public void AddOrReplace<T>(ICommandLineOptionParser<T> parser)
+        {
+            if (parser == null) throw new ArgumentNullException("parser");
 
-			var parserType = typeof(T);
+            var parserType = typeof(T);
 
-			// remove existing
-			this.Parsers.Remove(parserType);
+            // remove existing
+            this.Parsers.Remove(parserType);
 
-			this.Parsers.Add(parserType, parser);
-		}
+            this.Parsers.Add(parserType, parser);
+        }
 
-		/// <summary>
-		/// Creates a <see cref="ICommandLineOptionParser{T}"/> to handle the specified type.
-		/// </summary>
-		/// <typeparam name="T">The type of parser to create.</typeparam>
-		/// <returns>A <see cref="ICommandLineOptionParser{T}"/> suitable for the specified type.</returns>
-		/// <exception cref="UnsupportedTypeException">If the specified type is not supported by this factory.</exception>
-		public ICommandLineOptionParser<T> CreateParser<T>()
-		{
-			var type = typeof(T);
+        /// <summary>
+        /// Creates a <see cref="ICommandLineOptionParser{T}"/> to handle the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of parser to create.</typeparam>
+        /// <returns>A <see cref="ICommandLineOptionParser{T}"/> suitable for the specified type.</returns>
+        /// <exception cref="UnsupportedTypeException">If the specified type is not supported by this factory.</exception>
+        public ICommandLineOptionParser<T> CreateParser<T>()
+        {
+            var type = typeof(T);
 
-			if (!this.Parsers.ContainsKey(type))
-			{
-				if (! TryAddAsSpecialParser<T>(type))
-				{
-					throw new UnsupportedTypeException();
-				}
-			}
+            if (!this.Parsers.ContainsKey(type))
+            {
+                if (!TryAddAsSpecialParser<T>(type))
+                {
+                    throw new UnsupportedTypeException();
+                }
+            }
 
-			return (ICommandLineOptionParser<T>)this.Parsers[type];
-		}
+            return (ICommandLineOptionParser<T>)this.Parsers[type];
+        }
 
-		/// <summary>
-		/// Attempts to add a special case parser, such as Enum or List{TEnum} parser.
-		/// </summary>
-		/// <returns>True if a special parser was added for the type; otherwise false.</returns>
-		private bool TryAddAsSpecialParser<T>(Type type)
-		{
-			if (type.IsEnum)
-			{
-				var enumParserType = typeof(EnumCommandLineOptionParser<T>);
-				if (!this.Parsers.ContainsKey(enumParserType))
-				{
-					this.AddOrReplace(new EnumCommandLineOptionParser<T>());
-				}
-				return true;
-			}
-			
-			if (type.IsGenericType)
-			{
-				var genericType = TryGetListGenericType(type);
+        /// <summary>
+        /// Attempts to add a special case parser, such as Enum or List{TEnum} parser.
+        /// </summary>
+        /// <returns>True if a special parser was added for the type; otherwise false.</returns>
+        private bool TryAddAsSpecialParser<T>(Type type)
+        {
+            if (type.IsEnum)
+            {
+                bool hasFlags = typeof(T).IsDefined(typeof(FlagsAttribute), false);
 
-				if (genericType != null && genericType.IsEnum)
-				{
-					var enumListParserType = typeof(ListCommandLineOptionParser<>).MakeGenericType(genericType);
-					var parser = (ICommandLineOptionParser<T>)Activator.CreateInstance(enumListParserType, this);
+                Type enumParserType = hasFlags ?
+                    typeof(EnumFlagCommandLineOptionParser<T>) :
+                    typeof(EnumCommandLineOptionParser<T>);
 
-					if (!this.Parsers.ContainsKey(type))
-					{
-						this.AddOrReplace(parser);
-					}
+                if (!this.Parsers.ContainsKey(enumParserType))
+                {
+                    if (hasFlags)
+                    {
+                        this.AddOrReplace(new EnumFlagCommandLineOptionParser<T>());
+                    }
+                    else
+                    {
+                        this.AddOrReplace(new EnumCommandLineOptionParser<T>());
+                    }
+                    
+                }
+                return true;
+            }
 
-					return true;
-				}
-			}
+            if (type.IsGenericType)
+            {
+                var genericType = TryGetListGenericType(type);
 
-			return false;
-		}
+                if (genericType != null && genericType.IsEnum)
+                {
+                    var enumListParserType = typeof(ListCommandLineOptionParser<>).MakeGenericType(genericType);
+                    var parser = (ICommandLineOptionParser<T>)Activator.CreateInstance(enumListParserType, this);
 
-		/// <summary>
-		/// Attemps to get the type of generic from a generic list.
-		/// </summary>
-		private static Type TryGetListGenericType(Type type)
-		{
-			if (type.IsGenericType && type.GetGenericTypeDefinition()
-				== typeof(List<>))
-			{
-				return type.GetGenericArguments()[0];
-			}
+                    if (!this.Parsers.ContainsKey(type))
+                    {
+                        this.AddOrReplace(parser);
+                    }
 
-			return null;
-		}
-	}
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Attemps to get the type of generic from a generic list.
+        /// </summary>
+        private static Type TryGetListGenericType(Type type)
+        {
+            if (type.IsGenericType && type.GetGenericTypeDefinition()
+                == typeof(List<>))
+            {
+                return type.GetGenericArguments()[0];
+            }
+
+            return null;
+        }
+    }
 }
