@@ -1,49 +1,51 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <title>Fluent Command Line Parser by fclp</title>
+    <meta name="description" content="Fluent Command Line Parser : A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Fluent Command Line Parser</title>
   </head>
 
   <body>
-    <div id="container">
-      <div class="inner">
 
-        <header>
-          <h1>Fluent Command Line Parser</h1>
-          <h2>A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface</h2>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/fclp/fluent-command-line-parser">View on GitHub</a>
+
+          <h1 id="project_title">Fluent Command Line Parser</h1>
+          <h2 id="project_tagline">A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/fclp/fluent-command-line-parser/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/fclp/fluent-command-line-parser/tarball/master">Download this project as a tar.gz file</a>
+            </section>
         </header>
+    </div>
 
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/fclp/fluent-command-line-parser/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/fclp/fluent-command-line-parser/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/fclp/fluent-command-line-parser" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
-
-        <hr>
-
-        <section id="main_content">
-          <h1>
-<a id="fluent-command-line-parser" class="anchor" href="#fluent-command-line-parser" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fluent Command Line Parser</h1>
-
-<p>A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface.</p>
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface.</p>
 
 <h3>
 <a id="download" class="anchor" href="#download" aria-hidden="true"><span class="octicon octicon-link"></span></a>Download</h3>
 
-<p>See what's new in <a href="https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap">v1.3</a>.</p>
+<p>See what's new in <a href="https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap">v1.4</a>.</p>
 
 <p>You can download the latest release from <a href="http://teamcity.codebetter.com/project.html?projectId=project314">CodeBetter's TeamCity server</a></p>
 
-<p>You can also install using <a href="http://nuget.org/packages/FluentCommandLineParser/">NuGet</a></p>
+<p>You can also install using <a href="http://nuget.org/packages/FluentCommandLineParser/">NuGet</a> via the command line</p>
+
+<pre><code>cmd&gt; nuget install FluentCommandLineParser
+</code></pre>
+
+<p>Or use the Package Manager console in Visual Studio:</p>
 
 <pre><code>PM&gt; Install-Package FluentCommandLineParser
 </code></pre>
@@ -55,25 +57,24 @@
 
 <p>Commands such as <code>updaterecord.exe -r 10 -v="Mr. Smith" --silent</code> can be captured using</p>
 
-<pre><code>static void Main(string[] args)
+<div class="highlight highlight-c#"><pre><span class="pl-s">static</span> <span class="pl-st">void</span> Main(<span class="pl-st">string</span>[] args)
 {
-  var p = new FluentCommandLineParser();
+  <span class="pl-k">var</span> p = <span class="pl-s">new</span> FluentCommandLineParser();
 
-  p.Setup&lt;int&gt;('r')
+  p.Setup&lt;<span class="pl-st">int</span>&gt;(<span class="pl-s1"><span class="pl-pds">'</span>r<span class="pl-pds">'</span></span>)
    .Callback(record =&gt; RecordID = record)
    .Required();
 
-  p.Setup&lt;string&gt;('v')
-   .Callback(value =&gt; NewValue = value)
+  p.Setup&lt;<span class="pl-st">string</span>&gt;(<span class="pl-s1"><span class="pl-pds">'</span>v<span class="pl-pds">'</span></span>)
+   .Callback(<span class="pl-k">value</span> =&gt; NewValue = <span class="pl-k">value</span>)
    .Required();
 
-  p.Setup&lt;bool&gt;('s', "silent")
+  p.Setup&lt;<span class="pl-st">bool</span>&gt;(<span class="pl-s1"><span class="pl-pds">'</span>s<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>silent<span class="pl-pds">"</span></span>)
    .Callback(silent =&gt; InSilentMode = silent)
-   .SetDefault(false);
+   .SetDefault(<span class="pl-c1">false</span>);
 
   p.Parse(args);
-}
-</code></pre>
+}</pre></div>
 
 <h3>
 <a id="parser-option-methods" class="anchor" href="#parser-option-methods" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parser Option Methods</h3>
@@ -97,45 +98,44 @@
 
 <p>The generic Fluent Command Line Parser can build a type and populate the properties with parsed values such as in the following example: </p>
 
-<pre><code>public class ApplicationArguments
+<div class="highlight highlight-c#"><pre><span class="pl-s">public</span> <span class="pl-s">class</span> <span class="pl-en">ApplicationArguments</span>
 {
-   public int RecordId { get; set; }
-   public bool Silent { get; set; }
-   public string NewValue { get; set; }
+   <span class="pl-s">public</span> <span class="pl-st">int</span> <span class="pl-en">RecordId</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+   <span class="pl-s">public</span> <span class="pl-st">bool</span> <span class="pl-en">Silent</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+   <span class="pl-s">public</span> <span class="pl-st">string</span> <span class="pl-en">NewValue</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
 }
 
-static void Main(string[] args)
+<span class="pl-s">static</span> <span class="pl-st">void</span> Main(<span class="pl-st">string</span>[] args)
 {
-   // create a generic parser for the ApplicationArguments type
-   var p = new FluentCommandLineParser&lt;ApplicationArguments&gt;();
+   <span class="pl-c">// create a generic parser for the ApplicationArguments type</span>
+   <span class="pl-k">var</span> p = <span class="pl-s">new</span> FluentCommandLineParser&lt;ApplicationArguments&gt;();
 
-   // specify which property the value will be assigned too.
+   <span class="pl-c">// specify which property the value will be assigned too.</span>
    p.Setup(arg =&gt; arg.RecordId)
-    .As('r', "record") // define the short and long option name
-    .Required(); // using the standard fluent Api to declare this Option as required.
+    .As(<span class="pl-s1"><span class="pl-pds">'</span>r<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>record<span class="pl-pds">"</span></span>) <span class="pl-c">// define the short and long option name</span>
+    .Required(); <span class="pl-c">// using the standard fluent Api to declare this Option as required.</span>
 
    p.Setup(arg =&gt; arg.NewValue)
-    .As('v', "value")
+    .As(<span class="pl-s1"><span class="pl-pds">'</span>v<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>value<span class="pl-pds">"</span></span>)
     .Required();
 
    p.Setup(arg =&gt; arg.Silent)
-    .As('s', "silent")
-    .SetDefault(false); // use the standard fluent Api to define a default value if non is specified in the arguments
+    .As(<span class="pl-s1"><span class="pl-pds">'</span>s<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>silent<span class="pl-pds">"</span></span>)
+    .SetDefault(<span class="pl-c1">false</span>); <span class="pl-c">// use the standard fluent Api to define a default value if non is specified in the arguments</span>
 
-   var result = p.Parse(args);
+   <span class="pl-k">var</span> result = p.Parse(args);
 
-   if(result.HasErrors == false)
+   <span class="pl-k">if</span>(result.HasErrors == <span class="pl-c1">false</span>)
    {
-      // use the instantiated ApplicationArguments object from the Object property on the parser.
+      <span class="pl-c">// use the instantiated ApplicationArguments object from the Object property on the parser.</span>
       application.Run(p.Object);
    }
-}
-</code></pre>
+}</pre></div>
 
 <h3>
 <a id="parsing-to-collections" class="anchor" href="#parsing-to-collections" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parsing To Collections</h3>
 
-<p>Many arguments can be collected as part of a list. Types supported are <code>string</code>, <code>int</code>, <code>double</code> and <code>bool</code></p>
+<p>Many arguments can be collected as part of a list. Types supported are <code>string</code>, <code>int</code>, <code>double</code>, <code>bool</code> and <code>Enum</code></p>
 
 <p>For example arguments such as</p>
 
@@ -143,25 +143,24 @@ static void Main(string[] args)
 
 <p>can be automatically parsed to a <code>List&lt;string&gt;</code> using</p>
 
-<pre><code>static void Main(string[] args)
+<div class="highlight highlight-c#"><pre><span class="pl-s">static</span> <span class="pl-st">void</span> Main(<span class="pl-st">string</span>[] args)
 {
-   var p = new FluentCommandLineParser();
+   <span class="pl-k">var</span> p = <span class="pl-s">new</span> FluentCommandLineParser();
 
-   var filenames = new List&lt;string&gt;();
+   <span class="pl-k">var</span> filenames = <span class="pl-s">new</span> List&lt;<span class="pl-st">string</span>&gt;();
 
-   p.Setup&lt;List&lt;string&gt;&gt;('f', "filenames")
+   p.Setup&lt;List&lt;<span class="pl-st">string</span>&gt;&gt;(<span class="pl-s1"><span class="pl-pds">'</span>f<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>filenames<span class="pl-pds">"</span></span>)
     .Callback(items =&gt; filenames = items);
 
    p.Parse(args);
 
-   Console.WriteLine("Input file names:");
+   Console.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>Input file names:<span class="pl-pds">"</span></span>);
 
-   foreach (var filename in filenames)
+   <span class="pl-k">foreach</span> (<span class="pl-k">var</span> filename <span class="pl-k">in</span> filenames)
    {
       Console.WriteLine(filename);
    }
-}
-</code></pre>
+}</pre></div>
 
 <p>output:</p>
 
@@ -176,56 +175,65 @@ C:\other file.txt
 
 <p>Since v1.2.3 enum types are now supported. </p>
 
-<pre><code>public enum Direction
+<div class="highlight highlight-c#"><pre>[Flags]
+<span class="pl-s">enum</span> <span class="pl-en">Direction</span>
 {
-    Left = 0,
-    Right = 1,
-    Up = 3,
-    Down = 4
-}
-</code></pre>
+    North = <span class="pl-c1">1</span>,
+    East = <span class="pl-c1">2</span>,
+    South = <span class="pl-c1">4</span>,
+    West = <span class="pl-c1">8</span>,
+}</pre></div>
 
-<pre><code>p.Setup&lt;Direction&gt;('d', "direction")
- .Callback(d =&gt; direction = d);
-</code></pre>
+<div class="highlight highlight-c#"><pre>p.Setup&lt;Direction&gt;(<span class="pl-s1"><span class="pl-pds">"</span>direction<span class="pl-pds">"</span></span>)
+ .Callback(d =&gt; direction = d);</pre></div>
 
-<p>To specify 'Right' direction either the text can be provided or the enum integer.</p>
+<p>To specify 'East' direction either the text can be provided or the enum integer.</p>
 
-<pre><code>dosomething.exe --direction Right
-dosomething.exe --direction 1
-</code></pre>
+<div class="highlight highlight-c#"><pre>dosomething.exe --direction East
+dosomething.exe --direction <span class="pl-c1">2</span></pre></div>
 
 <p>You can also collect multiple Enum values into a List</p>
 
-<pre><code>List&lt;Direction&gt; direction;
+<div class="highlight highlight-c#"><pre>List&lt;Direction&gt; direction;
 
-p.Setup&lt;List&lt;Direction&gt;&gt;('d', "direction")
+p.Setup&lt;List&lt;Direction&gt;&gt;(<span class="pl-s1"><span class="pl-pds">'</span>d<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>direction<span class="pl-pds">"</span></span>)
+ .Callback(d =&gt; direction = d);</pre></div>
+
+<p>For example, specifiying 'South' and 'East' values</p>
+
+<pre><code>dosomething.exe --direction South East
+dosomething.exe --direction 4 2
+</code></pre>
+
+<p>Since v1.4 Enum Flags are also supported</p>
+
+<div class="highlight highlight-c#"><pre>Direction direction;
+
+p.Setup&lt;Direction&gt;(<span class="pl-s1"><span class="pl-pds">"</span>direction<span class="pl-pds">"</span></span>)
  .Callback(d =&gt; direction = d);
-</code></pre>
 
-<p>For example, specifiying 'Right' and 'Up' values</p>
+p.Parse(args);
 
-<pre><code>dosomething.exe --direction Right Up
-dosomething.exe --direction 1 3
-</code></pre>
+Assert.IsFalse(direction.HasFlag(Direction.North));
+Assert.IsTrue(direction.HasFlag(Direction.East));
+Assert.IsTrue(direction.HasFlag(Direction.South));
+Assert.IsFalse(direction.HasFlag(Direction.West));</pre></div>
 
 <p>And the generic FluentCommandLineParser (previously known as FluentCommandLineBuilder) also supports enums.</p>
 
-<pre><code>public class Args
+<div class="highlight highlight-c#"><pre><span class="pl-s">public</span> <span class="pl-s">class</span> <span class="pl-en">Args</span>
 {
-   public Direction Direction { get;set; }
-   public List&lt;Direction&gt; Directions { get;set; }
-}
-</code></pre>
+   <span class="pl-s">public</span> Direction <span class="pl-en">Direction</span> { <span class="pl-k">get</span>;<span class="pl-k">set</span>; }
+   <span class="pl-s">public</span> List&lt;Direction&gt; <span class="pl-en">Directions</span> { <span class="pl-k">get</span>;<span class="pl-k">set</span>; }
+}</pre></div>
 
-<pre><code>var p = new FluentCommandLineParser&lt;Args&gt;();
+<div class="highlight highlight-c#"><pre><span class="pl-k">var</span> p = <span class="pl-s">new</span> FluentCommandLineParser&lt;Args&gt;();
 
 p.Setup(args =&gt; args.Direction)
- .As('d', "direction");
+ .As(<span class="pl-s1"><span class="pl-pds">'</span>d<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>direction<span class="pl-pds">"</span></span>);
 
 p.Setup(args =&gt; args.Directions)
- .As("directions");
-</code></pre>
+ .As(<span class="pl-s1"><span class="pl-pds">"</span>directions<span class="pl-pds">"</span></span>);</pre></div>
 
 <h3>
 <a id="supported-syntax" class="anchor" href="#supported-syntax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Supported Syntax</h3>
@@ -252,14 +260,18 @@ example.exe -xyz+ // enable option x, y and z
 <p>Fclp is in the early stages of development. Please feel free to provide any feedback on feature support or the Api itself.</p>
 
 <p>If you would like to contribute, you may do so to the <a href="https://github.com/fclp/fluent-command-line-parser/tree/develop">develop branch</a>.</p>
-        </section>
+      </section>
+    </div>
 
-        <footer>
-          Fluent Command Line Parser is maintained by <a href="https://github.com/fclp">fclp</a><br>
-          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Fluent Command Line Parser maintained by <a href="https://github.com/fclp">fclp</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
 
-                  <script type="text/javascript">
+              <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
@@ -270,7 +282,6 @@ example.exe -xyz+ // enable option x, y and z
             } catch(err) {}
           </script>
 
-      </div>
-    </div>
+
   </body>
 </html>
