@@ -3,14 +3,19 @@ Fluent Command Line Parser
 A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface.
 ### Download
 
-See what's new in [v1.3](https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap).
+See what's new in [v1.4](https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap).
 
 You can download the latest release from [CodeBetter's TeamCity server](http://teamcity.codebetter.com/project.html?projectId=project314)
 
-You can also install using [NuGet](http://nuget.org/packages/FluentCommandLineParser/)
+You can also install using [NuGet](http://nuget.org/packages/FluentCommandLineParser/) via the command line
+```
+cmd> nuget install FluentCommandLineParser
+```
+Or use the Package Manager console in Visual Studio:
 ```
 PM> Install-Package FluentCommandLineParser
 ```
+
 ### Usage
 See [here](https://github.com/fclp/fluent-command-line-parser/wiki/So,-how-does-FCLP-compare-to-other-parsers%3F) for a side-by-side syntax comparison between other command line parsers.
 
@@ -92,7 +97,7 @@ static void Main(string[] args)
 
 ### Parsing To Collections
 
-Many arguments can be collected as part of a list. Types supported are `string`, `int`, `double` and `bool`
+Many arguments can be collected as part of a list. Types supported are `string`, `int`, `double`, `bool` and `Enum`
 
 For example arguments such as
 
@@ -129,22 +134,23 @@ C:\other file.txt
 ### Enum support
 Since v1.2.3 enum types are now supported. 
 ```
-public enum Direction
+[Flags]
+enum Direction
 {
-	Left = 0,
-	Right = 1,
-	Up = 3,
-	Down = 4
+	North = 1,
+	East = 2,
+	South = 4,
+	West = 8,
 }
 ```
 ```
-p.Setup<Direction>('d', "direction")
+p.Setup<Direction>("direction")
  .Callback(d => direction = d);
 ```
-To specify 'Right' direction either the text can be provided or the enum integer.
+To specify 'East' direction either the text can be provided or the enum integer.
 ```
-dosomething.exe --direction Right
-dosomething.exe --direction 1
+dosomething.exe --direction East
+dosomething.exe --direction 2
 ```
 
 You can also collect multiple Enum values into a List<TEnum>
@@ -154,11 +160,27 @@ List<Direction> direction;
 p.Setup<List<Direction>>('d', "direction")
  .Callback(d => direction = d);
 ```
-For example, specifiying 'Right' and 'Up' values
+For example, specifiying 'South' and 'East' values
 ```
-dosomething.exe --direction Right Up
-dosomething.exe --direction 1 3
+dosomething.exe --direction South East
+dosomething.exe --direction 4 2
 ```
+
+Since v1.4 Enum Flags are also supported
+```
+Direction direction;
+
+p.Setup<Direction>("direction")
+ .Callback(d => direction = d);
+
+p.Parse(args);
+
+Assert.IsFalse(direction.HasFlag(Direction.North));
+Assert.IsTrue(direction.HasFlag(Direction.East));
+Assert.IsTrue(direction.HasFlag(Direction.South));
+Assert.IsFalse(direction.HasFlag(Direction.West));
+```
+
 And the generic FluentCommandLineParser<T> (previously known as FluentCommandLineBuilder) also supports enums.
 
 ```
