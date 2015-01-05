@@ -495,6 +495,35 @@ namespace Fclp.Tests
             Assert.IsFalse(actual.HasFlag(TestEnumFlag.Value32));
         }
 
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_EnumFlag_When_Using_Short_option_And_A_List_Of_String_Values()
+        {
+            var args = new[] { "--direction", "South", "East" };
+
+            var actual = Direction.North;
+
+            var p = CreateFluentParser();
+
+            p.Setup<Direction>("direction")
+             .Callback(d => actual = d);
+
+            p.Parse(args);
+
+            Assert.IsFalse(actual.HasFlag(Direction.North));
+            Assert.IsTrue(actual.HasFlag(Direction.East));
+            Assert.IsTrue(actual.HasFlag(Direction.South));
+            Assert.IsFalse(actual.HasFlag(Direction.West));
+        }
+
+        [Flags]
+        public enum Direction
+        {
+            North = 1,
+            East = 2,
+            South = 4,
+            West = 8,
+        }
+
         #endregion Enum Flags Option
 
         #endregion Enum Option
