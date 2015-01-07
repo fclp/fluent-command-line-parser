@@ -104,8 +104,10 @@
     <Compile Include="Integration\Lists\ArgumentInlineDataAttribute.cs" />
     <Compile Include="Integration\Lists\BoolListInlineDataAttribute.cs" />
     <Compile Include="Integration\Lists\DoubleListInlineDataAttribute.cs" />
+    <Compile Include="Integration\Lists\EnumFlagListInlineDataAttribute .cs" />
     <Compile Include="Integration\Lists\EnumListInlineDataAttribute.cs" />
     <Compile Include="Integration\Lists\Int32ListInlineDataAttribute.cs" />
+    <Compile Include="Integration\Lists\FlagTests.cs" />
     <Compile Include="Integration\Lists\ListTests.cs" />
     <Compile Include="Integration\Lists\StringListInlineDataAttribute.cs" />
     <Compile Include="Integration\NCrunchExcelDataAttribute.cs" />
