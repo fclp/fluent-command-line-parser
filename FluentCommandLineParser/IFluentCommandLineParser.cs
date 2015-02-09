@@ -105,6 +105,11 @@ namespace Fclp
 		/// </summary>
 		IEnumerable<ICommandLineOption> Options { get; }
 
+        /// <summary>
+        /// Gets or sets the help option for this parser.
+        /// </summary>
+        IHelpCommandLineOption HelpOption { get; set; }
+
 		/// <summary>
 		/// Gets or sets whether values that differ by case are considered different. 
 		/// </summary>

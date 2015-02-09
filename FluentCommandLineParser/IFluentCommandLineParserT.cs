@@ -23,7 +23,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
+using Fclp.Internals;
 
 namespace Fclp
 {
@@ -61,5 +63,10 @@ namespace Fclp
 		/// Gets or sets whether values that differ by case are considered different. 
 		/// </summary>
 		bool IsCaseSensitive { get; set; }
+
+        /// <summary>
+        /// Returns the Options that have been setup for this parser.
+        /// </summary>
+        IEnumerable<ICommandLineOption> Options { get; }
 	}
 }

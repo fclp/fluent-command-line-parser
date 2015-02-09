@@ -943,6 +943,34 @@ namespace Fclp.Tests
             Assert.IsNotNullOrEmpty(callbackResult);
         }
 
+        [Test]
+        public void Setup_Help_And_Ensure_It_Can_Be_Called_Manually()
+        {
+            var parser = CreateFluentParser();
+
+            string callbackResult = null;
+
+            parser.SetupHelp("?").Callback(s => callbackResult = s);
+
+            parser.HelpOption.ShowHelp(parser.Options);
+
+            Assert.IsNotNullOrEmpty(callbackResult);           
+        }
+
+        [Test]
+        public void Generic_Setup_Help_And_Ensure_It_Can_Be_Called_Manually()
+        {
+            var parser = new FluentCommandLineParser<TestApplicationArgs>();
+
+            string callbackResult = null;
+
+            parser.SetupHelp("?").Callback(s => callbackResult = s);
+
+            parser.HelpOption.ShowHelp(parser.Options);
+
+            Assert.IsNotNullOrEmpty(callbackResult);           
+        }
+
         #endregion
 
         #region Case Sensitive
