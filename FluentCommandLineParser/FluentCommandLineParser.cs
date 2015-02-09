@@ -134,7 +134,10 @@ namespace Fclp
 			set { _parserEngine = value; }
 		}
 
-		internal IHelpCommandLineOption HelpOption
+        /// <summary>
+        /// Gets or sets the option used for when help is detected in the command line args.
+        /// </summary>
+        public IHelpCommandLineOption HelpOption
 		{
 			get { return _helpOption ?? (_helpOption = new EmptyHelpCommandLineOption()); }
 			set { _helpOption = value; }

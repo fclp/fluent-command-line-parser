@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Fclp.Internals;
 
@@ -90,5 +91,22 @@ namespace Fclp
 			get { return Parser.IsCaseSensitive; }
 			set { Parser.IsCaseSensitive = value; }
 		}
+
+        /// <summary>
+        /// Gets or sets the option used for when help is detected in the command line args.
+        /// </summary>
+        public IHelpCommandLineOption HelpOption
+        {
+            get { return Parser.HelpOption; }
+            set { Parser.HelpOption = value; }
+        }
+
+        /// <summary>
+        /// Returns the Options that have been setup for this parser.
+        /// </summary>
+        public IEnumerable<ICommandLineOption> Options
+        {
+            get { return Parser.Options; }
+        }
 	}
 }
