@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>51e85b11-f2c5-4dce-aabd-d29d17ddf61b</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>FluentCommandLineParser.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CommandLineParserErrorFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineBuilderT.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParserT.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICommandLineOptionBuilderFluent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICommandLineOptionFluent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICommandLineOptionFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICommandLineParserError.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICommandLineParserErrorFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICommandLineParserResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IFluentCommandLineBuilderT.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IFluentCommandLineParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IFluentCommandLineParserT.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IHelpCommandLineOptionFluent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineOption.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineOptionBuilderFluent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineOptionFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineOptionFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\EmptyHelpCommandLineOption.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Errors\CommandLineParserErrorBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Errors\ExpectedOptionNotFoundParseError.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Errors\OptionSyntaxParseError.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Extensions\UsefulExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\HelpCommandLineOption.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\ICommandLineOption.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\ICommandLineOptionFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\ICommandLineOptionResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\IHelpCommandLineOption.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\IHelpCommandLineOptionResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\CommandLineOptionGrouper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\CommandLineParserEngineMark2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\CommandLineParserResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\ICommandLineOptionParserFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\ICommandLineParserEngine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\OptionArgumentParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\OptionParsers\BoolCommandLineOptionParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\OptionParsers\CommandLineOptionParserFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\OptionParsers\DateTimeCommandLineOptionParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\OptionParsers\DoubleCommandLineOptionParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\OptionParsers\EnumCommandLineOptionParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\OptionParsers\EnumFlagCommandLineOptionParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\OptionParsers\ICommandLineOptionParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\OptionParsers\Int32CommandLineOptionParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\OptionParsers\ListCommandLineOptionParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\OptionParsers\StringCommandLineOptionParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\ParsedOption.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\ParsedOptionFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Parsing\ParserEngineResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\SpecialCharacters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Validators\CommandLineOptionValidator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Validators\ICommandLineOptionValidator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Validators\NoDuplicateOptionValidator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Validators\OptionNameValidator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InvalidOptionNameException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OptionAlreadyExistsException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OptionSyntaxException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UnsupportedTypeException.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>4892902d-d990-417e-8baa-4de4f5bcf3bc</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>FluentCommandLineParser.Tests.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Internals\Parsing\OptionParsers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CommandLineOptionFormatterTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParserBuilderTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParserMSpecTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParserTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\Behaviour\InvalidOptionSetupBehaviour.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\TestContext\FluentCommandLineParserTestContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\TestContext\SettingUpALongOptionTestContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\TestContext\SettingUpAShortOptionTestContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\TestContext\TestEnum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\TestContext\TestEnumFlag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\TestContext\TestException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\TestContext\TestType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_a_new_instance_is_created.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_executing_parse_operation\with_a_parser_engine_that_is_custom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_executing_parse_operation\with_a_parser_engine_that_is_null.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_executing_parse_operation\with_options_that_are_not_specified_in_the_args.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_executing_parse_operation\with_options_that_are_specified_in_the_args.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_executing_parse_operation\with_options_that_have_not_been_setup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\and_the_option_factory\returns_a_null_option.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\and_the_option_factory\throws_an_error.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_contains_an_equality_sign.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_contains_a_colon.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_contains_whitespace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_is_already_used.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_is_already_used_but_differs_by_case.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_is_empty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_is_valid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_long_name\with_a_long_name_that_is_whitespace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_contains_an_equality_sign.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_contains_a_colon.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_contains_whitespace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_is_already_used.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_is_already_used_but_differs_by_case.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_is_a_control_char.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_setting_up_a_new_option\with_a_short_name\with_a_short_name_that_is_whitespace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_using_an_option_factory\that_has_been_set_to_null.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FluentCommandLineParser\when_using_an_option_factory\that_is_custom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HelperExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\BoolInlineDataAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\DoubleInlineDataAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\EnumInlineDataAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\Int32EnumInlineDataAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\Int32InlineDataAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\IntegrationTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\Lists\ArgumentInlineDataAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\Lists\BoolListInlineDataAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\Lists\DoubleListInlineDataAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\Lists\EnumFlagListInlineDataAttribute .cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\Lists\EnumListInlineDataAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\Lists\FlagTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\Lists\Int32ListInlineDataAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\Lists\ListTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\Lists\StringListInlineDataAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\NCrunchExcelDataAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\SimpleShortOptionsAreParsedCorrectlyAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integration\StringInlineDataAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\AnonymousMock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineOptionFactoryTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineOptionGrouperTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineOptionParserFactoryTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineOptionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineParserEngineMark2Tests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineParserEngineMark2TestsXUnit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineParserEngine\Behaviour\NoResultsBehaviour.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineParserEngine\TestContext\CommandLineParserEngineTestContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineParserEngine\when_args_contains_a_boolean_option_that_ends_with_no_sign.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineParserEngine\when_arg_contains_key_and_value_assignment_but_no_value.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineParserEngine\when_a_new_instance_is_created.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineParserEngine\when_specified_args_are_empty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineParserEngine\when_specified_args_are_null.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\CommandLineParserEngine\when_specified_args_contain_no_keys.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\HelpCommandLineOptionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\TestContextBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Validators\NoDuplicateOptionValidatorTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Validators\OptionNameValidatorTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mspec\Subjects.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestApplicationArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestContext\TestContext.cs" />
+  </ItemGroup>
+</Project>
