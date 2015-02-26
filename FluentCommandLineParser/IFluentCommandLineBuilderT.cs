@@ -1,6 +1,6 @@
-#region License
-// StringCommandLineOptionParser.cs
-// Copyright (c) 2013, Simon Williams
+﻿#region License
+// IFluentCommandLineBuilderT.cs
+// Copyright (c) 2014, Simon Williams
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are permitted provide
@@ -22,41 +22,16 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Linq;
-using Fclp.Internals.Extensions;
+using System;
 
-namespace Fclp.Internals.Parsers
+namespace Fclp
 {
 	/// <summary>
-	/// Parser used to convert to <see cref="System.String"/>.
+	/// Parser that constructs and populates the specified type of object from command line arguments.
 	/// </summary>
-	public class StringCommandLineOptionParser : ICommandLineOptionParser<string>
+    [Obsolete("IFluentCommandLineBuilder<TBuildType> has been renamed to IFluentCommandLineParser<TBuildType>", false)]
+	public interface IFluentCommandLineBuilder<TBuildType> : IFluentCommandLineParser<TBuildType> where TBuildType : new()
 	{
-		/// <summary>
-		/// Parses the specified <see cref="System.String"/> into a <see cref="System.String"/>.
-		/// </summary>
-		/// <param name="parsedOption"></param>
-		/// <returns></returns>
-		public string Parse(ParsedOption parsedOption)
-		{
-			return parsedOption.Value.RemoveAnyWrappingDoubleQuotes();
-		}
-
-		/// <summary>
-		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
-		/// </summary>
-		/// <param name="parsedOption"></param>
-		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-		public bool CanParse(ParsedOption parsedOption)
-		{
-			if (parsedOption.Value.IsNullOrWhiteSpace()) return false;
-			if (parsedOption.HasValue == false) return false;
-
-			string value = parsedOption.Value.Trim();
-
-			var items = value.SplitOnWhitespace();
-
-			return items.Count() == 1;
-		}
+		 
 	}
 }

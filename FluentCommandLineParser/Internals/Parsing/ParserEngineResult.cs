@@ -1,5 +1,5 @@
-#region License
-// DoubleCommandLineOptionParser.cs
+﻿#region License
+// ParserEngineResult.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,34 +22,34 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Globalization;
+using System.Collections.Generic;
 
-namespace Fclp.Internals.Parsers
+namespace Fclp.Internals.Parsing
 {
 	/// <summary>
-	/// Parser used to convert to <see cref="System.Double"/>.
+	/// Contains the results of the parse operation
 	/// </summary>
-	public class DoubleCommandLineOptionParser : ICommandLineOptionParser<double>
+	public class ParserEngineResult
 	{
 		/// <summary>
-		/// Parses the specified <see cref="System.String"/> into a <see cref="System.Double"/>.
+		/// Initialises a new instance of the <see cref="ParserEngineResult"/> class;
 		/// </summary>
-		/// <param name="parsedOption"></param>
-		/// <returns></returns>
-		public double Parse(ParsedOption parsedOption)
+		/// <param name="parsedOptions">The parsed options.</param>
+		/// <param name="additionalValues">Any additional values that could not be translated into options.</param>
+		public ParserEngineResult(IEnumerable<ParsedOption> parsedOptions, IEnumerable<string> additionalValues)
 		{
-			return double.Parse(parsedOption.Value, CultureInfo.InvariantCulture);
+			ParsedOptions = parsedOptions ?? new List<ParsedOption>();
+			AdditionalValues = additionalValues ?? new List<string>();
 		}
 
 		/// <summary>
-		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
+		/// Gets the parsed options.
 		/// </summary>
-		/// <param name="parsedOption"></param>
-		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
-		public bool CanParse(ParsedOption parsedOption)
-		{
-			double result;
-            return double.TryParse(parsedOption.Value, System.Globalization.NumberStyles.Number, CultureInfo.InvariantCulture, out result);
-		}
+		public IEnumerable<ParsedOption> ParsedOptions { get; private set; }
+
+		/// <summary>
+		/// Gets any additional values that could not be translated into options.
+		/// </summary>
+		public IEnumerable<string> AdditionalValues { get; private set; }
 	}
 }

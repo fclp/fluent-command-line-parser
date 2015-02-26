@@ -143,5 +143,20 @@ namespace Fclp.Internals.Extensions
 
 			return (new string(parmChars)).Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 		}
+
+		/// <summary>
+		/// Elements at or default.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="items">The items.</param>
+		/// <param name="index">The index.</param>
+		/// <param name="defaultToUse">The default to use.</param>
+		/// <returns></returns>
+		public static T ElementAtOrDefault<T>(this T[] items, int index, T defaultToUse)
+		{
+			return index >= 0 && index < items.Length
+				? items[index]
+				: defaultToUse;
+		}
 	}
 }

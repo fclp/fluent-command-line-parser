@@ -23,7 +23,8 @@
 #endregion
 
 using Fclp.Internals;
-using Fclp.Internals.Parsers;
+using Fclp.Internals.Parsing;
+using Fclp.Internals.Parsing.OptionParsers;
 using Moq;
 using NUnit.Framework;
 

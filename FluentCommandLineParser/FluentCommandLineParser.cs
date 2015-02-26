@@ -29,6 +29,7 @@ using System.Linq;
 using Fclp.Internals;
 using Fclp.Internals.Errors;
 using Fclp.Internals.Extensions;
+using Fclp.Internals.Parsing;
 using Fclp.Internals.Validators;
 
 namespace Fclp
@@ -133,7 +134,10 @@ namespace Fclp
 			set { _parserEngine = value; }
 		}
 
-		internal IHelpCommandLineOption HelpOption
+        /// <summary>
+        /// Gets or sets the option used for when help is detected in the command line args.
+        /// </summary>
+        public IHelpCommandLineOption HelpOption
 		{
 			get { return _helpOption ?? (_helpOption = new EmptyHelpCommandLineOption()); }
 			set { _helpOption = value; }
@@ -220,7 +224,8 @@ namespace Fclp
 		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
 		public ICommandLineParserResult Parse(string[] args)
 		{
-			var parsedOptions = this.ParserEngine.Parse(args).ToList();
+			var parserEngineResult = this.ParserEngine.Parse(args);
+			var parsedOptions = parserEngineResult.ParsedOptions.ToList();
 
 			var result = new CommandLineParserResult { EmptyArgs = parsedOptions.IsNullOrEmpty() };
 

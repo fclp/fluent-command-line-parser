@@ -52,5 +52,11 @@ namespace Fclp.Internals
 		/// Characters that define an explicit short option.
 		/// </summary>
 		public static readonly string[] ShortOptionPrefix = new[] { "-" };
+
+		/// <summary>
+		/// The key that indicates the end of any options.
+		/// Any following arguments should be treated as operands, even if they begin with the '-' character.
+		/// </summary>
+		public static readonly string EndOfOptionsKey = "--";
 	}
 }

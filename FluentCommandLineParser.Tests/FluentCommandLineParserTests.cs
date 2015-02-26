@@ -28,862 +28,1264 @@ using System.Globalization;
 using System.Linq;
 using Fclp.Internals;
 using Fclp.Internals.Errors;
+using Fclp.Tests.FluentCommandLineParser;
 using Moq;
 using NUnit.Framework;
 
 namespace Fclp.Tests
 {
-	/// <summary>
-	/// Contains unit tests for the <see cref="FluentCommandLineParser"/> class.
-	/// </summary>
-	[TestFixture]
-	public class FluentCommandLineParserTests
-	{
-		#region HelperMethods
-
-		/// <summary>
-		/// Helper method to return the parser as its interface
-		/// </summary>
-		static IFluentCommandLineParser CreateFluentParser()
-		{
-			return new Fclp.FluentCommandLineParser();
-		}
-
-		static void CallParserWithAllKeyVariations(IFluentCommandLineParser parser, string key, string value, Action<string[], ICommandLineParserResult> assertCallback)
-		{
-			foreach (string[] args in CreateAllKeyVariations(key, value))
-				assertCallback(args, parser.Parse(args));
-		}
-
-		static IEnumerable<string[]> CreateAllKeyVariations(string key, string value)
-		{
-			var keys = new[] { "-", "--", "/" };
-			var valueIdentifiers = new[] { '=', ':' };
-
-			foreach (string k in keys)
-			{
-				foreach (char valueIdentifier in valueIdentifiers)
-				{
-					yield return new[] { k + key + valueIdentifier + value };
-				}
-
-				yield return new[] { k + key, value };
-			}
-		}
-
-		static string FormatArgs(string[] args)
-		{
-			return "Executed with args: " + string.Join(" ", args);
-		}
-
-		static void RunTest<T>(string value, T expected)
-		{
-			var parser = CreateFluentParser();
-			T actual = default(T);
-
-			parser.Setup<T>('s', "long")
-				.Callback(val => actual = val);
-
-			var assert = new Action<string[], ICommandLineParserResult>((args, result) =>
-			{
-				string msg = FormatArgs(args);
-				Assert.AreEqual(expected, actual, msg);
-				Assert.IsFalse(result.HasErrors, msg);
-				Assert.IsFalse(result.Errors.Any(), msg);
-			});
-
-			CallParserWithAllKeyVariations(parser, "short", value, assert);
-			CallParserWithAllKeyVariations(parser, "long", value, assert);
-		}
-
-		#endregion
-
-		#region Description Tests
-
-		[Test]
-		public void Ensure_Description_Can_Be_Set()
-		{
-			var parser = CreateFluentParser();
-
-			const string expected = "my description";
-
-			var cmdOption = parser.Setup<string>('s').WithDescription(expected);
-
-			var actual = ((ICommandLineOption)cmdOption).Description;
-
-			Assert.AreSame(expected, actual);
-		}
-
-		#endregion Description Tests
-
-		#region Top Level Tests
-
-		#region String Option
-
-		[Test]
-		public void Ensure_Parser_Calls_The_Callback_With_Expected_String_When_Using_Short_option()
-		{
-			const string expected = "my-expected-string";
-			RunTest(expected, expected);
-		}
-
-		[Test]
-		public void Ensure_Parser_Calls_The_Callback_With_Expected_String_When_Using_Long_option()
-		{
-			const string expected = "my-expected-string";
-			const string key = "string";
-			string actual = null;
-
-			var parser = CreateFluentParser();
-
-			parser
-				.Setup<string>('s', key)
-				.Callback(val => actual = val);
-
-			CallParserWithAllKeyVariations(parser, key, expected, (args, result) =>
-			{
-				string msg = "Executed with args: " + FormatArgs(args);
-				Assert.AreEqual(expected, actual, msg);
-				Assert.IsFalse(result.HasErrors, msg);
-				Assert.IsFalse(result.Errors.Any(), msg);
-			});
-		}
-
-		#endregion String Option
-
-		#region Int32 Option
-
-		[Test]
-		public void Ensure_Parser_Calls_The_Callback_With_Expected_Int32_When_Using_Short_option()
-		{
-			const int expected = int.MaxValue;
-			RunTest(expected.ToString(CultureInfo.InvariantCulture), expected);
-			//const string shortKey = "i";
-			//int actual = default(int);
-
-			//var parser = CreateFluentParser();
-
-			//parser
-			//    .Setup<int>(shortKey)
-			//    .Callback(val => actual = val);
-
-			//CallParserWithAllKeyVariations(parser, shortKey, expected.ToString(CultureInfo.InvariantCulture), (args, result) =>
-			//{
-			//    string msg = "Executed with args: " + FormatArgs(args);
-			//    Assert.AreEqual(expected, actual, msg);
-			//    Assert.IsFalse(result.HasErrors, msg);
-			//    Assert.IsFalse(result.Errors.Any(), msg);
-			//});
-		}
-
-		[Test]
-		public void Ensure_Parser_Calls_The_Callback_With_Expected_Int32_When_Using_Long_option()
-		{
-			const int expected = int.MaxValue;
-			const char shortKey = 'i';
-			const string longKey = "int32";
-			int actual = default(int);
-
-			var parser = CreateFluentParser();
-
-			parser
-				.Setup<int>(shortKey, longKey)
-				.Callback(val => actual = val);
-
-			CallParserWithAllKeyVariations(parser, longKey, expected.ToString(CultureInfo.InvariantCulture), (args, result) =>
-			{
-				string msg = "Executed with args: " + FormatArgs(args);
-				Assert.AreEqual(expected, actual, msg);
-				Assert.IsFalse(result.HasErrors, msg);
-				Assert.IsFalse(result.Errors.Any(), msg);
-			});
-		}
-
-		#endregion Int32 Option
-
-		#region Double Option
-
-		[Test]
-		public void Ensure_Parser_Calls_The_Callback_With_Expected_Double_When_Using_Short_option()
-		{
-			const double expected = 1.23456789d;
-			RunTest(expected.ToString(CultureInfo.InvariantCulture), expected);
-			//const string shortKey = "d";
-			//double actual = default(double);
-
-			//var parser = CreateFluentParser();
+    /// <summary>
+    /// Contains unit tests for the <see cref="FluentCommandLineParser"/> class.
+    /// </summary>
+    [TestFixture]
+    public class FluentCommandLineParserTests
+    {
+        #region HelperMethods
+
+        /// <summary>
+        /// Helper method to return the parser as its interface
+        /// </summary>
+        static IFluentCommandLineParser CreateFluentParser()
+        {
+            return new Fclp.FluentCommandLineParser();
+        }
+
+        static void CallParserWithAllKeyVariations(IFluentCommandLineParser parser, string key, string value, Action<string[], ICommandLineParserResult> assertCallback)
+        {
+            foreach (string[] args in CreateAllKeyVariations(key, value))
+                assertCallback(args, parser.Parse(args));
+        }
+
+        static IEnumerable<string[]> CreateAllKeyVariations(string key, string value)
+        {
+            var keys = new[] { "-", "--", "/" };
+            var valueIdentifiers = new[] { '=', ':' };
+
+            foreach (string k in keys)
+            {
+                foreach (char valueIdentifier in valueIdentifiers)
+                {
+                    yield return new[] { k + key + valueIdentifier + value };
+                }
+
+                yield return new[] { k + key, value };
+            }
+        }
+
+        static string FormatArgs(string[] args)
+        {
+            return "Executed with args: " + string.Join(" ", args);
+        }
+
+        static void RunTest<T>(string value, T expected)
+        {
+            var parser = CreateFluentParser();
+            T actual = default(T);
+
+            parser.Setup<T>('s', "long")
+                .Callback(val => actual = val);
+
+            var assert = new Action<string[], ICommandLineParserResult>((args, result) =>
+            {
+                string msg = FormatArgs(args);
+                Assert.AreEqual(expected, actual, msg);
+                Assert.IsFalse(result.HasErrors, msg);
+                Assert.IsFalse(result.Errors.Any(), msg);
+            });
+
+            CallParserWithAllKeyVariations(parser, "short", value, assert);
+            CallParserWithAllKeyVariations(parser, "long", value, assert);
+        }
+
+        #endregion
+
+        #region Description Tests
+
+        [Test]
+        public void Ensure_Description_Can_Be_Set()
+        {
+            var parser = CreateFluentParser();
+
+            const string expected = "my description";
+
+            var cmdOption = parser.Setup<string>('s').WithDescription(expected);
+
+            var actual = ((ICommandLineOption)cmdOption).Description;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion Description Tests
+
+        #region Top Level Tests
+
+        #region String Option
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_String_When_Using_Short_option()
+        {
+            const string expected = "my-expected-string";
+            RunTest(expected, expected);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_String_When_Using_Long_option()
+        {
+            const string expected = "my-expected-string";
+            const string key = "string";
+            string actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<string>('s', key)
+                .Callback(val => actual = val);
+
+            CallParserWithAllKeyVariations(parser, key, expected, (args, result) =>
+            {
+                string msg = "Executed with args: " + FormatArgs(args);
+                Assert.AreEqual(expected, actual, msg);
+                Assert.IsFalse(result.HasErrors, msg);
+                Assert.IsFalse(result.Errors.Any(), msg);
+            });
+        }
+
+        #endregion String Option
+
+        #region Int32 Option
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Int32_When_Using_Short_option()
+        {
+            const int expected = int.MaxValue;
+            RunTest(expected.ToString(CultureInfo.InvariantCulture), expected);
+            //const string shortKey = "i";
+            //int actual = default(int);
+
+            //var parser = CreateFluentParser();
+
+            //parser
+            //    .Setup<int>(shortKey)
+            //    .Callback(val => actual = val);
+
+            //CallParserWithAllKeyVariations(parser, shortKey, expected.ToString(CultureInfo.InvariantCulture), (args, result) =>
+            //{
+            //    string msg = "Executed with args: " + FormatArgs(args);
+            //    Assert.AreEqual(expected, actual, msg);
+            //    Assert.IsFalse(result.HasErrors, msg);
+            //    Assert.IsFalse(result.Errors.Any(), msg);
+            //});
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Int32_When_Using_Long_option()
+        {
+            const int expected = int.MaxValue;
+            const char shortKey = 'i';
+            const string longKey = "int32";
+            int actual = default(int);
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<int>(shortKey, longKey)
+                .Callback(val => actual = val);
+
+            CallParserWithAllKeyVariations(parser, longKey, expected.ToString(CultureInfo.InvariantCulture), (args, result) =>
+            {
+                string msg = "Executed with args: " + FormatArgs(args);
+                Assert.AreEqual(expected, actual, msg);
+                Assert.IsFalse(result.HasErrors, msg);
+                Assert.IsFalse(result.Errors.Any(), msg);
+            });
+        }
+
+        [Test]
+        public void Ensure_Negative_Integer_Can_Be_Specified_With_Unix_Style()
+        {
+            var parser = CreateFluentParser();
+
+            int actual = 0;
 
-			//parser
-			//    .Setup<double>(shortKey)
-			//    .Callback(val => actual = val);
-
-			//CallParserWithAllKeyVariations(parser, shortKey, expected.ToString(CultureInfo.InvariantCulture), (args, result) =>
-			//{
-			//    Assert.AreEqual(expected, actual, FormatArgs(args));
-			//    Assert.IsFalse(result.HasErrors, FormatArgs(args));
-			//    Assert.IsFalse(result.Errors.Any(), FormatArgs(args));
-			//});
-		}
+            parser.Setup<int>("integer")
+                  .Callback(i => actual = i);
 
-		[Test]
-		public void Ensure_Parser_Calls_The_Callback_With_Expected_Double_When_Using_Long_option()
-		{
-			const double expected = 1.23456789d;
-			const char shortKey = 'd';
-			const string longKey = "double";
-			double actual = default(double);
+            var result = parser.Parse(new[] { "--integer", "--", "-123" });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
 
-			var parser = CreateFluentParser();
+            Assert.AreEqual(-123, actual);
+        }
 
-			parser
-				.Setup<double>(shortKey, longKey)
-				.Callback(val => actual = val);
+        #endregion Int32 Option
 
-			CallParserWithAllKeyVariations(parser, longKey, expected.ToString(CultureInfo.InvariantCulture), (args, result) =>
-			{
-				Assert.AreEqual(expected, actual, FormatArgs(args));
-				Assert.IsFalse(result.HasErrors, FormatArgs(args));
-				Assert.IsFalse(result.Errors.Any(), FormatArgs(args));
-			});
-		}
+        #region Double Option
 
-		#endregion Double Option
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Double_When_Using_Short_option()
+        {
+            const double expected = 1.23456789d;
+            RunTest(expected.ToString(CultureInfo.InvariantCulture), expected);
+            //const string shortKey = "d";
+            //double actual = default(double);
 
-		#region Enum Option
+            //var parser = CreateFluentParser();
 
-		//enum TestEnum
-		//{
-		//    Value0 = 0,
-		//    Value1 = 1
-		//}
+            //parser
+            //    .Setup<double>(shortKey)
+            //    .Callback(val => actual = val);
 
-		//[Test]
-		//public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option()
-		//{
-		//    const TestEnum expected = TestEnum.Value1;
+            //CallParserWithAllKeyVariations(parser, shortKey, expected.ToString(CultureInfo.InvariantCulture), (args, result) =>
+            //{
+            //    Assert.AreEqual(expected, actual, FormatArgs(args));
+            //    Assert.IsFalse(result.HasErrors, FormatArgs(args));
+            //    Assert.IsFalse(result.Errors.Any(), FormatArgs(args));
+            //});
+        }
 
-		//    TestEnum actual = TestEnum.Value0;
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Double_When_Using_Long_option()
+        {
+            const double expected = 1.23456789d;
+            const char shortKey = 'd';
+            const string longKey = "double";
+            double actual = default(double);
 
-		//    IFluentCommandLineParser parser = new FluentCommandLineParser();
+            var parser = CreateFluentParser();
 
-		//    parser
-		//        .Setup<TestEnum>("e")
-		//        .Callback(val => actual = val);
+            parser
+                .Setup<double>(shortKey, longKey)
+                .Callback(val => actual = val);
 
-		//    parser.Parse(new[] { "-e", expected.ToString() });
+            CallParserWithAllKeyVariations(parser, longKey, expected.ToString(CultureInfo.InvariantCulture), (args, result) =>
+            {
+                Assert.AreEqual(expected, actual, FormatArgs(args));
+                Assert.IsFalse(result.HasErrors, FormatArgs(args));
+                Assert.IsFalse(result.Errors.Any(), FormatArgs(args));
+            });
+        }
 
-		//    Assert.AreEqual(expected, actual);
-		//}
+        [Test]
+        public void Ensure_Negative_Double_Can_Be_Specified_With_Unix_Style()
+        {
+            var parser = CreateFluentParser();
 
-		//[Test]
-		//public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option()
-		//{
-		//    const TestEnum expected = TestEnum.Value1;
+            double actual = 0;
 
-		//    TestEnum actual = TestEnum.Value0;
+            parser.Setup<double>("double")
+                  .Callback(i => actual = i);
 
-		//    IFluentCommandLineParser parser = new FluentCommandLineParser();
+            var result = parser.Parse(new[] { "--double", "--", "-123.456" });
 
-		//    parser
-		//        .Setup<TestEnum>("e", "enum")
-		//        .Callback(val => actual = val);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
 
-		//    parser.Parse(new[] { "--enum", expected.ToString() });
+            Assert.AreEqual(-123.456, actual);
+        }
 
-		//    Assert.AreEqual(expected, actual);
-		//}
+        #endregion Double Option
 
-		#endregion Enum Option
+        #region Enum Option
 
-		#region DateTime Option
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option()
+        {
+            const TestEnum expected = TestEnum.Value1;
 
-		[Test]
-		public void Ensure_Parser_Calls_The_Callback_With_Expected_DateTime_When_Using_Short_option()
-		{
-			var expected = new DateTime(2012, 2, 29, 01, 01, 01);
-			RunTest(expected.ToString("yyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture), expected);
-			//DateTime actual = default(DateTime);
+            TestEnum actual = TestEnum.Value0;
 
-			//var parser = CreateFluentParser();
+            var parser = CreateFluentParser();
 
-			//parser
-			//    .Setup<DateTime>("dt")
-			//    .Callback(val => actual = val);
+            parser
+                .Setup<TestEnum>('e')
+                .Callback(val => actual = val);
 
-			//var result = parser.Parse(new[] { "-dt", expected.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.CurrentCulture) });
+            parser.Parse(new[] { "-e", expected.ToString() });
 
-			//Assert.AreEqual(expected, actual);
-			//Assert.IsFalse(result.HasErrors);
-			//Assert.IsFalse(result.Errors.Any());
-		}
+            Assert.AreEqual(expected, actual);
+        }
 
-		[Test]
-		public void Ensure_Parser_Calls_The_Callback_With_Expected_DateTime_When_Using_Long_option()
-		{
-			var expected = new DateTime(2012, 2, 29, 01, 01, 01);
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option()
+        {
+            const TestEnum expected = TestEnum.Value1;
 
-			DateTime actual = default(DateTime);
+            TestEnum actual = TestEnum.Value0;
 
-			var parser = CreateFluentParser();
+            var parser = CreateFluentParser();
 
-			parser
-				.Setup<DateTime>('d', "datetime")
-				.Callback(val => actual = val);
+            parser
+                .Setup<TestEnum>('e', "enum")
+                .Callback(val => actual = val);
 
-			var result = parser.Parse(new[] { "--datetime", expected.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.CurrentCulture) });
+            parser.Parse(new[] { "--enum", expected.ToString() });
 
-			Assert.AreEqual(expected, actual);
-			Assert.IsFalse(result.HasErrors);
-			Assert.IsFalse(result.Errors.Any());
-		}
+            Assert.AreEqual(expected, actual);
+        }
 
-		#endregion DateTime Option
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option_And_Int32_Enum()
+        {
+            const TestEnum expected = TestEnum.Value1;
 
-		#region Long Option Only
+            TestEnum actual = TestEnum.Value0;
 
-		[Test]
-		public void Can_have_long_option_only()
-		{
-			var parser = CreateFluentParser();
-			var s = "";
+            var parser = CreateFluentParser();
 
-			parser.Setup<string>("my-feature")
-				  .Callback(val => s = val);
+            parser
+                .Setup<TestEnum>('e')
+                .Callback(val => actual = val);
 
-			var result = parser.Parse(new[] { "--my-feature", "somevalue" });
+            parser.Parse(new[] { "-e", ((int)expected).ToString(CultureInfo.InvariantCulture) });
 
-			Assert.IsFalse(result.HasErrors);
-			Assert.IsFalse(result.EmptyArgs);
-			Assert.IsFalse(result.HelpCalled);
+            Assert.AreEqual(expected, actual);
+        }
 
-			Assert.AreEqual("somevalue", s);
-		}
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option_And_Int32_Enum()
+        {
+            const TestEnum expected = TestEnum.Value1;
 
-		[Test]
-		[ExpectedException(typeof(InvalidOptionNameException))]
-		public void Cannot_have_single_character_long_option()
-		{
-			var parser = CreateFluentParser();
-			parser.Setup<string>("s");
-		}
+            TestEnum actual = TestEnum.Value0;
 
-		#endregion
+            var parser = CreateFluentParser();
 
-		#region Required
+            parser
+                .Setup<TestEnum>('e', "enum")
+                .Callback(val => actual = val);
 
-		[Test]
-		public void Ensure_Expected_Error_Is_Returned_If_A_Option_Is_Required_And_Null_Args_Are_Specified()
-		{
-			var parser = CreateFluentParser();
+            parser.Parse(new[] { "--enum", ((int)expected).ToString(CultureInfo.InvariantCulture) });
 
-			parser.Setup<string>('s')
-				.Required();
+            Assert.AreEqual(expected, actual);
+        }
 
-			var result = parser.Parse(null);
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option_And_Lowercase_String()
+        {
+            const TestEnum expected = TestEnum.Value1;
 
-			Assert.IsTrue(result.HasErrors);
+            TestEnum actual = TestEnum.Value0;
 
-			Assert.AreEqual(1, result.Errors.Count());
+            var parser = CreateFluentParser();
 
-			Assert.IsInstanceOf(typeof(ExpectedOptionNotFoundParseError), result.Errors.First());
-		}
+            parser
+                .Setup<TestEnum>('e')
+                .Callback(val => actual = val);
 
-		[Test]
-		public void Ensure_Expected_Error_Is_Returned_If_A_Option_Is_Required_And_Empty_Args_Are_Specified()
-		{
-			var parser = CreateFluentParser();
+            parser.Parse(new[] { "-e", expected.ToString().ToLowerInvariant() });
 
-			parser.Setup<string>('s')
-				.Required();
+            Assert.AreEqual(expected, actual);
+        }
 
-			var result = parser.Parse(new string[0]);
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option_And_Int32_Enum_And_Lowercase_String()
+        {
+            const TestEnum expected = TestEnum.Value1;
 
-			Assert.IsTrue(result.HasErrors);
+            TestEnum actual = TestEnum.Value0;
 
-			Assert.AreEqual(1, result.Errors.Count());
+            var parser = CreateFluentParser();
 
-			Assert.IsInstanceOf(typeof(ExpectedOptionNotFoundParseError), result.Errors.First());
-		}
+            parser
+                .Setup<TestEnum>('e', "enum")
+                .Callback(val => actual = val);
 
-		[Test]
-		public void Ensure_Expected_Error_Is_Returned_If_Required_Option_Is_Provided()
-		{
-			var parser = CreateFluentParser();
+            parser.Parse(new[] { "--enum", expected.ToString().ToLowerInvariant() });
 
-			parser.Setup<string>('s')
-				.Required();
+            Assert.AreEqual(expected, actual);
+        }
 
-			var result = parser.Parse(new[] { "-d" });
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option_And_Uppercase_String()
+        {
+            const TestEnum expected = TestEnum.Value1;
 
-			Assert.IsTrue(result.HasErrors);
+            TestEnum actual = TestEnum.Value0;
 
-			Assert.AreEqual(1, result.Errors.Count());
+            var parser = CreateFluentParser();
 
-			Assert.IsInstanceOf(typeof(ExpectedOptionNotFoundParseError), result.Errors.First());
-		}
+            parser
+                .Setup<TestEnum>('e')
+                .Callback(val => actual = val);
 
-		[Test]
-		public void Ensure_No_Error_Returned_If_Required_Option_Is_Not_Provided()
-		{
-			var parser = CreateFluentParser();
+            parser.Parse(new[] { "-e", expected.ToString().ToUpperInvariant() });
 
-			parser.Setup<string>('s');
+            Assert.AreEqual(expected, actual);
+        }
 
-			var result = parser.Parse(new[] { "-d" });
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option_And_Int32_Enum_And_Uppercase_String()
+        {
+            const TestEnum expected = TestEnum.Value1;
 
-			Assert.IsFalse(result.HasErrors);
-			Assert.IsFalse(result.Errors.Any());
-		}
+            TestEnum actual = TestEnum.Value0;
 
-		[Test]
-		[ExpectedException(typeof(OptionAlreadyExistsException))]
-		public void Ensure_Expected_Exception_Thrown_If_Adding_A_Option_With_A_ShortName_Which_Has_Already_Been_Setup()
-		{
-			var parser = CreateFluentParser();
+            var parser = CreateFluentParser();
 
-			parser.Setup<string>('s', "string");
+            parser
+                .Setup<TestEnum>('e', "enum")
+                .Callback(val => actual = val);
 
-			parser.Setup<int>('s', "int32");
-		}
+            parser.Parse(new[] { "--enum", expected.ToString().ToUpperInvariant() });
 
-		[Test]
-		[ExpectedException(typeof(OptionAlreadyExistsException))]
-		public void Ensure_Expected_Exception_Thrown_If_Adding_A_Option_With_A_ShortName_And_LongName_Which_Has_Already_Been_Setup()
-		{
-			var parser = CreateFluentParser();
+            Assert.AreEqual(expected, actual);
+        }
 
-			parser.Setup<string>('s', "string");
+        #region Enum Flags Option
 
-			parser.Setup<int>('s', "string");
-		}
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_EnumFlag_When_Using_Short_option()
+        {
+            const TestEnumFlag expected = TestEnumFlag.Value1;
 
-		[Test]
-		[ExpectedException(typeof(OptionAlreadyExistsException))]
-		public void Ensure_Expected_Exception_Thrown_If_Adding_A_Option_With_A_LongName_Which_Has_Already_Been_Setup()
-		{
-			var parser = CreateFluentParser();
+            var actual = TestEnumFlag.Value0;
 
-			parser.Setup<string>('s', "string");
+            var parser = CreateFluentParser();
 
-			parser.Setup<int>('i', "string");
-		}
+            parser
+                .Setup<TestEnumFlag>('e')
+                .Callback(val => actual = val);
 
-		#endregion
+            parser.Parse(new[] { "-e", expected.ToString() });
 
-		#region Default
+            Assert.AreEqual(expected, actual);
+        }
 
-		[Test]
-		public void Ensure_Default_Value_Returned_If_No_Value_Specified()
-		{
-			var parser = CreateFluentParser();
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_EnumFlag_When_Using_Short_option_And_A_List()
+        {
+            var actual = TestEnumFlag.Value0;
 
-			const string expected = "my expected value";
-			string actual = null;
+            var parser = CreateFluentParser();
 
-			parser.Setup<string>('s')
-				.Callback(s => actual = s)
-				.SetDefault(expected);
+            parser
+                .Setup<TestEnumFlag>('e')
+                .Callback(val => actual = val);
 
-			var result = parser.Parse(new[] { "-s" });
+            parser.Parse(new[] { "-e", TestEnumFlag.Value1.ToString(), TestEnumFlag.Value2.ToString() });
 
-			Assert.AreSame(expected, actual);
-			Assert.IsTrue(result.HasErrors);
-		}
+            Assert.AreEqual(3, (int)actual);
+            Assert.IsTrue(actual.HasFlag(TestEnumFlag.Value1));
+            Assert.IsTrue(actual.HasFlag(TestEnumFlag.Value2));
+            Assert.IsFalse(actual.HasFlag(TestEnumFlag.Value64));
+        }
 
-		[Test]
-		public void Ensure_Default_Value_Returned_If_No_Option_Or_Value_Specified()
-		{
-			var parser = CreateFluentParser();
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_EnumFlag_When_Using_Short_option_And_A_List_With_0()
+        {
+            var actual = TestEnumFlag.Value0;
 
-			const string expected = "my expected value";
-			string actual = null;
+            var parser = CreateFluentParser();
 
-			parser.Setup<string>('s')
-				.Callback(s => actual = s)
-				.SetDefault(expected);
+            parser
+                .Setup<TestEnumFlag>('e')
+                .Callback(val => actual = val);
 
-			var result = parser.Parse(new string[0]);
+            parser.Parse(new[] { "-e", TestEnumFlag.Value1.ToString(), TestEnumFlag.Value2.ToString(), TestEnumFlag.Value0.ToString(), TestEnumFlag.Value64.ToString() });
 
-			Assert.AreSame(expected, actual);
-			Assert.IsFalse(result.HasErrors);
-			Assert.IsFalse(result.Errors.Any());
-		}
+            Assert.AreEqual(67, (int)actual);
+            Assert.IsTrue(actual.HasFlag(TestEnumFlag.Value1));
+            Assert.IsTrue(actual.HasFlag(TestEnumFlag.Value2));
+            Assert.IsTrue(actual.HasFlag(TestEnumFlag.Value64));
+            Assert.IsTrue(actual.HasFlag(TestEnumFlag.Value0));
+            Assert.IsFalse(actual.HasFlag(TestEnumFlag.Value8));
+            Assert.IsFalse(actual.HasFlag(TestEnumFlag.Value32));
+        }
 
-		#endregion
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_EnumFlag_When_Using_Short_option_And_A_List_Of_String_Values()
+        {
+            var args = new[] { "--direction", "South", "East" };
 
-		#region No Args
+            var actual = Direction.North;
 
-		[Test]
-		public void Ensure_Can_Specify_Empty_Args()
-		{
-			var parser = CreateFluentParser();
+            var p = CreateFluentParser();
 
-			var result = parser.Parse(new string[0]);
+            p.Setup<Direction>("direction")
+             .Callback(d => actual = d);
 
-			Assert.IsFalse(result.HasErrors);
-			Assert.IsTrue(result.EmptyArgs);
-			Assert.IsFalse(result.Errors.Any());
-		}
+            p.Parse(args);
 
-		[Test]
-		public void Ensure_Can_Specify_Null_Args()
-		{
-			var parser = CreateFluentParser();
+            Assert.IsFalse(actual.HasFlag(Direction.North));
+            Assert.IsTrue(actual.HasFlag(Direction.East));
+            Assert.IsTrue(actual.HasFlag(Direction.South));
+            Assert.IsFalse(actual.HasFlag(Direction.West));
+        }
 
-			var result = parser.Parse(null);
+        [Flags]
+        public enum Direction
+        {
+            North = 1,
+            East = 2,
+            South = 4,
+            West = 8,
+        }
 
-			Assert.IsFalse(result.HasErrors);
-			Assert.IsTrue(result.EmptyArgs);
-			Assert.IsFalse(result.Errors.Any());
-		}
+        #endregion Enum Flags Option
 
-		[Test]
-		public void Ensure_Defaults_Are_Called_When_Empty_Args_Specified()
-		{
-			var parser = CreateFluentParser();
+        #endregion Enum Option
 
-			const int expectedInt = 123;
-			const double expectedDouble = 123.456;
-			const string expectedString = "my string";
-			const bool expectedBool = true;
+        #region DateTime Option
 
-			int actualInt = 0;
-			double actualDouble = 0;
-			string actualString = null;
-			bool actualBool = false;
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_DateTime_When_Using_Short_option()
+        {
+            var expected = new DateTime(2012, 2, 29, 01, 01, 01);
+            RunTest(expected.ToString("yyy-MM-ddThh:mm:ss", CultureInfo.InvariantCulture), expected);
+            //DateTime actual = default(DateTime);
 
-			parser.Setup<int>('i').Callback(i => actualInt = i).SetDefault(expectedInt);
-			parser.Setup<string>('s').Callback(s => actualString = s).SetDefault(expectedString);
-			parser.Setup<bool>('b').Callback(b => actualBool = b).SetDefault(expectedBool);
-			parser.Setup<double>('d').Callback(d => actualDouble = d).SetDefault(expectedDouble);
+            //var parser = CreateFluentParser();
 
-			var result = parser.Parse(null);
+            //parser
+            //    .Setup<DateTime>("dt")
+            //    .Callback(val => actual = val);
 
-			Assert.IsFalse(result.HasErrors);
-			Assert.IsTrue(result.EmptyArgs);
-			Assert.AreEqual(expectedInt, actualInt);
-			Assert.AreEqual(expectedDouble, actualDouble);
-			Assert.AreEqual(expectedString, actualString);
-			Assert.AreEqual(expectedBool, actualBool);
-		}
+            //var result = parser.Parse(new[] { "-dt", expected.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.CurrentCulture) });
 
-		#endregion No Args
+            //Assert.AreEqual(expected, actual);
+            //Assert.IsFalse(result.HasErrors);
+            //Assert.IsFalse(result.Errors.Any());
+        }
 
-		#region Example
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_DateTime_When_Using_Long_option()
+        {
+            var expected = new DateTime(2012, 2, 29, 01, 01, 01);
 
-		[Test]
-		public void Ensure_Example_Works_As_Expected()
-		{
-			const int expectedRecordId = 10;
-			const string expectedValue = "Mr. Smith";
-			const bool expectedSilentMode = true;
-			const bool expectedSwitchA = true;
-			const bool expectedSwitchB = true;
-			const bool expectedSwitchC = false;
+            DateTime actual = default(DateTime);
 
-			var args = new[] { "-r", expectedRecordId.ToString(CultureInfo.InvariantCulture), "-v", "\"Mr. Smith\"", "--silent", "-ab", "-c-" };
+            var parser = CreateFluentParser();
 
-			var recordId = 0;
-			string newValue = null;
-			var inSilentMode = false;
-			var switchA = false;
-			var switchB = false;
-			var switchC = true;
+            parser
+                .Setup<DateTime>('d', "datetime")
+                .Callback(val => actual = val);
 
-			var parser = CreateFluentParser();
+            var result = parser.Parse(new[] { "--datetime", expected.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.CurrentCulture) });
 
-			parser.Setup<bool>('a')
-				  .Callback(value => switchA = value);
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
 
-			parser.Setup<bool>('b')
-				  .Callback(value => switchB = value);
+        #endregion DateTime Option
 
-			parser.Setup<bool>('c')
-				  .Callback(value => switchC = value);
+        #region Long Option Only
 
-			// create a new Option using a short and long name
-			parser.Setup<int>('r', "record")
-					.WithDescription("The record id to update (required)")
-					.Callback(record => recordId = record) // use callback to assign the record value to the local RecordID property
-					.Required(); // fail if this Option is not provided in the arguments
+        [Test]
+        public void Can_have_long_option_only()
+        {
+            var parser = CreateFluentParser();
+            var s = "";
 
-			parser.Setup<bool>("silent")
-				  .WithDescription("Execute the update in silent mode without feedback (default is false)")
-				  .Callback(silent => inSilentMode = silent)
-				  .SetDefault(false); // explicitly set the default value to use if this Option is not specified in the arguments
+            parser.Setup<string>("my-feature")
+                  .Callback(val => s = val);
 
+            var result = parser.Parse(new[] { "--my-feature", "somevalue" });
 
-			parser.Setup<string>('v', "value")
-					.WithDescription("The new value for the record (required)") // used when help is requested e.g -? or --help 
-					.Callback(value => newValue = value)
-					.Required();
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
 
-			// do the work
-			ICommandLineParserResult result = parser.Parse(args);
+            Assert.AreEqual("somevalue", s);
+        }
 
-			Assert.IsFalse(result.HasErrors);
-			Assert.IsFalse(result.Errors.Any());
+        [Test]
+        [ExpectedException(typeof(InvalidOptionNameException))]
+        public void Cannot_have_single_character_long_option()
+        {
+            var parser = CreateFluentParser();
+            parser.Setup<string>("s");
+        }
 
-			Assert.AreEqual(expectedRecordId, recordId);
-			Assert.AreEqual(expectedValue, newValue);
-			Assert.AreEqual(expectedSilentMode, inSilentMode);
-			Assert.AreEqual(expectedSwitchA, switchA);
-			Assert.AreEqual(expectedSwitchB, switchB);
-			Assert.AreEqual(expectedSwitchC, switchC);
-		}
+        #endregion
 
-		#endregion
+        #region Required
 
-		#region Setup Help
+        [Test]
+        public void Ensure_Expected_Error_Is_Returned_If_A_Option_Is_Required_And_Null_Args_Are_Specified()
+        {
+            var parser = CreateFluentParser();
 
-		[Test]
-		public void Setup_Help_And_Ensure_It_Is_Called_With_Custom_Formatter()
-		{
-			var parser = new Fclp.FluentCommandLineParser();
+            parser.Setup<string>('s')
+                .Required();
 
-			parser.IsCaseSensitive = false;
+            var result = parser.Parse(null);
 
-			var formatter = new Mock<ICommandLineOptionFormatter>();
+            Assert.IsTrue(result.HasErrors);
 
-			var args = new[] { "/help", "i", "s" };
-			const string expectedCallbackResult = "blah";
-			string callbackResult = null;
+            Assert.AreEqual(1, result.Errors.Count());
 
-			parser.SetupHelp("?", "HELP", "h")
-					.Callback(s => callbackResult = s)
-					.WithCustomFormatter(formatter.Object);
+            Assert.IsInstanceOf(typeof(ExpectedOptionNotFoundParseError), result.Errors.First());
+        }
 
-			parser.Setup<int>('i');
-			parser.Setup<string>('s');
+        [Test]
+        public void Ensure_Expected_Error_Is_Returned_If_A_Option_Is_Required_And_Empty_Args_Are_Specified()
+        {
+            var parser = CreateFluentParser();
 
-			formatter.Setup(x => x.Format(parser.Options)).Returns(expectedCallbackResult);
+            parser.Setup<string>('s')
+                .Required();
 
-			var result = parser.Parse(args);
+            var result = parser.Parse(new string[0]);
 
-			Assert.AreSame(expectedCallbackResult, callbackResult);
-			Assert.IsFalse(result.HasErrors);
-			Assert.IsTrue(result.HelpCalled);
-		}
+            Assert.IsTrue(result.HasErrors);
 
-		[Test]
-		public void Setup_Help_And_Ensure_It_Is_Called()
-		{
-			var parser = new Fclp.FluentCommandLineParser();
+            Assert.AreEqual(1, result.Errors.Count());
 
-			parser.IsCaseSensitive = false;
+            Assert.IsInstanceOf(typeof(ExpectedOptionNotFoundParseError), result.Errors.First());
+        }
 
-			var formatter = new Mock<ICommandLineOptionFormatter>();
+        [Test]
+        public void Ensure_Expected_Error_Is_Returned_If_Required_Option_Is_Provided()
+        {
+            var parser = CreateFluentParser();
 
-			var args = new[] { "/help", "i", "s" };
-			const string expectedCallbackResult = "blah";
-			bool wasCalled = false;
+            parser.Setup<string>('s')
+                .Required();
 
-			parser.SetupHelp("?", "HELP", "h")
-					.Callback(() => wasCalled = true);
+            var result = parser.Parse(new[] { "-d" });
 
-			parser.Setup<int>('i');
-			parser.Setup<string>('s');
+            Assert.IsTrue(result.HasErrors);
 
-			formatter.Setup(x => x.Format(parser.Options)).Returns(expectedCallbackResult);
+            Assert.AreEqual(1, result.Errors.Count());
 
-			var result = parser.Parse(args);
+            Assert.IsInstanceOf(typeof(ExpectedOptionNotFoundParseError), result.Errors.First());
+        }
 
-			Assert.IsTrue(wasCalled);
-			Assert.IsFalse(result.HasErrors);
-			Assert.IsTrue(result.HelpCalled);
-		}
+        [Test]
+        public void Ensure_No_Error_Returned_If_Required_Option_Is_Not_Provided()
+        {
+            var parser = CreateFluentParser();
 
-		[Test]
-		public void Setup_Help_With_Symbol()
-		{
-			var parser = CreateFluentParser();
+            parser.Setup<string>('s');
 
-			string callbackResult = null;
+            var result = parser.Parse(new[] { "-d" });
 
-			parser.SetupHelp("?").Callback(s => callbackResult = s);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
 
-			var args = new[] { "-?" };
+        [Test]
+        [ExpectedException(typeof(OptionAlreadyExistsException))]
+        public void Ensure_Expected_Exception_Thrown_If_Adding_A_Option_With_A_ShortName_Which_Has_Already_Been_Setup()
+        {
+            var parser = CreateFluentParser();
 
-			var result = parser.Parse(args);
+            parser.Setup<string>('s', "string");
 
-			Assert.IsTrue(result.HelpCalled);
-			Assert.IsNotNullOrEmpty(callbackResult);
-		}
+            parser.Setup<int>('s', "int32");
+        }
 
-		#endregion
+        [Test]
+        [ExpectedException(typeof(OptionAlreadyExistsException))]
+        public void Ensure_Expected_Exception_Thrown_If_Adding_A_Option_With_A_ShortName_And_LongName_Which_Has_Already_Been_Setup()
+        {
+            var parser = CreateFluentParser();
 
-		#region Case Sensitive
+            parser.Setup<string>('s', "string");
 
-		[Test]
-		public void Ensure_Short_Options_Are_Case_Sensitive_When_Enabled()
-		{
-			var parser = CreateFluentParser();
+            parser.Setup<int>('s', "string");
+        }
 
-			parser.IsCaseSensitive = true;
+        [Test]
+        [ExpectedException(typeof(OptionAlreadyExistsException))]
+        public void Ensure_Expected_Exception_Thrown_If_Adding_A_Option_With_A_LongName_Which_Has_Already_Been_Setup()
+        {
+            var parser = CreateFluentParser();
 
-			const string expectedUpperCaseValue = "UPPERCASE VALUE";
-			const string expectedLowerCaseValue = "LOWERCASE VALUE";
+            parser.Setup<string>('s', "string");
 
-			string upperCaseValue = null;
-			string lowerCaseValue = null;
+            parser.Setup<int>('i', "string");
+        }
 
-			parser.Setup<string>('S').Callback(str => upperCaseValue = str).Required();
-			parser.Setup<string>('s').Callback(str => lowerCaseValue = str).Required();
+        #endregion
 
-			var result = parser.Parse(new[] { "-S", expectedUpperCaseValue, "-s", expectedLowerCaseValue });
+        #region Default
 
-			Assert.IsFalse(result.HasErrors);
-			Assert.AreEqual(expectedUpperCaseValue, upperCaseValue);
-			Assert.AreEqual(expectedLowerCaseValue, lowerCaseValue);
-		}
+        [Test]
+        public void Ensure_Default_Value_Returned_If_No_Value_Specified()
+        {
+            var parser = CreateFluentParser();
 
-		[Test]
-		public void Ensure_Long_Options_Are_Case_Sensitive_When_Enabled()
-		{
-			var parser = CreateFluentParser();
+            const string expected = "my expected value";
+            string actual = null;
 
-			parser.IsCaseSensitive = true;
+            parser.Setup<string>('s')
+                .Callback(s => actual = s)
+                .SetDefault(expected);
 
-			const string expectedUpperCaseValue = "UPPERCASE VALUE";
-			const string expectedLowerCaseValue = "LOWERCASE VALUE";
+            var result = parser.Parse(new[] { "-s" });
 
-			string upperCaseValue = null;
-			string lowerCaseValue = null;
+            Assert.AreSame(expected, actual);
+            Assert.IsTrue(result.HasErrors);
+        }
 
-			parser.Setup<string>("LONGOPTION").Callback(str => upperCaseValue = str).Required();
-			parser.Setup<string>("longoption").Callback(str => lowerCaseValue = str).Required();
+        [Test]
+        public void Ensure_Default_Value_Returned_If_No_Option_Or_Value_Specified()
+        {
+            var parser = CreateFluentParser();
 
-			var result = parser.Parse(new[] { "--LONGOPTION", expectedUpperCaseValue, "--longoption", expectedLowerCaseValue });
+            const string expected = "my expected value";
+            string actual = null;
 
-			Assert.IsFalse(result.HasErrors);
-			Assert.AreEqual(expectedUpperCaseValue, upperCaseValue);
-			Assert.AreEqual(expectedLowerCaseValue, lowerCaseValue);
-		}
+            parser.Setup<string>('s')
+                .Callback(s => actual = s)
+                .SetDefault(expected);
 
-		[Test]
-		public void Ensure_Short_Options_Ignore_Case_When_Disabled()
-		{
-			var parser = CreateFluentParser();
+            var result = parser.Parse(new string[0]);
 
-			parser.IsCaseSensitive = false;
+            Assert.AreSame(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
 
-			const string expectedValue = "expected value";
+        #endregion
 
-			string actualValue = null;
+        #region No Args
 
-			parser.Setup<string>('s').Callback(str => actualValue = str).Required();
+        [Test]
+        public void Ensure_Can_Specify_Empty_Args()
+        {
+            var parser = CreateFluentParser();
 
-			var result = parser.Parse(new[] { "--S", expectedValue });
+            var result = parser.Parse(new string[0]);
 
-			Assert.IsFalse(result.HasErrors);
-			Assert.AreEqual(expectedValue, actualValue);
-		}
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsTrue(result.EmptyArgs);
+            Assert.IsFalse(result.Errors.Any());
+        }
 
-		[Test]
-		public void Ensure_Long_Options_Ignore_Case_When_Disabled()
-		{
-			var parser = CreateFluentParser();
+        [Test]
+        public void Ensure_Can_Specify_Null_Args()
+        {
+            var parser = CreateFluentParser();
 
-			parser.IsCaseSensitive = false;
+            var result = parser.Parse(null);
 
-			const string expectedValue = "expected value";
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsTrue(result.EmptyArgs);
+            Assert.IsFalse(result.Errors.Any());
+        }
 
-			string actualValue = null;
+        [Test]
+        public void Ensure_Defaults_Are_Called_When_Empty_Args_Specified()
+        {
+            var parser = CreateFluentParser();
 
-			parser.Setup<string>("longoption").Callback(str => actualValue = str).Required();
+            const int expectedInt = 123;
+            const double expectedDouble = 123.456;
+            const string expectedString = "my string";
+            const bool expectedBool = true;
 
-			var result = parser.Parse(new[] { "--LONGOPTION", expectedValue });
+            int actualInt = 0;
+            double actualDouble = 0;
+            string actualString = null;
+            bool actualBool = false;
 
-			Assert.IsFalse(result.HasErrors);
-			Assert.AreEqual(expectedValue, actualValue);
-		}
+            parser.Setup<int>('i').Callback(i => actualInt = i).SetDefault(expectedInt);
+            parser.Setup<string>('s').Callback(s => actualString = s).SetDefault(expectedString);
+            parser.Setup<bool>('b').Callback(b => actualBool = b).SetDefault(expectedBool);
+            parser.Setup<double>('d').Callback(d => actualDouble = d).SetDefault(expectedDouble);
 
-		#endregion
+            var result = parser.Parse(null);
 
-		#region Obsolete
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsTrue(result.EmptyArgs);
+            Assert.AreEqual(expectedInt, actualInt);
+            Assert.AreEqual(expectedDouble, actualDouble);
+            Assert.AreEqual(expectedString, actualString);
+            Assert.AreEqual(expectedBool, actualBool);
+        }
 
-		[Test]
-		public void Ensure_Obsolete_Setup_With_Only_Short_Option()
-		{
-			var parser = CreateFluentParser();
-			parser.Setup<string>("s", null);
-			var option = parser.Options.Single();
-			Assert.IsNull(option.LongName);
-			Assert.AreEqual("s", option.ShortName);
-		}
+        #endregion No Args
 
-		[Test]
-		public void Ensure_Obsolete_Setup_With_Only_Long_Option()
-		{
-			var parser = CreateFluentParser();
-			parser.Setup<string>(null, "long");
-			var option = parser.Options.Single();
-			Assert.AreEqual("long", option.LongName);
-			Assert.IsNull(option.ShortName);
-		}
+        #region Example
 
-		[Test]
-		public void Ensure_Obsolete_Setup_With_Short_And_Long_Option()
-		{
-			var parser = CreateFluentParser();
-			parser.Setup<string>("s", "long");
-			var option = parser.Options.Single();
-			Assert.AreEqual("long", option.LongName);
-			Assert.AreEqual("s", option.ShortName);
-		}
+        [Test]
+        public void Ensure_Example_Works_As_Expected()
+        {
+            const int expectedRecordId = 10;
+            const string expectedValue = "Mr. Smith";
+            const bool expectedSilentMode = true;
+            const bool expectedSwitchA = true;
+            const bool expectedSwitchB = true;
+            const bool expectedSwitchC = false;
 
-		[Test]
-		[ExpectedException(typeof(InvalidOptionNameException))]
-		public void Ensure_Obsolete_Setup_Does_Not_Allow_Null_Short_And_Long_Options()
-		{
-			var parser = CreateFluentParser();
-			parser.Setup<string>(null, null);
-		}
+            var args = new[] { "-r", expectedRecordId.ToString(CultureInfo.InvariantCulture), "-v", "\"Mr. Smith\"", "--silent", "-ab", "-c-" };
 
-		[Test]
-		[ExpectedException(typeof(InvalidOptionNameException))]
-		public void Ensure_Obsolete_Setup_Does_Not_Allow_Empty_Short_And_Long_Options()
-		{
-			var parser = CreateFluentParser();
-			parser.Setup<string>(string.Empty, string.Empty);
-		}
+            var recordId = 0;
+            string newValue = null;
+            var inSilentMode = false;
+            var switchA = false;
+            var switchB = false;
+            var switchC = true;
 
-		[Test]
-		[ExpectedException(typeof(InvalidOptionNameException))]
-		public void Ensure_Obsolete_Setup_Does_Not_Allow_Short_Option_With_More_Than_One_Char()
-		{
-			var parser = CreateFluentParser();
-			parser.Setup<string>("ab", null);
-		}
+            var parser = CreateFluentParser();
 
-		[Test]
-		[ExpectedException(typeof(InvalidOptionNameException))]
-		public void Ensure_Obsolete_Setup_Does_Not_Allow_Long_Option_With_One_Char()
-		{
-			var parser = CreateFluentParser();
-			parser.Setup<string>(null, "s");
-		}
+            parser.Setup<bool>('a')
+                  .Callback(value => switchA = value);
 
-		#endregion
+            parser.Setup<bool>('b')
+                  .Callback(value => switchB = value);
 
-		#endregion Top Level Tests
+            parser.Setup<bool>('c')
+                  .Callback(value => switchC = value);
 
-		#region Duplicate Options Tests
+            // create a new Option using a short and long name
+            parser.Setup<int>('r', "record")
+                    .WithDescription("The record id to update (required)")
+                    .Callback(record => recordId = record) // use callback to assign the record value to the local RecordID property
+                    .Required(); // fail if this Option is not provided in the arguments
 
-		[Test]
-		public void Ensure_First_Value_Is_Stored_When_Duplicate_Options_Are_Specified()
-		{
-			var parser = CreateFluentParser();
+            parser.Setup<bool>("silent")
+                  .WithDescription("Execute the update in silent mode without feedback (default is false)")
+                  .Callback(silent => inSilentMode = silent)
+                  .SetDefault(false); // explicitly set the default value to use if this Option is not specified in the arguments
 
-			int? number = 0;
-			parser.Setup<int>('n').Callback(n => number = n);
 
-			parser.Parse(new[] { "/n=1", "/n=2", "-n=3", "--n=4" });
+            parser.Setup<string>('v', "value")
+                    .WithDescription("The new value for the record (required)") // used when help is requested e.g -? or --help 
+                    .Callback(value => newValue = value)
+                    .Required();
 
-			Assert.AreEqual(1, number);
-		}
+            // do the work
+            ICommandLineParserResult result = parser.Parse(args);
 
-		#endregion
-	}
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+
+            Assert.AreEqual(expectedRecordId, recordId);
+            Assert.AreEqual(expectedValue, newValue);
+            Assert.AreEqual(expectedSilentMode, inSilentMode);
+            Assert.AreEqual(expectedSwitchA, switchA);
+            Assert.AreEqual(expectedSwitchB, switchB);
+            Assert.AreEqual(expectedSwitchC, switchC);
+        }
+
+        #endregion
+
+        #region Setup Help
+
+        [Test]
+        public void Setup_Help_And_Ensure_It_Is_Called_With_Custom_Formatter()
+        {
+            var parser = new Fclp.FluentCommandLineParser();
+
+            parser.IsCaseSensitive = false;
+
+            var formatter = new Mock<ICommandLineOptionFormatter>();
+
+            var args = new[] { "/help", "i", "s" };
+            const string expectedCallbackResult = "blah";
+            string callbackResult = null;
+
+            parser.SetupHelp("?", "HELP", "h")
+                    .Callback(s => callbackResult = s)
+                    .WithCustomFormatter(formatter.Object);
+
+            parser.Setup<int>('i');
+            parser.Setup<string>('s');
+
+            formatter.Setup(x => x.Format(parser.Options)).Returns(expectedCallbackResult);
+
+            var result = parser.Parse(args);
+
+            Assert.AreSame(expectedCallbackResult, callbackResult);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsTrue(result.HelpCalled);
+        }
+
+        [Test]
+        public void Setup_Help_And_Ensure_It_Is_Called()
+        {
+            var parser = new Fclp.FluentCommandLineParser();
+
+            parser.IsCaseSensitive = false;
+
+            var formatter = new Mock<ICommandLineOptionFormatter>();
+
+            var args = new[] { "/help", "i", "s" };
+            const string expectedCallbackResult = "blah";
+            bool wasCalled = false;
+
+            parser.SetupHelp("?", "HELP", "h")
+                    .Callback(() => wasCalled = true);
+
+            parser.Setup<int>('i');
+            parser.Setup<string>('s');
+
+            formatter.Setup(x => x.Format(parser.Options)).Returns(expectedCallbackResult);
+
+            var result = parser.Parse(args);
+
+            Assert.IsTrue(wasCalled);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsTrue(result.HelpCalled);
+        }
+
+        [Test]
+        public void Setup_Help_With_Symbol()
+        {
+            var parser = CreateFluentParser();
+
+            string callbackResult = null;
+
+            parser.SetupHelp("?").Callback(s => callbackResult = s);
+
+            var args = new[] { "-?" };
+
+            var result = parser.Parse(args);
+
+            Assert.IsTrue(result.HelpCalled);
+            Assert.IsNotNullOrEmpty(callbackResult);
+        }
+
+        [Test]
+        public void Setup_Help_And_Ensure_It_Can_Be_Called_Manually()
+        {
+            var parser = CreateFluentParser();
+
+            string callbackResult = null;
+
+            parser.SetupHelp("?").Callback(s => callbackResult = s);
+
+            parser.HelpOption.ShowHelp(parser.Options);
+
+            Assert.IsNotNullOrEmpty(callbackResult);           
+        }
+
+        [Test]
+        public void Generic_Setup_Help_And_Ensure_It_Can_Be_Called_Manually()
+        {
+            var parser = new FluentCommandLineParser<TestApplicationArgs>();
+
+            string callbackResult = null;
+
+            parser.SetupHelp("?").Callback(s => callbackResult = s);
+
+            parser.HelpOption.ShowHelp(parser.Options);
+
+            Assert.IsNotNullOrEmpty(callbackResult);           
+        }
+
+        #endregion
+
+        #region Case Sensitive
+
+        [Test]
+        public void Ensure_Short_Options_Are_Case_Sensitive_When_Enabled()
+        {
+            var parser = CreateFluentParser();
+
+            parser.IsCaseSensitive = true;
+
+            const string expectedUpperCaseValue = "UPPERCASE VALUE";
+            const string expectedLowerCaseValue = "LOWERCASE VALUE";
+
+            string upperCaseValue = null;
+            string lowerCaseValue = null;
+
+            parser.Setup<string>('S').Callback(str => upperCaseValue = str).Required();
+            parser.Setup<string>('s').Callback(str => lowerCaseValue = str).Required();
+
+            var result = parser.Parse(new[] { "-S", expectedUpperCaseValue, "-s", expectedLowerCaseValue });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.AreEqual(expectedUpperCaseValue, upperCaseValue);
+            Assert.AreEqual(expectedLowerCaseValue, lowerCaseValue);
+        }
+
+        [Test]
+        public void Ensure_Long_Options_Are_Case_Sensitive_When_Enabled()
+        {
+            var parser = CreateFluentParser();
+
+            parser.IsCaseSensitive = true;
+
+            const string expectedUpperCaseValue = "UPPERCASE VALUE";
+            const string expectedLowerCaseValue = "LOWERCASE VALUE";
+
+            string upperCaseValue = null;
+            string lowerCaseValue = null;
+
+            parser.Setup<string>("LONGOPTION").Callback(str => upperCaseValue = str).Required();
+            parser.Setup<string>("longoption").Callback(str => lowerCaseValue = str).Required();
+
+            var result = parser.Parse(new[] { "--LONGOPTION", expectedUpperCaseValue, "--longoption", expectedLowerCaseValue });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.AreEqual(expectedUpperCaseValue, upperCaseValue);
+            Assert.AreEqual(expectedLowerCaseValue, lowerCaseValue);
+        }
+
+        [Test]
+        public void Ensure_Short_Options_Ignore_Case_When_Disabled()
+        {
+            var parser = CreateFluentParser();
+
+            parser.IsCaseSensitive = false;
+
+            const string expectedValue = "expected value";
+
+            string actualValue = null;
+
+            parser.Setup<string>('s').Callback(str => actualValue = str).Required();
+
+            var result = parser.Parse(new[] { "--S", expectedValue });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.AreEqual(expectedValue, actualValue);
+        }
+
+        [Test]
+        public void Ensure_Long_Options_Ignore_Case_When_Disabled()
+        {
+            var parser = CreateFluentParser();
+
+            parser.IsCaseSensitive = false;
+
+            const string expectedValue = "expected value";
+
+            string actualValue = null;
+
+            parser.Setup<string>("longoption").Callback(str => actualValue = str).Required();
+
+            var result = parser.Parse(new[] { "--LONGOPTION", expectedValue });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.AreEqual(expectedValue, actualValue);
+        }
+
+        #endregion
+
+        #region Obsolete
+
+        [Test]
+        public void Ensure_Obsolete_Setup_With_Only_Short_Option()
+        {
+            var parser = CreateFluentParser();
+            parser.Setup<string>("s", null);
+            var option = parser.Options.Single();
+            Assert.IsNull(option.LongName);
+            Assert.AreEqual("s", option.ShortName);
+        }
+
+        [Test]
+        public void Ensure_Obsolete_Setup_With_Only_Long_Option()
+        {
+            var parser = CreateFluentParser();
+            parser.Setup<string>(null, "long");
+            var option = parser.Options.Single();
+            Assert.AreEqual("long", option.LongName);
+            Assert.IsNull(option.ShortName);
+        }
+
+        [Test]
+        public void Ensure_Obsolete_Setup_With_Short_And_Long_Option()
+        {
+            var parser = CreateFluentParser();
+            parser.Setup<string>("s", "long");
+            var option = parser.Options.Single();
+            Assert.AreEqual("long", option.LongName);
+            Assert.AreEqual("s", option.ShortName);
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidOptionNameException))]
+        public void Ensure_Obsolete_Setup_Does_Not_Allow_Null_Short_And_Long_Options()
+        {
+            var parser = CreateFluentParser();
+            parser.Setup<string>(null, null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidOptionNameException))]
+        public void Ensure_Obsolete_Setup_Does_Not_Allow_Empty_Short_And_Long_Options()
+        {
+            var parser = CreateFluentParser();
+            parser.Setup<string>(string.Empty, string.Empty);
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidOptionNameException))]
+        public void Ensure_Obsolete_Setup_Does_Not_Allow_Short_Option_With_More_Than_One_Char()
+        {
+            var parser = CreateFluentParser();
+            parser.Setup<string>("ab", null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidOptionNameException))]
+        public void Ensure_Obsolete_Setup_Does_Not_Allow_Long_Option_With_One_Char()
+        {
+            var parser = CreateFluentParser();
+            parser.Setup<string>(null, "s");
+        }
+
+        #endregion
+
+        #region Addtional Arguments
+
+        [Test]
+        public void Ensure_Additional_Arguments_Callback_Called_When_Additional_Args_Provided()
+        {
+            var parser = CreateFluentParser();
+
+            var capturedAdditionalArgs = new List<string>();
+
+            parser.Setup<string>("my-option")
+                  .CaptureAdditionalArguments(capturedAdditionalArgs.AddRange);
+
+            var result = parser.Parse(new[] { "--my-option", "value", "--", "addArg1", "addArg2" });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
+
+            Assert.AreEqual(2, capturedAdditionalArgs.Count());
+            Assert.IsTrue(capturedAdditionalArgs.Contains("addArg1"));
+            Assert.IsTrue(capturedAdditionalArgs.Contains("addArg2"));
+        }
+
+        [Test]
+        public void Ensure_Additional_Arguments_Callback_Not_Called_When_No_Additional_Args_Provided()
+        {
+            var parser = CreateFluentParser();
+
+            bool wasCalled = false;
+
+            parser.Setup<string>("my-option")
+                  .CaptureAdditionalArguments(addArgs => wasCalled = true);
+
+            var result = parser.Parse(new[] { "--my-option", "value" });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
+
+            Assert.IsFalse(wasCalled);
+        }
+
+        [Test]
+        public void Ensure_Additional_Arguments_Callback_Not_Called_When_No_Additional_Args_Follow_A_Double_Dash()
+        {
+            var parser = CreateFluentParser();
+
+            bool wasCalled = false;
+
+            parser.Setup<string>("my-option")
+                  .CaptureAdditionalArguments(addArgs => wasCalled = true);
+
+            var result = parser.Parse(new[] { "--my-option", "value", "--" });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
+
+            Assert.IsFalse(wasCalled);
+        }
+
+        [Test]
+        public void Ensure_Stable_When_Additional_Args_Are_Provided_But_Capture_Additional_Arguments_Has_Not_Been_Setup()
+        {
+            var parser = CreateFluentParser();
+
+            parser.Setup<string>("my-option");
+
+            var result = parser.Parse(new[] { "--my-option", "value", "--", "addArg1", "addArg2" });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
+        }
+
+        [Test]
+        public void Ensure_Additional_Args_Can_Be_Captured_For_Different_Options()
+        {
+            var parser = CreateFluentParser();
+
+            var option1AddArgs = new List<string>();
+            var option2AddArgs = new List<string>();
+
+            string option1Value = null;
+            string option2Value = null;
+
+            parser.Setup<string>("option-one")
+                  .Callback(s => option1Value = s)
+                  .CaptureAdditionalArguments(option1AddArgs.AddRange);
+
+            parser.Setup<string>("option-two")
+                  .Callback(s => option2Value = s)
+                  .CaptureAdditionalArguments(option2AddArgs.AddRange);
+
+            var result = parser.Parse(new[] { "--option-one", "value-one", "addArg1", "addArg2", "--option-two", "value-two", "addArg3", "addArg4" });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
+
+            Assert.AreEqual("value-one", option1Value);
+            Assert.AreEqual("value-two", option2Value);
+
+            Assert.AreEqual(2, option1AddArgs.Count());
+            Assert.IsTrue(option1AddArgs.Contains("addArg1"));
+            Assert.IsTrue(option1AddArgs.Contains("addArg2"));
+
+            Assert.AreEqual(2, option2AddArgs.Count());
+            Assert.IsTrue(option2AddArgs.Contains("addArg3"));
+            Assert.IsTrue(option2AddArgs.Contains("addArg4"));
+        }
+
+        #endregion
+
+        #region Lists
+
+        [Test]
+        public void Ensure_Can_Parse_Mulitple_Arguments_Containing_Negative_Integers_To_A_List()
+        {
+            var parser = CreateFluentParser();
+
+            var actual = new List<int>();
+
+            parser.Setup<List<int>>("integers")
+                  .Callback(actual.AddRange);
+
+            var result = parser.Parse(new[] { "--integers", "--", "123", "-123", "-321", "321" });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
+
+            Assert.AreEqual(4, actual.Count());
+            Assert.IsTrue(actual.Contains(123));
+            Assert.IsTrue(actual.Contains(-123));
+            Assert.IsTrue(actual.Contains(-321));
+            Assert.IsTrue(actual.Contains(321));
+        }
+
+        #endregion
+
+        #endregion Top Level Tests
+
+        #region Duplicate Options Tests
+
+        [Test]
+        public void Ensure_First_Value_Is_Stored_When_Duplicate_Options_Are_Specified()
+        {
+            var parser = CreateFluentParser();
+
+            int? number = 0;
+            parser.Setup<int>('n').Callback(n => number = n);
+
+            parser.Parse(new[] { "/n=1", "/n=2", "-n=3", "--n=4" });
+
+            Assert.AreEqual(1, number);
+        }
+
+        #endregion
+    }
 }
 

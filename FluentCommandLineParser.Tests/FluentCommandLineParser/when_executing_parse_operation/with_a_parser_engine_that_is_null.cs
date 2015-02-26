@@ -22,6 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using Fclp.Internals.Parsing;
 using Fclp.Tests.FluentCommandLineParser.TestContext;
 using Machine.Specifications;
 
@@ -34,7 +35,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 			Because of = () => sut.ParserEngine = null;
 
 			It should_be_unable_to_assign_to_null = () => sut.ParserEngine.ShouldNotBeNull();
-			It should_use_the_default_one_instead = () => sut.ParserEngine.ShouldBeOfType(typeof(Fclp.Internals.CommandLineParserEngineMark2));
+			It should_use_the_default_one_instead = () => sut.ParserEngine.ShouldBeOfType(typeof(CommandLineParserEngineMark2));
 		}
 	}
 }

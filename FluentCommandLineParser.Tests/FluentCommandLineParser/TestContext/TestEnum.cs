@@ -1,6 +1,6 @@
 ﻿#region License
-// ParserEngineResult.cs
-// Copyright (c) 2013, Simon Williams
+// TestEnum.cs
+// Copyright (c) 2014, Simon Williams
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are permitted provide
@@ -22,34 +22,11 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Collections.Generic;
-
-namespace Fclp.Internals
+namespace Fclp.Tests.FluentCommandLineParser
 {
-	/// <summary>
-	/// Contains the results of the parse operation
-	/// </summary>
-	public class ParserEngineResult
-	{
-		/// <summary>
-		/// Initialises a new instance of the <see cref="ParserEngineResult"/> class;
-		/// </summary>
-		/// <param name="parsedOptions">The parsed options.</param>
-		/// <param name="additionalValues">Any additional values that could not be translated into options.</param>
-		public ParserEngineResult(IEnumerable<ParsedOption> parsedOptions, IEnumerable<string> additionalValues)
-		{
-			ParsedOptions = parsedOptions ?? new List<ParsedOption>();
-			AdditionalValues = additionalValues ?? new List<string>();
-		}
-
-		/// <summary>
-		/// Gets the parsed options.
-		/// </summary>
-		public IEnumerable<ParsedOption> ParsedOptions { get; private set; }
-
-		/// <summary>
-		/// Gets any additional values that could not be translated into options.
-		/// </summary>
-		public IEnumerable<string> AdditionalValues { get; private set; }
-	}
+    public enum TestEnum
+    {
+        Value0 = 0,
+        Value1 = 1
+    }
 }

@@ -3,15 +3,22 @@ Fluent Command Line Parser
 A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface.
 ### Download
 
-See what's new in [v1.2](https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap).
+See what's new in [v1.4](https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap).
 
 You can download the latest release from [CodeBetter's TeamCity server](http://teamcity.codebetter.com/project.html?projectId=project314)
 
-You can also install using [NuGet](http://nuget.org/packages/FluentCommandLineParser/)
+You can also install using [NuGet](http://nuget.org/packages/FluentCommandLineParser/) via the command line
+```
+cmd> nuget install FluentCommandLineParser
+```
+Or use the Package Manager console in Visual Studio:
 ```
 PM> Install-Package FluentCommandLineParser
 ```
+
 ### Usage
+See [here](https://github.com/fclp/fluent-command-line-parser/wiki/So,-how-does-FCLP-compare-to-other-parsers%3F) for a side-by-side syntax comparison between other command line parsers.
+
 Commands such as `updaterecord.exe -r 10 -v="Mr. Smith" --silent` can be captured using
 ```
 static void Main(string[] args)
@@ -47,11 +54,11 @@ static void Main(string[] args)
 
 `.WithDescription("Execute operation in silent mode without feedback")` Specify a help description for the option
 
-### Parsing Using Fluent Command Line Builder
+### Parsing Using the Generic Fluent Command Line Parser
 
-Instead of assigning parsed values to variables you can use the Fluent Command Line Builder to automatically create a defined object type and setup individual Options for each strongly-typed property. Because the builder is simply a wrapper around the parser you can still use the Fluent Command Line Parser Api to define the behaviour for each Option.
+Instead of assigning parsed values to variables you can use the generic Fluent Command Line Parser to automatically create a defined object type and setup individual Options for each strongly-typed property. Because the generic parser is simply a wrapper around the standard fluent parser you can still use the Fluent Command Line Parser Api to define the behaviour for each Option.
 
-The Fluent Command Line Builder can build a type and populate the properties with parsed values such as in the following example: 
+The generic Fluent Command Line Parser can build a type and populate the properties with parsed values such as in the following example: 
 ```
 public class ApplicationArguments
 {
@@ -62,35 +69,35 @@ public class ApplicationArguments
 
 static void Main(string[] args)
 {
-   // create a builder for the ApplicationArguments type
-   var b = new FluentCommandLineBuilder<ApplicationArguments>();
+   // create a generic parser for the ApplicationArguments type
+   var p = new FluentCommandLineParser<ApplicationArguments>();
 
    // specify which property the value will be assigned too.
-   b.Setup(arg => arg.RecordId)
+   p.Setup(arg => arg.RecordId)
     .As('r', "record") // define the short and long option name
     .Required(); // using the standard fluent Api to declare this Option as required.
 
-   b.Setup(arg => arg.NewValue)
+   p.Setup(arg => arg.NewValue)
     .As('v', "value")
     .Required();
 
-   b.Setup(arg => arg.Silent)
+   p.Setup(arg => arg.Silent)
     .As('s', "silent")
     .SetDefault(false); // use the standard fluent Api to define a default value if non is specified in the arguments
 
-   var result = b.Parse(args);
+   var result = p.Parse(args);
 
    if(result.HasErrors == false)
    {
-      // use the instantiated ApplicationArguments object from the Object property on the builder.
-      application.Run(b.Object);
+      // use the instantiated ApplicationArguments object from the Object property on the parser.
+      application.Run(p.Object);
    }
 }
 ```
 
 ### Parsing To Collections
 
-Many arguments can be collected as part of a list. Types supported are `string`, `int`, `double` and `bool`
+Many arguments can be collected as part of a list. Types supported are `string`, `int`, `double`, `bool` and `Enum`
 
 For example arguments such as
 
@@ -124,6 +131,74 @@ C:\file1.txt
 C:\file2.txt
 C:\other file.txt
 ```
+### Enum support
+Since v1.2.3 enum types are now supported. 
+```
+[Flags]
+enum Direction
+{
+	North = 1,
+	East = 2,
+	South = 4,
+	West = 8,
+}
+```
+```
+p.Setup<Direction>("direction")
+ .Callback(d => direction = d);
+```
+To specify 'East' direction either the text can be provided or the enum integer.
+```
+dosomething.exe --direction East
+dosomething.exe --direction 2
+```
+
+You can also collect multiple Enum values into a List<TEnum>
+```
+List<Direction> direction;
+
+p.Setup<List<Direction>>('d', "direction")
+ .Callback(d => direction = d);
+```
+For example, specifiying 'South' and 'East' values
+```
+dosomething.exe --direction South East
+dosomething.exe --direction 4 2
+```
+
+Since v1.4 Enum Flags are also supported
+```
+Direction direction;
+
+p.Setup<Direction>("direction")
+ .Callback(d => direction = d);
+
+p.Parse(args);
+
+Assert.IsFalse(direction.HasFlag(Direction.North));
+Assert.IsTrue(direction.HasFlag(Direction.East));
+Assert.IsTrue(direction.HasFlag(Direction.South));
+Assert.IsFalse(direction.HasFlag(Direction.West));
+```
+
+And the generic FluentCommandLineParser<T> (previously known as FluentCommandLineBuilder) also supports enums.
+
+```
+public class Args
+{
+   public Direction Direction { get;set; }
+   public List<Direction> Directions { get;set; }
+}
+```
+```
+var p = new FluentCommandLineParser<Args>();
+
+p.Setup(args => args.Direction)
+ .As('d', "direction");
+
+p.Setup(args => args.Directions)
+ .As("directions");
+```
 ### Supported Syntax
 `[-|--|/][switch_name][=|:| ][value]`
 
@@ -143,3 +218,5 @@ example.exe -xyz+ // enable option x, y and z
 Fclp is in the early stages of development. Please feel free to provide any feedback on feature support or the Api itself.
 
 If you would like to contribute, you may do so to the [develop branch](https://github.com/fclp/fluent-command-line-parser/tree/develop).
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/cbcae8086524a79bd8779e37b579a244 "githalytics.com")](http://githalytics.com/fclp/fluent-command-line-parser)

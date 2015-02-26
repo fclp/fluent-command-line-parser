@@ -1,6 +1,6 @@
 ﻿#region License
-// FluentCommandLineBuilder.cs
-// Copyright (c) 2013, Simon Williams
+// FluentCommandLineParserT.cs
+// Copyright (c) 2014, Simon Williams
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are permitted provide
@@ -23,15 +23,19 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Fclp.Internals;
 
 namespace Fclp
 {
-	/// <summary>
-	/// Parser that constructs and populates the specified type of object from command line arguments.
-	/// </summary>
-	public class FluentCommandLineBuilder<TBuildType> : IFluentCommandLineBuilder<TBuildType> where TBuildType : new()
+    /// <summary>
+    /// A command line parser which provides methods and properties 
+    /// to easily and fluently parse command line arguments into
+    /// a predefined arguments object.
+    /// </summary>
+	/// <typeparam name="TBuildType">The object type containing the argument properties to populate from parsed command line arguments.</typeparam>
+	public class FluentCommandLineParser<TBuildType> : IFluentCommandLineParser<TBuildType> where TBuildType : new()
 	{
 		/// <summary>
 		/// Gets the <see cref="IFluentCommandLineParser"/>.
@@ -44,9 +48,9 @@ namespace Fclp
 		public TBuildType Object { get; private set; }
 
 		/// <summary>
-		/// Initialises a new instance of the <see cref="FluentCommandLineBuilder{TBuildType}"/> class.
+		/// Initialises a new instance of the <see cref="FluentCommandLineParser{TBuildType}"/> class.
 		/// </summary>
-		public FluentCommandLineBuilder()
+		public FluentCommandLineParser()
 		{
 			Object = new TBuildType();
 			Parser = new FluentCommandLineParser();
@@ -87,5 +91,22 @@ namespace Fclp
 			get { return Parser.IsCaseSensitive; }
 			set { Parser.IsCaseSensitive = value; }
 		}
+
+        /// <summary>
+        /// Gets or sets the option used for when help is detected in the command line args.
+        /// </summary>
+        public IHelpCommandLineOption HelpOption
+        {
+            get { return Parser.HelpOption; }
+            set { Parser.HelpOption = value; }
+        }
+
+        /// <summary>
+        /// Returns the Options that have been setup for this parser.
+        /// </summary>
+        public IEnumerable<ICommandLineOption> Options
+        {
+            get { return Parser.Options; }
+        }
 	}
 }

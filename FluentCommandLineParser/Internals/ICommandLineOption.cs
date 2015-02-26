@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using Fclp.Internals.Parsing;
 
 namespace Fclp.Internals
 {
@@ -76,6 +77,11 @@ namespace Fclp.Internals
 		/// Gets whether this <see cred="ICommandLineOption"/> has a callback setup.
 		/// </summary>
 		bool HasCallback { get; }
+
+		/// <summary>
+		/// Gets whether this <see cref="ICommandLineOption"/> has an additional arguments callback setup.
+		/// </summary>
+		bool HasAdditionalArgumentsCallback { get; }
 
 		/// <summary>
 		/// Gets whether this <see cref="ICommandLineOption"/> has a default value setup.

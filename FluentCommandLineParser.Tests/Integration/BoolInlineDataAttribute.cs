@@ -22,14 +22,12 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Xunit.Extensions;
-
 namespace Fclp.Tests.Integration
 {
-	public class BoolInlineDataAttribute : InlineDataAttribute
+    public class BoolInlineDataAttribute : SimpleShortOptionsAreParsedCorrectlyAttribute
 	{
 		public BoolInlineDataAttribute(string args, bool expected)
-			: base(args, expected, null, null, null)
+            : base(args, expectedBoolean: expected)
 		{
 		}
 	}

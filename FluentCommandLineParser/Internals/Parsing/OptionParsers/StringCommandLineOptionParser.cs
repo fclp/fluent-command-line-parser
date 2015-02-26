@@ -1,5 +1,5 @@
 #region License
-// DateTimeCommandLineOptionParser.cs
+// StringCommandLineOptionParser.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,24 +22,24 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System;
-using System.Globalization;
+using System.Linq;
+using Fclp.Internals.Extensions;
 
-namespace Fclp.Internals.Parsers
+namespace Fclp.Internals.Parsing.OptionParsers
 {
 	/// <summary>
-	/// Parser used to convert to <see cref="System.DateTime"/>.
+	/// Parser used to convert to <see cref="System.String"/>.
 	/// </summary>
-	public class DateTimeCommandLineOptionParser : ICommandLineOptionParser<DateTime>
+	public class StringCommandLineOptionParser : ICommandLineOptionParser<string>
 	{
 		/// <summary>
-		/// Parses the specified <see cref="System.String"/> into a <see cref="System.DateTime"/>.
+		/// Parses the specified <see cref="System.String"/> into a <see cref="System.String"/>.
 		/// </summary>
 		/// <param name="parsedOption"></param>
 		/// <returns></returns>
-		public DateTime Parse(ParsedOption parsedOption)
+		public string Parse(ParsedOption parsedOption)
 		{
-			return DateTime.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
+			return parsedOption.Value.RemoveAnyWrappingDoubleQuotes();
 		}
 
 		/// <summary>
@@ -49,8 +49,14 @@ namespace Fclp.Internals.Parsers
 		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
 		public bool CanParse(ParsedOption parsedOption)
 		{
-			DateTime dtOut;
-			return DateTime.TryParse(parsedOption.Value, out dtOut);
+			if (parsedOption.Value.IsNullOrWhiteSpace()) return false;
+			if (parsedOption.HasValue == false) return false;
+
+			string value = parsedOption.Value.Trim();
+
+			var items = value.SplitOnWhitespace();
+
+			return items.Count() == 1;
 		}
 	}
 }

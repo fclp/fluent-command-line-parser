@@ -1,6 +1,6 @@
 ﻿#region License
-// ICommandLineParserEngine.cs
-// Copyright (c) 2013, Simon Williams
+// EnumListInlineDataAttribute.cs
+// Copyright (c) 2014, Simon Williams
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are permitted provide
@@ -22,20 +22,15 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Collections.Generic;
+using Fclp.Tests.FluentCommandLineParser;
 
-namespace Fclp.Internals
+namespace Fclp.Tests.Integration
 {
-	/// <summary>
-	/// Responsible for parsing command line arguments into simple key and value pairs.
-	/// </summary>
-	public interface ICommandLineParserEngine
-	{
-		/// <summary>
-		/// Parses the specified <see><cref>T:System.String[]</cref></see> into key value pairs.
-		/// </summary>
-		/// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
-		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
-		IEnumerable<ParsedOption> Parse(string[] args);
-	}
+    public class EnumListInlineDataAttribute : ArgumentInlineDataAttribute
+    {
+        public EnumListInlineDataAttribute(string args, params TestEnum[] listItems)
+            : base(args, listItems)
+        {
+        }
+    }
 }

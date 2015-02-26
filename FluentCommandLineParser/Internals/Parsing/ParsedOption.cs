@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 // ParsedOption.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
@@ -21,7 +21,7 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
-namespace Fclp.Internals
+namespace Fclp.Internals.Parsing
 {
 	/// <summary>
 	/// Contains information about a single parsed option and any value.
@@ -69,7 +69,7 @@ namespace Fclp.Internals
 		/// <summary>
 		/// Gets or sets the additional values matched with this key.
 		/// </summary>
-		public string[] AddtionalValues { get; set; }
+		public string[] AdditionalValues { get; set; }
 
 		/// <summary>
 		/// Gets or sets the prefix for the key e.g. -, / or --.
@@ -144,7 +144,7 @@ namespace Fclp.Internals
 				Prefix = Prefix,
 				Suffix = Suffix,
 				Value = Value,
-				AddtionalValues = AddtionalValues,
+				AdditionalValues = AdditionalValues,
 				RawKey = RawKey,
 				Values = Values
 			};

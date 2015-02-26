@@ -23,7 +23,7 @@
 #endregion
 
 using System.Collections.Generic;
-using Fclp.Internals;
+using Fclp.Internals.Parsing;
 using Fclp.Tests.FluentCommandLineParser.TestContext;
 using Machine.Specifications;
 using Moq;
@@ -48,7 +48,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 
 										mockedEngine
 											.Setup(x => x.Parse(args))
-											.Returns(new List<ParsedOption>())
+											.Returns(Create<ParserEngineResult>())
 											.Verifiable();
 									};
 

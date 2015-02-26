@@ -41,6 +41,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 			It should_have_the_given_long_name = () => option.LongName.ShouldMatch(valid_long_name);
 			It should_not_be_a_required_option = () => option.IsRequired.ShouldBeFalse();
 			It should_have_no_callback = () => option.HasCallback.ShouldBeFalse();
+			It should_have_no_additional_args_callback = () => option.HasAdditionalArgumentsCallback.ShouldBeFalse();
 			It should_have_no_description = () => option.Description.ShouldBeNull();
 			It should_have_no_default_value = () => option.HasDefault.ShouldBeFalse();
 		}

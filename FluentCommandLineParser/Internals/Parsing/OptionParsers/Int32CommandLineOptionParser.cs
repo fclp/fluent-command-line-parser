@@ -1,5 +1,5 @@
 #region License
-// ICommandLineOptionParserFactory.cs
+// Int32CommandLineOptionParser.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -22,21 +22,34 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Internals.Parsers;
+using System.Globalization;
 
-namespace Fclp.Internals
+namespace Fclp.Internals.Parsing.OptionParsers
 {
 	/// <summary>
-	/// Represents a factory capable of creating <see cref="ICommandLineOptionParser{T}"/>.
+	/// Parser used to convert to <see cref="System.Int32"/>.
 	/// </summary>
-	public interface ICommandLineOptionParserFactory
+	public class Int32CommandLineOptionParser : ICommandLineOptionParser<int>
 	{
 		/// <summary>
-		/// Creates a <see cref="ICommandLineOptionParser{T}"/> to handle the specified type.
+		/// Converts the string representation of a number in a specified culture-specific format to its 32-bit signed integer equivalent.
 		/// </summary>
-		/// <typeparam name="T">The type of parser to create.</typeparam>
-		/// <returns>A <see cref="ICommandLineOptionParser{T}"/> suitable for the specified type.</returns>
-		/// <exception cref="UnsupportedTypeException">If the specified type is not supported by this factory.</exception>
-		ICommandLineOptionParser<T> CreateParser<T>();
+		/// <param name="parsedOption"></param>
+		/// <returns></returns>
+		public int Parse(ParsedOption parsedOption)
+		{
+			return int.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
+		}
+
+		/// <summary>
+		/// Determines whether the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>.
+		/// </summary>
+		/// <param name="parsedOption"></param>
+		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
+		public bool CanParse(ParsedOption parsedOption)
+		{
+			int result;
+			return int.TryParse(parsedOption.Value, out result);
+		}
 	}
 }

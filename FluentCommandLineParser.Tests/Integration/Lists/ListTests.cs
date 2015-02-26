@@ -23,6 +23,7 @@
 #endregion
 
 using System.Collections.Generic;
+using Fclp.Tests.FluentCommandLineParser;
 using Fclp.Tests.Internals;
 using Machine.Specifications;
 using Xunit;
@@ -87,6 +88,26 @@ namespace Fclp.Tests.Integration
 			should_contain_list_with_expected_items(arguments, expectedItems);
 		}
 
+		[Theory]
+		[EnumListInlineData("--list Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+		[EnumListInlineData("-l Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+		[EnumListInlineData("/list Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+		[EnumListInlineData("/list:Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+		[EnumListInlineData("/list=Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+		[EnumListInlineData("--list:Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+		[EnumListInlineData("--list=Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+		[EnumListInlineData("--list 0 1", TestEnum.Value0, TestEnum.Value1)]
+		[EnumListInlineData("-l 0 1", TestEnum.Value0, TestEnum.Value1)]
+		[EnumListInlineData("/list 0 1", TestEnum.Value0, TestEnum.Value1)]
+		[EnumListInlineData("/list:0 1", TestEnum.Value0, TestEnum.Value1)]
+		[EnumListInlineData("/list=0 1", TestEnum.Value0, TestEnum.Value1)]
+		[EnumListInlineData("--list:0 1", TestEnum.Value0, TestEnum.Value1)]
+		[EnumListInlineData("--list=0 1", TestEnum.Value0, TestEnum.Value1)]
+		public void should_create_list_with_expected_enum_items(string arguments, IEnumerable<TestEnum> expectedItems)
+		{
+			should_contain_list_with_expected_items(arguments, expectedItems);
+		}
+
 		private void should_contain_list_with_expected_items<T>(string arguments, IEnumerable<T> expectedItems)
 		{
 			sut = new Fclp.FluentCommandLineParser();
@@ -101,12 +122,6 @@ namespace Fclp.Tests.Integration
 
 			results.HasErrors.ShouldBeFalse();
 			actualItems.ShouldContainOnly(expectedItems);
-		}
-
-		[Fact]
-		public void DummyTestSoNCrunchWorks()
-		{
-
 		}
 	}
 }
