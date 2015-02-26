@@ -61,7 +61,6 @@ namespace Fclp
 		List<ICommandLineOption> _options;
 		ICommandLineOptionFactory _optionFactory;
 		ICommandLineParserEngine _parserEngine;
-		ICommandLineOptionFormatter _optionFormatter;
 		IHelpCommandLineOption _helpOption;
 		ICommandLineParserErrorFormatter _errorFormatter;
 		ICommandLineOptionValidator _optionValidator;
@@ -86,15 +85,6 @@ namespace Fclp
 		public List<ICommandLineOption> Options
 		{
 			get { return _options ?? (_options = new List<ICommandLineOption>()); }
-		}
-
-		/// <summary>
-		/// Gets or sets the default option formatter.
-		/// </summary>
-		public ICommandLineOptionFormatter OptionFormatter
-		{
-			get { return _optionFormatter ?? (_optionFormatter = new CommandLineOptionFormatter()); }
-			set { _optionFormatter = value; }
 		}
 
 		/// <summary>

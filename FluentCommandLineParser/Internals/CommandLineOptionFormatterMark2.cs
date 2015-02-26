@@ -2,14 +2,19 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Fclp;
-using Fclp.Internals;
+using Fclp.Internals.Extensions;
 
-namespace MyXero.PriceChangeMigration
+namespace Fclp.Internals
 {
-	public class CommandLineOptionFormatterMarkII : ICommandLineOptionFormatter
+    /// <summary>
+    /// 
+    /// </summary>
+	public class CommandLineOptionFormatterMark2 : ICommandLineOptionFormatter
 	{
-		public CommandLineOptionFormatterMarkII()
+        /// <summary>
+        /// 
+        /// </summary>
+		public CommandLineOptionFormatterMark2()
 		{
 			Header = "Options:";
 			ValueText = "Value";
@@ -19,6 +24,9 @@ namespace MyXero.PriceChangeMigration
 			LeftPadding = 2;
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
 		public const string TextFormat = "\t{0}\t\t{1}\n";
 
 		private bool ShowHeader
@@ -26,18 +34,35 @@ namespace MyXero.PriceChangeMigration
 			get { return Header != null; }
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
 		public string Header { get; set; }
-
+        /// <summary>
+        /// 
+        /// </summary>
 		public string ValueText { get; set; }
-
+        /// <summary>
+        /// 
+        /// </summary>
 		public string DescriptionText { get; set; }
-
+        /// <summary>
+        /// 
+        /// </summary>
 		public string NoOptionsText { get; set; }
-
+        /// <summary>
+        /// 
+        /// </summary>
 		public int MinOptionPadding { get; set; }
-
+        /// <summary>
+        /// 
+        /// </summary>
 		public int LeftPadding { get; set; }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
 		public string Format(System.Collections.Generic.IEnumerable<ICommandLineOption> options)
 		{
 			if (options == null) throw new ArgumentNullException("options");
@@ -57,7 +82,7 @@ namespace MyXero.PriceChangeMigration
 			}
 
 			var ordered = (from option in list
-						   orderby string.IsNullOrWhiteSpace(option.ShortName) == false descending, option.ShortName
+						   orderby option.ShortName.IsNullOrWhiteSpace() == false descending, option.ShortName
 						   select option).ToList();
 
 			var minPadding = FindLongestLongOption(list) + MinOptionPadding;
@@ -82,15 +107,15 @@ namespace MyXero.PriceChangeMigration
 
 			sb.AppendFormat(CultureInfo.CurrentUICulture, "{0}{1}{2}{3}\n", leftPadding, optionText, optionPadding, descriptionText);
 		}
-
+        ///
 		static string FormatValue(ICommandLineOption cmdOption)
 		{
-			if (string.IsNullOrWhiteSpace(cmdOption.ShortName))
+            if (cmdOption.ShortName.IsNullOrWhiteSpace())
 			{
 				return FormatLong(cmdOption.LongName);
 			}
 
-			if (string.IsNullOrWhiteSpace(cmdOption.LongName))
+            if (cmdOption.LongName.IsNullOrWhiteSpace())
 			{
 				return FormatShort(cmdOption.ShortName);
 			}

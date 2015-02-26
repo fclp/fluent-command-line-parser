@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FluentCommandLineParser.snk" />
+    <Compile Include="Internals\CommandLineOptionFormatterMark2.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

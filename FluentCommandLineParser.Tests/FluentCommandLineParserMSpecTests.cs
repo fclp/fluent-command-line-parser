@@ -51,9 +51,6 @@ namespace Fclp.Tests
 				It should_have_a_option_factory = () => 
 					sut.OptionFactory.ShouldNotBeNull();
 
-				It should_have_a_option_formatter = () => 
-					sut.OptionFormatter.ShouldNotBeNull();
-
 				It should_have_a_option_validator = () => 
 					sut.OptionValidator.ShouldNotBeNull();
 

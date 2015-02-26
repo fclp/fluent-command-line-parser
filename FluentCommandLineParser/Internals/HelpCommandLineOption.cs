@@ -69,7 +69,7 @@ namespace Fclp.Internals
 		/// </summary>
 		public ICommandLineOptionFormatter OptionFormatter
 		{
-			get { return _optionFormatter ?? (_optionFormatter = new CommandLineOptionFormatter { Header = this.Header }); }
+            get { return _optionFormatter ?? (_optionFormatter = new CommandLineOptionFormatterMark2 { Header = this.Header }); }
 			set { _optionFormatter = value; }
 		}
 
