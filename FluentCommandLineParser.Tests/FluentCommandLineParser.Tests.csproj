@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineOptionFormatterTests.cs" />
+    <Compile Include="CommandTests.cs" />
     <Compile Include="FluentCommandLineParserBuilderTests.cs" />
     <Compile Include="FluentCommandLineParserMSpecTests.cs" />
     <Compile Include="FluentCommandLineParserTests.cs">

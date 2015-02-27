@@ -59,6 +59,7 @@ namespace Fclp
 		public const StringComparison IgnoreCaseComparison = StringComparison.CurrentCultureIgnoreCase;
 
 		List<ICommandLineOption> _options;
+        List<object> _commands;
 		ICommandLineOptionFactory _optionFactory;
 		ICommandLineParserEngine _parserEngine;
 		ICommandLineOptionFormatter _optionFormatter;
@@ -87,6 +88,14 @@ namespace Fclp
 		{
 			get { return _options ?? (_options = new List<ICommandLineOption>()); }
 		}
+
+        /// <summary>
+        /// Gets the list of Commands
+        /// </summary>
+	    public List<object> Commands
+	    {
+            get { return _commands ?? (_commands = new List<object>()); }
+	    }
 
 		/// <summary>
 		/// Gets or sets the default option formatter.
@@ -216,6 +225,22 @@ namespace Fclp
 		{
 			return SetupInternal<T>(null, longOption);
 		}
+
+        /// <summary>
+        /// Setup a new command using the specified name.
+        /// </summary>
+        /// <typeparam name="TBuildType">The type of arguments to be built for this command</typeparam>
+        /// <param name="name">The name for the Command. This must be unique, not <c>null</c>, <c>empty</c> or contain only <c>whitespace</c>.</param>
+        /// <returns></returns>
+        /// <exception cref="CommandAlreadyExistsException">
+        /// A Command with the same <paramref name="name"/> name already exists in the <see cref="IFluentCommandLineParser"/>.
+        /// </exception>
+        public ICommandLineCommandFluent<TBuildType> SetupCommand<TBuildType>(string name) where TBuildType : new()
+        {
+            var command = new CommandLineCommand<TBuildType>(this) { Name = name };
+            Commands.Add(command);
+            return command;
+        }
 
 		/// <summary>
 		/// Parses the specified <see><cref>T:System.String[]</cref></see> using the setup Options.

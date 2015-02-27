@@ -87,6 +87,17 @@ namespace Fclp
 		/// </exception>
 		ICommandLineOptionFluent<T> Setup<T>(string longOption);
 
+	    /// <summary>
+	    /// Setup a new command using the specified name.
+	    /// </summary>
+	    /// <typeparam name="TBuildType">The type of arguments to be built for this command</typeparam>
+	    /// <param name="name">The name for the Command. This must be unique, not <c>null</c>, <c>empty</c> or contain only <c>whitespace</c>.</param>
+	    /// <returns></returns>
+	    /// <exception cref="CommandAlreadyExistsException">
+	    /// A Command with the same <paramref name="name"/> name already exists in the <see cref="IFluentCommandLineParser"/>.
+	    /// </exception>
+	    ICommandLineCommandFluent<TBuildType> SetupCommand<TBuildType>(string name) where TBuildType : new();
+
 		/// <summary>
 		/// Setup the help args.
 		/// </summary>

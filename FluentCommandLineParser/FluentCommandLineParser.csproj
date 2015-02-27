@@ -54,9 +54,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandAlreadyExistsException.cs" />
+    <Compile Include="CommandLineCommand.cs" />
     <Compile Include="CommandLineParserErrorFormatter.cs" />
     <Compile Include="FluentCommandLineParserT.cs" />
     <Compile Include="FluentCommandLineBuilderT.cs" />
+    <Compile Include="ICommandLineCommand.cs" />
     <Compile Include="ICommandLineOptionBuilderFluent.cs" />
     <Compile Include="ICommandLineParserErrorFormatter.cs" />
     <Compile Include="IFluentCommandLineParserT.cs" />
