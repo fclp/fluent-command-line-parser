@@ -44,6 +44,8 @@ namespace Fclp.Tests.Integration
 		[BoolInlineData("-b=false", false)]
         [BoolInlineData("-b on", true)]
         [BoolInlineData("-b off", false)]
+        [BoolInlineData("-b ON", true)]
+        [BoolInlineData("-b OFF", false)]
 		[BoolInlineData("-b:on", true)]
 		[BoolInlineData("-b:off", false)]
 		[BoolInlineData("-b=on", true)]

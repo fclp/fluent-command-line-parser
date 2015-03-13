@@ -22,6 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System;
 using Fclp.Internals.Extensions;
 
 namespace Fclp.Internals.Parsing.OptionParsers
@@ -84,16 +85,16 @@ namespace Fclp.Internals.Parsing.OptionParsers
                 return true;
             }
 
-            if (parsedOption.Value == "on")
+            if ("on".Equals(parsedOption.Value, StringComparison.OrdinalIgnoreCase))
             {
                 result = true;
                 return true;
             }
 
-            if (parsedOption.Value == "off")
+            if ("off".Equals(parsedOption.Value, StringComparison.OrdinalIgnoreCase))
             {
                 result = false;
-                return false;
+                return true;
             }
 
             return bool.TryParse(parsedOption.Value, out result);
