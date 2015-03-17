@@ -22,6 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System;
 using Fclp.Internals.Extensions;
 
 namespace Fclp.Internals.Parsing.OptionParsers
@@ -50,8 +51,13 @@ namespace Fclp.Internals.Parsing.OptionParsers
 				// if we don't have a 
 				return parsedOption.HasSuffix == false || parsedOption.Suffix != "-";
 			}
-			
-			return bool.Parse(parsedOption.Value);
+
+		    if (parsedOption.Value == "on") return true;
+		    if (parsedOption.Value == "off") return false;
+
+            bool result;
+		    TryParse(parsedOption, out result);
+		    return result;
 		}
 
 		/// <summary>
@@ -64,7 +70,34 @@ namespace Fclp.Internals.Parsing.OptionParsers
 			// if the key exists with no value then this translates as true.
 			// if the key exists but has a value then we must try to parse the value
 			bool result;
-			return parsedOption.Value.IsNullOrWhiteSpace() || bool.TryParse(parsedOption.Value, out result);
+		    return TryParse(parsedOption, out result);
 		}
+
+        private bool TryParse(ParsedOption parsedOption, out bool result)
+	    {
+            if (parsedOption.Value.IsNullOrWhiteSpace())
+            {
+                // for the suffix:
+                //  "-" means the value should be false
+                //  "+" or any other suffix means the value should be true.
+                // if we don't have a 
+                result = parsedOption.HasSuffix == false || parsedOption.Suffix != "-";
+                return true;
+            }
+
+            if ("on".Equals(parsedOption.Value, StringComparison.OrdinalIgnoreCase))
+            {
+                result = true;
+                return true;
+            }
+
+            if ("off".Equals(parsedOption.Value, StringComparison.OrdinalIgnoreCase))
+            {
+                result = false;
+                return true;
+            }
+
+            return bool.TryParse(parsedOption.Value, out result);
+	    }
 	}
 }
