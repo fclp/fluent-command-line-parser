@@ -94,13 +94,31 @@ namespace Fclp.Internals
             ICommandLineOptionSetupFactory setupFactory, 
 			TBuildType buildObject,
 			Expression<Func<TBuildType, TProperty>> propertyPicker,
-            ICommandLineCommandT<TBuildType> command = null)
+            ICommandLineCommandT<TBuildType> command)
 		{
 			_setupFactory = setupFactory;
 			_buildObject = buildObject;
 			_propertyPicker = propertyPicker;
 	        _command = command;
 		}
+
+	    /// <summary>
+	    /// Initializes a new instance of the <see cref="CommandLineOptionBuilderFluent{TBuildType, TProperty}" /> class.
+	    /// </summary>
+	    /// <param name="setupFactory">The parser.</param>
+	    /// <param name="buildObject">The build object.</param>
+	    /// <param name="propertyPicker">The property picker.</param>
+	    public CommandLineOptionBuilderFluent(
+            ICommandLineOptionSetupFactory setupFactory, 
+			TBuildType buildObject,
+			Expression<Func<TBuildType, TProperty>> propertyPicker)
+		{
+			_setupFactory = setupFactory;
+			_buildObject = buildObject;
+			_propertyPicker = propertyPicker;
+		}
+
+
 
 		/// <summary>
 		/// Setup a new <see cref="ICommandLineOptionFluent{T}"/> using the specified short and long Option name.
