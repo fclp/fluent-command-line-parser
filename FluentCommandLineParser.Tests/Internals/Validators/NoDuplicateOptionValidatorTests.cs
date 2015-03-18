@@ -51,6 +51,7 @@ namespace Fclp.Tests.Internals.Validators
 			abstract class ValidateTestContext : NoDuplicateOptionValidatorTestContext
 			{
 				protected static Mock<ICommandLineOption> option;
+			    protected static StringComparison ComparisonType;
 
 				Establish context = () =>
 				{
@@ -67,7 +68,7 @@ namespace Fclp.Tests.Internals.Validators
 
 				Because of = () =>
 					error = Catch.Exception(() =>
-						sut.Validate(option.Object, StringComparison.CurrentCultureIgnoreCase));
+                        sut.Validate(option.Object, ComparisonType));
 
 				protected static void SetupExistingParserOptions(params ICommandLineOption[] options)
 				{
@@ -99,7 +100,7 @@ namespace Fclp.Tests.Internals.Validators
 			{
 				abstract class CaseSensitiveTestContext : ValidateTestContext
 				{
-					Establish context = () => parser.SetupGet(it => it.IsCaseSensitive).Returns(true);
+					Establish context = () => ComparisonType = StringComparison.CurrentCulture;
 				}
 
 				class when_an_existing_option_contains_the_same_short_name_but_it_differs_by_case : CaseSensitiveTestContext
@@ -185,7 +186,7 @@ namespace Fclp.Tests.Internals.Validators
 			{
 				abstract class IgnoreCaseTestContext : ValidateTestContext
 				{
-					Establish context = () => parser.SetupGet(it => it.IsCaseSensitive).Returns(false);
+                    Establish context = () => ComparisonType = StringComparison.CurrentCultureIgnoreCase;
 				}
 
 				class when_an_existing_option_contains_the_same_short_name_but_it_differs_by_case : IgnoreCaseTestContext
