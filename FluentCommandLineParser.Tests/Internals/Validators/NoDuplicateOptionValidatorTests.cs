@@ -61,6 +61,8 @@ namespace Fclp.Tests.Internals.Validators
 
 					option.SetupGet(it => it.ShortName).Returns(Create<string>());
 					option.SetupGet(it => it.LongName).Returns(Create<string>());
+
+                    option.SetupGet(it => it.Command).Returns(() => null);
 				};
 
 				Because of = () =>
