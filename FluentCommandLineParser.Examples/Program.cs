@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Fclp.Tests
+namespace Fclp.Examples
 {
-    public class CommandTests
+    class CommandProgram
     {
         // Contains all arguments for the add command
         class AddArgs
@@ -19,10 +19,9 @@ namespace Fclp.Tests
             public IEnumerable<string> Files;
         }
 
-        // entry point into console app
         static void Main(string[] args)
         {
-            var fclp = new Fclp.FluentCommandLineParser();
+            var fclp = new FluentCommandLineParser();
 
             // use new SetupCommand method to initialise a command
             var addCmd = fclp.SetupCommand<AddArgs>("add")

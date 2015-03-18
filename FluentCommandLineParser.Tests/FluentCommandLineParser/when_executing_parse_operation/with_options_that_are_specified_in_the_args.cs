@@ -83,12 +83,12 @@ namespace Fclp.Tests.FluentCommandLineParser
 					_parsedBlankOption
 				};
 
-				var parserEngineResult = new ParserEngineResult(parsedOptions, CreateEmptyList<string>());
+				var parserEngineResult = new ParserEngineResult(parsedOptions, CreateEmptyList<string>(), Create<string>());
 
 				args = CreateArgsFromKvp(parsedOptions);
 
 				var parserEngineMock = new Mock<ICommandLineParserEngine>();
-				parserEngineMock.Setup(x => x.Parse(args)).Returns(parserEngineResult);
+                parserEngineMock.Setup(x => x.Parse(args, false)).Returns(parserEngineResult);
 				sut.ParserEngine = parserEngineMock.Object;
 			};
 

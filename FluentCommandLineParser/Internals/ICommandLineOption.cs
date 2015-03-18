@@ -92,5 +92,10 @@ namespace Fclp.Internals
 		/// Gets the setup <see cref="System.Type"/> for this option.
 		/// </summary>
 		Type SetupType { get; }
+
+        /// <summary>
+        /// Gets or sets the command this options belongs too.
+        /// </summary>
+        ICommandLineCommand Command { get; set; }
 	}
 }

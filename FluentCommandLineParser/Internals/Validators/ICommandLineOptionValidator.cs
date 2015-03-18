@@ -21,6 +21,9 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
+
+using System;
+
 namespace Fclp.Internals.Validators
 {
 	/// <summary>
@@ -28,10 +31,11 @@ namespace Fclp.Internals.Validators
 	/// </summary>
 	public interface ICommandLineOptionValidator
 	{
-		/// <summary>
-		/// Verifies that the proposed new <see cref="ICommandLineOption"/> is a valid new Option.
-		/// </summary>
-		/// <param name="commandLineOption">The <see cref="ICommandLineOption"/> to validate. This must not be null.</param>
-		void Validate(ICommandLineOption commandLineOption);
+	    /// <summary>
+	    /// Verifies that the proposed new <see cref="ICommandLineOption"/> is a valid new Option.
+	    /// </summary>
+	    /// <param name="commandLineOption">The <see cref="ICommandLineOption"/> to validate. This must not be null.</param>
+	    /// <param name="stringComparison"></param>
+	    void Validate(ICommandLineOption commandLineOption, StringComparison stringComparison);
 	}
 }

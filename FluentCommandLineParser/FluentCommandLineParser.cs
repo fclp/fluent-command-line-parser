@@ -59,7 +59,7 @@ namespace Fclp
 		public const StringComparison IgnoreCaseComparison = StringComparison.CurrentCultureIgnoreCase;
 
 		List<ICommandLineOption> _options;
-        List<object> _commands;
+        List<ICommandLineCommand> _commands;
 		ICommandLineOptionFactory _optionFactory;
 		ICommandLineParserEngine _parserEngine;
 		ICommandLineOptionFormatter _optionFormatter;
@@ -92,9 +92,9 @@ namespace Fclp
         /// <summary>
         /// Gets the list of Commands
         /// </summary>
-	    public List<object> Commands
+	    public List<ICommandLineCommand> Commands
 	    {
-            get { return _commands ?? (_commands = new List<object>()); }
+            get { return _commands ?? (_commands = new List<ICommandLineCommand>()); }
 	    }
 
 		/// <summary>
@@ -152,6 +152,14 @@ namespace Fclp
 			set { _helpOption = value; }
 		}
 
+        /// <summary>
+        /// Gets whether commands have been setup for this parser.
+        /// </summary>
+	    public bool HasCommands
+	    {
+            get { return Commands.Any(); }
+	    }
+
 		/// <summary>
 		/// Setup a new <see cref="ICommandLineOptionFluent{T}"/> using the specified short and long Option name.
 		/// </summary>
@@ -193,7 +201,7 @@ namespace Fclp
 			if (argOption == null)
 				throw new InvalidOperationException("OptionFactory is producing unexpected results.");
 
-			OptionValidator.Validate(argOption);
+			OptionValidator.Validate(argOption, IsCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase);
 
 			this.Options.Add(argOption);
 
@@ -249,7 +257,7 @@ namespace Fclp
 		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
 		public ICommandLineParserResult Parse(string[] args)
 		{
-			var parserEngineResult = this.ParserEngine.Parse(args);
+			var parserEngineResult = this.ParserEngine.Parse(args, HasCommands);
 			var parsedOptions = parserEngineResult.ParsedOptions.ToList();
 
 			var result = new CommandLineParserResult { EmptyArgs = parsedOptions.IsNullOrEmpty() };
@@ -261,56 +269,72 @@ namespace Fclp
 				return result;
 			}
 
-			foreach (var setupOption in this.Options)
-			{
-				/*
+		    if (parserEngineResult.HasCommand)
+		    {
+		        var match = Commands.SingleOrDefault(cmd => cmd.Name.Equals(parserEngineResult.Command, this.StringComparison));
+		        if (match != null)
+		        {
+                    var result2 = ParseOptions(match.Options, parsedOptions, result);
+                    match.ExecuteCallback();
+		            return result2;
+		        }
+		    }
+
+            return ParseOptions(this.Options, parsedOptions, result);
+		}
+
+	    private ICommandLineParserResult ParseOptions(IEnumerable<ICommandLineOption> options, List<ParsedOption> parsedOptions, CommandLineParserResult result)
+	    {
+	        foreach (var setupOption in options)
+	        {
+	            /*
 				 * Step 1. match the setup Option to one provided in the args by either long or short names
 				 * Step 2. if the key has been matched then bind the value
 				 * Step 3. if the key is not matched and it is required, then add a new error
 				 * Step 4. the key is not matched and optional, bind the default value if available
 				 */
 
-				// Step 1
-				ICommandLineOption option = setupOption;
-				var match = parsedOptions.FirstOrDefault(pair =>
-					pair.Key.Equals(option.ShortName, this.StringComparison) // tries to match the short name
-					|| pair.Key.Equals(option.LongName, this.StringComparison)); // or else the long name
+	            // Step 1
+	            ICommandLineOption option = setupOption;
+	            var match = parsedOptions.FirstOrDefault(pair =>
+	                pair.Key.Equals(option.ShortName, this.StringComparison) // tries to match the short name
+	                || pair.Key.Equals(option.LongName, this.StringComparison)); // or else the long name
 
-				if (match != null) // Step 2
-				{
+	            if (match != null) // Step 2
+	            {
+	                try
+	                {
+	                    option.Bind(match);
+	                }
+	                catch (OptionSyntaxException)
+	                {
+	                    result.Errors.Add(new OptionSyntaxParseError(option, match));
+	                    if (option.HasDefault)
+	                        option.BindDefault();
+	                }
 
-					try
-					{
-						option.Bind(match);
-					}
-					catch (OptionSyntaxException)
-					{
-						result.Errors.Add(new OptionSyntaxParseError(option, match));
-						if (option.HasDefault)
-							option.BindDefault();
-					}
+	                parsedOptions.Remove(match);
+	            }
+	            else
+	            {
+	                if (option.IsRequired) // Step 3
+	                    result.Errors.Add(new ExpectedOptionNotFoundParseError(option));
+	                else if (option.HasDefault)
+	                    option.BindDefault(); // Step 4
 
-					parsedOptions.Remove(match);
-				}
-				else
-				{
-					if (option.IsRequired) // Step 3
-						result.Errors.Add(new ExpectedOptionNotFoundParseError(option));
-					else if (option.HasDefault)
-						option.BindDefault(); // Step 4
+	                result.UnMatchedOptions.Add(option);
+	            }
+	        }
 
-					result.UnMatchedOptions.Add(option);
-				}
-			}
+	        parsedOptions.ForEach(
+	            item => result.AdditionalOptionsFound.Add(new KeyValuePair<string, string>(item.Key, item.Value)));
 
-			parsedOptions.ForEach(item => result.AdditionalOptionsFound.Add(new KeyValuePair<string, string>(item.Key, item.Value)));
+	        result.ErrorText = ErrorFormatter.Format(result.Errors);
 
-			result.ErrorText = ErrorFormatter.Format(result.Errors);
+	        return result;
+	    }
 
-			return result;
-		}
-
-		/// <summary>
+	    /// <summary>
 		/// Setup the help args.
 		/// </summary>
 		/// <param name="helpArgs">The help arguments to register.</param>
@@ -324,7 +348,7 @@ namespace Fclp
 		/// <summary>
 		/// Returns the Options that have been setup for this parser.
 		/// </summary>
-		IEnumerable<ICommandLineOption> IFluentCommandLineParser.Options
+		IEnumerable<ICommandLineOption> ICommandLineOptionContainer.Options
 		{
 			get { return Options; }
 		}

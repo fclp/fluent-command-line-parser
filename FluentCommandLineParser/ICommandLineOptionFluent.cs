@@ -68,5 +68,14 @@ namespace Fclp
 		/// <param name="callback">The return callback to execute with the parsed addition arguments found for this Option.</param>
 		/// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
 		ICommandLineOptionFluent<T> CaptureAdditionalArguments(Action<IEnumerable<string>> callback);
+
+        /// <summary>
+        /// Specifies a command to attached the option too.
+        /// </summary>
+        /// <param name="command">The command to attach the option too. This must not be <c>null</c> and already be setup with the parser.</param>
+        /// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="command"/> is <c>null</c>.</exception>
+        /// <exception cref="CommandNotFoundException">Thrown if the specified <paramref name="command"/> does not exist in the parser.</exception>
+        ICommandLineOptionFluent<T> AssignToCommand(ICommandLineCommand command);
 	}
 }

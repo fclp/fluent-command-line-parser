@@ -41,7 +41,7 @@ namespace Fclp.Tests
 
 			protected static void RunParserWith(string[] args)
 			{
-				CatchAnyError(() => results = sut.Parse(args).ParsedOptions.ToList());
+				CatchAnyError(() => results = sut.Parse(args, false).ParsedOptions.ToList());
 			}
 		}
 	}

@@ -22,6 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System;
 using Fclp.Internals;
 using Fclp.Internals.Validators;
 using Machine.Specifications;
@@ -64,7 +65,7 @@ namespace Fclp.Tests.Internals.Validators
 
 				Because of = () =>
 					error = Catch.Exception(() =>
-						sut.Validate(option.Object));
+						sut.Validate(option.Object, StringComparison.CurrentCultureIgnoreCase));
 
 				protected static void SetupExistingParserOptions(params ICommandLineOption[] options)
 				{

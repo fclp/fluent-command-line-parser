@@ -47,7 +47,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 										args = new string[0];
 
 										mockedEngine
-											.Setup(x => x.Parse(args))
+											.Setup(x => x.Parse(args, false))
 											.Returns(Create<ParserEngineResult>())
 											.Verifiable();
 									};
@@ -59,7 +59,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 			};
 
 			It should_replace_the_old_engine = () => sut.ParserEngine.ShouldBeTheSameAs(customEngine);
-			It should_be_used_to_parse_the_args = () => mockedEngine.Verify(x => x.Parse(args));
+            It should_be_used_to_parse_the_args = () => mockedEngine.Verify(x => x.Parse(args, false));
 		}
 	}
 }

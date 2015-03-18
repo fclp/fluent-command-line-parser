@@ -28,6 +28,49 @@ using System.Reflection;
 
 namespace Fclp.Internals
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface ICommandLineOptionSetupFactory
+    {
+        /// <summary>
+        /// Setup a new <see cref="ICommandLineOptionFluent{T}"/> using the specified short and long Option name.
+        /// </summary>
+        /// <param name="shortOption">The short name for the Option. This must not be <c>whitespace</c> or a control character.</param>
+        /// <param name="longOption">The long name for the Option. This must not be <c>null</c>, <c>empty</c> or only <c>whitespace</c>.</param>
+        /// <returns></returns>
+        /// <exception cref="OptionAlreadyExistsException">
+        /// A Option with the same <paramref name="shortOption"/> name or <paramref name="longOption"/> name already exists in the <see cref="IFluentCommandLineParser"/>.
+        /// </exception>
+        /// <exception cref="InvalidOptionNameException">
+        /// Either <paramref name="shortOption"/> or <paramref name="longOption"/> are not valid. <paramref name="shortOption"/> must not be <c>whitespace</c>
+        /// or a control character. <paramref name="longOption"/> must not be <c>null</c>, <c>empty</c> or only <c>whitespace</c>.
+        /// </exception>
+        ICommandLineOptionFluent<T> Setup<T>(char shortOption, string longOption);
+
+        /// <summary>
+        /// Setup a new <see cref="ICommandLineOptionFluent{T}"/> using the specified short Option name.
+        /// </summary>
+        /// <param name="shortOption">The short name for the Option. This must not be <c>whitespace</c> or a control character.</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOptionNameException">if <paramref name="shortOption"/> is invalid for a short option.</exception>
+        /// <exception cref="OptionAlreadyExistsException">
+        /// A Option with the same <paramref name="shortOption"/> name 
+        /// already exists in the <see cref="IFluentCommandLineParser"/>.
+        /// </exception>
+        ICommandLineOptionFluent<T> Setup<T>(char shortOption);
+
+        /// <summary>
+        /// Setup a new <see cref="ICommandLineOptionFluent{T}"/> using the specified long Option name.
+        /// </summary>
+        /// <param name="longOption">The long name for the Option. This must not be <c>null</c>, <c>empty</c> or only <c>whitespace</c>.</param>
+        /// <exception cref="InvalidOptionNameException">if <paramref name="longOption"/> is invalid for a long option.</exception>
+        /// <exception cref="OptionAlreadyExistsException">
+        /// A Option with the same <paramref name="longOption"/> name already exists in the <see cref="IFluentCommandLineParser"/>.
+        /// </exception>
+        ICommandLineOptionFluent<T> Setup<T>(string longOption);
+    }
+
 	/// <summary>
 	/// Wraps the Setup call of the fluent command line parser and defines the callback to setup the property parsed value.
 	/// </summary>
@@ -35,24 +78,28 @@ namespace Fclp.Internals
 	/// <typeparam name="TProperty">The type of the property the value will be assigned too.</typeparam>
 	public class CommandLineOptionBuilderFluent<TBuildType, TProperty> : ICommandLineOptionBuilderFluent<TProperty>
 	{
-		private readonly IFluentCommandLineParser _parser;
+	    private readonly ICommandLineCommandT<TBuildType> _command;
+        private readonly ICommandLineOptionSetupFactory _setupFactory;
 		private readonly TBuildType _buildObject;
 		private readonly Expression<Func<TBuildType, TProperty>> _propertyPicker;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="CommandLineOptionBuilderFluent{TBuildType, TProperty}" /> class.
-		/// </summary>
-		/// <param name="parser">The parser.</param>
-		/// <param name="buildObject">The build object.</param>
-		/// <param name="propertyPicker">The property picker.</param>
-		public CommandLineOptionBuilderFluent(
-			IFluentCommandLineParser parser, 
+	    /// <summary>
+	    /// Initializes a new instance of the <see cref="CommandLineOptionBuilderFluent{TBuildType, TProperty}" /> class.
+	    /// </summary>
+	    /// <param name="setupFactory">The parser.</param>
+	    /// <param name="buildObject">The build object.</param>
+	    /// <param name="propertyPicker">The property picker.</param>
+	    /// <param name="command"></param>
+	    public CommandLineOptionBuilderFluent(
+            ICommandLineOptionSetupFactory setupFactory, 
 			TBuildType buildObject,
-			Expression<Func<TBuildType, TProperty>> propertyPicker)
+			Expression<Func<TBuildType, TProperty>> propertyPicker,
+            ICommandLineCommandT<TBuildType> command = null)
 		{
-			_parser = parser;
+			_setupFactory = setupFactory;
 			_buildObject = buildObject;
 			_propertyPicker = propertyPicker;
+	        _command = command;
 		}
 
 		/// <summary>
@@ -70,7 +117,8 @@ namespace Fclp.Internals
 		/// </exception>
 		public ICommandLineOptionFluent<TProperty> As(char shortOption, string longOption)
 		{
-			return _parser.Setup<TProperty>(shortOption, longOption)
+			return _setupFactory.Setup<TProperty>(shortOption, longOption)
+                          .AssignToCommand(_command)
 			              .Callback(AssignValueToPropertyCallback);
 		}
 
@@ -86,7 +134,8 @@ namespace Fclp.Internals
 		/// </exception>
 		public ICommandLineOptionFluent<TProperty> As(char shortOption)
 		{
-			return _parser.Setup<TProperty>(shortOption)
+			return _setupFactory.Setup<TProperty>(shortOption)
+                          .AssignToCommand(_command)
 			              .Callback(AssignValueToPropertyCallback);
 		}
 
@@ -100,7 +149,8 @@ namespace Fclp.Internals
 		/// </exception>
 		public ICommandLineOptionFluent<TProperty> As(string longOption)
 		{
-			return _parser.Setup<TProperty>(longOption)
+			return _setupFactory.Setup<TProperty>(longOption)
+                          .AssignToCommand(_command)
 			              .Callback(AssignValueToPropertyCallback);
 		}
 

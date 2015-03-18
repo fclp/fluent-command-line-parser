@@ -106,7 +106,7 @@ namespace Fclp.Tests.Internals
 			InitialiseFixture();
 			CreateSut();
 
-			var result = sut.Parse(convertedArgs);
+            var result = sut.Parse(convertedArgs, false);
 
 			result.ParsedOptions.Count().ShouldEqual(1);
 			result.AdditionalValues.ShouldBeEmpty();
@@ -163,7 +163,7 @@ namespace Fclp.Tests.Internals
 			InitialiseFixture();
 			CreateSut();
 
-			var result = sut.Parse(convertedArgs);
+            var result = sut.Parse(convertedArgs, false);
 
 			result.ParsedOptions.Count().ShouldEqual(2);
 			result.AdditionalValues.ShouldBeEmpty();
@@ -203,7 +203,7 @@ namespace Fclp.Tests.Internals
 			InitialiseFixture();
 			CreateSut();
 
-			var result = sut.Parse(convertedArgs);
+            var result = sut.Parse(convertedArgs, false);
 
 			result.ParsedOptions.Count().ShouldEqual(1);
 			result.AdditionalValues.ShouldBeEmpty();
@@ -236,7 +236,7 @@ namespace Fclp.Tests.Internals
 			InitialiseFixture();
 			CreateSut();
 
-			var result = sut.Parse(convertedArgs);
+            var result = sut.Parse(convertedArgs, false);
 
 			result.ParsedOptions.Count().ShouldEqual(3);
 			result.AdditionalValues.ShouldBeEmpty();

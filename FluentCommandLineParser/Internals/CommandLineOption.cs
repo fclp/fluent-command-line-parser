@@ -97,6 +97,11 @@ namespace Fclp.Internals
 		/// </summary>
 		public bool HasDefault { get; set; }
 
+        /// <summary>
+        /// Gets or sets the command this options is for.
+        /// </summary>
+        public ICommandLineCommand Command { get; set; }
+
 		/// <summary>
 		/// Gets the setup <see cref="System.Type"/> for this option.
 		/// </summary>
@@ -241,6 +246,19 @@ namespace Fclp.Internals
 			return this;
 		}
 
-		#endregion Methods
+        /// <summary>
+        /// Specifies a command to attached the option too.
+        /// </summary>
+        /// <param name="command">The command to attach the option too. This must not be <c>null</c> and already be setup with the parser.</param>
+        /// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="command"/> is <c>null</c>.</exception>
+        /// <exception cref="CommandNotFoundException">Thrown if the specified <paramref name="command"/> does not exist in the parser.</exception>
+        public ICommandLineOptionFluent<T> AssignToCommand(ICommandLineCommand command)
+	    {
+	        this.Command = command;
+            return this;
+	    }
+
+	    #endregion Methods
 	}
 }

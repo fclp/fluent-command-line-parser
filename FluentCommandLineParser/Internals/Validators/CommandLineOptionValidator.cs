@@ -22,6 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace Fclp.Internals.Validators
@@ -36,24 +37,25 @@ namespace Fclp.Internals.Validators
 		/// <summary>
 		/// Initialises a new instance of the <see cref="CommandLineOptionValidator"/> class.
 		/// </summary>
-		public CommandLineOptionValidator(IFluentCommandLineParser parser)
+        public CommandLineOptionValidator(ICommandLineOptionContainer container)
 		{
 			_rules = new List<ICommandLineOptionValidator>
 			{
 				new OptionNameValidator(),
-				new NoDuplicateOptionValidator(parser)
+				new NoDuplicateOptionValidator(container)
 			};
 		}
 
-		/// <summary>
-		/// Validates the specified <see cref="ICommandLineOption"/> against all the registered rules.
-		/// </summary>
-		/// <param name="commandLineOption">The <see cref="ICommandLineOption"/> to validate.</param>
-		public void Validate(ICommandLineOption commandLineOption)
+	    /// <summary>
+	    /// Validates the specified <see cref="ICommandLineOption"/> against all the registered rules.
+	    /// </summary>
+	    /// <param name="commandLineOption">The <see cref="ICommandLineOption"/> to validate.</param>
+	    /// <param name="stringComparison"></param>
+	    public void Validate(ICommandLineOption commandLineOption, StringComparison stringComparison)
 		{
 			foreach (var rule in _rules)
 			{
-				rule.Validate(commandLineOption);
+				rule.Validate(commandLineOption, stringComparison);
 			}
 		}
 	}

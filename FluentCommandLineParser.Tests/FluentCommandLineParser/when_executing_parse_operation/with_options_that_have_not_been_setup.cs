@@ -53,9 +53,9 @@ namespace Fclp.Tests.FluentCommandLineParser
 
 				var mockEngine = new Mock<ICommandLineParserEngine>();
 
-				var result = new ParserEngineResult(additionalOptions, CreateEmptyList<string>());
+				var result = new ParserEngineResult(additionalOptions, CreateEmptyList<string>(), Create<string>());
 
-				mockEngine.Setup(x => x.Parse(args)).Returns(result);
+                mockEngine.Setup(x => x.Parse(args, false)).Returns(result);
 				sut.ParserEngine = mockEngine.Object;
 			};
 

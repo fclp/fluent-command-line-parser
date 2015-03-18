@@ -22,6 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System;
 using System.Globalization;
 using Fclp.Internals;
 using Fclp.Internals.Validators;
@@ -53,7 +54,7 @@ namespace Fclp.Tests.Internals.Validators
 
 				Because of = () =>
 					error = Catch.Exception(() =>
-						sut.Validate(option.Object));
+						sut.Validate(option.Object, StringComparison.CurrentCultureIgnoreCase));
 
 				protected static void SetupOptionWith(string shortName = ValidShortName, string longName = ValidLongName)
 				{

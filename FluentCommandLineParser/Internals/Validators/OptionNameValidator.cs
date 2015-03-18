@@ -36,12 +36,13 @@ namespace Fclp.Internals.Validators
 		private static readonly char[] ReservedChars =
 			SpecialCharacters.ValueAssignments.Union(new[] { SpecialCharacters.Whitespace }).ToArray();
 
-		/// <summary>
-		/// Verifies that the specified <see cref="ICommandLineOption"/> has a valid short/long name combination.
-		/// </summary>
-		/// <param name="commandLineOption">The <see cref="ICommandLineOption"/> to validate. This must not be null.</param>
-		/// <exception cref="ArgumentNullException">if <paramref name="commandLineOption"/> is null.</exception>
-		public void Validate(ICommandLineOption commandLineOption)
+	    /// <summary>
+	    /// Verifies that the specified <see cref="ICommandLineOption"/> has a valid short/long name combination.
+	    /// </summary>
+	    /// <param name="commandLineOption">The <see cref="ICommandLineOption"/> to validate. This must not be null.</param>
+	    /// <param name="stringComparison"></param>
+	    /// <exception cref="ArgumentNullException">if <paramref name="commandLineOption"/> is null.</exception>
+	    public void Validate(ICommandLineOption commandLineOption, StringComparison stringComparison)
 		{
 			if (commandLineOption == null) throw new ArgumentNullException("commandLineOption");
 

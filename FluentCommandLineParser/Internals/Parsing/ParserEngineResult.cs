@@ -23,6 +23,7 @@
 #endregion
 
 using System.Collections.Generic;
+using Fclp.Internals.Extensions;
 
 namespace Fclp.Internals.Parsing
 {
@@ -31,16 +32,28 @@ namespace Fclp.Internals.Parsing
 	/// </summary>
 	public class ParserEngineResult
 	{
-		/// <summary>
-		/// Initialises a new instance of the <see cref="ParserEngineResult"/> class;
-		/// </summary>
-		/// <param name="parsedOptions">The parsed options.</param>
-		/// <param name="additionalValues">Any additional values that could not be translated into options.</param>
-		public ParserEngineResult(IEnumerable<ParsedOption> parsedOptions, IEnumerable<string> additionalValues)
+	    /// <summary>
+	    /// Initialises a new instance of the <see cref="ParserEngineResult"/> class;
+	    /// </summary>
+	    /// <param name="parsedOptions">The parsed options.</param>
+	    /// <param name="additionalValues">Any additional values that could not be translated into options.</param>
+	    /// <param name="command">The command found during parsing.</param>
+	    public ParserEngineResult(IEnumerable<ParsedOption> parsedOptions, IEnumerable<string> additionalValues, string command)
 		{
 			ParsedOptions = parsedOptions ?? new List<ParsedOption>();
 			AdditionalValues = additionalValues ?? new List<string>();
+		    Command = command;
 		}
+
+        /// <summary>
+        /// Gets the command used.
+        /// </summary>
+        public string Command { get; private set; }
+
+        /// <summary>
+        /// Gets whether the results contained a command
+        /// </summary>
+        public bool HasCommand { get { return Command.IsNullOrWhiteSpace() == false; } }
 
 		/// <summary>
 		/// Gets the parsed options.

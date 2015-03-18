@@ -50,7 +50,7 @@ namespace Fclp.Tests.Internals
 				}
 
 				Because of = () =>
-					result = sut.Parse(args);
+                    result = sut.Parse(args, false);
 			}
 
 			class when_args_is_null : ParseTestContext

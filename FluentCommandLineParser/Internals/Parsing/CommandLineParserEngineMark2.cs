@@ -38,27 +38,50 @@ namespace Fclp.Internals.Parsing
 		private readonly List<ParsedOption> _parsedOptions = new List<ParsedOption>();
 		private readonly OptionArgumentParser _optionArgumentParser = new OptionArgumentParser();
 
-		/// <summary>
-		/// Parses the specified <see><cref>T:System.String[]</cref></see> into appropriate <see cref="ParsedOption"/> objects..
-		/// </summary>
-		/// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
-		/// <returns>An <see cref="ParserEngineResult"/> representing the results of the parse operation.</returns>
-		public ParserEngineResult Parse(string[] args)
+        /// <summary>
+        /// Parses the specified <see><cref>T:System.String[]</cref></see> into key value pairs.
+        /// </summary>
+        /// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
+        /// <param name="parseCommands">true to parse any commands, false to skip commands.</param>
+        /// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
+        public ParserEngineResult Parse(string[] args, bool parseCommands)
 		{
 			args = args ?? new string[0];
 
 			var grouper = new CommandLineOptionGrouper();
 
-			foreach (var optionGroup in grouper.GroupArgumentsByOption(args))
+            var grouped = grouper.GroupArgumentsByOption(args, parseCommands);
+
+            string command = parseCommands ? ExtractAnyCommand(grouped) : null;
+
+            foreach (var optionGroup in grouped)
 			{
 				string rawKey = optionGroup.First();
 				ParseGroupIntoOption(rawKey, optionGroup.Skip(1));
 			}
 
-			return new ParserEngineResult(_parsedOptions, _additionalArgumentsFound);
+			return new ParserEngineResult(_parsedOptions, _additionalArgumentsFound, command);
 		}
 
-		private void ParseGroupIntoOption(string rawKey, IEnumerable<string> optionGroup)
+	    private static string ExtractAnyCommand(string[][] grouped)
+	    {
+	        if (grouped.Length > 0)
+	        {
+	            var cmdGroup = grouped.First();
+
+	            var cmd = cmdGroup.FirstOrDefault();
+
+	            if (IsAKey(cmd) == false)
+	            {
+	                return cmd;
+	            }
+	        }
+
+	        return null;
+	    }
+
+
+	    private void ParseGroupIntoOption(string rawKey, IEnumerable<string> optionGroup)
 		{
 			if (IsAKey(rawKey))
 			{

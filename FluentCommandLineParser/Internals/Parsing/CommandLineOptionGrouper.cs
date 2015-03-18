@@ -42,7 +42,7 @@ namespace Fclp.Internals.Parsing
 		/// <summary>
 		/// Groups the specified arguments by the associated Option.
 		/// </summary>
-		public string[][] GroupArgumentsByOption(string[] args)
+		public string[][] GroupArgumentsByOption(string[] args, bool parseCommands)
 		{
 			if (args.IsNullOrEmpty()) return new string[0][];
 
@@ -50,9 +50,21 @@ namespace Fclp.Internals.Parsing
 
 			_currentOptionIndex = -1;
 			_currentOptionLookupIndex = -1;
-			FindOptionIndexes();
 
-			var options = new List<string[]>();
+            var options = new List<string[]>();
+
+		    if (parseCommands)
+		    {
+                var first = _args.FirstOrDefault();
+
+                if (IsACmd(first))
+                {
+                    options.Add(new[] { first });
+                }
+		    }
+
+			FindOptionIndexes();
+			
 
 			if (this.ArgsContainsOptions() == false)
 			{
@@ -131,6 +143,11 @@ namespace Fclp.Internals.Parsing
 		{
 			return arg != null && SpecialCharacters.OptionPrefix.Any(arg.StartsWith);
 		}
+
+        static bool IsACmd(string arg)
+        {
+            return arg != null && SpecialCharacters.OptionPrefix.Any(arg.StartsWith) == false;
+        }
 
 		/// <summary>
 		/// Determines whether the specified string indicates the end of parsed options.

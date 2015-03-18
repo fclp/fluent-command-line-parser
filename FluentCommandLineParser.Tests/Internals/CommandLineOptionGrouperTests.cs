@@ -40,10 +40,14 @@ namespace Fclp.Tests.Internals
 		{
 			protected static string[][] actualResult;
 			protected static string[] args;
+		    protected static bool parseCommands;
+
+		    Establish context = () => 
+                parseCommands = false;
 
 			Because of = () =>
 				error = Catch.Exception(() =>
-					actualResult = sut.GroupArgumentsByOption(args));
+                    actualResult = sut.GroupArgumentsByOption(args, parseCommands));
 		}
 
 		class when_double_dashes_are_used_to_terminate_option_parsing : GroupByOptionTestContext
@@ -137,8 +141,9 @@ namespace Fclp.Tests.Internals
 
 		class when_options_are_repeated : GroupByOptionTestContext
 		{
-			Establish context = () =>
-				args = new[] { "-A", "1", "2", "3", "-A", "4", "5", "6" };
+		    Establish context = () =>
+		        args = new[] {"-A", "1", "2", "3", "-A", "4", "5", "6"};
+				
 
 			It should_return_two_sets = () =>
 				actualResult.Length.ShouldEqual(2);
@@ -161,5 +166,23 @@ namespace Fclp.Tests.Internals
 			It should_return_empty_args = () =>
 				actualResult.ShouldBeEmpty();
 		}
+
+	    class when_using_a_command : GroupByOptionTestContext
+	    {
+	        Establish context = () =>
+	        {
+                args = new[] { "cmd", "-A", "1", "2", "3" };
+	            parseCommands = true;
+	        };
+
+            It should_return_two_sets = () =>
+                actualResult.Length.ShouldEqual(2);
+
+            It should_return_only_the_command_in_the_first_set = () =>
+                actualResult[0].ShouldContainOnly("cmd");
+
+            It should_group_the_A_elements = () =>
+                actualResult[1].ShouldContainOnly("-A", "1", "2", "3");
+	    }
 	}
 }
