@@ -32,7 +32,7 @@ namespace Fclp
         /// <summary>
         /// The callback to execute with the results of this command if used.
         /// </summary>
-        public Action<TBuildType> ReturnCallback { get; set; }
+        public Action<TBuildType> SuccessCallback { get; set; }
 
         /// <summary>
         /// Gets or sets the command name
@@ -50,18 +50,18 @@ namespace Fclp
         /// <summary>
         /// Gets whether the command has a callback
         /// </summary>
-        public bool HasCallback
+        public bool HasSuccessCallback
         {
-            get { return ReturnCallback != null; }
+            get { return SuccessCallback != null; }
         }
 
         /// <summary>
         /// Executes the callback
         /// </summary>
-        public void ExecuteCallback()
+        public void ExecuteOnSuccess()
         {
-            if (HasCallback)
-                ReturnCallback(Object);
+            if (HasSuccessCallback)
+                SuccessCallback(Object);
         }
 
         /// <summary>
@@ -83,9 +83,9 @@ namespace Fclp
             set { _optionFactory = value; }
         }
 
-        public ICommandLineCommandFluent<TBuildType> Callback(Action<TBuildType> callback)
+        public ICommandLineCommandFluent<TBuildType> OnSuccess(Action<TBuildType> callback)
         {
-            ReturnCallback = callback;
+            SuccessCallback = callback;
             return this;
         }
 
@@ -138,7 +138,7 @@ namespace Fclp
         /// <summary>
         /// The callback to execute with the results of this command if used.
         /// </summary>
-        Action<TBuildType> ReturnCallback { get; set; }
+        Action<TBuildType> SuccessCallback { get; set; }
     }
 
     /// <summary>
@@ -164,11 +164,11 @@ namespace Fclp
         /// <summary>
         /// Gets whether the command has a callback
         /// </summary>
-        bool HasCallback { get; }
+        bool HasSuccessCallback { get; }
 
         /// <summary>
         /// Executes the callback
         /// </summary>
-        void ExecuteCallback();
+        void ExecuteOnSuccess();
     }
 }

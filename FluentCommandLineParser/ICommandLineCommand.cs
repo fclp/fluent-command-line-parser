@@ -13,7 +13,7 @@ namespace Fclp
         /// </summary>
         /// <param name="callback"></param>
         /// <returns></returns>
-        ICommandLineCommandFluent<TBuildType> Callback(Action<TBuildType> callback);
+        ICommandLineCommandFluent<TBuildType> OnSuccess(Action<TBuildType> callback);
 
         /// <summary>
         /// Sets up an Option for a write-able property on the type being built.

@@ -275,7 +275,10 @@ namespace Fclp
 		        if (match != null)
 		        {
                     var result2 = ParseOptions(match.Options, parsedOptions, result);
-                    match.ExecuteCallback();
+		            if (result2.HasErrors == false)
+		            {
+                        match.ExecuteOnSuccess();    
+		            }
 		            return result2;
 		        }
 		    }

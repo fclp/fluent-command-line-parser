@@ -25,7 +25,7 @@ namespace Fclp.Examples
 
             // use new SetupCommand method to initialise a command
             var addCmd = fclp.SetupCommand<AddArgs>("add")
-                             .Callback(Add); // executed when the add command is used
+                             .OnSuccess(Add); // executed when the add command is used
 
             // the standard fclp framework, except against the created command rather than the fclp itself
             addCmd.Setup(addArgs => addArgs.Verbose)
@@ -44,7 +44,7 @@ namespace Fclp.Examples
 
             // add the remove command
             var remCmd = fclp.SetupCommand<RemoveArgs>("rem")
-                             .Callback(Remove); // executed when the remove command is used
+                             .OnSuccess(Remove); // executed when the remove command is used
 
             remCmd.Setup(removeArgs => removeArgs.Verbose)
                      .As('v', "verbose")
