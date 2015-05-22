@@ -254,16 +254,23 @@ namespace Fclp
 				if (match != null) // Step 2
 				{
 
-					try
-					{
-						option.Bind(match);
-					}
-					catch (OptionSyntaxException)
-					{
-						result.Errors.Add(new OptionSyntaxParseError(option, match));
-						if (option.HasDefault)
-							option.BindDefault();
-					}
+				    try
+				    {
+				        option.Bind(match);
+				    }
+				    catch (OptionSyntaxException)
+				    {
+				        result.Errors.Add(new OptionSyntaxParseError(option, match));
+				        if (option.HasDefault)
+				            option.BindDefault();
+				    }
+				    catch (OptionValueInvalidException)
+				    {
+                        // add invalid error
+                        //result.Errors.Add(new OptionValieInvalidParseError);
+                        if (option.HasDefault)
+                            option.BindDefault();
+				    }
 
 					parsedOptions.Remove(match);
 				}

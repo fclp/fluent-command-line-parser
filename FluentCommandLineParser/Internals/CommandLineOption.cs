@@ -75,6 +75,11 @@ namespace Fclp.Internals
 
 		internal Action<IEnumerable<string>> AdditionalArgumentsCallback { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+	    public Predicate<T> Validator;
+
 		internal T Default { get; set; }
 
 		/// <summary>
@@ -142,6 +147,14 @@ namespace Fclp.Internals
 			get { return this.AdditionalArgumentsCallback != null; }
 		}
 
+        /// <summary>
+        /// example
+        /// </summary>
+	    public bool HasValidator
+	    {
+            get { return Validator != null; }
+	    }
+
 		#endregion Properties
 
 		#region Methods
@@ -170,9 +183,20 @@ namespace Fclp.Internals
 
 		void Bind(T value)
 		{
+		    if (this.HasValidator)
+		        this.Validate(value);
+
 			if (this.HasCallback)
 				this.ReturnCallback(value);
 		}
+
+	    void Validate(T val)
+	    {
+	        if (Validator(val) == false)
+	        {
+	            throw new OptionValueInvalidException();
+	        }
+	    }
 
 		void BindAnyAdditionalArgs(ParsedOption option)
 		{
@@ -241,6 +265,17 @@ namespace Fclp.Internals
 			return this;
 		}
 
-		#endregion Methods
+        /// <summary>
+        /// example
+        /// </summary>
+        /// <param name="validate"></param>
+        /// <returns></returns>
+	    public ICommandLineOptionFluent<T> Validate(Predicate<T> validate)
+	    {
+	        Validator = validate;
+	        return this;
+	    }
+
+	    #endregion Methods
 	}
 }
