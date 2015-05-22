@@ -572,6 +572,241 @@ namespace Fclp.Tests
 
         #endregion DateTime Option
 
+        #region int? Option
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Int32_When_Valid_Value_Is_Provided()
+        {
+            int? expected = 1;
+            int? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<int?>('i', "integer")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] {"--integer", "1"});
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Int32_When_InValid_Value_Is_Provided()
+        {
+            int? expected = null;
+            int? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<int?>('i', "integer")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] {"--integer", "abc"});
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Int32_When_Null_Is_Provided()
+        {
+            int? expected = null;
+            int? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<int?>('i', "integer")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] {"--integer"} );
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        #endregion
+
+        #region double? Option
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Double_When_Valid_Value_Is_Provided()
+        {
+            double? expected = 1.23456789d;
+            double? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<double?>('d', "double")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--double", expected.Value.ToString(CultureInfo.InvariantCulture) });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Double_When_InValid_Value_Is_Provided()
+        {
+            double? expected = null;
+            double? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<double?>('d', "double")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--double", "not-a-double" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Double_When_No_Value_Is_Provided()
+        {
+            double? expected = null;
+            double? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<double?>('d', "double")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--double" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        #endregion
+
+        #region DateTime? Option
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_DateTime_When_Valid_Value_Is_Provided()
+        {
+            DateTime? expected = new DateTime(2012, 2, 29, 01, 01, 01);
+            DateTime? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<DateTime?>('d', "datetime")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--datetime", expected.Value.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.CurrentCulture) });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_DateTime_When_InValid_Value_Is_Provided()
+        {
+            DateTime? expected = null;
+            DateTime? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<DateTime?>('d', "datetime")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--datetime", "not-a-date-time" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_DateTime_When_No_Value_Is_Provided()
+        {
+            DateTime? expected = null;
+            DateTime? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<DateTime?>('d', "datetime")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--datetime" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        #endregion
+
+        #region bool? Option
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Bool_When_Valid_Value_Is_Provided()
+        {
+            bool? expected = true;
+            bool? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<bool?>('b', "bool")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--bool", "true" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Bool_When_InValid_Value_Is_Provided()
+        {
+            bool? expected = null;
+            bool? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<bool?>('b', "bool")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--bool", "not-a-bool" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Bool_When_No_Value_Is_Provided()
+        {
+            bool? expected = null;
+            bool? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<bool?>('b', "bool")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--bool" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        #endregion
+
         #region Uri Option
 
         [Test]
