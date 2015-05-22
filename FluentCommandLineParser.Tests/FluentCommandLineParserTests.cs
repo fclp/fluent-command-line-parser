@@ -572,6 +572,62 @@ namespace Fclp.Tests
 
         #endregion DateTime Option
 
+        #region Uri Option
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Uri_When_Valid_Value_Is_Provided()
+        {
+            const string expected = "https://github.com/fclp/fluent-command-line-parser";
+            Uri actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<Uri>('u', "uri")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--uri", expected });
+
+            Assert.AreEqual(expected, actual.AbsoluteUri);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Uri_When_InValid_Value_Is_Provided()
+        {
+            Uri actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<Uri>('u', "uri")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--uri", "not-a-uri" });
+
+            Assert.IsNull(actual);
+            Assert.IsTrue(result.HasErrors);
+            Assert.AreEqual(result.Errors.Count(), 1);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Uri_When_No_Value_Is_Provided()
+        {
+            Uri actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<Uri>('u', "uri")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--uri" });
+
+            Assert.IsNull(actual);
+            Assert.IsTrue(result.HasErrors);
+            Assert.AreEqual(result.Errors.Count(), 1);
+        }
+
+        #endregion
+
         #region Long Option Only
 
         [Test]

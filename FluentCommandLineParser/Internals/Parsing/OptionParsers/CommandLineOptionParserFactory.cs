@@ -43,6 +43,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
             this.AddOrReplace(new StringCommandLineOptionParser());
             this.AddOrReplace(new DateTimeCommandLineOptionParser());
             this.AddOrReplace(new DoubleCommandLineOptionParser());
+            this.AddOrReplace(new UriCommandLineOptionParser());
             this.AddOrReplace(new ListCommandLineOptionParser<string>(this));
             this.AddOrReplace(new ListCommandLineOptionParser<int>(this));
             this.AddOrReplace(new ListCommandLineOptionParser<double>(this));
