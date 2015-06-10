@@ -3,7 +3,7 @@ Fluent Command Line Parser
 A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface.
 ### Download
 
-See what's new in [v1.4](https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap).
+See what's new in [v1.4.2](https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap).
 
 You can download the latest release from [CodeBetter's TeamCity server](http://teamcity.codebetter.com/project.html?projectId=project314)
 
@@ -199,6 +199,31 @@ p.Setup(args => args.Direction)
 p.Setup(args => args.Directions)
  .As("directions");
 ```
+
+### Help Screen
+You can setup any help arguments, such as -? or --help to print all parameters which have been setup, along with their descriptions to the console by using SetupHelp(params string[]).
+
+For example:
+
+	// sets up the parser to execute the callback when -? or --help is detected
+	parser.SetupHelp("?", "help")
+	 .Callback(text => Console.WriteLine(text));
+
+Since v1.4.1 you can also choose to display the formatted help screen text manually, so that you can display it under other circumstances.
+
+
+For example:
+
+	var parser = new FluentCommandLineParser<Args>();
+	
+	parser.SetupHelp("?", "help")
+	 .Callback(text => Console.WriteLine(text));
+	
+	// triggers the SetupHelp Callback which writes the text to the console
+	parser.HelpOption.ShowHelp(parser.Options);
+
+
+
 ### Supported Syntax
 `[-|--|/][switch_name][=|:| ][value]`
 

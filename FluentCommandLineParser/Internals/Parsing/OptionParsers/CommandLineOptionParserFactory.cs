@@ -43,11 +43,16 @@ namespace Fclp.Internals.Parsing.OptionParsers
             this.AddOrReplace(new StringCommandLineOptionParser());
             this.AddOrReplace(new DateTimeCommandLineOptionParser());
             this.AddOrReplace(new DoubleCommandLineOptionParser());
+            this.AddOrReplace(new UriCommandLineOptionParser());
             this.AddOrReplace(new ListCommandLineOptionParser<string>(this));
             this.AddOrReplace(new ListCommandLineOptionParser<int>(this));
             this.AddOrReplace(new ListCommandLineOptionParser<double>(this));
             this.AddOrReplace(new ListCommandLineOptionParser<DateTime>(this));
             this.AddOrReplace(new ListCommandLineOptionParser<bool>(this));
+            this.AddOrReplace(new NullableCommandLineOptionParser<bool>(this));
+            this.AddOrReplace(new NullableCommandLineOptionParser<int>(this));
+            this.AddOrReplace(new NullableCommandLineOptionParser<double>(this));
+            this.AddOrReplace(new NullableCommandLineOptionParser<DateTime>(this));
         }
 
         internal Dictionary<Type, object> Parsers { get; set; }

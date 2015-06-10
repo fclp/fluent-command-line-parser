@@ -80,6 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UriTests.cs" />
     <Compile Include="CommandLineOptionFormatterTests.cs" />
     <Compile Include="FluentCommandLineParserBuilderTests.cs" />
     <Compile Include="FluentCommandLineParserMSpecTests.cs" />
