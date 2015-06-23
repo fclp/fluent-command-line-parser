@@ -87,6 +87,7 @@
     <Compile Include="Internals\Parsing\ICommandLineParserEngine.cs" />
     <Compile Include="Internals\Parsing\OptionArgumentParser.cs" />
     <Compile Include="Internals\Parsing\CommandLineOptionGrouper.cs" />
+    <Compile Include="Internals\Parsing\OptionParsers\Int64CommandLineOptionParser.cs" />
     <Compile Include="Internals\Parsing\OptionParsers\NullableCommandLineOptionParser.cs" />
     <Compile Include="Internals\Parsing\OptionParsers\UriCommandLineOptionParser.cs" />
     <Compile Include="Internals\Parsing\OptionParsers\BoolCommandLineOptionParser.cs" />
