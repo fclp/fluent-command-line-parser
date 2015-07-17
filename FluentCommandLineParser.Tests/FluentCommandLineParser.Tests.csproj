@@ -80,6 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Integration\Lists\NullableEnumListInlineDataAttribute.cs" />
     <Compile Include="UriTests.cs" />
     <Compile Include="CommandLineOptionFormatterTests.cs" />
     <Compile Include="FluentCommandLineParserBuilderTests.cs" />

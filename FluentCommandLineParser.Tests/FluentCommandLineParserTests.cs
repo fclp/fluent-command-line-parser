@@ -528,6 +528,170 @@ namespace Fclp.Tests
 
         #endregion Enum Option
 
+        #region Enum? Options
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Null_When_No_Value_Provided()
+        {
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum?>('e')
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "-e" });
+
+            Assert.IsNull(actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Short_option()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum?>('e')
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "-e", expected.ToString() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Long_option()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum?>('e', "enum")
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "--enum", expected.ToString() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Short_option_And_Int32_Enum()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum?>('e')
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "-e", ((int)expected).ToString(CultureInfo.InvariantCulture) });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Long_option_And_Int32_Enum()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum?>('e', "enum")
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "--enum", ((int)expected).ToString(CultureInfo.InvariantCulture) });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Short_option_And_Lowercase_String()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum?>('e')
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "-e", expected.ToString().ToLowerInvariant() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Long_option_And_Int32_Enum_And_Lowercase_String()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum?>('e', "enum")
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "--enum", expected.ToString().ToLowerInvariant() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Short_option_And_Uppercase_String()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum>('e')
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "-e", expected.ToString().ToUpperInvariant() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Long_option_And_Int32_Enum_And_Uppercase_String()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum>('e', "enum")
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "--enum", expected.ToString().ToUpperInvariant() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
+
         #region DateTime Option
 
         [Test]
@@ -1555,6 +1719,27 @@ namespace Fclp.Tests
             Assert.IsTrue(actual.Contains(-123));
             Assert.IsTrue(actual.Contains(-321));
             Assert.IsTrue(actual.Contains(321));
+        }
+
+        [Test]
+        public void Ensure_Can_Parse_Multiple_Nullable_Enums_To_A_List()
+        {
+            var parser = CreateFluentParser();
+
+            var actual = new List<TestEnum?>();
+
+            parser.Setup<List<TestEnum?>>("enums")
+                  .Callback(actual.AddRange);
+
+            var result = parser.Parse(new[] { "--enums", "--", TestEnum.Value0.ToString(), TestEnum.Value1.ToString() });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
+
+            Assert.AreEqual(2, actual.Count());
+            Assert.Contains(TestEnum.Value0, actual);
+            Assert.Contains(TestEnum.Value1, actual);
         }
 
         #endregion

@@ -121,7 +121,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
                     {
                         this.AddOrReplace(new EnumCommandLineOptionParser<T>());
                     }
-                    
+
                 }
                 return true;
             }
@@ -130,21 +130,44 @@ namespace Fclp.Internals.Parsing.OptionParsers
             {
                 var genericType = TryGetListGenericType(type);
 
-                if (genericType != null && genericType.IsEnum)
+                if (genericType != null)
                 {
-                    var enumListParserType = typeof(ListCommandLineOptionParser<>).MakeGenericType(genericType);
-                    var parser = (ICommandLineOptionParser<T>)Activator.CreateInstance(enumListParserType, this);
-
-                    if (!this.Parsers.ContainsKey(type))
+                    if (genericType.IsEnum || IsNullableEnum(genericType))
                     {
-                        this.AddOrReplace(parser);
-                    }
+                        var enumListParserType = typeof(ListCommandLineOptionParser<>).MakeGenericType(genericType);
+                        var parser = (ICommandLineOptionParser<T>)Activator.CreateInstance(enumListParserType, this);
 
-                    return true;
+                        if (!this.Parsers.ContainsKey(type))
+                        {
+                            this.AddOrReplace(parser);
+                        }
+
+                        return true;
+                    }
                 }
             }
 
+            if (IsNullableEnum(type))
+            {
+                var underlyingType = Nullable.GetUnderlyingType(type);
+                var nullableEnumParserType = typeof(NullableEnumCommandLineOptionParser<>).MakeGenericType(underlyingType);
+                var parser = (ICommandLineOptionParser<T>)Activator.CreateInstance(nullableEnumParserType, this);
+
+                if (!this.Parsers.ContainsKey(type))
+                {
+                    this.AddOrReplace(parser);
+                }
+
+                return true;
+            }
+
             return false;
+        }
+
+        private static bool IsNullableEnum(Type t)
+        {
+            Type u = Nullable.GetUnderlyingType(t);
+            return (u != null) && u.IsEnum;
         }
 
         /// <summary>

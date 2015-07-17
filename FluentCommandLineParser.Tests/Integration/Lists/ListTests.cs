@@ -108,6 +108,26 @@ namespace Fclp.Tests.Integration
 			should_contain_list_with_expected_items(arguments, expectedItems);
 		}
 
+		[Theory]
+		[NullableEnumListInlineData("--list Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+        [NullableEnumListInlineData("-l Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+        [NullableEnumListInlineData("/list Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+        [NullableEnumListInlineData("/list:Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+        [NullableEnumListInlineData("/list=Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+        [NullableEnumListInlineData("--list:Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+        [NullableEnumListInlineData("--list=Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+        [NullableEnumListInlineData("--list 0 1", TestEnum.Value0, TestEnum.Value1)]
+        [NullableEnumListInlineData("-l 0 1", TestEnum.Value0, TestEnum.Value1)]
+        [NullableEnumListInlineData("/list 0 1", TestEnum.Value0, TestEnum.Value1)]
+        [NullableEnumListInlineData("/list:0 1", TestEnum.Value0, TestEnum.Value1)]
+        [NullableEnumListInlineData("/list=0 1", TestEnum.Value0, TestEnum.Value1)]
+        [NullableEnumListInlineData("--list:0 1", TestEnum.Value0, TestEnum.Value1)]
+        [NullableEnumListInlineData("--list=0 1", TestEnum.Value0, TestEnum.Value1)]
+		public void should_create_list_with_expected_nullable_enum_items(string arguments, IEnumerable<TestEnum?> expectedItems)
+		{
+			should_contain_list_with_expected_items(arguments, expectedItems);
+		}
+
 		private void should_contain_list_with_expected_items<T>(string arguments, IEnumerable<T> expectedItems)
 		{
 			sut = new Fclp.FluentCommandLineParser();
