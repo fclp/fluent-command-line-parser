@@ -96,16 +96,28 @@ namespace FluentCommandLineParser.Tests.Internals
 
 			var stringParser = factory.CreateParser<string>();
 			var int32Parser = factory.CreateParser<int>();
+            var int64Parser = factory.CreateParser<long>();
 			var doubleParser = factory.CreateParser<double>();
 			var dtParser = factory.CreateParser<DateTime>();
 			var boolParser = factory.CreateParser<bool>();
 
 			Assert.IsInstanceOf<StringCommandLineOptionParser>(stringParser);
 			Assert.IsInstanceOf<Int32CommandLineOptionParser>(int32Parser);
+            Assert.IsInstanceOf<Int64CommandLineOptionParser>(int64Parser);
 			Assert.IsInstanceOf<DoubleCommandLineOptionParser>(doubleParser);
 			Assert.IsInstanceOf<DateTimeCommandLineOptionParser>(dtParser);
 			Assert.IsInstanceOf<BoolCommandLineOptionParser>(boolParser);
 		}
+
+        [Test]
+        public void Ensure_Factory_Supports_List_Of_Int64()
+        {
+            var factory = new CommandLineOptionParserFactory();
+
+            var int64ListParser = factory.CreateParser<System.Collections.Generic.List<long>>();
+
+            Assert.IsInstanceOf<ListCommandLineOptionParser<long>>(int64ListParser);
+        }
 
 	    [Test]
 	    public void Ensure_Factory_Supports_Enum()

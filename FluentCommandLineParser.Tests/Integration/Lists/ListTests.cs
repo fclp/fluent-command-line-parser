@@ -62,6 +62,19 @@ namespace Fclp.Tests.Integration
 			should_contain_list_with_expected_items(arguments, expectedItems);
 		}
 
+        [Theory]
+        [Int64ListInlineData("--list 2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
+        [Int64ListInlineData("-list 2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
+        [Int64ListInlineData("/list 2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
+        [Int64ListInlineData("/list:2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
+        [Int64ListInlineData("/list=2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
+        [Int64ListInlineData("--list:2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
+        [Int64ListInlineData("--list=2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
+        public void should_create_list_with_expected_int64_items(string arguments, IEnumerable<long> expectedItems)
+        {
+            should_contain_list_with_expected_items(arguments, expectedItems);
+        }
+
 		[Theory]
 		[DoubleListInlineData("--list 123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
 		[DoubleListInlineData("-list 123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]

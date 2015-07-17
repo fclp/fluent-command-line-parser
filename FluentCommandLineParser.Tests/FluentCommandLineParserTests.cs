@@ -1722,7 +1722,6 @@ namespace Fclp.Tests
         }
 
         [Test]
-        public void Ensure_Can_Parse_Multiple_Nullable_Enums_To_A_List()
         {
             var parser = CreateFluentParser();
 
@@ -1731,17 +1730,47 @@ namespace Fclp.Tests
             parser.Setup<List<TestEnum?>>("enums")
                   .Callback(actual.AddRange);
 
-            var result = parser.Parse(new[] { "--enums", "--", TestEnum.Value0.ToString(), TestEnum.Value1.ToString() });
 
             Assert.IsFalse(result.HasErrors);
             Assert.IsFalse(result.EmptyArgs);
             Assert.IsFalse(result.HelpCalled);
 
-            Assert.AreEqual(2, actual.Count());
-            Assert.Contains(TestEnum.Value0, actual);
-            Assert.Contains(TestEnum.Value1, actual);
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
+
+            Assert.IsTrue(actual.Contains(value3));
+            Assert.IsTrue(actual.Contains(value4));
         }
 
+        [Test]
+        public void Ensure_Can_Parse_Arguments_Containing_Long_To_A_List()
+        {
+            var parser = CreateFluentParser();
+            long value1 = 21474836471;
+            long value2 = 21474836472;
+            long value3 = 214748364723;
+            long value4 = 21474836471233;
+
+            var actual = new List<long>();
+
+            parser.Setup<List<long>>("longs")
+                  .Callback(actual.AddRange);
+
+            var result = parser.Parse(new[] { "--longs", "--", value1.ToString(), value2.ToString(), value3.ToString(), value4.ToString() });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
+
+            Assert.AreEqual(4, actual.Count());
+            Assert.IsTrue(actual.Contains(value1));
+            Assert.IsTrue(actual.Contains(value2));
+            Assert.IsTrue(actual.Contains(value3));
+            Assert.IsTrue(actual.Contains(value4));
+        }
+		
         #endregion
 
         #endregion Top Level Tests
