@@ -1722,6 +1722,7 @@ namespace Fclp.Tests
         }
 
         [Test]
+        public void Ensure_Can_Parse_Multiple_Nullable_Enums_To_A_List()
         {
             var parser = CreateFluentParser();
 
@@ -1730,18 +1731,15 @@ namespace Fclp.Tests
             parser.Setup<List<TestEnum?>>("enums")
                   .Callback(actual.AddRange);
 
+            var result = parser.Parse(new[] { "--enums", "--", TestEnum.Value0.ToString(), TestEnum.Value1.ToString() });
 
             Assert.IsFalse(result.HasErrors);
             Assert.IsFalse(result.EmptyArgs);
             Assert.IsFalse(result.HelpCalled);
 
-
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.EmptyArgs);
-            Assert.IsFalse(result.HelpCalled);
-
-            Assert.IsTrue(actual.Contains(value3));
-            Assert.IsTrue(actual.Contains(value4));
+            Assert.AreEqual(2, actual.Count());
+            Assert.Contains(TestEnum.Value0, actual);
+            Assert.Contains(TestEnum.Value1, actual);
         }
 
         [Test]
