@@ -56,6 +56,9 @@ namespace Fclp.Tests.Integration
 		[Int32InlineData("-i 123", 123)]
 		[Int32InlineData("-i:123", 123)]
 		[Int32InlineData("-i=123", 123)]
+        [Int64InlineData("-l 2147483649", 2147483649)]
+        [Int64InlineData("-l:2147483649", 2147483649)]
+        [Int64InlineData("-l=2147483649", 2147483649)]
 		[DoubleInlineData("-d 123.456", 123.456)]
 		[DoubleInlineData("-d:123.456", 123.456)]
 		[DoubleInlineData("-d=123.456", 123.456)]
@@ -70,6 +73,7 @@ namespace Fclp.Tests.Integration
 			bool? expectedBoolean,
 			string expectedString,
 			int? expectedInt32,
+            long? expectedInt64,
 			double? expectedDouble,
 			TestEnum? expectedEnum)
 		{
@@ -78,12 +82,14 @@ namespace Fclp.Tests.Integration
 			bool? actualBoolean = null;
 			string actualString = null;
 			int? actualInt32 = null;
+            long? actualInt64 = null;
 			double? actualDouble = null;
 			TestEnum? actualEnum = null;
 
 			sut.Setup<bool>('b').Callback(b => actualBoolean = b);
 			sut.Setup<string>('s').Callback(s => actualString = s);
 			sut.Setup<int>('i').Callback(i => actualInt32 = i);
+            sut.Setup<long>('l').Callback(l => actualInt64 = l);
 			sut.Setup<double>('d').Callback(d => actualDouble = d);
 			sut.Setup<TestEnum>('e').Callback(d => actualEnum = d);
 
@@ -96,6 +102,7 @@ namespace Fclp.Tests.Integration
 			actualBoolean.ShouldEqual(expectedBoolean);
 			actualString.ShouldEqual(expectedString);
 			actualInt32.ShouldEqual(expectedInt32);
+            actualInt64.ShouldEqual(expectedInt64);
 			actualDouble.ShouldEqual(expectedDouble);
 			actualEnum.ShouldEqual(expectedEnum);
 		}
