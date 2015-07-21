@@ -53,6 +53,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
             this.AddOrReplace(new ListCommandLineOptionParser<bool>(this));
             this.AddOrReplace(new NullableCommandLineOptionParser<bool>(this));
             this.AddOrReplace(new NullableCommandLineOptionParser<int>(this));
+            this.AddOrReplace(new NullableCommandLineOptionParser<long>(this));
             this.AddOrReplace(new NullableCommandLineOptionParser<double>(this));
             this.AddOrReplace(new NullableCommandLineOptionParser<DateTime>(this));
         }
