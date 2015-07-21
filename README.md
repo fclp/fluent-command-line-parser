@@ -91,7 +91,7 @@ static void Main(string[] args)
 
 ### Parsing To Collections
 
-Many arguments can be collected as part of a list. Types supported are `string`, `int`, `double`, `bool` and `Enum`
+Many arguments can be collected as part of a list. Types supported are `string`, `int32`, `int64`, `double`, `bool`, `Uri`, `DateTime` and `Enum`
 
 For example arguments such as
 
