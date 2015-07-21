@@ -175,7 +175,7 @@ Assert.IsTrue(direction.HasFlag(Direction.South));
 Assert.IsFalse(direction.HasFlag(Direction.West));
 ```
 
-And the generic FluentCommandLineParser<T> (previously known as FluentCommandLineBuilder) also supports enums and nullable enums.
+And the generic FluentCommandLineParser<T> (previously known as FluentCommandLineBuilder) also supports enums.
 
 ```
 public class Args
@@ -193,7 +193,7 @@ p.Setup(args => args.Direction)
 p.Setup(args => args.Directions)
  .As("directions");
 ```
-
+From v1.5 nullable enums are now supported.
 ### Help Screen
 You can setup any help arguments, such as -? or --help to print all parameters which have been setup, along with their descriptions to the console by using SetupHelp(params string[]).
 
