@@ -39,7 +39,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		/// <returns></returns>
 		public DateTime Parse(ParsedOption parsedOption)
 		{
-			return DateTime.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
+			return DateTime.Parse(parsedOption.Value.Trim('"'), CultureInfo.CurrentCulture);
 		}
 
 		/// <summary>
@@ -50,7 +50,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		public bool CanParse(ParsedOption parsedOption)
 		{
 			DateTime dtOut;
-			return DateTime.TryParse(parsedOption.Value, out dtOut);
+			return DateTime.TryParse(parsedOption.Value.Trim('"'), out dtOut);
 		}
 	}
 }
