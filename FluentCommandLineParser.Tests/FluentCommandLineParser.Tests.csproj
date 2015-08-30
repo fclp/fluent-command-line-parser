@@ -80,6 +80,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Integration\Int64InlineDataAttribute.cs" />
+    <Compile Include="Integration\Lists\Int64ListInlineDataAttribute.cs" />
+    <Compile Include="UriTests.cs" />
     <Compile Include="CommandLineOptionFormatterTests.cs" />
     <Compile Include="FluentCommandLineParserBuilderTests.cs" />
     <Compile Include="FluentCommandLineParserMSpecTests.cs" />

@@ -34,9 +34,10 @@ namespace Fclp.Tests.Integration
             bool? expectedBoolean = null,
             string expectedString = null,
             int? expectedInt32 = null,
+            long? expectedInt64 = null,
             double? expectedDouble = null,
             TestEnum? expectedEnum = null)
-            : base(arguments, expectedBoolean, expectedString, expectedInt32, expectedDouble, expectedEnum)
+            : base(arguments, expectedBoolean, expectedString, expectedInt32, expectedInt64, expectedDouble, expectedEnum)
         {
             
         }

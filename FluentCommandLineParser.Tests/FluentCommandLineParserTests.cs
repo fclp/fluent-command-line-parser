@@ -528,6 +528,170 @@ namespace Fclp.Tests
 
         #endregion Enum Option
 
+        #region Enum? Options
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Null_When_No_Value_Provided()
+        {
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum?>('e')
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "-e" });
+
+            Assert.IsNull(actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Short_option()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum?>('e')
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "-e", expected.ToString() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Long_option()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum?>('e', "enum")
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "--enum", expected.ToString() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Short_option_And_Int32_Enum()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum?>('e')
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "-e", ((int)expected).ToString(CultureInfo.InvariantCulture) });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Long_option_And_Int32_Enum()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum?>('e', "enum")
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "--enum", ((int)expected).ToString(CultureInfo.InvariantCulture) });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Short_option_And_Lowercase_String()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum?>('e')
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "-e", expected.ToString().ToLowerInvariant() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Long_option_And_Int32_Enum_And_Lowercase_String()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum?>('e', "enum")
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "--enum", expected.ToString().ToLowerInvariant() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Short_option_And_Uppercase_String()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum>('e')
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "-e", expected.ToString().ToUpperInvariant() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Long_option_And_Int32_Enum_And_Uppercase_String()
+        {
+            TestEnum? expected = TestEnum.Value1;
+
+            TestEnum? actual = TestEnum.Value0;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<TestEnum>('e', "enum")
+                .Callback(val => actual = val);
+
+            parser.Parse(new[] { "--enum", expected.ToString().ToUpperInvariant() });
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
+
         #region DateTime Option
 
         [Test]
@@ -571,6 +735,297 @@ namespace Fclp.Tests
         }
 
         #endregion DateTime Option
+
+        #region int? Option
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Int32_When_Valid_Value_Is_Provided()
+        {
+            int? expected = 1;
+            int? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<int?>('i', "integer")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] {"--integer", "1"});
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Int32_When_InValid_Value_Is_Provided()
+        {
+            int? expected = null;
+            int? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<int?>('i', "integer")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] {"--integer", "abc"});
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Int32_When_Null_Is_Provided()
+        {
+            int? expected = null;
+            int? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<int?>('i', "integer")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] {"--integer"} );
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        #endregion
+
+        #region double? Option
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Double_When_Valid_Value_Is_Provided()
+        {
+            double? expected = 1.23456789d;
+            double? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<double?>('d', "double")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--double", expected.Value.ToString(CultureInfo.InvariantCulture) });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Double_When_InValid_Value_Is_Provided()
+        {
+            double? expected = null;
+            double? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<double?>('d', "double")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--double", "not-a-double" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Double_When_No_Value_Is_Provided()
+        {
+            double? expected = null;
+            double? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<double?>('d', "double")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--double" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        #endregion
+
+        #region DateTime? Option
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_DateTime_When_Valid_Value_Is_Provided()
+        {
+            DateTime? expected = new DateTime(2012, 2, 29, 01, 01, 01);
+            DateTime? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<DateTime?>('d', "datetime")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--datetime", expected.Value.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.CurrentCulture) });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_DateTime_When_InValid_Value_Is_Provided()
+        {
+            DateTime? expected = null;
+            DateTime? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<DateTime?>('d', "datetime")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--datetime", "not-a-date-time" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_DateTime_When_No_Value_Is_Provided()
+        {
+            DateTime? expected = null;
+            DateTime? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<DateTime?>('d', "datetime")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--datetime" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        #endregion
+
+        #region bool? Option
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Bool_When_Valid_Value_Is_Provided()
+        {
+            bool? expected = true;
+            bool? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<bool?>('b', "bool")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--bool", "true" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Bool_When_InValid_Value_Is_Provided()
+        {
+            bool? expected = null;
+            bool? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<bool?>('b', "bool")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--bool", "not-a-bool" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Bool_When_No_Value_Is_Provided()
+        {
+            bool? expected = null;
+            bool? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<bool?>('b', "bool")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--bool" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        #endregion
+
+        #region Uri Option
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Uri_When_Valid_Value_Is_Provided()
+        {
+            const string expected = "https://github.com/fclp/fluent-command-line-parser";
+            Uri actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<Uri>('u', "uri")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--uri", expected });
+
+            Assert.AreEqual(expected, actual.AbsoluteUri);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Uri_When_InValid_Value_Is_Provided()
+        {
+            Uri actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<Uri>('u', "uri")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--uri", "not-a-uri" });
+
+            Assert.IsNull(actual);
+            Assert.IsTrue(result.HasErrors);
+            Assert.AreEqual(result.Errors.Count(), 1);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Uri_When_No_Value_Is_Provided()
+        {
+            Uri actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<Uri>('u', "uri")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--uri" });
+
+            Assert.IsNull(actual);
+            Assert.IsTrue(result.HasErrors);
+            Assert.AreEqual(result.Errors.Count(), 1);
+        }
+
+        #endregion
 
         #region Long Option Only
 
@@ -1266,6 +1721,54 @@ namespace Fclp.Tests
             Assert.IsTrue(actual.Contains(321));
         }
 
+        [Test]
+        public void Ensure_Can_Parse_Multiple_Nullable_Enums_To_A_List()
+        {
+            var parser = CreateFluentParser();
+
+            var actual = new List<TestEnum?>();
+
+            parser.Setup<List<TestEnum?>>("enums")
+                  .Callback(actual.AddRange);
+
+            var result = parser.Parse(new[] { "--enums", "--", TestEnum.Value0.ToString(), TestEnum.Value1.ToString() });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
+
+            Assert.AreEqual(2, actual.Count());
+            Assert.Contains(TestEnum.Value0, actual);
+            Assert.Contains(TestEnum.Value1, actual);
+        }
+
+        [Test]
+        public void Ensure_Can_Parse_Arguments_Containing_Long_To_A_List()
+        {
+            var parser = CreateFluentParser();
+            long value1 = 21474836471;
+            long value2 = 21474836472;
+            long value3 = 214748364723;
+            long value4 = 21474836471233;
+
+            var actual = new List<long>();
+
+            parser.Setup<List<long>>("longs")
+                  .Callback(actual.AddRange);
+
+            var result = parser.Parse(new[] { "--longs", "--", value1.ToString(), value2.ToString(), value3.ToString(), value4.ToString() });
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.EmptyArgs);
+            Assert.IsFalse(result.HelpCalled);
+
+            Assert.AreEqual(4, actual.Count());
+            Assert.IsTrue(actual.Contains(value1));
+            Assert.IsTrue(actual.Contains(value2));
+            Assert.IsTrue(actual.Contains(value3));
+            Assert.IsTrue(actual.Contains(value4));
+        }
+		
         #endregion
 
         #endregion Top Level Tests

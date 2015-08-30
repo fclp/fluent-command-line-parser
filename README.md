@@ -3,7 +3,7 @@ Fluent Command Line Parser
 A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface.
 ### Download
 
-See what's new in [v1.4](https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap).
+See what's new in [v1.4.3](https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap).
 
 You can download the latest release from [CodeBetter's TeamCity server](http://teamcity.codebetter.com/project.html?projectId=project314)
 
@@ -17,48 +17,6 @@ PM> Install-Package FluentCommandLineParser
 ```
 
 ### Usage
-See [here](https://github.com/fclp/fluent-command-line-parser/wiki/So,-how-does-FCLP-compare-to-other-parsers%3F) for a side-by-side syntax comparison between other command line parsers.
-
-Commands such as `updaterecord.exe -r 10 -v="Mr. Smith" --silent` can be captured using
-```
-static void Main(string[] args)
-{
-  var p = new FluentCommandLineParser();
-
-  p.Setup<int>('r')
-   .Callback(record => RecordID = record)
-   .Required();
-
-  p.Setup<string>('v')
-   .Callback(value => NewValue = value)
-   .Required();
-
-  p.Setup<bool>('s', "silent")
-   .Callback(silent => InSilentMode = silent)
-   .SetDefault(false);
-
-  p.Parse(args);
-}
-```
-### Parser Option Methods
-
-`.Setup<int>('r')` Setup an option using a short name, 
-
-`.Setup<int>('r', "record")` or short and long name.
-
-`.Required()` Indicate the option is required and an error should be raised if it is not provided.
-
-`.Callback(val => Value = val)` Provide a delegate to call after the option has been parsed
-
-`.SetDefault(int.MaxValue)` Define a default value if the option was not specified in the args
-
-`.WithDescription("Execute operation in silent mode without feedback")` Specify a help description for the option
-
-### Parsing Using the Generic Fluent Command Line Parser
-
-Instead of assigning parsed values to variables you can use the generic Fluent Command Line Parser to automatically create a defined object type and setup individual Options for each strongly-typed property. Because the generic parser is simply a wrapper around the standard fluent parser you can still use the Fluent Command Line Parser Api to define the behaviour for each Option.
-
-The generic Fluent Command Line Parser can build a type and populate the properties with parsed values such as in the following example: 
 ```
 public class ApplicationArguments
 {
@@ -95,9 +53,45 @@ static void Main(string[] args)
 }
 ```
 
+You can also use the non-generic Fluent Command Line Parser to capture values without creating a container class.
+```
+static void Main(string[] args)
+{
+  var p = new FluentCommandLineParser();
+
+  p.Setup<int>('r')
+   .Callback(record => RecordID = record)
+   .Required();
+
+  p.Setup<string>('v')
+   .Callback(value => NewValue = value)
+   .Required();
+
+  p.Setup<bool>('s', "silent")
+   .Callback(silent => InSilentMode = silent)
+   .SetDefault(false);
+
+  p.Parse(args);
+}
+```
+### Parser Option Methods
+
+`.Setup<int>('r')` Setup an option using a short name, 
+
+`.Setup<int>('r', "record")` or short and long name.
+
+`.Required()` Indicate the option is required and an error should be raised if it is not provided.
+
+`.Callback(val => Value = val)` Provide a delegate to call after the option has been parsed
+
+`.SetDefault(int.MaxValue)` Define a default value if the option was not specified in the args
+
+`.WithDescription("Execute operation in silent mode without feedback")` Specify a help description for the option
+
+
 ### Parsing To Collections
 
-Many arguments can be collected as part of a list. Types supported are `string`, `int`, `double`, `bool` and `Enum`
+Many arguments can be collected as part of a list. Types supported are `string`, `int32`, `int64`, `double`, `bool`, `Uri`, `DateTime` and `Enum`
 
 For example arguments such as
 
@@ -199,6 +193,31 @@ p.Setup(args => args.Direction)
 p.Setup(args => args.Directions)
  .As("directions");
 ```
+From v1.5 nullable enums are now supported.
+### Help Screen
+You can setup any help arguments, such as -? or --help to print all parameters which have been setup, along with their descriptions to the console by using SetupHelp(params string[]).
+
+For example:
+
+	// sets up the parser to execute the callback when -? or --help is detected
+	parser.SetupHelp("?", "help")
+	 .Callback(text => Console.WriteLine(text));
+
+Since v1.4.1 you can also choose to display the formatted help screen text manually, so that you can display it under other circumstances.
+
+
+For example:
+
+	var parser = new FluentCommandLineParser<Args>();
+	
+	parser.SetupHelp("?", "help")
+	 .Callback(text => Console.WriteLine(text));
+	
+	// triggers the SetupHelp Callback which writes the text to the console
+	parser.HelpOption.ShowHelp(parser.Options);
+
+
+
 ### Supported Syntax
 `[-|--|/][switch_name][=|:| ][value]`
 
@@ -215,8 +234,6 @@ example.exe -xyz- // disable option x, y and z
 example.exe -xyz+ // enable option x, y and z
 ```
 ### Development
-Fclp is in the early stages of development. Please feel free to provide any feedback on feature support or the Api itself.
+Please feel free to provide any feedback on feature support or the Api itself.
 
-If you would like to contribute, you may do so to the [develop branch](https://github.com/fclp/fluent-command-line-parser/tree/develop).
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/cbcae8086524a79bd8779e37b579a244 "githalytics.com")](http://githalytics.com/fclp/fluent-command-line-parser)
+If you would like to contribute, you may do so to the [develop branch](https://github.com/fclp/fluent-command-line-parser/tree/develop). Please contact me first if doing large scale changes.
