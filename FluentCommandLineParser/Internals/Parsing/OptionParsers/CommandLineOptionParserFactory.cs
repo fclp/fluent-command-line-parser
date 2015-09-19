@@ -40,14 +40,22 @@ namespace Fclp.Internals.Parsing.OptionParsers
             this.Parsers = new Dictionary<Type, object>();
             this.AddOrReplace(new BoolCommandLineOptionParser());
             this.AddOrReplace(new Int32CommandLineOptionParser());
+            this.AddOrReplace(new Int64CommandLineOptionParser());
             this.AddOrReplace(new StringCommandLineOptionParser());
             this.AddOrReplace(new DateTimeCommandLineOptionParser());
             this.AddOrReplace(new DoubleCommandLineOptionParser());
+            this.AddOrReplace(new UriCommandLineOptionParser());
             this.AddOrReplace(new ListCommandLineOptionParser<string>(this));
             this.AddOrReplace(new ListCommandLineOptionParser<int>(this));
+            this.AddOrReplace(new ListCommandLineOptionParser<long>(this));
             this.AddOrReplace(new ListCommandLineOptionParser<double>(this));
             this.AddOrReplace(new ListCommandLineOptionParser<DateTime>(this));
             this.AddOrReplace(new ListCommandLineOptionParser<bool>(this));
+            this.AddOrReplace(new NullableCommandLineOptionParser<bool>(this));
+            this.AddOrReplace(new NullableCommandLineOptionParser<int>(this));
+            this.AddOrReplace(new NullableCommandLineOptionParser<long>(this));
+            this.AddOrReplace(new NullableCommandLineOptionParser<double>(this));
+            this.AddOrReplace(new NullableCommandLineOptionParser<DateTime>(this));
         }
 
         internal Dictionary<Type, object> Parsers { get; set; }
@@ -116,7 +124,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
                     {
                         this.AddOrReplace(new EnumCommandLineOptionParser<T>());
                     }
-                    
+
                 }
                 return true;
             }
@@ -125,21 +133,44 @@ namespace Fclp.Internals.Parsing.OptionParsers
             {
                 var genericType = TryGetListGenericType(type);
 
-                if (genericType != null && genericType.IsEnum)
+                if (genericType != null)
                 {
-                    var enumListParserType = typeof(ListCommandLineOptionParser<>).MakeGenericType(genericType);
-                    var parser = (ICommandLineOptionParser<T>)Activator.CreateInstance(enumListParserType, this);
-
-                    if (!this.Parsers.ContainsKey(type))
+                    if (genericType.IsEnum || IsNullableEnum(genericType))
                     {
-                        this.AddOrReplace(parser);
-                    }
+                        var enumListParserType = typeof(ListCommandLineOptionParser<>).MakeGenericType(genericType);
+                        var parser = (ICommandLineOptionParser<T>)Activator.CreateInstance(enumListParserType, this);
 
-                    return true;
+                        if (!this.Parsers.ContainsKey(type))
+                        {
+                            this.AddOrReplace(parser);
+                        }
+
+                        return true;
+                    }
                 }
             }
 
+            if (IsNullableEnum(type))
+            {
+                var underlyingType = Nullable.GetUnderlyingType(type);
+                var nullableEnumParserType = typeof(NullableEnumCommandLineOptionParser<>).MakeGenericType(underlyingType);
+                var parser = (ICommandLineOptionParser<T>)Activator.CreateInstance(nullableEnumParserType, this);
+
+                if (!this.Parsers.ContainsKey(type))
+                {
+                    this.AddOrReplace(parser);
+                }
+
+                return true;
+            }
+
             return false;
+        }
+
+        private static bool IsNullableEnum(Type t)
+        {
+            Type u = Nullable.GetUnderlyingType(t);
+            return (u != null) && u.IsEnum;
         }
 
         /// <summary>
