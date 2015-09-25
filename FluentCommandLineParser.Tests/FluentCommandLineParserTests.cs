@@ -758,7 +758,7 @@ namespace Fclp.Tests
         public void Ensure_Parser_Calls_The_Callback_With_Expected_DateTime_When_Using_Spaces_And_Short_option()
         {
             var expected = new DateTime(2012, 2, 29, 01, 01, 01);
-            RunTest(expected.ToString("dd MM yyyy hh:mm:ss tt", CultureInfo.InvariantCulture), expected);
+            RunTest(expected.ToString("dd MM yyyy hh:mm:ss tt", CultureInfo.CurrentCulture), expected);
         }
 
         [Test]
@@ -860,7 +860,7 @@ namespace Fclp.Tests
             parser.Setup<double?>('d', "double")
                 .Callback(val => actual = val);
 
-            var result = parser.Parse(new[] { "--double", expected.Value.ToString(CultureInfo.InvariantCulture) });
+            var result = parser.Parse(new[] { "--double", expected.Value.ToString(CultureInfo.CurrentCulture) });
 
             Assert.AreEqual(expected, actual);
             Assert.IsFalse(result.HasErrors);
