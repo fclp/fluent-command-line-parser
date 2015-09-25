@@ -747,7 +747,7 @@ namespace Fclp.Tests
                 .Setup<DateTime>('d', "datetime")
                 .Callback(val => actual = val);
 
-            var result = parser.Parse(new[] { "--datetime", expected.ToString("dd MM yyyy hh:mm:ss tt", CultureInfo.CurrentCulture) });
+            var result = parser.Parse(new[] { "--datetime", expected.ToString("yyyy MM dd hh:mm:ss tt", CultureInfo.CurrentCulture) });
 
             Assert.AreEqual(expected, actual);
             Assert.IsFalse(result.HasErrors);
@@ -758,7 +758,7 @@ namespace Fclp.Tests
         public void Ensure_Parser_Calls_The_Callback_With_Expected_DateTime_When_Using_Spaces_And_Short_option()
         {
             var expected = new DateTime(2012, 2, 29, 01, 01, 01);
-            RunTest(expected.ToString("dd MM yyyy hh:mm:ss tt", CultureInfo.CurrentCulture), expected);
+            RunTest(expected.ToString("yyyy MM dd hh:mm:ss tt", CultureInfo.CurrentCulture), expected);
         }
 
         [Test]
@@ -779,7 +779,7 @@ namespace Fclp.Tests
                 .Callback(val => actual = val);
 
             var dArgs = new List<string> { "--datetime" };
-            dArgs.AddRange(expected.Select(x => "\"" + x.ToString("dd MM yyyy hh:mm:ss tt", CultureInfo.CurrentCulture) + "\""));
+            dArgs.AddRange(expected.Select(x => "\"" + x.ToString("yyyy MM dd hh:mm:ss tt", CultureInfo.CurrentCulture) + "\""));
             var result = parser.Parse(dArgs.ToArray());
 
             Assert.AreEqual(expected, actual);
