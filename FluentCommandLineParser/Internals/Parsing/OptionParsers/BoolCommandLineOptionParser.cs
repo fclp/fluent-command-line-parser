@@ -23,16 +23,27 @@
 #endregion
 
 using System;
+using System.Linq;
 using Fclp.Internals.Extensions;
 
 namespace Fclp.Internals.Parsing.OptionParsers
 {
-	/// <summary>
+    /// <summary>
 	/// Parser used to convert to <see cref="System.Boolean"/>.
 	/// </summary>
 	/// <remarks>For <see cref="System.Boolean"/> types the value is optional. If no value is provided for the Option then <c>true</c> is returned.</remarks>
 	public class BoolCommandLineOptionParser : ICommandLineOptionParser<bool>
 	{
+	    /// <summary>
+	    /// The recognised false argument values.
+	    /// </summary>
+	    private static readonly string[] recognisedFalseArgs = new[] { "off", "0" };
+
+        /// <summary>
+        /// The recognised true argument values (use these values to set a boolean arg to true)
+        /// </summary>
+	    private static readonly string[] recognisedTrueArgs = new[] { "on", "1" };
+
 		/// <summary>
 		/// Parses the specified <see cref="System.String"/> into a <see cref="System.Boolean"/>.
 		/// </summary>
@@ -51,9 +62,6 @@ namespace Fclp.Internals.Parsing.OptionParsers
 				// if we don't have a 
 				return parsedOption.HasSuffix == false || parsedOption.Suffix != "-";
 			}
-
-		    if (parsedOption.Value == "on") return true;
-		    if (parsedOption.Value == "off") return false;
 
             bool result;
 		    TryParse(parsedOption, out result);
@@ -85,13 +93,13 @@ namespace Fclp.Internals.Parsing.OptionParsers
                 return true;
             }
 
-            if ("on".Equals(parsedOption.Value, StringComparison.OrdinalIgnoreCase))
+            if (recognisedTrueArgs.Contains(parsedOption.Value, StringComparer.OrdinalIgnoreCase))
             {
                 result = true;
                 return true;
             }
 
-            if ("off".Equals(parsedOption.Value, StringComparison.OrdinalIgnoreCase))
+            if (recognisedFalseArgs.Contains(parsedOption.Value, StringComparer.OrdinalIgnoreCase))
             {
                 result = false;
                 return true;
