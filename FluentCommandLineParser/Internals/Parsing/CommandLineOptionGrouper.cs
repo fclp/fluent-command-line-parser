@@ -91,7 +91,7 @@ namespace Fclp.Internals.Parsing
 				}
 			}
 
-	        if (_orphanArgs.Any())
+	        if (_orphanArgs.Any() && parseCommands)
 	        {
                 options.Insert(1, _orphanArgs.ToArray());
             }
