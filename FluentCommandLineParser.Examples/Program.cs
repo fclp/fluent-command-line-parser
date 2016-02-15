@@ -7,16 +7,17 @@ namespace Fclp.Examples
         // Contains all arguments for the add command
         class AddArgs
         {
-            public bool Verbose;
-            public bool IgnoreErrors;
-            public IEnumerable<string> Files;
+            public bool Verbose { get; set; }
+            public bool IgnoreErrors { get; set; }
+            public List<string> Files { get; set; }
+            public List<string> Files2 { get; set; }
         }
 
         // Contains all arguments for the remove command
         class RemoveArgs
         {
-            public bool Verbose;
-            public IEnumerable<string> Files;
+            public bool Verbose { get; set; }
+            public List<string> Files { get; set; }
         }
 
         static void Main(string[] args)

@@ -24,6 +24,7 @@
 
 using System.Collections.Generic;
 using Fclp.Internals;
+using Fclp.Internals.Parsing;
 
 namespace Fclp
 {
@@ -66,5 +67,10 @@ namespace Fclp
 		/// Contains all the setup options that were not matched during the parse operation.
 		/// </summary>
 		IEnumerable<ICommandLineOption> UnMatchedOptions { get; }
-	}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ParserEngineResult RawResult { get; set; }
+    }
 }

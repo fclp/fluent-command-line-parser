@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals.Extensions;
+using Fclp.Internals.Parsing.OptionParsers;
 
 namespace Fclp.Internals.Parsing
 {
@@ -38,15 +39,27 @@ namespace Fclp.Internals.Parsing
 		private int _currentOptionLookupIndex;
 		private int[] _foundOptionLookup;
 		private int _currentOptionIndex;
+	    private readonly List<string> _orphanArgs;
+	    private bool _parseCommands = false;
 
-		/// <summary>
+        /// <summary>
+        /// 
+        /// </summary>
+	    public CommandLineOptionGrouper()
+	    {
+            _orphanArgs = new List<string>();
+        }
+
+	    /// <summary>
 		/// Groups the specified arguments by the associated Option.
 		/// </summary>
 		public string[][] GroupArgumentsByOption(string[] args, bool parseCommands)
 		{
 			if (args.IsNullOrEmpty()) return new string[0][];
 
-			_args = args;
+	        _parseCommands = parseCommands;
+
+            _args = args;
 
 			_currentOptionIndex = -1;
 			_currentOptionLookupIndex = -1;
@@ -78,6 +91,11 @@ namespace Fclp.Internals.Parsing
 				}
 			}
 
+	        if (_orphanArgs.Any())
+	        {
+                options.Insert(1, _orphanArgs.ToArray());
+            }
+
 			return options.ToArray();
 		}
 
@@ -105,7 +123,15 @@ namespace Fclp.Internals.Parsing
 				string currentArg = _args[index];
 
 				if (IsEndOfOptionsKey(currentArg)) break;
-				if (IsAKey(currentArg) == false) continue;
+                if(_parseCommands && index == 0 && IsACmd(currentArg)) continue;
+			    if (IsAKey(currentArg) == false)
+			    {
+			        if (indexes.Count == 0)
+			        {
+			            _orphanArgs.Add(currentArg);
+			        }
+                    continue;
+			    };
 
 				indexes.Add(index);
 			}

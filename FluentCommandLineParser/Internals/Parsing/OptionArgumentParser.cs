@@ -41,7 +41,7 @@ namespace Fclp.Internals.Parsing
 		/// <param name="option">The option.</param>
 		public void ParseArguments(IEnumerable<string> args, ParsedOption option)
 		{
-			if (SpecialCharacters.ValueAssignments.Any(option.Key.Contains))
+			if (option.Key != null && SpecialCharacters.ValueAssignments.Any(option.Key.Contains))
 			{
 				TryGetArgumentFromKey(option);
 			}

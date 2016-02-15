@@ -60,6 +60,11 @@ namespace Fclp.Internals.Parsing
 				ParseGroupIntoOption(rawKey, optionGroup.Skip(1));
 			}
 
+            if (command != null)
+            {
+                _additionalArgumentsFound.RemoveAt(0);
+            }
+
 			return new ParserEngineResult(_parsedOptions, _additionalArgumentsFound, command);
 		}
 

@@ -259,6 +259,21 @@ namespace Fclp.Internals
             return this;
 	    }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+	    public ICommandLineOptionFluent<T> UseForOrphanArguments()
+	    {
+	        this.UseForOrphanArgs = true;
+	        return this;
+	    }
+
+        /// <summary>
+        /// 
+        /// </summary>
+	    public bool UseForOrphanArgs { get; set; }
+
 	    #endregion Methods
 	}
 }

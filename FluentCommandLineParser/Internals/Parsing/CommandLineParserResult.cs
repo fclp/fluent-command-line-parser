@@ -84,7 +84,12 @@ namespace Fclp.Internals.Parsing
 			get { return this.UnMatchedOptions; }
 		}
 
-		/// <summary>
+        /// <summary>
+        /// 
+        /// </summary>
+	    public ParserEngineResult RawResult { get; set; }
+
+	    /// <summary>
 		/// Contains all the setup options that were not matched during the parse operation.
 		/// </summary>
 		public IList<ICommandLineOption> UnMatchedOptions { get; set; }

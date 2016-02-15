@@ -260,7 +260,7 @@ namespace Fclp
 			var parserEngineResult = this.ParserEngine.Parse(args, HasCommands);
 			var parsedOptions = parserEngineResult.ParsedOptions.ToList();
 
-			var result = new CommandLineParserResult { EmptyArgs = parsedOptions.IsNullOrEmpty() };
+			var result = new CommandLineParserResult { EmptyArgs = parsedOptions.IsNullOrEmpty(), RawResult = parserEngineResult };
 
 			if (this.HelpOption.ShouldShowHelp(parsedOptions, StringComparison))
 			{
@@ -307,7 +307,7 @@ namespace Fclp
 	            {
 	                try
 	                {
-	                    option.Bind(match);
+                        option.Bind(match);
 	                }
 	                catch (OptionSyntaxException)
 	                {
@@ -318,9 +318,27 @@ namespace Fclp
 
 	                parsedOptions.Remove(match);
 	            }
+                else if (setupOption.UseForOrphanArgs && result.RawResult.AdditionalValues.Any())
+                {
+                    try
+                    {
+                        var parser = new OptionArgumentParser();
+                        var blankOption = new ParsedOption();
+                        parser.ParseArguments(result.RawResult.AdditionalValues, blankOption);
+                        setupOption.Bind(blankOption);
+                    }
+                    catch (OptionSyntaxException)
+                    {
+                        result.Errors.Add(new OptionSyntaxParseError(option, match));
+                        if (option.HasDefault)
+                            option.BindDefault();
+                    }
+
+                    parsedOptions.Remove(match);
+                }
 	            else
 	            {
-	                if (option.IsRequired) // Step 3
+	                if(option.IsRequired) // Step 3
 	                    result.Errors.Add(new ExpectedOptionNotFoundParseError(option));
 	                else if (option.HasDefault)
 	                    option.BindDefault(); // Step 4

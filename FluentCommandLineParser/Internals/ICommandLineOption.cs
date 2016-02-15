@@ -97,5 +97,11 @@ namespace Fclp.Internals
         /// Gets or sets the command this options belongs too.
         /// </summary>
         ICommandLineCommand Command { get; set; }
-	}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        bool UseForOrphanArgs { get; }
+
+    }
 }

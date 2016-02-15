@@ -77,5 +77,11 @@ namespace Fclp
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="command"/> is <c>null</c>.</exception>
         /// <exception cref="CommandNotFoundException">Thrown if the specified <paramref name="command"/> does not exist in the parser.</exception>
         ICommandLineOptionFluent<T> AssignToCommand(ICommandLineCommand command);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+	    ICommandLineOptionFluent<T> UseForOrphanArguments();
 	}
 }
