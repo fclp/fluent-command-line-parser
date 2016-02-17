@@ -71,17 +71,36 @@ namespace Fclp.Internals.Validators
 	    /// <param name="stringComparison"></param>
 	    public void Validate(ICommandLineOption commandLineOption, StringComparison stringComparison)
 		{
-            foreach (var option in _container.Options.Where(x => CommandsAreEqual(x.Command, commandLineOption.Command, stringComparison)))
+            foreach (var option in _container.Options)
 			{
-				if (string.IsNullOrEmpty(commandLineOption.ShortName) == false)
-				{
-                    ValuesAreEqual(commandLineOption.ShortName, option.ShortName, stringComparison);
-				}
+			    if (option.HasCommand)
+			    {
+			        if (CommandsAreEqual(option.Command, commandLineOption.Command, stringComparison))
+			        {
+                        if (string.IsNullOrEmpty(commandLineOption.ShortName) == false)
+                        {
+                            ValuesAreEqual(commandLineOption.ShortName, option.ShortName, stringComparison);
+                        }
 
-				if (string.IsNullOrEmpty(commandLineOption.LongName) == false)
-				{
-                    ValuesAreEqual(commandLineOption.LongName, option.LongName, stringComparison);
-				}				
+                        if (string.IsNullOrEmpty(commandLineOption.LongName) == false)
+                        {
+                            ValuesAreEqual(commandLineOption.LongName, option.LongName, stringComparison);
+                        }
+                    }
+			    }
+			    else
+			    {
+                    if (string.IsNullOrEmpty(commandLineOption.ShortName) == false)
+                    {
+                        ValuesAreEqual(commandLineOption.ShortName, option.ShortName, stringComparison);
+                    }
+
+                    if (string.IsNullOrEmpty(commandLineOption.LongName) == false)
+                    {
+                        ValuesAreEqual(commandLineOption.LongName, option.LongName, stringComparison);
+                    }
+                }
+			
 			}
 		}
 

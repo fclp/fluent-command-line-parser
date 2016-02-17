@@ -154,6 +154,7 @@ namespace Fclp.Internals.Extensions
 		/// <returns></returns>
 		public static T ElementAtOrDefault<T>(this T[] items, int index, T defaultToUse)
 		{
+		    if (items == null) return defaultToUse;
 			return index >= 0 && index < items.Length
 				? items[index]
 				: defaultToUse;

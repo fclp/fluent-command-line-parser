@@ -103,5 +103,9 @@ namespace Fclp.Internals
         /// </summary>
         bool UseForOrphanArgs { get; }
 
-    }
+        /// <summary>
+        /// 
+        /// </summary>
+	    bool HasCommand { get; }
+	}
 }

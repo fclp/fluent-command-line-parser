@@ -28,7 +28,8 @@ namespace Fclp.Tests.Commands
 
             addCmd.Setup(addArgs => addArgs.Files)
                   .As('f', "files")
-                  .WithDescription("Files to be tracked");
+                  .WithDescription("Files to be tracked")
+                  .UseForOrphanArguments();
 
             // add the remove command
             var remCmd = fclp.SetupCommand<RemoveArgs>("rem")
@@ -41,7 +42,8 @@ namespace Fclp.Tests.Commands
 
             remCmd.Setup(removeArgs => removeArgs.Files)
                      .As('f', "files")
-                     .WithDescription("Files to be untracked");
+                     .WithDescription("Files to be untracked")
+                     .UseForOrphanArguments();
 
             return fclp;
         }
@@ -63,7 +65,49 @@ namespace Fclp.Tests.Commands
             Assert.IsNotNull(addArgs);
             Assert.IsTrue(addArgs.Verbose);
             Assert.IsTrue(addArgs.IgnoreErrors);
-            Assert.That(new [] { "a.txt", "b.txt", "c.txt"}, Is.EquivalentTo(addArgs.Files));
+            Assert.That(addArgs.Files, Is.EquivalentTo(new[] { "a.txt", "b.txt", "c.txt" }));
+        }
+
+        [Test]
+        public void Add_Command_With_Orphan()
+        {
+            const string args = "add a.txt b.txt c.txt --verbose --ignore-errors";
+
+            AddArgs addArgs = null;
+            RemoveArgs removeArgs = null;
+
+            var fclp = SetupParser(x => addArgs = x, x => removeArgs = x);
+
+            var result = fclp.Parse(args.AsCmdArgs());
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsNull(removeArgs);
+            Assert.IsNotNull(addArgs);
+            Assert.IsTrue(addArgs.Verbose);
+            Assert.IsTrue(addArgs.IgnoreErrors);
+            Assert.IsNotNull(addArgs.Files);
+            Assert.That(addArgs.Files, Is.EquivalentTo(new[] { "a.txt", "b.txt", "c.txt" }));
+        }
+
+        [Test]
+        public void Add_Command_With_Only_Orphan()
+        {
+            const string args = "add a.txt b.txt c.txt";
+
+            AddArgs addArgs = null;
+            RemoveArgs removeArgs = null;
+
+            var fclp = SetupParser(x => addArgs = x, x => removeArgs = x);
+
+            var result = fclp.Parse(args.AsCmdArgs());
+
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsNull(removeArgs);
+            Assert.IsNotNull(addArgs);
+            Assert.IsFalse(addArgs.Verbose);
+            Assert.IsFalse(addArgs.IgnoreErrors);
+            Assert.IsNotNull(addArgs.Files);
+            Assert.That(addArgs.Files, Is.EquivalentTo(new[] { "a.txt", "b.txt", "c.txt" }));
         }
 
         [Test]
@@ -82,7 +126,8 @@ namespace Fclp.Tests.Commands
             Assert.IsNull(addArgs);
             Assert.IsNotNull(removeArgs);
             Assert.IsTrue(removeArgs.Verbose);
-            Assert.That(new[] { "a.txt", "b.txt", "c.txt" }, Is.EquivalentTo(removeArgs.Files));
+            Assert.IsNotNull(removeArgs.Files);
+            Assert.That(removeArgs.Files, Is.EquivalentTo(new[] { "a.txt", "b.txt", "c.txt" }));
         }
     }
 }

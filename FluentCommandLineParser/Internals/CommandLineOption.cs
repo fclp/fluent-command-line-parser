@@ -274,6 +274,14 @@ namespace Fclp.Internals
         /// </summary>
 	    public bool UseForOrphanArgs { get; set; }
 
+	    /// <summary>
+	    /// Gets whether this option is associated with a command.
+	    /// </summary>
+	    public bool HasCommand
+	    {
+	        get { return Command != null; }
+	    }
+
 	    #endregion Methods
 	}
 }

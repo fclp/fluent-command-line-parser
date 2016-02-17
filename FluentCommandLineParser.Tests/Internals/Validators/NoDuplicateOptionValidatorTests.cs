@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using Fclp.Internals;
 using Fclp.Internals.Validators;
 using Machine.Specifications;
@@ -36,12 +37,16 @@ namespace Fclp.Tests.Internals.Validators
 		[Subject(typeof(NoDuplicateOptionValidator))]
 		abstract class NoDuplicateOptionValidatorTestContext : TestContextBase<NoDuplicateOptionValidator>
 		{
-			protected static Mock<IFluentCommandLineParser> parser;
+			protected static Mock<ICommandLineOptionContainer> container;
+			protected static List<ICommandLineOption> options;
 
 			Establish context = () =>
 			{
-				FreezeMock(out parser);
-				CreateSut();
+				FreezeMock(out container);
+                options = new List<ICommandLineOption>();
+                container.SetupGet(it => it.Options).Returns(options);
+
+                CreateSut();
 			};
 		}
 
@@ -64,15 +69,16 @@ namespace Fclp.Tests.Internals.Validators
 					option.SetupGet(it => it.LongName).Returns(Create<string>());
 
                     option.SetupGet(it => it.Command).Returns(() => null);
+                    option.SetupGet(it => it.HasCommand).Returns(false);
 				};
 
 				Because of = () =>
 					error = Catch.Exception(() =>
                         sut.Validate(option.Object, ComparisonType));
 
-				protected static void SetupExistingParserOptions(params ICommandLineOption[] options)
+				protected static void SetupExistingParserOptions(params ICommandLineOption[] options1)
 				{
-					parser.SetupGet(it => it.Options).Returns(CreateManyAsList(options));
+					options.AddRange(CreateManyAsList(options1));
 				}
 
 				protected static ICommandLineOption CreateOptionWith(string shortName = null, string longName = null)
@@ -91,7 +97,7 @@ namespace Fclp.Tests.Internals.Validators
 			class when_there_have_been_no_options_setup_thus_far : ValidateTestContext
 			{
 				Establish context = () =>
-					parser.SetupGet(it => it.Options).Returns(CreateEmptyList<ICommandLineOption>());
+					container.SetupGet(it => it.Options).Returns(CreateEmptyList<ICommandLineOption>());
 
 				It should_not_throw_an_error = () => error.ShouldBeNull();
 			}
@@ -199,7 +205,8 @@ namespace Fclp.Tests.Internals.Validators
 						SetupExistingParserOptions(existingOption);
 					};
 
-					It should_throw_an_error_because_case_is_ignored = () => error.ShouldNotBeNull();
+					It should_throw_an_error_because_case_is_ignored = () => 
+                        error.ShouldNotBeNull();
 				}
 
 				class when_an_existing_option_contains_the_same_short_name : IgnoreCaseTestContext
