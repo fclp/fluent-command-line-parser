@@ -954,7 +954,7 @@ namespace Fclp.Tests
         [Test]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Bool_When_No_Value_Is_Provided()
         {
-            bool? expected = null;
+            bool? expected = true;
             bool? actual = null;
 
             var parser = CreateFluentParser();
@@ -962,7 +962,25 @@ namespace Fclp.Tests
             parser.Setup<bool?>('b', "bool")
                 .Callback(val => actual = val);
 
-            var result = parser.Parse(new[] { "--bool" });
+            var result = parser.Parse(new[] { "-b" });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Bool_When_No_Value_Is_Provided_But_Negative_Indicator_Is_Provided()
+        {
+            bool? expected = false;
+            bool? actual = null;
+
+            var parser = CreateFluentParser();
+
+            parser.Setup<bool?>('b', "bool")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "-b-" });
 
             Assert.AreEqual(expected, actual);
             Assert.IsFalse(result.HasErrors);

@@ -1,6 +1,6 @@
 #region License
-// NullableCommandLineOptionParser.cs
-// Copyright (c) 2015, Simon Williams
+// NullableBoolCommandLineOptionParser.cs
+// Copyright (c) 2016, Simon Williams
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are permitted provide
@@ -22,14 +22,12 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System;
-
 namespace Fclp.Internals.Parsing.OptionParsers
 {
     /// <summary>
     /// Parser used to convert to nullable types
     /// </summary>
-    public class NullableCommandLineOptionParser<TNullableType> : ICommandLineOptionParser<TNullableType?> where TNullableType : struct
+    public class NullableBoolCommandLineOptionParser : ICommandLineOptionParser<bool?>
     {
         private readonly ICommandLineOptionParserFactory _parserFactory;
 
@@ -37,7 +35,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
         /// Initialises a new instance of the <see cref="NullableCommandLineOptionParser{TType}"/>.
         /// </summary>
         /// <param name="parserFactory"></param>
-        public NullableCommandLineOptionParser(ICommandLineOptionParserFactory parserFactory)
+        public NullableBoolCommandLineOptionParser(ICommandLineOptionParserFactory parserFactory)
         {
             _parserFactory = parserFactory;
         }
@@ -45,10 +43,9 @@ namespace Fclp.Internals.Parsing.OptionParsers
         /// <summary>
         /// Parses the specified <see cref="ParsedOption"/> into a nullable type.
         /// </summary>
-        public TNullableType? Parse(ParsedOption parsedOption)
+        public bool? Parse(ParsedOption parsedOption)
         {
-            if (parsedOption.HasValue == false) return null;
-            var parser = _parserFactory.CreateParser<TNullableType>();
+            var parser = _parserFactory.CreateParser<bool>();
             if (parser.CanParse(parsedOption) == false) return null;
             return parser.Parse(parsedOption);
         }
