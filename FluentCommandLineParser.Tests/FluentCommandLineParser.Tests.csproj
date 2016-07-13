@@ -42,6 +42,9 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentCommandLineParser">
+      <HintPath>..\Core\FluentCommandLineParser\bin\Debug\net451\FluentCommandLineParser.dll</HintPath>
+    </Reference>
     <Reference Include="Machine.Specifications, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Machine.Specifications.0.9.1\lib\net40\Machine.Specifications.dll</HintPath>
@@ -167,12 +170,6 @@
     <Compile Include="Internals\CommandLineParserEngine\when_specified_args_contain_no_keys.cs" />
     <Compile Include="Mspec\Subjects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FluentCommandLineParser\FluentCommandLineParser.csproj">
-      <Project>{74CDFA61-81D8-40F2-B536-949BABA15D3E}</Project>
-      <Name>FluentCommandLineParser</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Internals\Parsing\OptionParsers\" />
