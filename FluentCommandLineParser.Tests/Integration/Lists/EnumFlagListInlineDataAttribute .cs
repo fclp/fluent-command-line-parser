@@ -22,9 +22,9 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Tests.FluentCommandLineParser;
+using Fclp.Tests.FluentCommandLineParser.TestContext;
 
-namespace Fclp.Tests.Integration
+namespace Fclp.Tests.Integration.Lists
 {
     public class EnumFlagListInlineDataAttribute : ArgumentInlineDataAttribute
     {

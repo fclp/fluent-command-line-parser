@@ -25,12 +25,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals.Parsing;
-using Fclp.Tests.FluentCommandLineParser.TestContext;
+using Fclp.Tests.FluentCommandLineParser.TestContext.TestContext;
 using Machine.Specifications;
 using Moq;
 using It = Machine.Specifications.It;
 
-namespace Fclp.Tests.FluentCommandLineParser
+namespace Fclp.Tests.FluentCommandLineParser.when_executing_parse_operation
 {
 	namespace when_executing_parse_operation
 	{

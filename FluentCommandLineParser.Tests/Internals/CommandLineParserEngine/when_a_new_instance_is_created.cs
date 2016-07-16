@@ -22,9 +22,10 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using Fclp.Tests.Internals.CommandLineParserEngine.TestContext.CommandLineParserEngine;
 using Machine.Specifications;
 
-namespace Fclp.Tests
+namespace Fclp.Tests.Internals.CommandLineParserEngine
 {
 	namespace CommandLineParserEngine
 	{

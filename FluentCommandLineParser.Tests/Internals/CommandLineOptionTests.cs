@@ -23,14 +23,13 @@
 #endregion
 
 using System;
-using Fclp;
 using Fclp.Internals;
 using Fclp.Internals.Parsing;
 using Fclp.Internals.Parsing.OptionParsers;
 using Moq;
 using NUnit.Framework;
 
-namespace FluentCommandLineParser.Tests.Internals
+namespace Fclp.Tests.Internals
 {
 	/// <summary>
 	/// Contains unit tests for the <see cref="CommandLineOption{T}"/> class.
@@ -276,8 +275,7 @@ namespace FluentCommandLineParser.Tests.Internals
 		public void Ensure_That_If_Value_Is_Null_Cannot_Be_Parsed_And_No_Default_Set_Then_optionSyntaxException_Is_Thrown()
 		{
 			var option = new ParsedOption();
-			const string value = null;
-			var mockParser = new Mock<ICommandLineOptionParser<string>>();
+		    var mockParser = new Mock<ICommandLineOptionParser<string>>();
 			mockParser.Setup(x => x.CanParse(option)).Returns(false);
 
 			var target = new CommandLineOption<string>("s", "long name", mockParser.Object);
@@ -291,8 +289,7 @@ namespace FluentCommandLineParser.Tests.Internals
 		public void Ensure_That_If_Value_Is_Empty_Cannot_Be_Parsed_And_No_Default_Set_Then_optionSyntaxException_Is_Thrown()
 		{
 			var option = new ParsedOption();
-			const string value = "";
-			var mockParser = new Mock<ICommandLineOptionParser<string>>();
+		    var mockParser = new Mock<ICommandLineOptionParser<string>>();
 			mockParser.Setup(x => x.CanParse(option)).Returns(false);
 
 			var target = new CommandLineOption<string>("s", "long name", mockParser.Object);
@@ -306,8 +303,7 @@ namespace FluentCommandLineParser.Tests.Internals
 		public void Ensure_That_If_Value_Is_Whitespace_Cannot_Be_Parsed_And_No_Default_Set_Then_optionSyntaxException_Is_Thrown()
 		{
 			var option = new ParsedOption();
-			const string value = " ";
-			var mockParser = new Mock<ICommandLineOptionParser<string>>();
+		    var mockParser = new Mock<ICommandLineOptionParser<string>>();
 			mockParser.Setup(x => x.CanParse(option)).Returns(false);
 
 			var target = new CommandLineOption<string>("s", "long name", mockParser.Object);

@@ -23,6 +23,7 @@
 #endregion
 
 using Fclp.Tests.FluentCommandLineParser;
+using Fclp.Tests.FluentCommandLineParser.TestContext;
 using Xunit.Extensions;
 
 namespace Fclp.Tests.Integration
@@ -36,7 +37,7 @@ namespace Fclp.Tests.Integration
             int? expectedInt32 = null,
             long? expectedInt64 = null,
             double? expectedDouble = null,
-            TestEnum? expectedEnum = null)
+            TestEnum expectedEnum = default(TestEnum))
             : base(arguments, expectedBoolean, expectedString, expectedInt32, expectedInt64, expectedDouble, expectedEnum)
         {
             

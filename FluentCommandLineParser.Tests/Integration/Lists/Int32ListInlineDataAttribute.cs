@@ -21,7 +21,7 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
-namespace Fclp.Tests.Integration
+namespace Fclp.Tests.Integration.Lists
 {
 	public class Int32ListInlineDataAttribute : ArgumentInlineDataAttribute
 	{

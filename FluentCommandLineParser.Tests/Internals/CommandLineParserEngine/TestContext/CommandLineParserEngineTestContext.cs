@@ -25,9 +25,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals.Parsing;
+using Fclp.Tests.TestContext;
 using Machine.Specifications;
 
-namespace Fclp.Tests
+namespace Fclp.Tests.Internals.CommandLineParserEngine.TestContext
 {
 	namespace CommandLineParserEngine
 	{

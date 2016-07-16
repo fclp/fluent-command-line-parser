@@ -24,12 +24,12 @@
 
 using System.Globalization;
 using Fclp.Internals;
-using Fclp.Tests.FluentCommandLineParser.TestContext;
+using Fclp.Tests.FluentCommandLineParser.TestContext.TestContext;
 using Machine.Specifications;
 using Moq;
 using It = Machine.Specifications.It;
 
-namespace Fclp.Tests.FluentCommandLineParser.when_setting_up_a_new_option
+namespace Fclp.Tests.FluentCommandLineParser.when_setting_up_a_new_option.and_the_option_factory
 {
 	namespace and_the_option_factory
 	{
@@ -37,9 +37,7 @@ namespace Fclp.Tests.FluentCommandLineParser.when_setting_up_a_new_option
 		{
 			Establish context = () =>
 			{
-				ICommandLineOptionResult<TestType> nullOption = null;
-
-				var mockOptionFactoryThatReturnsNull = new Mock<ICommandLineOptionFactory>();
+			    var mockOptionFactoryThatReturnsNull = new Mock<ICommandLineOptionFactory>();
 				mockOptionFactoryThatReturnsNull
 					.Setup(x => x.CreateOption<TestType>(valid_short_name.ToString(CultureInfo.InvariantCulture), valid_long_name))
 					.Throws<TestException>();
@@ -49,7 +47,7 @@ namespace Fclp.Tests.FluentCommandLineParser.when_setting_up_a_new_option
 
 			Because of = () => SetupOptionWith(valid_short_name, valid_long_name);
 
-			It should_throw_an_error = () => error.ShouldBeOfType(typeof(TestException));
+            It should_throw_an_error = () => error.ShouldBeOfExactType(typeof(TestException));
 			It should_not_have_setup_an_option = () => sut.Options.ShouldBeEmpty();
 		}
 	}

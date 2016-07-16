@@ -23,13 +23,12 @@
 #endregion
 
 using System.Collections.Generic;
-using Fclp.Tests.FluentCommandLineParser;
+using Fclp.Tests.FluentCommandLineParser.TestContext;
 using Fclp.Tests.Internals;
 using Machine.Specifications;
-using Xunit;
 using Xunit.Extensions;
 
-namespace Fclp.Tests.Integration
+namespace Fclp.Tests.Integration.Lists
 {
 	public class ListTests : TestContextBase<Fclp.FluentCommandLineParser>
 	{

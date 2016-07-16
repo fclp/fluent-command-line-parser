@@ -24,9 +24,10 @@
 
 using System.Linq;
 using Fclp.Internals;
+using Fclp.Tests.Mspec;
 using Machine.Specifications;
 
-namespace Fclp.Tests.FluentCommandLineParser
+namespace Fclp.Tests.FluentCommandLineParser.TestContext
 {
 	namespace TestContext
 	{

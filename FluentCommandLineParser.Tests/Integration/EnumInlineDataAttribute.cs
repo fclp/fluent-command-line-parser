@@ -23,6 +23,7 @@
 #endregion
 
 using Fclp.Tests.FluentCommandLineParser;
+using Fclp.Tests.FluentCommandLineParser.TestContext;
 
 namespace Fclp.Tests.Integration
 {

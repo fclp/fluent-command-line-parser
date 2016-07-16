@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Fclp.Tests</RootNamespace>
     <AssemblyName>FluentCommandLineParser.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -42,16 +44,17 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Machine.Specifications, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Machine.Specifications.0.9.1\lib\net40\Machine.Specifications.dll</HintPath>
+    <Reference Include="Machine.Specifications, Version=0.9.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Machine.Specifications.0.9.3\lib\net45\Machine.Specifications.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Machine.Specifications.Clr4, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Machine.Specifications.0.9.1\lib\net40\Machine.Specifications.Clr4.dll</HintPath>
+    <Reference Include="Machine.Specifications.Clr4, Version=0.9.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Machine.Specifications.0.9.3\lib\net45\Machine.Specifications.Clr4.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Machine.Specifications.Should">
-      <HintPath>..\packages\Machine.Specifications.Should.0.7.2\lib\net40\Machine.Specifications.Should.dll</HintPath>
+    <Reference Include="Machine.Specifications.Should, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Machine.Specifications.Should.0.9.0\lib\net45\Machine.Specifications.Should.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">

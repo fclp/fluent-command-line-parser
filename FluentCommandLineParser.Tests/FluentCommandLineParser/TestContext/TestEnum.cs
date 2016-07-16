@@ -22,7 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-namespace Fclp.Tests.FluentCommandLineParser
+namespace Fclp.Tests.FluentCommandLineParser.TestContext
 {
     public enum TestEnum
     {
