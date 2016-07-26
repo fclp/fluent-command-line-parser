@@ -150,6 +150,49 @@ namespace Fclp.Tests
             });
         }
 
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Null_String_When_None_Options()
+        {
+            const string expected = null;
+            const string key = "str";
+            string actual = "test";
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<string>('s', key)
+                .Callback(val => actual = val);
+
+            var args = new string[] { "--" + key };
+            var result = parser.Parse(args);
+
+            string msg = "Executed with args: " + FormatArgs(args);
+            Assert.AreEqual(expected, actual, msg);
+            Assert.IsFalse(result.HasErrors, msg);
+            Assert.IsFalse(result.Errors.Any(), msg);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Special_Callback()
+        {
+            var parser = CreateFluentParser();
+
+            parser.Setup<string>('a').Callback(val => { });
+
+            parser.Setup<string>('b').Callback(val => { });
+
+            parser.Setup<string>('c').Callback(val => Assert.Fail());
+
+
+            var args = new string[] { "-a", "-b" };
+            var result = parser.Parse(args);
+
+            string msg = "Executed with args: " + FormatArgs(args);
+            Assert.IsFalse(result.HasErrors, msg);
+            Assert.IsFalse(result.Errors.Any(), msg);
+        }
+
+
         #endregion String Option
 
         #region Int32 Option
@@ -1228,7 +1271,7 @@ namespace Fclp.Tests
             var result = parser.Parse(new[] { "-s" });
 
             Assert.AreSame(expected, actual);
-            Assert.IsTrue(result.HasErrors);
+            //Assert.IsTrue(result.HasErrors);
         }
 
         [Test]
