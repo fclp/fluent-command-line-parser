@@ -39,7 +39,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		/// <returns></returns>
 		public string Parse(ParsedOption parsedOption)
 		{
-			return parsedOption.Value.RemoveAnyWrappingDoubleQuotes();
+			return parsedOption.Value == null ? null : parsedOption.Value.RemoveAnyWrappingDoubleQuotes();
 		}
 
 		/// <summary>
@@ -49,10 +49,10 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		/// <returns><c>true</c> if the specified <see cref="System.String"/> can be parsed by this <see cref="ICommandLineOptionParser{T}"/>; otherwise <c>false</c>.</returns>
 		public bool CanParse(ParsedOption parsedOption)
 		{
-			if (parsedOption.Value.IsNullOrWhiteSpace()) return false;
-			if (parsedOption.HasValue == false) return false;
+            if (parsedOption.Value.IsNullOrWhiteSpace()) return true;
+            if (parsedOption.HasValue == false) return true;
 
-			string value = parsedOption.Value.Trim();
+            string value = (parsedOption.Value??"").Trim();
 
 			var items = value.SplitOnWhitespace();
 

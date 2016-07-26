@@ -159,10 +159,16 @@ namespace Fclp.Internals
 		{
 			if (this.Parser.CanParse(value) == false) throw new OptionSyntaxException();
 
-			this.Bind(this.Parser.Parse(value));
+            var input = this.Parser.Parse(value);
+            if (typeof(T).IsClass && object.Equals(input, default(T)) && this.HasDefault)
+                BindDefault();
+            else
+            {
+                this.Bind(input);
 
-			this.BindAnyAdditionalArgs(value);
-		}
+                this.BindAnyAdditionalArgs(value);
+            }
+        }
 
 		/// <summary>
 		/// Binds the default value for this <see cref="ICommandLineOption"/> if available.
