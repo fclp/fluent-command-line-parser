@@ -31,6 +31,7 @@ using Fclp.Internals.Errors;
 using Fclp.Tests.FluentCommandLineParser;
 using Moq;
 using NUnit.Framework;
+using System.Threading;
 
 namespace Fclp.Tests
 {
@@ -1903,6 +1904,39 @@ namespace Fclp.Tests
         }
 
         #endregion
+
+        [Test]
+        public void Ensure_Callback_Invoked_As_Setup_Sequence()
+        {
+            var parser = CreateFluentParser();
+
+            long a = 0, b = 0, c = 0, d = 0;
+            parser.Setup<int>('a').Callback(n => { Thread.Sleep(10); a = DateTime.Now.Ticks; });
+            parser.Setup<int>('b').Callback(n => { Thread.Sleep(10); b = DateTime.Now.Ticks; });
+            parser.Setup<int>('c').Callback(n => { Thread.Sleep(10); c = DateTime.Now.Ticks; });
+            parser.Setup<int>('d').Callback(n => { Thread.Sleep(10); d = DateTime.Now.Ticks; });
+
+            parser.Parse(new[] { "/a=1", "/b=2", "-c=3", "--d=4" });
+
+            Assert.IsTrue(a < b && b < c && c < d);
+        }
+
+        [Test]
+        public void Ensure_Callback_Invoked_As_Options_Input_Sequence()
+        {
+            var parser = new Fclp.FluentCommandLineParser() { ParseSequence = ParseSequence.SameAsOptions };
+
+            long a = 0, b = 0, c = 0, d = 0;
+            parser.Setup<int>('a').Callback(n => { Thread.Sleep(10); a = DateTime.Now.Ticks; });
+            parser.Setup<int>('b').Callback(n => { Thread.Sleep(10); b = DateTime.Now.Ticks; });
+            parser.Setup<int>('c').Callback(n => { Thread.Sleep(10); c = DateTime.Now.Ticks; });
+            parser.Setup<int>('d').Callback(n => { Thread.Sleep(10); d = DateTime.Now.Ticks; });
+
+            parser.Parse(new[] { "/b=1", "/c=2", "-a=3", "--d=4" });
+
+            Assert.IsTrue(b < c && c < a && a < d);
+        }
+
     }
 }
 

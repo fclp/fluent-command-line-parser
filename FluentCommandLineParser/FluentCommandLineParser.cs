@@ -149,6 +149,11 @@ namespace Fclp
             get { return _commands ?? (_commands = new List<ICommandLineCommand>()); }
 	    }
 
+        /// <summary>
+        /// options/callback Execute sequence, default as the setup sequence
+        /// </summary>
+        public ParseSequence ParseSequence { get; set; }
+
 		/// <summary>
 		/// Gets or sets the default option formatter.
 		/// </summary>
@@ -211,15 +216,6 @@ namespace Fclp
 	    {
             get { return Commands.Any(); }
 	    }
-
-     //   /// <summary>
-     //   /// Gets or sets whether short options are explicitly treated seperately to long options, or whether they will be regarded as the same.
-     //   /// </summary>
-	    //public bool EnableShortOptions
-	    //{
-     //       get { return _enableShortOptions; }
-     //       set { _enableShortOptions = value; }
-	    //}
 
         /// <summary>
         /// Gets the special characters used by the parser.
@@ -359,78 +355,89 @@ namespace Fclp
 
 	    private ICommandLineParserResult ParseOptions(IEnumerable<ICommandLineOption> options, List<ParsedOption> parsedOptions, CommandLineParserResult result)
 	    {
+            /*
+            * Step 1. match the setup Option to one provided in the args by either long or short names
+            * Step 2. if the key has been matched then bind the value
+            * Step 3. if the key is not matched and it is required, then add a new error
+            * Step 4. the key is not matched and optional, bind the default value if available
+            */
+	        var matchedOptions = new HashSet<ParsedOption>();
+	        var optionIndex = 0;
 	        foreach (var setupOption in options)
 	        {
-	            /*
-				 * Step 1. match the setup Option to one provided in the args by either long or short names
-				 * Step 2. if the key has been matched then bind the value
-				 * Step 3. if the key is not matched and it is required, then add a new error
-				 * Step 4. the key is not matched and optional, bind the default value if available
-				 */
-
 	            // Step 1
 	            ICommandLineOption option = setupOption;
-	            var match = parsedOptions.FirstOrDefault(pair =>
-	                pair.Key.Equals(option.ShortName, this.StringComparison) // tries to match the short name
-	                || pair.Key.Equals(option.LongName, this.StringComparison)); // or else the long name
+	            var matchIndex = parsedOptions.FindIndex(pair =>
+	                    !matchedOptions.Contains(pair) &&
+	                    (pair.Key.Equals(option.ShortName, this.StringComparison) // tries to match the short name
+	                     || pair.Key.Equals(option.LongName, this.StringComparison))// or else the long name
+	            );
 
-	            if (match != null) // Step 2
+	            if (matchIndex > -1) // Step 2
+	            {
+	                var match = parsedOptions[matchIndex];
+
+	                match.Order = matchIndex;
+	                match.SetupCommand = option;
+	                match.SetupOrder = optionIndex++;
+	                matchedOptions.Add(match);
+
+	                //parsedOptions.Remove(match);//will affect the matchIndex
+	            }
+	            else if (setupOption.UseForOrphanArgs && result.RawResult.AdditionalValues.Any())
 	            {
 	                try
 	                {
-                        option.Bind(match);
+	                    var parser = new OptionArgumentParser(SpecialCharacters);
+	                    var blankOption = new ParsedOption();
+	                    parser.ParseArguments(result.RawResult.AdditionalValues, blankOption);
+	                    setupOption.Bind(blankOption);
 	                }
 	                catch (OptionSyntaxException)
 	                {
-	                    result.Errors.Add(new OptionSyntaxParseError(option, match));
+	                    result.Errors.Add(new OptionSyntaxParseError(option, null));
 	                    if (option.HasDefault)
 	                        option.BindDefault();
 	                }
-
-	                parsedOptions.Remove(match);
 	            }
-                else if (setupOption.UseForOrphanArgs && result.RawResult.AdditionalValues.Any())
-                {
-                    try
-                    {
-                        var parser = new OptionArgumentParser(SpecialCharacters);
-                        var blankOption = new ParsedOption();
-                        parser.ParseArguments(result.RawResult.AdditionalValues, blankOption);
-                        setupOption.Bind(blankOption);
-                    }
-                    catch (OptionSyntaxException)
-                    {
-                        result.Errors.Add(new OptionSyntaxParseError(option, match));
-                        if (option.HasDefault)
-                            option.BindDefault();
-                    }
-
-                    parsedOptions.Remove(match);
-                }
-	            else
+                else
 	            {
-	                if(option.IsRequired) // Step 3
+	                if (option.IsRequired) // Step 3
 	                    result.Errors.Add(new ExpectedOptionNotFoundParseError(option));
 	                else if (option.HasDefault)
 	                    option.BindDefault(); // Step 4
 
 	                result.UnMatchedOptions.Add(option);
 	            }
+
 	        }
 
-	        parsedOptions.ForEach(
-	            item => result.AdditionalOptionsFound.Add(new KeyValuePair<string, string>(item.Key, item.Value)));
+	        foreach (var match in ParseSequence == ParseSequence.SameAsSetup ? matchedOptions.OrderBy(o => o.SetupOrder) : matchedOptions.OrderBy(o => o.Order))
+	        {
+	            try
+	            {
+	                match.SetupCommand.Bind(match);
+	            }
+	            catch (OptionSyntaxException)
+	            {
+	                result.Errors.Add(new OptionSyntaxParseError(match.SetupCommand, match));
+	                if (match.SetupCommand.HasDefault)
+	                    match.SetupCommand.BindDefault();
+	            }
+	        }
+
+	        parsedOptions.Where(item => !matchedOptions.Contains(item)).ForEach(item => result.AdditionalOptionsFound.Add(new KeyValuePair<string, string>(item.Key, item.Value)));
 
 	        result.ErrorText = ErrorFormatter.Format(result.Errors);
 
 	        return result;
-	    }
+        }
 
-	    /// <summary>
-		/// Setup the help args.
-		/// </summary>
-		/// <param name="helpArgs">The help arguments to register.</param>
-		public IHelpCommandLineOptionFluent SetupHelp(params string[] helpArgs)
+        /// <summary>
+        /// Setup the help args.
+        /// </summary>
+        /// <param name="helpArgs">The help arguments to register.</param>
+        public IHelpCommandLineOptionFluent SetupHelp(params string[] helpArgs)
 		{
 			var helpOption = this.OptionFactory.CreateHelpOption(helpArgs);
 			this.HelpOption = helpOption;

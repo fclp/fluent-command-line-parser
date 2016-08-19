@@ -59,6 +59,7 @@
     <Compile Include="CommandLineCommand.cs" />
     <Compile Include="CommandLineParserErrorFormatter.cs" />
     <Compile Include="CommandNotFoundException.cs" />
+    <Compile Include="ParseSequence.cs" />
     <Compile Include="FluentCommandLineParserT.cs" />
     <Compile Include="FluentCommandLineBuilderT.cs" />
     <Compile Include="ICommandLineCommand.cs" />
