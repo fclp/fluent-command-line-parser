@@ -81,10 +81,16 @@ namespace Fclp.Internals.Parsing
 		/// </summary>
 		public string Suffix { get; set; }
 
-		/// <summary>
-		/// Gets whether this parsed option has a value set.
-		/// </summary>
-		public bool HasValue
+        internal ICommandLineOption SetupCommand { get; set; }
+
+        internal int SetupOrder { get; set; }
+
+        internal int Order { get; set; }
+
+        /// <summary>
+        /// Gets whether this parsed option has a value set.
+        /// </summary>
+        public bool HasValue
 		{
 			get { return string.IsNullOrEmpty(Value) == false; }
 		}
