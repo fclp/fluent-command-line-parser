@@ -734,6 +734,59 @@ namespace Fclp.Tests
             Assert.IsFalse(result.Errors.Any());
         }
 
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_DateTime_When_Using_Spaces_And_Long_option()
+        {
+            var expected = new DateTime(2012, 2, 29, 01, 01, 01);
+
+            DateTime actual = default(DateTime);
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<DateTime>('d', "datetime")
+                .Callback(val => actual = val);
+
+            var result = parser.Parse(new[] { "--datetime", expected.ToString("yyyy MM dd hh:mm:ss tt", CultureInfo.CurrentCulture) });
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_DateTime_When_Using_Spaces_And_Short_option()
+        {
+            var expected = new DateTime(2012, 2, 29, 01, 01, 01);
+            RunTest(expected.ToString("yyyy MM dd hh:mm:ss tt", CultureInfo.CurrentCulture), expected);
+        }
+
+        [Test]
+        public void Ensure_Parser_Calls_The_Callback_With_Expected_ListDateTime_When_Using_Spaces_And_Long_option()
+        {
+            var expected = new List<DateTime> {
+                new DateTime(2012, 2, 29, 01, 01, 01),
+                new DateTime(12,12,12,12,12,12),
+                new DateTime(11,11,11)
+            };
+
+            List<DateTime> actual = new List<DateTime>();
+
+            var parser = CreateFluentParser();
+
+            parser
+                .Setup<List<DateTime>>('d', "datetime")
+                .Callback(val => actual = val);
+
+            var dArgs = new List<string> { "--datetime" };
+            dArgs.AddRange(expected.Select(x => "\"" + x.ToString("yyyy MM dd hh:mm:ss tt", CultureInfo.CurrentCulture) + "\""));
+            var result = parser.Parse(dArgs.ToArray());
+
+            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.Errors.Any());
+        }
+
         #endregion DateTime Option
 
         #region int? Option
@@ -807,7 +860,7 @@ namespace Fclp.Tests
             parser.Setup<double?>('d', "double")
                 .Callback(val => actual = val);
 
-            var result = parser.Parse(new[] { "--double", expected.Value.ToString(CultureInfo.InvariantCulture) });
+            var result = parser.Parse(new[] { "--double", expected.Value.ToString(CultureInfo.CurrentCulture) });
 
             Assert.AreEqual(expected, actual);
             Assert.IsFalse(result.HasErrors);

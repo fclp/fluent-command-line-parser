@@ -18,6 +18,8 @@ PM> Install-Package FluentCommandLineParser
 
 ### Usage
 ```
+using Fclp;
+
 public class ApplicationArguments
 {
    public int RecordId { get; set; }
