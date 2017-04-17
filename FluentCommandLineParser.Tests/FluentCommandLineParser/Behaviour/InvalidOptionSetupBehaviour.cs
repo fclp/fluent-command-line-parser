@@ -25,7 +25,7 @@
 using System;
 using Machine.Specifications;
 
-namespace Fclp.Tests.FluentCommandLineParser
+namespace Fclp.Tests.FluentCommandLineParser.Behaviour
 {
 	namespace Behaviour
 	{

@@ -1,4 +1,4 @@
-﻿namespace Fclp.Tests.Integration
+﻿namespace Fclp.Tests.Integration.Lists
 {
     public class Int64ListInlineDataAttribute : ArgumentInlineDataAttribute
     {

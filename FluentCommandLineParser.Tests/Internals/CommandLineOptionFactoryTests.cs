@@ -28,7 +28,7 @@ using Fclp.Internals.Parsing.OptionParsers;
 using Moq;
 using NUnit.Framework;
 
-namespace FluentCommandLineParser.Tests.Internals
+namespace Fclp.Tests.Internals
 {
 	/// <summary>
 	/// Contains unit tests for the <see cref="CommandLineOptionFactory"/> class.

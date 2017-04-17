@@ -25,6 +25,7 @@
 using System.Globalization;
 using System.Linq;
 using Fclp.Tests.FluentCommandLineParser;
+using Fclp.Tests.FluentCommandLineParser.TestContext;
 using Fclp.Tests.Internals;
 using Machine.Specifications;
 
@@ -46,7 +47,7 @@ namespace Fclp.Tests
 					sut.IsCaseSensitive.ShouldBeTrue();
 
 				It should_have_the_fluent_parser_by_default = () =>
-					sut.Parser.ShouldBeOfType<IFluentCommandLineParser>();
+					sut.Parser.ShouldBeAssignableTo<IFluentCommandLineParser>();
 
 				It should_have_initialised_the_object = () =>
 					sut.Object.ShouldNotBeNull();

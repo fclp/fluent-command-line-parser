@@ -23,12 +23,12 @@
 #endregion
 
 using Fclp.Internals;
-using Fclp.Tests.FluentCommandLineParser.TestContext;
+using Fclp.Tests.FluentCommandLineParser.TestContext.TestContext;
 using Machine.Specifications;
 using Moq;
 using It = Machine.Specifications.It;
 
-namespace Fclp.Tests.FluentCommandLineParser
+namespace Fclp.Tests.FluentCommandLineParser.when_using_an_option_factory
 {
 	namespace when_using_an_option_factory
 	{

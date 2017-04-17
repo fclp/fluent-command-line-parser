@@ -29,6 +29,7 @@ using System.Linq;
 using Fclp.Internals;
 using Fclp.Internals.Errors;
 using Fclp.Tests.FluentCommandLineParser;
+using Fclp.Tests.FluentCommandLineParser.TestContext;
 using Moq;
 using NUnit.Framework;
 
@@ -1568,14 +1569,17 @@ namespace Fclp.Tests
         }
 
         #endregion
-
+        
+        #pragma warning disable 618
         #region Obsolete
-
+        
         [Test]
         public void Ensure_Obsolete_Setup_With_Only_Short_Option()
         {
             var parser = CreateFluentParser();
+
             parser.Setup<string>("s", null);
+
             var option = parser.Options.Single();
             Assert.IsNull(option.LongName);
             Assert.AreEqual("s", option.ShortName);
@@ -1634,6 +1638,7 @@ namespace Fclp.Tests
         }
 
         #endregion
+        #pragma warning restore 618
 
         #region Addtional Arguments
 

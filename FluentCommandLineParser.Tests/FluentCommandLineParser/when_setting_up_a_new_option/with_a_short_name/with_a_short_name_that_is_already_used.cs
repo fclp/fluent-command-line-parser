@@ -24,12 +24,12 @@
 
 using System.Globalization;
 using Fclp.Internals;
-using Fclp.Tests.FluentCommandLineParser.TestContext;
+using Fclp.Tests.FluentCommandLineParser.TestContext.TestContext;
 using Machine.Specifications;
 using Moq;
 using It = Machine.Specifications.It;
 
-namespace Fclp.Tests.FluentCommandLineParser
+namespace Fclp.Tests.FluentCommandLineParser.when_setting_up_a_new_option.with_a_short_name
 {
 	namespace when_setting_up_a_new_option
 	{
@@ -53,7 +53,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 									SetupOptionWith(existingShortName);
 								};
 
-			It should_throw_an_error = () => error.ShouldBeOfType(typeof(OptionAlreadyExistsException));
+			It should_throw_an_error = () => error.ShouldBeOfExactType(typeof(OptionAlreadyExistsException));
 			It should_not_have_setup_an_option = () => sut.Options.ShouldContainOnly(existingOption);
 		}
 	}

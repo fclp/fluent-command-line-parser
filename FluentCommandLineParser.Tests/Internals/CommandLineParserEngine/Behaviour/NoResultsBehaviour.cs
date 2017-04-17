@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using Fclp.Internals.Parsing;
 using Machine.Specifications;
 
-namespace Fclp.Tests
+namespace Fclp.Tests.Internals.CommandLineParserEngine.Behaviour
 {
 	namespace CommandLineParserEngine
 	{

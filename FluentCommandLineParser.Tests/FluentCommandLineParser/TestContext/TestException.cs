@@ -24,7 +24,7 @@
 
 using System;
 
-namespace Fclp.Tests.FluentCommandLineParser
+namespace Fclp.Tests.FluentCommandLineParser.TestContext
 {
 	namespace TestContext
 	{

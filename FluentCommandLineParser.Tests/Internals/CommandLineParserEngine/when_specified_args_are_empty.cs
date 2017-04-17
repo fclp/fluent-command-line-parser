@@ -22,9 +22,12 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using Fclp.Tests.Internals.CommandLineParserEngine.Behaviour.CommandLineParserEngine;
+using Fclp.Tests.Internals.CommandLineParserEngine.TestContext.CommandLineParserEngine;
 using Machine.Specifications;
+#pragma warning disable 169
 
-namespace Fclp.Tests
+namespace Fclp.Tests.Internals.CommandLineParserEngine
 {
 	namespace CommandLineParserEngine
 	{
@@ -34,7 +37,7 @@ namespace Fclp.Tests
 
 			Because of = () => RunParserWith(args);
 
-			Behaves_like<NoResultsBehaviour> there_are_no_keys_found;
+			Behaves_like<NoResultsBehaviour> _thereAreNoKeysFound;
 		}
 	}
 }

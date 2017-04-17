@@ -30,7 +30,7 @@ using Fclp.Internals.Parsing;
 using Fclp.Tests.Internals;
 using Machine.Specifications;
 
-namespace Fclp.Tests
+namespace Fclp.Tests.TestContext
 {
 	public abstract class TestContext<T> : TestContextBase<T> where T : class
 	{

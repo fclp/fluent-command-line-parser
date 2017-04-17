@@ -23,10 +23,10 @@
 #endregion
 
 using System.Globalization;
-using Fclp.Tests.FluentCommandLineParser.TestContext;
+using Fclp.Tests.FluentCommandLineParser.TestContext.TestContext;
 using Machine.Specifications;
 
-namespace Fclp.Tests.FluentCommandLineParser
+namespace Fclp.Tests.FluentCommandLineParser.when_setting_up_a_new_option.with_a_short_name
 {
 	namespace when_setting_up_a_new_option
 	{

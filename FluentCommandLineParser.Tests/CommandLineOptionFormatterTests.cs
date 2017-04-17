@@ -29,7 +29,7 @@ using Fclp.Internals;
 using Moq;
 using NUnit.Framework;
 
-namespace FluentCommandLineParser.Tests
+namespace Fclp.Tests
 {
 	/// <summary>
 	/// Contains unit test for the <see cref="CommandLineOptionFormatter"/> test.

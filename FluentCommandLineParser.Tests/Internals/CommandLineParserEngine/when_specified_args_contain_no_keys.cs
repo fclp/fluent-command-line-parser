@@ -24,9 +24,12 @@
 
 using System.Globalization;
 using System.Linq;
+using Fclp.Tests.Internals.CommandLineParserEngine.Behaviour.CommandLineParserEngine;
+using Fclp.Tests.Internals.CommandLineParserEngine.TestContext.CommandLineParserEngine;
 using Machine.Specifications;
+#pragma warning disable 169
 
-namespace Fclp.Tests
+namespace Fclp.Tests.Internals.CommandLineParserEngine
 {
 	namespace CommandLineParserEngine
 	{

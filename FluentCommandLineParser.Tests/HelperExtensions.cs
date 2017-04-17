@@ -24,7 +24,7 @@
 
 using Fclp.Internals.Parsing;
 
-namespace FluentCommandLineParser.Tests
+namespace Fclp.Tests
 {
 	public static class HelperExtensions
 	{

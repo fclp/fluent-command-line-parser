@@ -1,6 +1,6 @@
 using System;
 
-namespace Fclp.Tests.FluentCommandLineParser
+namespace Fclp.Tests.FluentCommandLineParser.TestContext
 {
     [Flags]
     public enum TestEnumFlag

@@ -23,13 +23,12 @@
 #endregion
 
 using System;
-using Fclp;
 using Fclp.Internals.Parsing.OptionParsers;
-using Fclp.Tests.FluentCommandLineParser;
+using Fclp.Tests.FluentCommandLineParser.TestContext;
 using Moq;
 using NUnit.Framework;
 
-namespace FluentCommandLineParser.Tests.Internals
+namespace Fclp.Tests.Internals
 {
 	[TestFixture]
 	public class CommandLineOptionParserFactoryTests

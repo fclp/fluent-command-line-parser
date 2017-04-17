@@ -22,11 +22,11 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using Fclp.Tests.FluentCommandLineParser.Behaviour;
-using Fclp.Tests.FluentCommandLineParser.TestContext;
+using Fclp.Tests.FluentCommandLineParser.Behaviour.Behaviour;
+using Fclp.Tests.FluentCommandLineParser.TestContext.TestContext;
 using Machine.Specifications;
 
-namespace Fclp.Tests.FluentCommandLineParser
+namespace Fclp.Tests.FluentCommandLineParser.when_setting_up_a_new_option.with_a_long_name
 {
 	namespace when_setting_up_a_new_option
 	{
@@ -36,7 +36,9 @@ namespace Fclp.Tests.FluentCommandLineParser
 
 			Because of = () => SetupOptionWith(valid_short_name, invalid_long_name_with_equality_sign);
 
+            #pragma warning disable 169
 			Behaves_like<InvalidOptionSetupBehaviour> a_failed_setup_option;
+            #pragma warning restore 169
 		}
 	}
 }

@@ -24,7 +24,7 @@
 
 using Xunit.Extensions;
 
-namespace Fclp.Tests.Integration
+namespace Fclp.Tests.Integration.Lists
 {
 	public class ArgumentInlineDataAttribute : InlineDataAttribute
 	{
