@@ -38,7 +38,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>FluentCommandLineParserTests.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Machine.Specifications, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -182,7 +183,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="FluentCommandLineParserTests.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

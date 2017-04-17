@@ -39,7 +39,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		/// <returns></returns>
 		public DateTime Parse(ParsedOption parsedOption)
 		{
-			return DateTime.Parse(parsedOption.Value, CultureInfo.CurrentCulture);
+            return DateTime.Parse(TrimAnyUnwantedCharacters(parsedOption.Value), CultureInfo.CurrentCulture);
 		}
 
 		/// <summary>
@@ -50,7 +50,15 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		public bool CanParse(ParsedOption parsedOption)
 		{
 			DateTime dtOut;
-			return DateTime.TryParse(parsedOption.Value, out dtOut);
+            return DateTime.TryParse(TrimAnyUnwantedCharacters(parsedOption.Value), out dtOut);
 		}
+
+        /// <summary>
+        /// Trim any unwanted characters such as any remaining double quotes that can come through.
+        /// </summary>
+	    private static string TrimAnyUnwantedCharacters(string value)
+	    {
+	        return (value ?? string.Empty).Trim('"');
+	    }
 	}
 }

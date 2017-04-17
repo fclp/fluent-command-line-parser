@@ -44,7 +44,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>FluentCommandLineParser.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>true</DelaySign>
@@ -121,9 +122,6 @@
     <Compile Include="OptionSyntaxException.cs" />
     <Compile Include="IFluentCommandLineBuilderT.cs" />
     <Compile Include="UnsupportedTypeException.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FluentCommandLineParser.snk" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
