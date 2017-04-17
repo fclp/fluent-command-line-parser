@@ -17,7 +17,9 @@ PM> Install-Package FluentCommandLineParser
 ```
 
 ### Usage
-```
+```csharp
+using Fclp;
+
 public class ApplicationArguments
 {
    public int RecordId { get; set; }
@@ -54,7 +56,7 @@ static void Main(string[] args)
 ```
 
 You can also use the non-generic Fluent Command Line Parser to capture values without creating a container class.
-```
+```csharp
 static void Main(string[] args)
 {
   var p = new FluentCommandLineParser();
@@ -98,7 +100,7 @@ For example arguments such as
 `--filenames C:\file1.txt C:\file2.txt "C:\other file.txt"`
 
 can be automatically parsed to a `List<string>` using
-```
+```csharp
 static void Main(string[] args)
 {
    var p = new FluentCommandLineParser();
@@ -127,7 +129,7 @@ C:\other file.txt
 ```
 ### Enum support
 Since v1.2.3 enum types are now supported. 
-```
+```csharp
 [Flags]
 enum Direction
 {
@@ -137,7 +139,7 @@ enum Direction
 	West = 8,
 }
 ```
-```
+```csharp
 p.Setup<Direction>("direction")
  .Callback(d => direction = d);
 ```
@@ -147,13 +149,15 @@ dosomething.exe --direction East
 dosomething.exe --direction 2
 ```
 
-You can also collect multiple Enum values into a List<TEnum>
-```
+You can also collect multiple Enum values into a `List<TEnum>`
+
+```csharp
 List<Direction> direction;
 
 p.Setup<List<Direction>>('d', "direction")
  .Callback(d => direction = d);
 ```
+
 For example, specifiying 'South' and 'East' values
 ```
 dosomething.exe --direction South East
@@ -161,7 +165,7 @@ dosomething.exe --direction 4 2
 ```
 
 Since v1.4 Enum Flags are also supported
-```
+```csharp
 Direction direction;
 
 p.Setup<Direction>("direction")
@@ -175,16 +179,16 @@ Assert.IsTrue(direction.HasFlag(Direction.South));
 Assert.IsFalse(direction.HasFlag(Direction.West));
 ```
 
-And the generic FluentCommandLineParser<T> (previously known as FluentCommandLineBuilder) also supports enums.
+And the generic `FluentCommandLineParser<T>` (previously known as FluentCommandLineBuilder) also supports enums.
 
-```
+```csharp
 public class Args
 {
    public Direction Direction { get;set; }
    public List<Direction> Directions { get;set; }
 }
 ```
-```
+```csharp
 var p = new FluentCommandLineParser<Args>();
 
 p.Setup(args => args.Direction)
@@ -198,24 +202,24 @@ From v1.5 nullable enums are now supported.
 You can setup any help arguments, such as -? or --help to print all parameters which have been setup, along with their descriptions to the console by using SetupHelp(params string[]).
 
 For example:
-
-	// sets up the parser to execute the callback when -? or --help is detected
-	parser.SetupHelp("?", "help")
-	 .Callback(text => Console.WriteLine(text));
-
+```csharp
+// sets up the parser to execute the callback when -? or --help is detected
+parser.SetupHelp("?", "help")
+      .Callback(text => Console.WriteLine(text));
+```
 Since v1.4.1 you can also choose to display the formatted help screen text manually, so that you can display it under other circumstances.
 
 
 For example:
-
-	var parser = new FluentCommandLineParser<Args>();
+```csharp
+var parser = new FluentCommandLineParser<Args>();
 	
-	parser.SetupHelp("?", "help")
-	 .Callback(text => Console.WriteLine(text));
+parser.SetupHelp("?", "help")
+      .Callback(text => Console.WriteLine(text));
 	
-	// triggers the SetupHelp Callback which writes the text to the console
-	parser.HelpOption.ShowHelp(parser.Options);
-
+// triggers the SetupHelp Callback which writes the text to the console
+parser.HelpOption.ShowHelp(parser.Options);
+```
 
 
 ### Supported Syntax
