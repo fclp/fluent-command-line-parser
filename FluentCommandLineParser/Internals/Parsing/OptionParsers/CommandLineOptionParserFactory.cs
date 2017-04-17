@@ -43,6 +43,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
             this.AddOrReplace(new Int64CommandLineOptionParser());
             this.AddOrReplace(new StringCommandLineOptionParser());
             this.AddOrReplace(new DateTimeCommandLineOptionParser());
+            this.AddOrReplace(new TimeSpanCommandLineOptionParser());
             this.AddOrReplace(new DoubleCommandLineOptionParser());
             this.AddOrReplace(new UriCommandLineOptionParser());
             this.AddOrReplace(new ListCommandLineOptionParser<string>(this));
@@ -50,12 +51,15 @@ namespace Fclp.Internals.Parsing.OptionParsers
             this.AddOrReplace(new ListCommandLineOptionParser<long>(this));
             this.AddOrReplace(new ListCommandLineOptionParser<double>(this));
             this.AddOrReplace(new ListCommandLineOptionParser<DateTime>(this));
+            this.AddOrReplace(new ListCommandLineOptionParser<TimeSpan>(this));
             this.AddOrReplace(new ListCommandLineOptionParser<bool>(this));
-            this.AddOrReplace(new NullableBoolCommandLineOptionParser(this));
+            this.AddOrReplace(new ListCommandLineOptionParser<Uri>(this));
+            this.AddOrReplace(new NullableCommandLineOptionParser<bool>(this));
             this.AddOrReplace(new NullableCommandLineOptionParser<int>(this));
             this.AddOrReplace(new NullableCommandLineOptionParser<long>(this));
             this.AddOrReplace(new NullableCommandLineOptionParser<double>(this));
             this.AddOrReplace(new NullableCommandLineOptionParser<DateTime>(this));
+            this.AddOrReplace(new NullableCommandLineOptionParser<TimeSpan>(this));
         }
 
         internal Dictionary<Type, object> Parsers { get; set; }
