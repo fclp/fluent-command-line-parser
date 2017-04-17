@@ -41,7 +41,8 @@ namespace Fclp.Examples
 
             addCmd.Setup(addArgs => addArgs.Files)
                   .As('f', "files")
-                  .WithDescription("Files to be tracked");
+                  .WithDescription("Files to be tracked")
+                  .UseForOrphanArguments();
 
             // add the remove command
             var remCmd = fclp.SetupCommand<RemoveArgs>("rem")
@@ -54,7 +55,8 @@ namespace Fclp.Examples
 
             remCmd.Setup(removeArgs => removeArgs.Files)
                      .As('f', "files")
-                     .WithDescription("Files to be untracked");
+                     .WithDescription("Files to be untracked")
+                     .UseForOrphanArguments();
 
             fclp.Parse(args);
         }
