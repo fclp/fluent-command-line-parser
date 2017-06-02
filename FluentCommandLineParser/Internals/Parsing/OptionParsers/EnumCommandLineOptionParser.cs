@@ -38,7 +38,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
 	{
 		private readonly IList<TEnum> _all;
 		private readonly Dictionary<string, TEnum> _insensitiveNames;
-		private readonly Dictionary<int, TEnum> _values;
+		private readonly Dictionary<long, TEnum> _values;
 
 		/// <summary>
 		/// Initialises a new instance of the <see cref="EnumCommandLineOptionParser{TEnum}"/> class.
@@ -51,7 +51,7 @@ namespace Fclp.Internals.Parsing.OptionParsers
 
 			_all = Enum.GetValues(typeof(TEnum)).Cast<TEnum>().ToList();
 			_insensitiveNames = _all.ToDictionary(k => Enum.GetName(typeof(TEnum), k).ToLowerInvariant());
-			_values = _all.ToDictionary(k => Convert.ToInt32(k));
+			_values = _all.ToDictionary(k => Convert.ToInt64(k));
 		}
 
 		/// <summary>
@@ -86,18 +86,18 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		/// <returns>true if <paramref name="value"/> can be parsed; otherwise false.</returns>
 		private bool IsDefined(string value)
 		{
-			int asInt;
-			return int.TryParse(value, out asInt) 
-				? IsDefined(asInt) 
+			long asInt;
+			return long.TryParse(value, out asInt)
+				? IsDefined(asInt)
 				: _insensitiveNames.Keys.Contains(value.ToLowerInvariant());
 		}
 
 		/// <summary>
 		/// Determines whether the specified <paramref name="value"/> represents a {TEnum} value.
 		/// </summary>
-		/// <param name="value">The <see cref="System.Int32"/> that represents a {TEnum} value.</param>
+		/// <param name="value">The <see cref="System.Int64"/> that represents a {TEnum} value.</param>
 		/// <returns>true if <paramref name="value"/> represents a {TEnum} value; otherwise false.</returns>
-		private bool IsDefined(int value)
+		private bool IsDefined(long value)
 		{
 			return _values.Keys.Contains(value);
 		}
