@@ -47,7 +47,6 @@ namespace Fclp.Internals.Parsing.OptionParsers
         /// </summary>
         public TNullableType? Parse(ParsedOption parsedOption)
         {
-            if (parsedOption.HasValue == false) return null;
             var parser = _parserFactory.CreateParser<TNullableType>();
             if (parser.CanParse(parsedOption) == false) return null;
             return parser.Parse(parsedOption);
