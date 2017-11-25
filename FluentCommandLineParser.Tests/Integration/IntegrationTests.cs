@@ -50,8 +50,6 @@ namespace Fclp.Tests.Integration
 		[BoolInlineData("-b:off", false)]
         [BoolInlineData("-b=on", true)]
         [BoolInlineData("-b=off", false)]
-        [BoolInlineData("-b1", true)]
-        [BoolInlineData("-b0", false)]
         [BoolInlineData("/b:1", true)]
         [BoolInlineData("/b:0", false)]
         [BoolInlineData("-b 1", true)]
