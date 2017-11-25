@@ -8,3 +8,4 @@ packages/*
 packages/
 _ncrunch*
 *.ncrunch*
+.vs/
