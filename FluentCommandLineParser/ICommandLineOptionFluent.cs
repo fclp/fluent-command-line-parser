@@ -48,7 +48,7 @@ namespace Fclp
 		/// <summary>
 		/// Specifies the method to invoke when the <see cref="ICommandLineOptionFluent{T}"/>. 
 		/// is parsed. If a callback is not required either do not call it, or specify <c>null</c>.
-		/// Do no use this if you are using the Fluent Command Line Builder.
+		/// Do no use this if you are using the Generic Fluent Command Line Parser.
 		/// </summary>
 		/// <param name="callback">The return callback to execute with the parsed value of the Option.</param>
 		/// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
@@ -79,9 +79,9 @@ namespace Fclp
         ICommandLineOptionFluent<T> AssignToCommand(ICommandLineCommand command);
 
         /// <summary>
-        /// 
+        /// If values are found before an option then treat this option as the default and apply those values against it!
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
 	    ICommandLineOptionFluent<T> UseForOrphanArguments();
 	}
 }
