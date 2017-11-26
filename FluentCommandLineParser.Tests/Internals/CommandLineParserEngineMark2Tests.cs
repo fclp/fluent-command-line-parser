@@ -40,8 +40,8 @@ namespace Fclp.Tests.Internals
 
 		    Establish context = () =>
 		    {
-		        fixture.Freeze(specialCharacters);
-		        CreateSut();
+		        fixture.Register(() => specialCharacters);
+                CreateSut();
 		    };
         }
 
