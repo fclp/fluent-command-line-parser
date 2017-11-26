@@ -282,6 +282,19 @@ namespace Fclp.Internals
 	        get { return Command != null; }
 	    }
 
+	    /// <summary>
+	    /// Gets the default value set for this options
+	    /// </summary>
+	    /// <returns>The default value set or <c>null</c> if no value has been set</returns>
+        public object GetDefaultValue()
+	    {
+	        if (HasDefault)
+	        {
+	            return Default;
+	        }
+	        return null;
+	    }
+
 	    #endregion Methods
 	}
 }

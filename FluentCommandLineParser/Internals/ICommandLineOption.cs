@@ -99,13 +99,19 @@ namespace Fclp.Internals
         ICommandLineCommand Command { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets whether orphan args should be assigned to this option.
         /// </summary>
         bool UseForOrphanArgs { get; }
 
         /// <summary>
-        /// 
+        /// Gets whether this option is assigned to a command.
         /// </summary>
 	    bool HasCommand { get; }
+
+	    /// <summary>
+	    /// Gets the default value set for this options
+	    /// </summary>
+	    /// <returns>The default value set or <c>null</c> if no value has been set</returns>
+	    object GetDefaultValue();
 	}
 }
