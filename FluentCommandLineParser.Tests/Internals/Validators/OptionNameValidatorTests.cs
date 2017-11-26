@@ -28,6 +28,7 @@ using Fclp.Internals;
 using Fclp.Internals.Validators;
 using Machine.Specifications;
 using Moq;
+using Ploeh.AutoFixture;
 using It = Machine.Specifications.It;
 
 namespace Fclp.Tests.Internals.Validators
@@ -37,8 +38,14 @@ namespace Fclp.Tests.Internals.Validators
 		[Subject(typeof(OptionNameValidator))]
 		abstract class CommandLineOptionNameValidatorTestContext : TestContextBase<OptionNameValidator>
 		{
-			Establish context = () => CreateSut();
-		}
+		    static SpecialCharacters specialCharacters = new SpecialCharacters();
+
+		    Establish context = () =>
+		    {
+		        fixture.Register(() => specialCharacters);
+		        CreateSut();
+		    };
+        }
 
 		sealed class Validate
 		{
