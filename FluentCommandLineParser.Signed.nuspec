@@ -8,7 +8,7 @@
     <owners>siywilliams</owners>
     <licenseUrl>https://github.com/fclp/fluent-command-line-parser/blob/develop/LICENCE.txt</licenseUrl>
     <projectUrl>http://fclp.github.com/fluent-command-line-parser</projectUrl>
-    <iconUrl>https://avatars0.githubusercontent.com/u/3839783?v=3&s=200</iconUrl>
+    <iconUrl>https://avatars0.githubusercontent.com/u/3839783</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface</description>
     <releaseNotes>https://github.com/fclp/fluent-command-line-parser/wiki/Roadmap</releaseNotes>
