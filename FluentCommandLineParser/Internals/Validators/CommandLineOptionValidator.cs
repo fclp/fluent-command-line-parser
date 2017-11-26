@@ -37,11 +37,11 @@ namespace Fclp.Internals.Validators
 		/// <summary>
 		/// Initialises a new instance of the <see cref="CommandLineOptionValidator"/> class.
 		/// </summary>
-        public CommandLineOptionValidator(ICommandLineOptionContainer container)
+        public CommandLineOptionValidator(ICommandLineOptionContainer container, SpecialCharacters specialCharacters)
 		{
 			_rules = new List<ICommandLineOptionValidator>
 			{
-				new OptionNameValidator(),
+				new OptionNameValidator(specialCharacters),
 				new NoDuplicateOptionValidator(container)
 			};
 		}

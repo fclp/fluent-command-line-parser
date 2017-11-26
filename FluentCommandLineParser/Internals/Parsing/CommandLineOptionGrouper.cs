@@ -34,6 +34,7 @@ namespace Fclp.Internals.Parsing
     /// </summary>
     public class CommandLineOptionGrouper
     {
+        private readonly SpecialCharacters _specialCharacters;
         private string[] _args;
         private int _currentOptionLookupIndex;
         private int[] _foundOptionLookup;
@@ -42,10 +43,11 @@ namespace Fclp.Internals.Parsing
         private bool _parseCommands = false;
 
         /// <summary>
-        /// 
+        /// Initialises a new instance of <see cref="CommandLineOptionGrouper"/>.
         /// </summary>
-	    public CommandLineOptionGrouper()
+	    public CommandLineOptionGrouper(SpecialCharacters specialCharacters)
         {
+            _specialCharacters = specialCharacters;
             _orphanArgs = new List<string>();
         }
 
@@ -183,22 +185,22 @@ namespace Fclp.Internals.Parsing
         /// </summary>
         /// <param name="arg">The <see cref="System.String"/> to examine.</param>
         /// <returns><c>true</c> if <paramref name="arg"/> is a Option key; otherwise <c>false</c>.</returns>
-        static bool IsAKey(string arg)
+        private bool IsAKey(string arg)
         {
-            return arg != null && SpecialCharacters.OptionPrefix.Any(arg.StartsWith);
+            return arg != null && _specialCharacters.OptionPrefix.Any(arg.StartsWith);
         }
 
-        static bool IsACmd(string arg)
+        private bool IsACmd(string arg)
         {
-            return arg != null && SpecialCharacters.OptionPrefix.Any(arg.StartsWith) == false;
+            return arg != null && _specialCharacters.OptionPrefix.Any(arg.StartsWith) == false;
         }
 
         /// <summary>
         /// Determines whether the specified string indicates the end of parsed options.
         /// </summary>
-        static bool IsEndOfOptionsKey(string arg)
+        private bool IsEndOfOptionsKey(string arg)
         {
-            return string.Equals(arg, SpecialCharacters.EndOfOptionsKey, StringComparison.InvariantCultureIgnoreCase);
+            return string.Equals(arg, _specialCharacters.EndOfOptionsKey, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

@@ -33,8 +33,16 @@ namespace Fclp.Internals.Validators
 	/// </summary>
 	public class OptionNameValidator : ICommandLineOptionValidator
 	{
-		private static readonly char[] ReservedChars =
-			SpecialCharacters.ValueAssignments.Union(new[] { SpecialCharacters.Whitespace }).ToArray();
+	    private readonly char[] _reservedChars;
+
+        /// <summary>
+        /// Initialises a new instance of <see cref="OptionNameValidator"/>.
+        /// </summary>
+        /// <param name="specialCharacters"></param>
+        public OptionNameValidator(SpecialCharacters specialCharacters)
+	    {
+	        _reservedChars = specialCharacters.ValueAssignments.Union(new[] { specialCharacters.Whitespace }).ToArray();
+        }
 
 	    /// <summary>
 	    /// Verifies that the specified <see cref="ICommandLineOption"/> has a valid short/long name combination.
@@ -46,12 +54,12 @@ namespace Fclp.Internals.Validators
 		{
 			if (commandLineOption == null) throw new ArgumentNullException("commandLineOption");
 
-			ValidateShortName(commandLineOption.ShortName);
+            ValidateShortName(commandLineOption.ShortName);
 			ValidateLongName(commandLineOption.LongName);
 			ValidateShortAndLongName(commandLineOption.ShortName, commandLineOption.LongName);
 		}
 
-		private static void ValidateShortAndLongName(string shortName, string longName)
+		private void ValidateShortAndLongName(string shortName, string longName)
 		{
 			if (string.IsNullOrEmpty(shortName) && string.IsNullOrEmpty(longName))
 			{
@@ -59,7 +67,7 @@ namespace Fclp.Internals.Validators
 			}
 		}
 
-		private static void ValidateLongName(string longName)
+		private void ValidateLongName(string longName)
 		{
 			if (string.IsNullOrEmpty(longName)) return;
 
@@ -71,7 +79,7 @@ namespace Fclp.Internals.Validators
 			}
 		}
 
-		private static void ValidateShortName(string shortName)
+		private void ValidateShortName(string shortName)
 		{
 			if (string.IsNullOrEmpty(shortName)) return;
 
@@ -88,11 +96,11 @@ namespace Fclp.Internals.Validators
 			}
 		}
 
-		private static void VerifyDoesNotContainsReservedChar(string value)
+		private void VerifyDoesNotContainsReservedChar(string value)
 		{
 			if (string.IsNullOrEmpty(value)) return;
 
-			foreach (char reservedChar in ReservedChars)
+			foreach (char reservedChar in _reservedChars)
 			{
 				if (value.Contains(reservedChar))
 				{

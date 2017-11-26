@@ -29,12 +29,23 @@ namespace Fclp.Internals.Parsing
 	/// <summary>
 	/// Factory used to created parsed option meta data.
 	/// </summary>
-	public static class ParsedOptionFactory
+	public class ParsedOptionFactory
 	{
-		/// <summary>
+	    private readonly SpecialCharacters _specialCharacters;
+
+        /// <summary>
+        /// Initialises a new instance of <see cref="ParsedOptionFactory"/>.
+        /// </summary>
+        /// <param name="specialCharacters"></param>
+	    public ParsedOptionFactory(SpecialCharacters specialCharacters)
+	    {
+	        _specialCharacters = specialCharacters;
+	    }
+
+	    /// <summary>
 		/// Creates parsed option meta data for the specified raw key.
 		/// </summary>
-		public static ParsedOption Create(string rawKey)
+		public ParsedOption Create(string rawKey)
 		{
 			var prefix = ExtractPrefix(rawKey);
 
@@ -53,9 +64,9 @@ namespace Fclp.Internals.Parsing
 		/// </summary>
 		/// <param name="arg">The <see cref="System.String"/> to extract the key identifier from.</param>
 		/// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
-		static string ExtractPrefix(string arg)
+		private string ExtractPrefix(string arg)
 		{
-			return arg != null ? SpecialCharacters.OptionPrefix.FirstOrDefault(arg.StartsWith) : null;
+			return arg != null ? _specialCharacters.OptionPrefix.FirstOrDefault(arg.StartsWith) : null;
 		}
 
 		/// <summary>
@@ -63,9 +74,9 @@ namespace Fclp.Internals.Parsing
 		/// </summary>
 		/// <param name="arg">The <see cref="System.String"/> to extract the key identifier from.</param>
 		/// <returns>A <see cref="System.String"/> representing the key identifier if found; otherwise <c>null</c>.</returns>
-		static string ExtractSuffix(string arg)
+		private string ExtractSuffix(string arg)
 		{
-			return arg != null ? SpecialCharacters.OptionSuffix.FirstOrDefault(arg.EndsWith) : null;
+			return arg != null ? _specialCharacters.OptionSuffix.FirstOrDefault(arg.EndsWith) : null;
 		}
 	}
 }

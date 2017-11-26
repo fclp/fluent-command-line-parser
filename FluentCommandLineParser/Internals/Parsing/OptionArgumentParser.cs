@@ -34,14 +34,25 @@ namespace Fclp.Internals.Parsing
 	/// </summary>
 	public class OptionArgumentParser
 	{
-		/// <summary>
+	    private readonly SpecialCharacters _specialCharacters;
+
+        /// <summary>
+        /// Initialises a new instance of <see cref="OptionArgumentParser"/>.
+        /// </summary>
+        /// <param name="specialCharacters"></param>
+        public OptionArgumentParser(SpecialCharacters specialCharacters)
+	    {
+	        _specialCharacters = specialCharacters;
+	    }
+
+	    /// <summary>
 		/// Parses the values.
 		/// </summary>
 		/// <param name="args">The args.</param>
 		/// <param name="option">The option.</param>
 		public void ParseArguments(IEnumerable<string> args, ParsedOption option)
 		{
-			if (option.Key != null && SpecialCharacters.ValueAssignments.Any(option.Key.Contains))
+			if (option.Key != null && _specialCharacters.ValueAssignments.Any(option.Key.Contains))
 			{
 				TryGetArgumentFromKey(option);
 			}
@@ -69,9 +80,9 @@ namespace Fclp.Internals.Parsing
 			option.AdditionalValues = additionalArguments.ToArray();
 		}
 
-		private static void TryGetArgumentFromKey(ParsedOption option)
+		private void TryGetArgumentFromKey(ParsedOption option)
 		{
-			var split = option.Key.Split(SpecialCharacters.ValueAssignments, 2, StringSplitOptions.RemoveEmptyEntries);
+			var split = option.Key.Split(_specialCharacters.ValueAssignments, 2, StringSplitOptions.RemoveEmptyEntries);
 
 			option.Key = split[0];
 			option.Value = split.Length > 1 
@@ -79,19 +90,19 @@ namespace Fclp.Internals.Parsing
 				               : null;
 		}
 
-		static IEnumerable<string> CollectArgumentsUntilNextKey(IEnumerable<string> args)
+	    private IEnumerable<string> CollectArgumentsUntilNextKey(IEnumerable<string> args)
 		{
 			return from argument in args
 			       where !IsEndOfOptionsKey(argument)
 			       select argument.WrapInDoubleQuotesIfContainsWhitespace();
 		}
 
-		/// <summary>
-		/// Determines whether the specified string indicates the end of parsed options.
-		/// </summary>
-		static bool IsEndOfOptionsKey(string arg)
+        /// <summary>
+        /// Determines whether the specified string indicates the end of parsed options.
+        /// </summary>
+        private bool IsEndOfOptionsKey(string arg)
 		{
-			return string.Equals(arg, SpecialCharacters.EndOfOptionsKey, StringComparison.InvariantCultureIgnoreCase);
+			return string.Equals(arg, _specialCharacters.EndOfOptionsKey, StringComparison.InvariantCultureIgnoreCase);
 		}
 	}
 }

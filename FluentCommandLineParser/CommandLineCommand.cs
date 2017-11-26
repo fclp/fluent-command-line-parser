@@ -69,7 +69,7 @@ namespace Fclp
         /// </summary>
         public ICommandLineOptionValidator OptionValidator
         {
-            get { return _optionValidator ?? (_optionValidator = new CommandLineOptionValidator(this)); }
+            get { return _optionValidator ?? (_optionValidator = new CommandLineOptionValidator(this, Parser.SpecialCharacters)); }
             set { _optionValidator = value; }
         }
 

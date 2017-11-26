@@ -108,5 +108,37 @@ namespace Fclp
         {
             get { return Parser.Options; }
         }
+
+	    /// <summary>
+	    /// Configures the <see cref="IFluentCommandLineParser"/> so that short and long options that differ by case are considered the same.
+	    /// </summary>
+	    /// <returns></returns>
+        public IFluentCommandLineParser<TBuildType> MakeCaseInsensitive()
+	    {
+	        Parser.MakeCaseInsensitive();
+	        return this;
+	    }
+
+	    /// <summary>
+	    /// Configures the <see cref="IFluentCommandLineParser"/> so that short options are treated the same as long options, thus
+	    /// unique short option behaviour is ignored.
+	    /// </summary>
+	    /// <returns></returns>
+        public IFluentCommandLineParser<TBuildType> DisableShortOptions()
+	    {
+	        Parser.DisableShortOptions();
+            return this;
+        }
+
+	    /// <summary>
+	    /// Configures the <see cref="IFluentCommandLineParser"/> to use the specified option prefixes instead of the default.
+	    /// </summary>
+	    /// <param name="prefix"></param>
+	    /// <returns></returns>
+        public IFluentCommandLineParser<TBuildType> UseOwnOptionPrefix(params string[] prefix)
+	    {
+	        Parser.UseOwnOptionPrefix(prefix);
+	        return this;
+	    }
 	}
 }

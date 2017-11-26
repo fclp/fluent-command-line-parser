@@ -34,11 +34,22 @@ namespace Fclp.Internals.Parsing
 	/// </summary>
 	public class CommandLineParserEngineMark2 : ICommandLineParserEngine
 	{
-		private readonly List<string> _additionalArgumentsFound = new List<string>();
+	    private readonly SpecialCharacters _specialCharacters;
+	    private readonly List<string> _additionalArgumentsFound = new List<string>();
 		private readonly List<ParsedOption> _parsedOptions = new List<ParsedOption>();
-		private readonly OptionArgumentParser _optionArgumentParser = new OptionArgumentParser();
+	    private readonly OptionArgumentParser _optionArgumentParser;
 
         /// <summary>
+        /// Initialises a new instance of <see cref="CommandLineParserEngineMark2"/>.
+        /// </summary>
+        /// <param name="specialCharacters"></param>
+        public CommandLineParserEngineMark2(SpecialCharacters specialCharacters)
+	    {
+	        _specialCharacters = specialCharacters;
+	        _optionArgumentParser = new OptionArgumentParser(specialCharacters);
+        }
+
+	    /// <summary>
         /// Parses the specified <see><cref>T:System.String[]</cref></see> into key value pairs.
         /// </summary>
         /// <param name="args">The <see><cref>T:System.String[]</cref></see> to parse.</param>
@@ -48,7 +59,7 @@ namespace Fclp.Internals.Parsing
 		{
 			args = args ?? new string[0];
 
-			var grouper = new CommandLineOptionGrouper();
+			var grouper = new CommandLineOptionGrouper(_specialCharacters);
 
             var grouped = grouper.GroupArgumentsByOption(args, parseCommands);
 
@@ -68,7 +79,7 @@ namespace Fclp.Internals.Parsing
 			return new ParserEngineResult(_parsedOptions, _additionalArgumentsFound, command);
 		}
 
-	    private static string ExtractAnyCommand(string[][] grouped)
+	    private string ExtractAnyCommand(string[][] grouped)
 	    {
 	        if (grouped.Length > 0)
 	        {
@@ -90,7 +101,7 @@ namespace Fclp.Internals.Parsing
 		{
 			if (IsAKey(rawKey))
 			{
-				var parsedOption = ParsedOptionFactory.Create(rawKey);
+				var parsedOption = new ParsedOptionFactory(_specialCharacters).Create(rawKey);
 
 				TrimSuffix(parsedOption);
 
@@ -125,7 +136,7 @@ namespace Fclp.Internals.Parsing
 			}
 		}
 
-		private static bool ShortOptionNeedsToBeSplit(ParsedOption parsedOption)
+		private bool ShortOptionNeedsToBeSplit(ParsedOption parsedOption)
 		{
 			return PrefixIsShortOption(parsedOption.Prefix) && parsedOption.Key.Length > 1;
 		}
@@ -142,9 +153,9 @@ namespace Fclp.Internals.Parsing
 			return clone;
 		}
 
-		private static bool PrefixIsShortOption(string key)
+		private bool PrefixIsShortOption(string key)
 		{
-			return SpecialCharacters.ShortOptionPrefix.Contains(key);
+			return _specialCharacters.ShortOptionPrefix.Contains(key);
 		}
 
 		private static void TrimSuffix(ParsedOption parsedOption)
@@ -160,19 +171,19 @@ namespace Fclp.Internals.Parsing
 		/// </summary>
 		/// <param name="arg">The <see cref="System.String"/> to examine.</param>
 		/// <returns><c>true</c> if <paramref name="arg"/> is a Option key; otherwise <c>false</c>.</returns>
-		static bool IsAKey(string arg)
+		private bool IsAKey(string arg)
 		{ // TODO: push related special char operations into there own object
 			return arg != null 
-				&& SpecialCharacters.OptionPrefix.Any(arg.StartsWith)
-				&& SpecialCharacters.OptionPrefix.Any(arg.Equals) == false;
+				&& _specialCharacters.OptionPrefix.Any(arg.StartsWith)
+				&& _specialCharacters.OptionPrefix.Any(arg.Equals) == false;
 		}
 
 		/// <summary>
 		/// Determines whether the specified string indicates the end of parsed options.
 		/// </summary>
-		static bool IsEndOfOptionsKey(string arg)
+		private bool IsEndOfOptionsKey(string arg)
 		{
-			return string.Equals(arg, SpecialCharacters.EndOfOptionsKey, StringComparison.InvariantCultureIgnoreCase);
+			return string.Equals(arg, _specialCharacters.EndOfOptionsKey, StringComparison.InvariantCultureIgnoreCase);
 		}
 	}
 }

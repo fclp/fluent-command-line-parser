@@ -21,42 +21,45 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
+
+using System.Collections.Generic;
+
 namespace Fclp.Internals
 {
 	/// <summary>
 	/// Contains special characters used throughout the parser.
 	/// </summary>
-	public static class SpecialCharacters
+	public class SpecialCharacters
 	{
 		/// <summary>
 		/// Characters used for value assignment.
 		/// </summary>
-		public static readonly char[] ValueAssignments = new[] { '=', ':' };
+		public char[] ValueAssignments { get; private set; } = new[] { '=', ':' };
 
 		/// <summary>
 		/// Assign a name to the whitespace character.
 		/// </summary>
-		public const char Whitespace = ' ';
+		public char Whitespace { get; set; } = ' ';
 
 		/// <summary>
 		/// Characters that define the start of an option.
 		/// </summary>
-		public static readonly string[] OptionPrefix = new[] { "/", "--", "-" };
+		public List<string> OptionPrefix { get; private set; } = new List<string> { "/", "--", "-" };
 
 		/// <summary>
 		/// Characters that have special meaning at the end of an option key.
 		/// </summary>
-		public static readonly string[] OptionSuffix = new[] { "+", "-" };
+		public List<string> OptionSuffix { get; private set; } = new List<string> { "+", "-" };
 
-		/// <summary>
+		/// <summary>s
 		/// Characters that define an explicit short option.
 		/// </summary>
-		public static readonly string[] ShortOptionPrefix = new[] { "-" };
+		public List<string> ShortOptionPrefix { get; private set; } = new List<string> { "-" };
 
 		/// <summary>
 		/// The key that indicates the end of any options.
 		/// Any following arguments should be treated as operands, even if they begin with the '-' character.
 		/// </summary>
-		public static readonly string EndOfOptionsKey = "--";
+		public string EndOfOptionsKey { get; set; } = "--";
 	}
 }

@@ -84,5 +84,30 @@ namespace Fclp
 		/// Gets or sets whether values that differ by case are considered different. 
 		/// </summary>
 		bool IsCaseSensitive { get; set; }
+
+        /// <summary>
+        /// Gets the special characters used by the parser.
+        /// </summary>
+        SpecialCharacters SpecialCharacters { get; }
+
+        /// <summary>
+        /// Configures the <see cref="IFluentCommandLineParser"/> so that short and long options that differ by case are considered the same.
+        /// </summary>
+        /// <returns></returns>
+	    IFluentCommandLineParser MakeCaseInsensitive();
+
+        /// <summary>
+        /// Configures the <see cref="IFluentCommandLineParser"/> so that short options are treated the same as long options, thus
+        /// unique short option behaviour is ignored.
+        /// </summary>
+        /// <returns></returns>
+	    IFluentCommandLineParser DisableShortOptions();
+
+        /// <summary>
+        /// Configures the <see cref="IFluentCommandLineParser"/> to use the specified option prefixes instead of the default.
+        /// </summary>
+        /// <param name="prefix"></param>
+        /// <returns></returns>
+	    IFluentCommandLineParser UseOwnOptionPrefix(params string[] prefix);
 	}
 }

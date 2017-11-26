@@ -66,8 +66,9 @@ namespace Fclp
 		IHelpCommandLineOption _helpOption;
 		ICommandLineParserErrorFormatter _errorFormatter;
 		ICommandLineOptionValidator _optionValidator;
+	    SpecialCharacters _specialCharacters;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets or sets whether values that differ by case are considered different. 
 		/// </summary>
 		public bool IsCaseSensitive
@@ -76,7 +77,40 @@ namespace Fclp
 			set { StringComparison = value ? CaseSensitiveComparison : IgnoreCaseComparison; }
 		}
 
-		/// <summary>
+	    /// <summary>
+	    /// Configures the <see cref="IFluentCommandLineParser"/> so that short and long options that differ by case are considered the same.
+	    /// </summary>
+	    /// <returns></returns>
+        public IFluentCommandLineParser MakeCaseInsensitive()
+	    {
+	        IsCaseSensitive = false;
+	        return this;
+	    }
+
+	    /// <summary>
+	    /// Configures the <see cref="IFluentCommandLineParser"/> so that short options are treated the same as long options, thus
+	    /// unique short option behaviour is ignored.
+	    /// </summary>
+	    /// <returns></returns>
+        public IFluentCommandLineParser DisableShortOptions()
+	    {
+            SpecialCharacters.ShortOptionPrefix.Clear();
+	        return this;
+	    }
+
+	    /// <summary>
+	    /// Configures the <see cref="IFluentCommandLineParser"/> to use the specified option prefixes instead of the default.
+	    /// </summary>
+	    /// <param name="prefix"></param>
+	    /// <returns></returns>
+        public IFluentCommandLineParser UseOwnOptionPrefix(params string[] prefix)
+	    {
+	        SpecialCharacters.OptionPrefix.Clear();
+	        SpecialCharacters.OptionPrefix.AddRange(prefix);
+	        return this;
+	    }
+
+	    /// <summary>
 		/// Gets the <see cref="StringComparison"/> to use when matching values.
 		/// </summary>
 		internal StringComparison StringComparison { get; private set; }
@@ -130,7 +164,7 @@ namespace Fclp
 		/// </summary>
 		public ICommandLineOptionValidator OptionValidator
 		{
-			get { return _optionValidator ?? (_optionValidator = new CommandLineOptionValidator(this)); }
+			get { return _optionValidator ?? (_optionValidator = new CommandLineOptionValidator(this, SpecialCharacters)); }
 			set { _optionValidator = value; }
 		}
 
@@ -139,7 +173,7 @@ namespace Fclp
 		/// </summary>
 		public ICommandLineParserEngine ParserEngine
 		{
-			get { return _parserEngine ?? (_parserEngine = new CommandLineParserEngineMark2()); }
+			get { return _parserEngine ?? (_parserEngine = new CommandLineParserEngineMark2(SpecialCharacters)); }
 			set { _parserEngine = value; }
 		}
 
@@ -160,17 +194,34 @@ namespace Fclp
             get { return Commands.Any(); }
 	    }
 
-		/// <summary>
-		/// Setup a new <see cref="ICommandLineOptionFluent{T}"/> using the specified short and long Option name.
-		/// </summary>
-		/// <param name="shortOption">The short name for the Option. This must not be <c>null</c>, <c>empty</c> or only <c>whitespace</c>.</param>
-		/// <param name="longOption">The long name for the Option or <c>null</c> if not required.</param>
-		/// <returns></returns>
-		/// <exception cref="OptionAlreadyExistsException">
-		/// A Option with the same <paramref name="shortOption"/> name or <paramref name="longOption"/> name
-		/// already exists in the <see cref="IFluentCommandLineParser"/>.
-		/// </exception>
-		public ICommandLineOptionFluent<T> Setup<T>(char shortOption, string longOption)
+     //   /// <summary>
+     //   /// Gets or sets whether short options are explicitly treated seperately to long options, or whether they will be regarded as the same.
+     //   /// </summary>
+	    //public bool EnableShortOptions
+	    //{
+     //       get { return _enableShortOptions; }
+     //       set { _enableShortOptions = value; }
+	    //}
+
+        /// <summary>
+        /// Gets the special characters used by the parser.
+        /// </summary>
+	    public SpecialCharacters SpecialCharacters
+	    {
+	        get { return _specialCharacters ?? (_specialCharacters = new SpecialCharacters()); }
+	    }
+
+        /// <summary>
+        /// Setup a new <see cref="ICommandLineOptionFluent{T}"/> using the specified short and long Option name.
+        /// </summary>
+        /// <param name="shortOption">The short name for the Option. This must not be <c>null</c>, <c>empty</c> or only <c>whitespace</c>.</param>
+        /// <param name="longOption">The long name for the Option or <c>null</c> if not required.</param>
+        /// <returns></returns>
+        /// <exception cref="OptionAlreadyExistsException">
+        /// A Option with the same <paramref name="shortOption"/> name or <paramref name="longOption"/> name
+        /// already exists in the <see cref="IFluentCommandLineParser"/>.
+        /// </exception>
+        public ICommandLineOptionFluent<T> Setup<T>(char shortOption, string longOption)
 		{
 			return SetupInternal<T>(shortOption.ToString(CultureInfo.InvariantCulture), longOption);
 		}
@@ -322,7 +373,7 @@ namespace Fclp
                 {
                     try
                     {
-                        var parser = new OptionArgumentParser();
+                        var parser = new OptionArgumentParser(SpecialCharacters);
                         var blankOption = new ParsedOption();
                         parser.ParseArguments(result.RawResult.AdditionalValues, blankOption);
                         setupOption.Bind(blankOption);
