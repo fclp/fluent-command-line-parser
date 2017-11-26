@@ -15,7 +15,7 @@
     <copyright>Copyright Simon Williams 2012 - 2017</copyright>
     <tags>fluent command line parser commandline c# net35</tags>
     <files>
-        file src="FluentCommandLineParser\bin\release-signed\FluentCommandLineParser.dll" target="lib" />
+        <file src="FluentCommandLineParser\bin\release-signed\FluentCommandLineParser.dll" target="lib" />
     </files>
   </metadata>
 </package>
