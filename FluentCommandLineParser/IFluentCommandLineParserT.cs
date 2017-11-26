@@ -69,24 +69,31 @@ namespace Fclp
         /// </summary>
         IEnumerable<ICommandLineOption> Options { get; }
 
-	    /// <summary>
-	    /// Configures the <see cref="IFluentCommandLineParser"/> so that short and long options that differ by case are considered the same.
-	    /// </summary>
-	    /// <returns></returns>
-	    IFluentCommandLineParser<TBuildType> MakeCaseInsensitive();
-
-	    /// <summary>
-	    /// Configures the <see cref="IFluentCommandLineParser"/> so that short options are treated the same as long options, thus
-	    /// unique short option behaviour is ignored.
-	    /// </summary>
-	    /// <returns></returns>
-	    IFluentCommandLineParser<TBuildType> DisableShortOptions();
+        /// <summary>
+        /// Configures the <see cref="IFluentCommandLineParser{TBuildType}"/> so that short and long options that differ by case are considered the same.
+        /// </summary>
+        /// <returns></returns>
+        IFluentCommandLineParser<TBuildType> MakeCaseInsensitive();
 
         /// <summary>
-        /// Configures the <see cref="IFluentCommandLineParser"/> to use the specified option prefixes instead of the default.
+        /// Configures the <see cref="IFluentCommandLineParser{TBuildType}"/> so that short options are treated the same as long options, thus
+        /// unique short option behaviour is ignored.
+        /// </summary>
+        /// <returns></returns>
+        IFluentCommandLineParser<TBuildType> DisableShortOptions();
+
+        /// <summary>
+        /// Configures the <see cref="IFluentCommandLineParser{TBuildType}"/> to use the specified option prefixes instead of the default.
         /// </summary>
         /// <param name="prefix"></param>
         /// <returns></returns>
         IFluentCommandLineParser<TBuildType> UseOwnOptionPrefix(params string[] prefix);
+
+        /// <summary>
+        /// Configures the <see cref="IFluentCommandLineParser"/> to skip the first of the specified arguments.
+        /// This can be useful when Windows inserts the application name in the command line arguments for your application.
+        /// </summary>
+        /// <returns>this <see cref="IFluentCommandLineParser{TBuildType}"/></returns>
+	    IFluentCommandLineParser<TBuildType> SkipFirstArg();
 	}
 }

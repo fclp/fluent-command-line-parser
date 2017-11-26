@@ -111,9 +111,27 @@ namespace Fclp
 	    }
 
 	    /// <summary>
+	    /// Configures the <see cref="IFluentCommandLineParser"/> to skip the first of the specified arguments.
+	    /// This can be useful when Windows inserts the application name in the command line arguments for your application.
+	    /// </summary>
+	    /// <returns>this <see cref="IFluentCommandLineParser"/></returns>
+        public IFluentCommandLineParser SkipFirstArg()
+	    {
+	        SkipTheFirstArg = true;
+	        return this;
+	    }
+
+	    /// <summary>
 		/// Gets the <see cref="StringComparison"/> to use when matching values.
 		/// </summary>
 		internal StringComparison StringComparison { get; private set; }
+
+        /// <summary>
+        /// Gets or sets whether to skip the first of the specified arguments.
+        /// This can be useful when Windows inserts the application name in the command line arguments for your application.
+        /// </summary>
+        /// <returns><c>true</c> if the first arg is to be ignored; otherwise <c>false</c>.</returns>
+        internal bool SkipTheFirstArg { get; set; }
 
 		/// <summary>
 		/// Gets the list of Options
@@ -308,6 +326,8 @@ namespace Fclp
 		/// <returns>An <see cref="ICommandLineParserResult"/> representing the results of the parse operation.</returns>
 		public ICommandLineParserResult Parse(string[] args)
 		{
+		    if (SkipTheFirstArg) args = args.Skip(1).ToArray();
+
 			var parserEngineResult = this.ParserEngine.Parse(args, HasCommands);
 			var parsedOptions = parserEngineResult.ParsedOptions.ToList();
 

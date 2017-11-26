@@ -140,5 +140,16 @@ namespace Fclp
 	        Parser.UseOwnOptionPrefix(prefix);
 	        return this;
 	    }
+
+	    /// <summary>
+	    /// Configures the <see cref="IFluentCommandLineParser"/> to skip the first of the specified arguments.
+	    /// This can be useful when Windows inserts the application name in the command line arguments for your application.
+	    /// </summary>
+	    /// <returns>this <see cref="IFluentCommandLineParser{TBuildType}"/></returns>
+	    public IFluentCommandLineParser<TBuildType> SkipFirstArg()
+	    {
+	        Parser.SkipFirstArg();
+	        return this;
+        }
 	}
 }

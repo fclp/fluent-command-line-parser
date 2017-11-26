@@ -109,5 +109,12 @@ namespace Fclp
         /// <param name="prefix"></param>
         /// <returns></returns>
 	    IFluentCommandLineParser UseOwnOptionPrefix(params string[] prefix);
-	}
+
+	    /// <summary>
+	    /// Configures the <see cref="IFluentCommandLineParser"/> to skip the first of the specified arguments.
+	    /// This can be useful when Windows inserts the application name in the command line arguments for your application.
+	    /// </summary>
+	    /// <returns>this <see cref="IFluentCommandLineParser"/></returns>
+	    IFluentCommandLineParser SkipFirstArg();
+    }
 }
