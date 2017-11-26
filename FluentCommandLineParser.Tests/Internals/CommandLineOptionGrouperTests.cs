@@ -22,8 +22,10 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using Fclp.Internals;
 using Fclp.Internals.Parsing;
 using Machine.Specifications;
+using Ploeh.AutoFixture;
 
 namespace Fclp.Tests.Internals
 {
@@ -32,8 +34,13 @@ namespace Fclp.Tests.Internals
 		[Subject(typeof(CommandLineOptionGrouper))]
 		abstract class CommandLineOptionGrouperTestContext : TestContextBase<CommandLineOptionGrouper>
 		{
-			Establish context = () =>
-				CreateSut();
+            static SpecialCharacters specialCharacters = new SpecialCharacters();
+
+		    Establish context = () =>
+		    {
+		        fixture.Freeze(specialCharacters);
+		        CreateSut();
+		    };
 		}
 
 		abstract class GroupByOptionTestContext : CommandLineOptionGrouperTestContext

@@ -23,9 +23,11 @@
 #endregion
 
 using System.Linq;
+using Fclp.Internals;
 using Fclp.Internals.Extensions;
 using Fclp.Internals.Parsing;
 using Machine.Specifications;
+using Ploeh.AutoFixture;
 
 namespace Fclp.Tests.Internals
 {
@@ -34,8 +36,14 @@ namespace Fclp.Tests.Internals
 		[Subject(typeof(CommandLineParserEngineMark2))]
 		abstract class CommandLineParserEngineMark2TestContext : TestContextBase<CommandLineParserEngineMark2>
 		{
-			Establish context = () => CreateSut();
-		}
+		    static SpecialCharacters specialCharacters = new SpecialCharacters();
+
+		    Establish context = () =>
+		    {
+		        fixture.Freeze(specialCharacters);
+		        CreateSut();
+		    };
+        }
 
 		sealed class Parse
 		{
