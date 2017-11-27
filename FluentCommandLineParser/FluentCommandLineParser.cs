@@ -75,10 +75,15 @@ namespace Fclp
 			set { StringComparison = value ? CaseSensitiveComparison : IgnoreCaseComparison; }
 		}
 
-		/// <summary>
-		/// Gets the <see cref="StringComparison"/> to use when matching values.
-		/// </summary>
-		internal StringComparison StringComparison { get; private set; }
+        /// <summary>
+        /// options/callback Execute sequence, default as the setup sequence
+        /// </summary>
+        public FluentCommandLineParseSequence ParseSequence { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="StringComparison"/> to use when matching values.
+        /// </summary>
+        internal StringComparison StringComparison { get; private set; }
 
 		/// <summary>
 		/// Gets the list of Options
@@ -236,49 +241,62 @@ namespace Fclp
 				return result;
 			}
 
-			foreach (var setupOption in this.Options)
-			{
-				/*
+            var matchedOptions = new HashSet<ParsedOption>();
+            var optionIndex = 0;
+            foreach (var setupOption in this.Options)
+            {
+                /*
 				 * Step 1. match the setup Option to one provided in the args by either long or short names
 				 * Step 2. if the key has been matched then bind the value
 				 * Step 3. if the key is not matched and it is required, then add a new error
 				 * Step 4. the key is not matched and optional, bind the default value if available
 				 */
 
-				// Step 1
-				ICommandLineOption option = setupOption;
-				var match = parsedOptions.FirstOrDefault(pair =>
-					pair.Key.Equals(option.ShortName, this.StringComparison) // tries to match the short name
-					|| pair.Key.Equals(option.LongName, this.StringComparison)); // or else the long name
+                // Step 1
+                ICommandLineOption option = setupOption;
+                var matchIndex = parsedOptions.FindIndex(pair => 
+                    !matchedOptions.Contains(pair) && 
+                    (pair.Key.Equals(option.ShortName, this.StringComparison) // tries to match the short name
+                    || pair.Key.Equals(option.LongName, this.StringComparison))// or else the long name
+                );
 
-				if (match != null) // Step 2
-				{
+                if (matchIndex > -1) // Step 2
+                {
+                    var match = parsedOptions[matchIndex];
 
-					try
-					{
-						option.Bind(match);
-					}
-					catch (OptionSyntaxException)
-					{
-						result.Errors.Add(new OptionSyntaxParseError(option, match));
-						if (option.HasDefault)
-							option.BindDefault();
-					}
+                    match.Order = matchIndex;
+                    match.SetupCommand = option;
+                    match.SetupOrder = optionIndex++;
+                    matchedOptions.Add(match);
 
-					parsedOptions.Remove(match);
-				}
-				else
-				{
-					if (option.IsRequired) // Step 3
-						result.Errors.Add(new ExpectedOptionNotFoundParseError(option));
-					else if (option.HasDefault)
-						option.BindDefault(); // Step 4
+                    //parsedOptions.Remove(match);//will affect the matchIndex
+                }
+                else
+                {
+                    if (option.IsRequired) // Step 3
+                        result.Errors.Add(new ExpectedOptionNotFoundParseError(option));
+                    else if (option.HasDefault)
+                        option.BindDefault(); // Step 4
 
-					result.UnMatchedOptions.Add(option);
-				}
-			}
+                    result.UnMatchedOptions.Add(option);
+                }
+            }
 
-			parsedOptions.ForEach(item => result.AdditionalOptionsFound.Add(new KeyValuePair<string, string>(item.Key, item.Value)));
+            foreach(var match in ParseSequence == FluentCommandLineParseSequence.SameAsSetup ? matchedOptions.OrderBy(o => o.SetupOrder) : matchedOptions.OrderBy(o => o.Order))
+            {
+                try
+                {
+                    match.SetupCommand.Bind(match);
+                }
+                catch (OptionSyntaxException)
+                {
+                    result.Errors.Add(new OptionSyntaxParseError(match.SetupCommand, match));
+                    if (match.SetupCommand.HasDefault)
+                        match.SetupCommand.BindDefault();
+                }
+            }
+
+            parsedOptions.Where(item => !matchedOptions.Contains(item)).ForEach(item => result.AdditionalOptionsFound.Add(new KeyValuePair<string, string>(item.Key, item.Value)));
 
 			result.ErrorText = ErrorFormatter.Format(result.Errors);
 

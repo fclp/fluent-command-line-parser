@@ -54,12 +54,12 @@ namespace Fclp
 		/// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
 		ICommandLineOptionFluent<T> Callback(Action<T> callback);
 
-		/// <summary>
-		/// Specifies the default value to use if no value is found whilst parsing this <see cref="ICommandLineOptionFluent{T}"/>.
-		/// </summary>
-		/// <param name="value">The value to use.</param>
-		/// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
-		ICommandLineOptionFluent<T> SetDefault(T value);
+        /// <summary>
+        /// Set default option and specifies the default value to use if no value is found whilst parsing this <see cref="ICommandLineOptionFluent{T}"/>.
+        /// </summary>
+        /// <param name="value">The value to use.</param>
+        /// <returns>A <see cref="ICommandLineOptionFluent{T}"/>.</returns>
+        ICommandLineOptionFluent<T> SetDefault(T value);
 
 		/// <summary>
 		/// Specified the method to invoke with any addition arguments parsed with the Option.
