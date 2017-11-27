@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using Fclp.Internals;
 
 namespace Fclp
@@ -35,7 +36,7 @@ namespace Fclp
     /// a predefined arguments object.
     /// </summary>
 	/// <typeparam name="TBuildType">The object type containing the argument properties to populate from parsed command line arguments.</typeparam>
-	public class FluentCommandLineParser<TBuildType> : IFluentCommandLineParser<TBuildType> where TBuildType : class, new()
+	public class FluentCommandLineParser<TBuildType> : IFluentCommandLineParser<TBuildType> where TBuildType : class
 	{
 		/// <summary>
 		/// Gets the <see cref="IFluentCommandLineParser"/>.
@@ -47,19 +48,46 @@ namespace Fclp
 		/// </summary>
 		public TBuildType Object { get; private set; }
 
-		/// <summary>
-		/// Initialises a new instance of the <see cref="FluentCommandLineParser{TBuildType}"/> class.
-		/// </summary>
-		public FluentCommandLineParser()
+        /// <summary>
+        /// Initialises a new instance of the <see cref="FluentCommandLineParser{TBuildType}"/> class.
+        /// </summary>
+        /// <exception cref="MissingMethodException">If <typeparamref name="TBuildType"/> does not have a parameterless constructor.</exception>
+        public FluentCommandLineParser()
+            : this(CreateArgsObject)
 		{
-			Object = new TBuildType();
-			Parser = new FluentCommandLineParser();
-		}
+        }
 
-		/// <summary>
-		/// Sets up an Option for a write-able property on the type being built.
-		/// </summary>
-		public ICommandLineOptionBuilderFluent<TProperty> Setup<TProperty>(Expression<Func<TBuildType, TProperty>> propertyPicker)
+	    /// <summary>
+        /// Initialises a new instance of the <see cref="FluentCommandLineParser{TBuildType}"/> class.
+        /// </summary>
+        /// <param name="creator">Callback to create an instance of <typeparamref name="TBuildType"/>. This must not return <c>null</c>.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="creator"/> call returns <c>null</c>.</exception>
+        public FluentCommandLineParser(Func<TBuildType> creator)
+	    {
+	        Object = creator();
+            if(Object == null) throw new ArgumentNullException(nameof(creator));
+	        Parser = new FluentCommandLineParser();
+        }
+
+        /// <summary>
+        /// Verifies the type <typeparamref name="TBuildType"/> has a constructor with no args.
+        /// </summary>
+        /// <returns>An instance of <typeparamref name="TBuildType"/>.</returns>
+        /// <exception cref="MissingMethodException">If <typeparamref name="TBuildType"/> does not have a parameterless constructor.</exception>
+	    private static TBuildType CreateArgsObject()
+	    {
+	        Type theType = typeof(TBuildType); // if you know the type
+
+	        if (theType.GetConstructor(Type.EmptyTypes) == null)
+	            throw new MissingMethodException(typeof(TBuildType).Name, "Parameterless constructor");
+
+	        return Activator.CreateInstance<TBuildType>();
+	    }
+
+        /// <summary>
+        /// Sets up an Option for a write-able property on the type being built.
+        /// </summary>
+        public ICommandLineOptionBuilderFluent<TProperty> Setup<TProperty>(Expression<Func<TBuildType, TProperty>> propertyPicker)
 		{
 			return new CommandLineOptionBuilderFluent<TBuildType, TProperty>(Parser, Object, propertyPicker);
 		}

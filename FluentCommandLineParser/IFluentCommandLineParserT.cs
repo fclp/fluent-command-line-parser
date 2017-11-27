@@ -34,7 +34,7 @@ namespace Fclp
     /// to easily and fluently parse command line arguments into
     /// a predefined arguments object.
     /// </summary>
-	public interface IFluentCommandLineParser<TBuildType> where TBuildType : new()
+	public interface IFluentCommandLineParser<TBuildType> where TBuildType : class
 	{
 		/// <summary>
 		/// Gets the constructed object.
