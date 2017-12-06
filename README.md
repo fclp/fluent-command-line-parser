@@ -2,7 +2,7 @@ Fluent Command Line Parser
 ==========================
 A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface.
 
-[![TeamCity Badge](https://img.shields.io/nuget/dt/FluentCommandLineParser.svg)](https://teamcity.jetbrains.com/viewType.html?buildTypeId=bt952)
+[![TeamCity Badge](https://img.shields.io/teamcity/http/teamcity.jetbrains.com/s/bt952.svg)](https://teamcity.jetbrains.com/viewType.html?buildTypeId=bt952)
 [![Nuget Badge](https://img.shields.io/nuget/dt/FluentCommandLineParser.svg)](https://nuget.org/packages/FluentCommandLineParser)
 
 	  
