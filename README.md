@@ -15,6 +15,8 @@ Or use the Package Manager console in Visual Studio:
 ```
 PM> Install-Package FluentCommandLineParser
 ```
+### .:NEW:. Git like commands!
+Currently in pre-release, see [this Stack Overflow](https://stackoverflow.com/questions/45289653/fluent-command-line-parser-call-function/47486943) post for example usage, and either use [this pre-release Nuget package](https://www.nuget.org/packages/FluentCommandLineParser/1.5.0.7-commands) or get the assemblies (including signed named assemblies) from the [latest build on teamcity.jetbrains.com](https://teamcity.jetbrains.com/viewLog.html?buildTypeId=FluentCommandLineParser_15preRelease&buildId=lastSuccessful&tab=artifacts)
 
 ### Usage
 ```csharp
