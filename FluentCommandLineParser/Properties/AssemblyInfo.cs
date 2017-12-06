@@ -35,7 +35,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Fluent Command Line Parser")]
-[assembly: AssemblyCopyright("Copyright © Simon Williams 2012 - 2013")]
+[assembly: AssemblyCopyright("Copyright © Simon Williams 2012 - 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

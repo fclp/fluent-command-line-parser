@@ -24,13 +24,19 @@
 
 using System;
 
+#if !NETSTANDARD2_0
+using System.Runtime.Serialization;
+#endif
+
 namespace Fclp
 {
-	/// <summary>
-	/// Represents an error that has occurred because a specified type is unsupported.
-	/// </summary>
-	[Serializable]
-	public class UnsupportedTypeException : Exception
+    /// <summary>
+    /// Represents an error that has occurred because a specified type is unsupported.
+    /// </summary>
+#if !NETSTANDARD2_0
+    [Serializable]
+#endif
+    public class UnsupportedTypeException : Exception
 	{
 	}
 }

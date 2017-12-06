@@ -24,13 +24,19 @@
 
 using System;
 
+#if !NETSTANDARD2_0
+using System.Runtime.Serialization;
+#endif
+
 namespace Fclp
 {
-	/// <summary>
-	/// Represents an error that has occurred because a Option syntax was in an unexpected format.
-	/// </summary>
-	[Serializable]
-	public class OptionSyntaxException : Exception
+    /// <summary>
+    /// Represents an error that has occurred because a Option syntax was in an unexpected format.
+    /// </summary>
+#if !NETSTANDARD2_0
+    [Serializable]
+#endif
+    public class OptionSyntaxException : Exception
 	{
 	}
 }

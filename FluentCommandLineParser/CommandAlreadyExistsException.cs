@@ -1,12 +1,41 @@
-﻿using System;
+﻿#region License
+// OptionAlreadyExistsException.cs
+// Copyright (c) 2017, Simon Williams
+// All rights reserved.
+// 
+// Redistribution and use in source and binary forms, with or without modification, are permitted provide
+// d that the following conditions are met:
+// 
+// Redistributions of source code must retain the above copyright notice, this list of conditions and the
+// following disclaimer.
+// 
+// Redistributions in binary form must reproduce the above copyright notice, this list of conditions and
+// the following disclaimer in the documentation and/or other materials provided with the distribution.
+// 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED 
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A 
+// PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+// ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+// TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+// POSSIBILITY OF SUCH DAMAGE.
+#endregion
+
+using System;
+
+#if !NETSTANDARD2_0
 using System.Runtime.Serialization;
+#endif
 
 namespace Fclp
 {
     /// <summary>
     /// Represents an error that has occurred because a matching Command already exists in the parser.
     /// </summary>
+#if !NETSTANDARD2_0
     [Serializable]
+#endif
     public class CommandAlreadyExistsException : Exception
     {
         /// <summary>
@@ -19,7 +48,8 @@ namespace Fclp
         /// </summary>
         /// <param name="commandName"></param>
         public CommandAlreadyExistsException(string commandName) : base(commandName) { }
-		
+
+#if !NETSTANDARD2_0
         /// <summary>
         /// Initialises a new instance of the <see cref="OptionAlreadyExistsException"/> class.
         /// </summary>
@@ -27,7 +57,8 @@ namespace Fclp
         /// <param name="context"></param>
         public CommandAlreadyExistsException(SerializationInfo info, StreamingContext context)
             : base(info, context) { }
-		
+#endif
+
         /// <summary>
         /// Initialises a new instance of the <see cref="OptionAlreadyExistsException"/> class.
         /// </summary>

@@ -23,15 +23,20 @@
 #endregion
 
 using System;
+
+#if !NETSTANDARD2_0
 using System.Runtime.Serialization;
+#endif
 
 namespace Fclp
 {
-	/// <summary>
-	/// Represents an error that has occurred because a matching Option already exists in the parser.
-	/// </summary>
-	[Serializable]
-	public class OptionAlreadyExistsException : Exception
+    /// <summary>
+    /// Represents an error that has occurred because a matching Option already exists in the parser.
+    /// </summary>
+#if !NETSTANDARD2_0
+    [Serializable]
+#endif
+    public class OptionAlreadyExistsException : Exception
 	{
 		/// <summary>
 		/// Initialises a new instance of the <see cref="OptionAlreadyExistsException"/> class.
@@ -43,21 +48,24 @@ namespace Fclp
 		/// </summary>
 		/// <param name="optionName"></param>
 		public OptionAlreadyExistsException(string optionName) : base(optionName) { }
-		
-		/// <summary>
-		/// Initialises a new instance of the <see cref="OptionAlreadyExistsException"/> class.
-		/// </summary>
-		/// <param name="info"></param>
-		/// <param name="context"></param>
-		public OptionAlreadyExistsException(SerializationInfo info, StreamingContext context)
-			: base(info, context) { }
-		
-		/// <summary>
-		/// Initialises a new instance of the <see cref="OptionAlreadyExistsException"/> class.
-		/// </summary>
-		/// <param name="optionName"></param>
-		/// <param name="innerException"></param>
-		public OptionAlreadyExistsException(string optionName, Exception innerException)
+
+
+#if !NETSTANDARD2_0
+	    /// <summary>
+	    /// Initialises a new instance of the <see cref="OptionAlreadyExistsException"/> class.
+	    /// </summary>
+	    /// <param name="info"></param>
+	    /// <param name="context"></param>
+	    public OptionAlreadyExistsException(SerializationInfo info, StreamingContext context)
+	        : base(info, context) { }
+#endif
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="OptionAlreadyExistsException"/> class.
+        /// </summary>
+        /// <param name="optionName"></param>
+        /// <param name="innerException"></param>
+        public OptionAlreadyExistsException(string optionName, Exception innerException)
 			: base(optionName, innerException) { }
 
 	}

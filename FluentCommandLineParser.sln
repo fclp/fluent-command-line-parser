@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentCommandLineParser", "FluentCommandLineParser\FluentCommandLineParser.csproj", "{74CDFA61-81D8-40F2-B536-949BABA15D3E}"
 EndProject
@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D8DCB1
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentCommandLineParser.Examples", "FluentCommandLineParser.Examples\FluentCommandLineParser.Examples.csproj", "{47A9E194-B92E-4929-A7A8-396BCD46A844}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentCommandLineParser.NETStandard", "FluentCommandLineParser.NETStandard\FluentCommandLineParser.NETStandard.csproj", "{C1F25160-FD83-46F8-834F-BC4096F8EB26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,8 +36,15 @@ Global
 		{47A9E194-B92E-4929-A7A8-396BCD46A844}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47A9E194-B92E-4929-A7A8-396BCD46A844}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47A9E194-B92E-4929-A7A8-396BCD46A844}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1F25160-FD83-46F8-834F-BC4096F8EB26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1F25160-FD83-46F8-834F-BC4096F8EB26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1F25160-FD83-46F8-834F-BC4096F8EB26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1F25160-FD83-46F8-834F-BC4096F8EB26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D940311D-F2CE-41DB-A699-C5C252A7AC7F}
 	EndGlobalSection
 EndGlobal
