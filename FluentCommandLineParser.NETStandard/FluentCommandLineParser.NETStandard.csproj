@@ -11,7 +11,6 @@
     <Compile Include="..\FluentCommandLineParser\CommandLineCommand.cs" Link="CommandLineCommand.cs" />
     <Compile Include="..\FluentCommandLineParser\CommandLineParserErrorFormatter.cs" Link="CommandLineParserErrorFormatter.cs" />
     <Compile Include="..\FluentCommandLineParser\CommandNotFoundException.cs" Link="CommandNotFoundException.cs" />
-    <Compile Include="..\FluentCommandLineParser\FluentCommandLineBuilderT.cs" Link="FluentCommandLineBuilderT.cs" />
     <Compile Include="..\FluentCommandLineParser\FluentCommandLineParser.cs" Link="FluentCommandLineParser.cs" />
     <Compile Include="..\FluentCommandLineParser\FluentCommandLineParserT.cs" Link="FluentCommandLineParserT.cs" />
     <Compile Include="..\FluentCommandLineParser\ICommandLineCommand.cs" Link="ICommandLineCommand.cs" />
@@ -21,7 +20,6 @@
     <Compile Include="..\FluentCommandLineParser\ICommandLineParserError.cs" Link="ICommandLineParserError.cs" />
     <Compile Include="..\FluentCommandLineParser\ICommandLineParserErrorFormatter.cs" Link="ICommandLineParserErrorFormatter.cs" />
     <Compile Include="..\FluentCommandLineParser\ICommandLineParserResult.cs" Link="ICommandLineParserResult.cs" />
-    <Compile Include="..\FluentCommandLineParser\IFluentCommandLineBuilderT.cs" Link="IFluentCommandLineBuilderT.cs" />
     <Compile Include="..\FluentCommandLineParser\IFluentCommandLineParser.cs" Link="IFluentCommandLineParser.cs" />
     <Compile Include="..\FluentCommandLineParser\IFluentCommandLineParserT.cs" Link="IFluentCommandLineParserT.cs" />
     <Compile Include="..\FluentCommandLineParser\IHelpCommandLineOptionFluent.cs" Link="IHelpCommandLineOptionFluent.cs" />
