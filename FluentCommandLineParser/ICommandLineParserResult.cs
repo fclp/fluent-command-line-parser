@@ -58,15 +58,15 @@ namespace Fclp
 		/// </summary>
 		IEnumerable<ICommandLineParserError> Errors { get; }
 
-		/// <summary>
-		/// Contains a list of options that were specified in the args but not setup and therefore were not expected.
-		/// </summary>
-		IEnumerable<KeyValuePair<string, string>> AdditionalOptionsFound { get; }
+	    /// <summary>
+	    /// Contains a list of options that were specified in the args but not setup and therefore were not expected.
+	    /// </summary>
+	    IList<ParsedOption> AdditionalOptions { get; }
 
-		/// <summary>
-		/// Contains all the setup options that were not matched during the parse operation.
-		/// </summary>
-		IEnumerable<ICommandLineOption> UnMatchedOptions { get; }
+        /// <summary>
+        /// Contains all the setup options that were not matched during the parse operation.
+        /// </summary>
+        IEnumerable<ICommandLineOption> UnMatchedOptions { get; }
 
         /// <summary>
         /// 

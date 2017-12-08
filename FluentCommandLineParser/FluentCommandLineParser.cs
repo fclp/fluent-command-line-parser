@@ -407,7 +407,9 @@ namespace Fclp
                 }
             }
 
-	        parsedOptions.Where(item => !matchedOptions.Contains(item)).ForEach(item => result.AdditionalOptionsFound.Add(new KeyValuePair<string, string>(item.Key, item.Value)));
+            parsedOptions
+                .Where(item => matchedOptions.Contains(item) == false)
+                .ForEach(item => result.AdditionalOptions.Add(item));
 
             result.ErrorText = ErrorFormatter.Format(result.Errors);
 

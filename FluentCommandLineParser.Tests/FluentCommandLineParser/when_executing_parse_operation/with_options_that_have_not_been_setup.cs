@@ -64,7 +64,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 			It should_not_throw_any_errors = () => error.ShouldBeNull();
 			It should_return_a_result = () => result.ShouldNotBeNull();
 
-			It should_return_the_specified_args_as_additional_options = () => result.AdditionalOptionsFound
+			It should_return_the_specified_args_as_additional_options = () => result.AdditionalOptions
 				.Select(kvp => new ParsedOption(kvp.Key, kvp.Value))
 				.ShouldContainOnly(additionalOptions);
 		}

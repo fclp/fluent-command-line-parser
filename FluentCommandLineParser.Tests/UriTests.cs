@@ -37,7 +37,7 @@ namespace Fclp.Tests
                 var result = fclp.Parse(combination.Args);
 
                 Assert.IsEmpty(result.Errors);
-                Assert.IsEmpty(result.AdditionalOptionsFound);
+                Assert.IsEmpty(result.AdditionalOptions);
                 Assert.AreEqual(uri, fclp.Object.UriAsString);
             }
         }
@@ -60,7 +60,7 @@ namespace Fclp.Tests
                 var result = fclp.Parse(combination.Args);
 
                 Assert.IsEmpty(result.Errors);
-                Assert.IsEmpty(result.AdditionalOptionsFound);
+                Assert.IsEmpty(result.AdditionalOptions);
                 Assert.AreEqual(uri, uriAsString);
             }
         }
@@ -84,7 +84,7 @@ namespace Fclp.Tests
                 var result = fclp.Parse(combination.Args);
 
                 Assert.IsEmpty(result.Errors);
-                Assert.IsEmpty(result.AdditionalOptionsFound);
+                Assert.IsEmpty(result.AdditionalOptions);
                 Assert.AreEqual(uri, fclp.Object.Uri.AbsoluteUri);
             }
         }
@@ -107,7 +107,7 @@ namespace Fclp.Tests
                 var result = fclp.Parse(combination.Args);
 
                 Assert.IsEmpty(result.Errors);
-                Assert.IsEmpty(result.AdditionalOptionsFound);
+                Assert.IsEmpty(result.AdditionalOptions);
                 Assert.AreEqual(uri, actualUri.AbsoluteUri);
             }
         }
