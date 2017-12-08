@@ -85,7 +85,7 @@ namespace Fclp.Internals.Parsing
 
         internal int SetupOrder { get; set; }
 
-        internal int Order { get; set; }
+        internal int Position { get; set; }
 
         /// <summary>
         /// Gets whether this parsed option has a value set.

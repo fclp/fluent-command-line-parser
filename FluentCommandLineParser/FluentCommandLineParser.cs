@@ -358,12 +358,9 @@ namespace Fclp
                 {
                     var match = parsedOptions[matchIndex];
 
-                    match.Order = matchIndex;
                     match.SetupCommand = option;
                     match.SetupOrder = optionIndex++;
                     matchedOptions.Add(match);
-
-                    //parsedOptions.Remove(match);//will affect the matchIndex
                 }
                 else if (setupOption.UseForOrphanArgs && result.RawResult.AdditionalValues.Any())
                 {
@@ -393,7 +390,7 @@ namespace Fclp
 
             }
 
-            foreach (var match in ParseSequence == ParseSequence.SameAsSetup ? matchedOptions.OrderBy(o => o.SetupOrder) : matchedOptions.OrderBy(o => o.Order))
+            foreach (var match in ParseSequence == ParseSequence.SameAsSetup ? matchedOptions.OrderBy(o => o.SetupOrder) : matchedOptions.OrderBy(o => o.Position))
             {
                 try
                 {

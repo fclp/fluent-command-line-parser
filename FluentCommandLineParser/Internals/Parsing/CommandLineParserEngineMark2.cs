@@ -120,13 +120,22 @@ namespace Fclp.Internals.Parsing
 		{
 			if (ShortOptionNeedsToBeSplit(parsedOption))
 			{
-				_parsedOptions.AddRange(CloneAndSplit(parsedOption));
+			    Add(CloneAndSplit(parsedOption));
 			}
 			else
 			{
-				_parsedOptions.Add(parsedOption);
+			    Add(parsedOption);
 			}
 		}
+
+	    private void Add(params ParsedOption[] parsedOptions)
+	    {
+	        foreach (var parsedOption in parsedOptions)
+	        {
+	            parsedOption.Position = _parsedOptions.Count;
+	            _parsedOptions.Add(parsedOption);
+            }
+        }
 
 		private void AddAdditionArgument(string argument)
 		{
@@ -141,9 +150,9 @@ namespace Fclp.Internals.Parsing
 			return PrefixIsShortOption(parsedOption.Prefix) && parsedOption.Key.Length > 1;
 		}
 
-		private static IEnumerable<ParsedOption> CloneAndSplit(ParsedOption parsedOption)
+		private static ParsedOption[] CloneAndSplit(ParsedOption parsedOption)
 		{
-			return parsedOption.Key.Select(c => Clone(parsedOption, c)).ToList();
+			return parsedOption.Key.Select(c => Clone(parsedOption, c)).ToArray();
 		}
 
 		private static ParsedOption Clone(ParsedOption toClone, char c)

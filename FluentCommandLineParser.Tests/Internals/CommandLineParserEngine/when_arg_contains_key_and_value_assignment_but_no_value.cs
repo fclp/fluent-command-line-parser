@@ -22,6 +22,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System.Linq;
 using Fclp.Internals.Parsing;
 using Fclp.Tests.CommandLineParserEngine;
 using Machine.Specifications;
@@ -37,5 +38,7 @@ namespace Fclp.Tests.Internals.CommandLineParserEngine
 		Because of = () => RunParserWith(args);
 		It should_return_key_with_null_value = () => results.ShouldContain(key);
 		It should_return_key2_with_expected_value = () => results.ShouldContain(key2);
+        It should_set_the_position_of_the_first_arg_to_0 = () => results.ElementAt(0).Position.ShouldEqual(0);
+        It should_set_the_position_of_the_second_arg_to_1 = () => results.ElementAt(1).Position.ShouldEqual(1);
 	}
 }
