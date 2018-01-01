@@ -12,7 +12,7 @@
     <description>A simple, strongly typed .NET C# command line parser library using a fluent easy to use interface</description>
     <releaseNotes>https://github.com/fclp/fluent-command-line-parser/wiki/Release-Notes</releaseNotes>
     <copyright>Copyright Simon Williams 2012 - 2017</copyright>
-    <tags>fluent command line parser commandline c# netstandard cli /tags>
+    <tags>fluent command line parser commandline c# netstandard cli</tags>
     <dependencies>
     </dependencies>
   </metadata>
