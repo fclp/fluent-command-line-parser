@@ -29,12 +29,12 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentCommandLineParser.Internals;
 using Machine.Specifications;
-
+/*
 namespace FluentCommandLineParser.Tests
 {
     namespace CommandLineParserEngineTests
     {
-        [Subject(typeof(CommandLineParserEngine), "CommandLineParserEngine")]
+        [Subject(typeof(CommandLineParserEngineMark2), "CommandLineParserEngine")]
         public abstract class CommandLineParserEngineTestContext
         {
             protected static Exception error;
@@ -50,4 +50,4 @@ namespace FluentCommandLineParser.Tests
             }
         }
     }
-}
+} */

@@ -27,19 +27,18 @@ using System.Globalization;
 using System.Text;
 using Fclp.Internals;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace FluentCommandLineParser.Tests
 {
 	/// <summary>
 	/// Contains unit test for the <see cref="CommandLineOptionFormatter"/> test.
 	/// </summary>
-	[TestFixture]
 	public class CommandLineOptionFormatterTests
 	{
 		#region Constructors
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed()
 		{
 			new CommandLineOptionFormatter();
@@ -49,7 +48,7 @@ namespace FluentCommandLineParser.Tests
 
 		#region Properties
 
-		[Test]
+		[Fact]
 		public void Ensure_ValueText_Can_Be_Set()
 		{
 			var formatter = new CommandLineOptionFormatter();
@@ -58,10 +57,10 @@ namespace FluentCommandLineParser.Tests
 
 			formatter.ValueText = expected;
 
-			Assert.AreEqual(expected, formatter.ValueText);            
+			Assert.Equal(expected, formatter.ValueText);            
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_DescriptionText_Can_Be_Set()
 		{
 			var formatter = new CommandLineOptionFormatter();
@@ -70,10 +69,10 @@ namespace FluentCommandLineParser.Tests
 
 			formatter.DescriptionText = expected;
 
-			Assert.AreEqual(expected, formatter.DescriptionText);
+			Assert.Equal(expected, formatter.DescriptionText);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_NoOptionsText_Can_Be_Set()
 		{
 			var formatter = new CommandLineOptionFormatter();
@@ -82,10 +81,10 @@ namespace FluentCommandLineParser.Tests
 
 			formatter.NoOptionsText = expected;
 
-			Assert.AreEqual(expected, formatter.NoOptionsText);
+			Assert.Equal(expected, formatter.NoOptionsText);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Header_Can_Be_Set()
 		{
 			var formatter = new CommandLineOptionFormatter();
@@ -94,23 +93,22 @@ namespace FluentCommandLineParser.Tests
 
 			formatter.Header = expected;
 
-			Assert.AreEqual(expected, formatter.Header);   
+			Assert.Equal(expected, formatter.Header);   
 		}
 
 		#endregion Properties
 
 		#region Format
 
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
+		[Fact]
 		public void Ensure_Cannot_Specify_Null_options_Param()
 		{
 			var formatter = new CommandLineOptionFormatter();
 
-			formatter.Format(null);
+			Assert.Throws<ArgumentNullException>(() => formatter.Format(null));
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Format_Returns_Expected_String()
 		{
 			var formatter = new CommandLineOptionFormatter();
@@ -132,10 +130,11 @@ namespace FluentCommandLineParser.Tests
 			var expected = expectedSb.ToString();
 			var actual = formatter.Format(new[] { mockOptionB, mockOptionA, mockOptionC });
 
-			Assert.AreEqual(expected, actual, "Formatter returned unexpected string");
+			//Assert.Equal(expected, actual, "Formatter returned unexpected string");
+			Assert.Equal(expected, actual);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Header_Is_Displayed_If_One_Is_Set()
 		{
 			var formatter = new CommandLineOptionFormatter();
@@ -163,17 +162,18 @@ namespace FluentCommandLineParser.Tests
 			var expected = expectedSb.ToString();
 			var actual = formatter.Format(new[] { mockOption1, mockOption2 });
 
-			Assert.AreEqual(expected, actual, "Formatter returned unexpected string");
+			//Assert.Equal(expected, actual, "Formatter returned unexpected string");
+			Assert.Equal(expected, actual);
 		}
 		
-		[Test]
+		[Fact]
 		public void Ensure_NoOptionsText_Returned_If_No_options_Have_Been_Setup()
 		{
 			var formatter = new CommandLineOptionFormatter();
 
 			var actual = formatter.Format(new ICommandLineOption[0]);
 
-			Assert.AreEqual(formatter.NoOptionsText, actual);
+			Assert.Equal(formatter.NoOptionsText, actual);
 		}
 
 		#endregion Format

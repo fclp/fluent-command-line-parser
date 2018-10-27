@@ -1,5 +1,5 @@
 ﻿#region License
-// DoubleInlineDataAttribute.cs
+// InlineDataAttribute.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 

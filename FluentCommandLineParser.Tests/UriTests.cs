@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Fclp.Internals.Extensions;
-using NUnit.Framework;
+using Xunit;
 
 namespace Fclp.Tests
 {
     /// <summary>
     /// Tests for Uris
     /// </summary>
-    [TestFixture]
     public class UriTests
     {
         public class ExampleArgsContainer
@@ -18,7 +17,7 @@ namespace Fclp.Tests
             public Uri Uri { get; set; }
         }
 
-        [Test]
+        [Fact]
         public void GenericFclp_UriAsString()
         {
             const char shortKey = 'u';
@@ -36,13 +35,13 @@ namespace Fclp.Tests
 
                 var result = fclp.Parse(combination.Args);
 
-                Assert.IsEmpty(result.Errors);
-                Assert.IsEmpty(result.AdditionalOptionsFound);
-                Assert.AreEqual(uri, fclp.Object.UriAsString);
+                Assert.Empty(result.Errors);
+                Assert.Empty(result.AdditionalOptionsFound);
+                Assert.Equal(uri, fclp.Object.UriAsString);
             }
         }
 
-        [Test]
+        [Fact]
         public void StandardFclp_UriAsString()
         {
             const char shortKey = 'u';
@@ -59,13 +58,13 @@ namespace Fclp.Tests
 
                 var result = fclp.Parse(combination.Args);
 
-                Assert.IsEmpty(result.Errors);
-                Assert.IsEmpty(result.AdditionalOptionsFound);
-                Assert.AreEqual(uri, uriAsString);
+                Assert.Empty(result.Errors);
+                Assert.Empty(result.AdditionalOptionsFound);
+                Assert.Equal(uri, uriAsString);
             }
         }
 
-        [Test]
+        [Fact]
         public void GenericFclp_Uri()
         {
             const char shortKey = 'u';
@@ -83,13 +82,13 @@ namespace Fclp.Tests
 
                 var result = fclp.Parse(combination.Args);
 
-                Assert.IsEmpty(result.Errors);
-                Assert.IsEmpty(result.AdditionalOptionsFound);
-                Assert.AreEqual(uri, fclp.Object.Uri.AbsoluteUri);
+                Assert.Empty(result.Errors);
+                Assert.Empty(result.AdditionalOptionsFound);
+                Assert.Equal(uri, fclp.Object.Uri.AbsoluteUri);
             }
         }
 
-        [Test]
+        [Fact]
         public void StandardFclp_Uri()
         {
             const char shortKey = 'u';
@@ -106,9 +105,9 @@ namespace Fclp.Tests
 
                 var result = fclp.Parse(combination.Args);
 
-                Assert.IsEmpty(result.Errors);
-                Assert.IsEmpty(result.AdditionalOptionsFound);
-                Assert.AreEqual(uri, actualUri.AbsoluteUri);
+                Assert.Empty(result.Errors);
+                Assert.Empty(result.AdditionalOptionsFound);
+                Assert.Equal(uri, actualUri.AbsoluteUri);
             }
         }
 

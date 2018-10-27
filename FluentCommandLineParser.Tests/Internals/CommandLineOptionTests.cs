@@ -28,19 +28,18 @@ using Fclp.Internals;
 using Fclp.Internals.Parsing;
 using Fclp.Internals.Parsing.OptionParsers;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace FluentCommandLineParser.Tests.Internals
 {
 	/// <summary>
 	/// Contains unit tests for the <see cref="CommandLineOption{T}"/> class.
 	/// </summary>
-	[TestFixture]
-	class CommandLineOptionTests
+	public class CommandLineOptionTests
 	{
 		#region Constructor Tests
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed()
 		{
 			const string expectedShortName = "My short name";
@@ -49,11 +48,11 @@ namespace FluentCommandLineParser.Tests.Internals
 
 			var cmdOption = new CommandLineOption<object>(expectedShortName, expectedLongName, mockParser);
 
-			Assert.AreEqual(expectedShortName, cmdOption.ShortName, "Specified ShortName was not as expected");
-			Assert.AreEqual(expectedLongName, cmdOption.LongName, "Specified LongName was not as expected");
+			Assert.Equal(expectedShortName, cmdOption.ShortName); //, "Specified ShortName was not as expected");
+			Assert.Equal(expectedLongName, cmdOption.LongName); //, "Specified LongName was not as expected");
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed_With_Null_LongName()
 		{
 			const string expectedShortName = "My short name";
@@ -62,10 +61,10 @@ namespace FluentCommandLineParser.Tests.Internals
 
 			var cmdOption = new CommandLineOption<object>(expectedShortName, expectedLongName, mockParser);
 
-			Assert.IsNull(cmdOption.LongName, "Could not instantiate with null LongName");
+			Assert.Null(cmdOption.LongName); //, "Could not instantiate with null LongName");
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed_With_Empty_LongName()
 		{
 			const string expectedShortName = "My short name";
@@ -74,10 +73,10 @@ namespace FluentCommandLineParser.Tests.Internals
 
 			var cmdOption = new CommandLineOption<object>(expectedShortName, expectedLongName, mockParser);
 
-			Assert.AreEqual(expectedLongName, cmdOption.LongName, "Could not instantiate with empty LongName");
+			Assert.Equal(expectedLongName, cmdOption.LongName); //, "Could not instantiate with empty LongName");
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed_With_Whitespace_Only_LongName()
 		{
 			const string expectedShortName = "My short name";
@@ -86,10 +85,10 @@ namespace FluentCommandLineParser.Tests.Internals
 
 			var cmdOption = new CommandLineOption<object>(expectedShortName, expectedLongName, mockParser);
 
-			Assert.AreEqual(expectedLongName, cmdOption.LongName, "Could not instantiate with whitespace only LongName");
+			Assert.Equal(expectedLongName, cmdOption.LongName); //, "Could not instantiate with whitespace only LongName");
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed_With_Null_ShortName_And_Valid_LongName()
 		{
 			const string expectedShortName = null;
@@ -99,10 +98,10 @@ namespace FluentCommandLineParser.Tests.Internals
 
 			var cmdOption = new CommandLineOption<object>(expectedShortName, expectedLongName, mockParser);
 
-			Assert.AreEqual(expectedShortName, cmdOption.ShortName, "Could not instantiate with null ShortName");
+			Assert.Equal(expectedShortName, cmdOption.ShortName); //, "Could not instantiate with null ShortName");
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed_With_Empty_ShortName_And_Valid_LongName()
 		{
 			const string expectedShortName = "";
@@ -111,10 +110,10 @@ namespace FluentCommandLineParser.Tests.Internals
 
 			var cmdOption = new CommandLineOption<object>(expectedShortName, expectedLongName, mockParser);
 
-			Assert.AreEqual(expectedShortName, cmdOption.ShortName, "Could not instantiate with empty ShortName");
+			Assert.Equal(expectedShortName, cmdOption.ShortName); //, "Could not instantiate with empty ShortName");
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed_With_Whitespace_Only_ShortName_And_Valid_LongName()
 		{
 			const string expectedShortName = " ";
@@ -123,10 +122,10 @@ namespace FluentCommandLineParser.Tests.Internals
 
 			var cmdOption = new CommandLineOption<object>(expectedShortName, expectedLongName, mockParser);
 
-			Assert.AreEqual(expectedShortName, cmdOption.ShortName, "Could not instantiate with whitespace only ShortName");
+			Assert.Equal(expectedShortName, cmdOption.ShortName); //, "Could not instantiate with whitespace only ShortName");
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed_With_Null_ShortName_And_Null_LongName()
 		{
 			const string invalidShortName = null;
@@ -137,7 +136,7 @@ namespace FluentCommandLineParser.Tests.Internals
 			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed_With_Empty_ShortName_And_Null_LongName()
 		{
 			const string invalidShortName = "";
@@ -148,7 +147,7 @@ namespace FluentCommandLineParser.Tests.Internals
 			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed_With_WhiteSpaceOnly_ShortName_And_Null_LongName()
 		{
 			const string invalidShortName = " ";
@@ -159,7 +158,7 @@ namespace FluentCommandLineParser.Tests.Internals
 			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed_With_Null_ShortName_And_Empty_LongName()
 		{
 			const string invalidShortName = null;
@@ -170,7 +169,7 @@ namespace FluentCommandLineParser.Tests.Internals
 			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed_With_Empty_ShortName_And_Empty_LongName()
 		{
 			const string invalidShortName = "";
@@ -181,7 +180,7 @@ namespace FluentCommandLineParser.Tests.Internals
 			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed_With_WhiteSpaceOnly_ShortName_And_Empty_LongName()
 		{
 			const string invalidShortName = " ";
@@ -192,7 +191,7 @@ namespace FluentCommandLineParser.Tests.Internals
 			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed_With_Null_ShortName_And_WhiteSpaceOnly_LongName()
 		{
 			const string invalidShortName = null;
@@ -203,7 +202,7 @@ namespace FluentCommandLineParser.Tests.Internals
 			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed_With_Empty_ShortName_And_WhiteSpaceOnly_LongName()
 		{
 			const string invalidShortName = "";
@@ -214,7 +213,7 @@ namespace FluentCommandLineParser.Tests.Internals
 			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Canot_Be_Constructed_With_WhiteSpaceOnly_ShortName_And_WhiteSpaceOnly_LongName()
 		{
 			const string invalidShortName = " ";
@@ -225,8 +224,8 @@ namespace FluentCommandLineParser.Tests.Internals
 			new CommandLineOption<object>(invalidShortName, invalidLongName, mockParser);
 		}
 		
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
+		[Fact]
+		//[ExpectedException(typeof(ArgumentNullException))]
 		public void Ensure_Cannot_Be_Constructed_With_Null_Parser()
 		{
 			const string expectedShortName = "My short name";
@@ -239,40 +238,41 @@ namespace FluentCommandLineParser.Tests.Internals
 
 		#region HasLongName Tests
 
-		[Test]
+		[Fact]
 		public void Ensure_Returns_False_If_Null_LongName_Provided()
 		{
 			ICommandLineOption cmdOption = new CommandLineOption<string>("s", null, Mock.Of<ICommandLineOptionParser<string>>());
-			Assert.IsFalse(cmdOption.HasLongName);
+			Assert.False(cmdOption.HasLongName);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Returns_False_If_WhiteSpace_LongName_Provided()
 		{
 			ICommandLineOption cmdOption = new CommandLineOption<string>("s", " ", Mock.Of<ICommandLineOptionParser<string>>());
-			Assert.IsFalse(cmdOption.HasLongName);
+			Assert.False(cmdOption.HasLongName);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Returns_False_If_Empty_LongName_Provided()
 		{
 			ICommandLineOption cmdOption = new CommandLineOption<string>("s", string.Empty, Mock.Of<ICommandLineOptionParser<string>>());
-			Assert.IsFalse(cmdOption.HasLongName);
+			Assert.False(cmdOption.HasLongName);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Returns_True_If_LongName_Provided()
 		{
 			ICommandLineOption cmdOption = new CommandLineOption<string>("s", "long name", Mock.Of<ICommandLineOptionParser<string>>());
-			Assert.IsTrue(cmdOption.HasLongName);
+			Assert.True(cmdOption.HasLongName);
 		}
 
 		#endregion HasLongName Tests
 
+		
 		#region Bind Tests
 
-		[Test]
-		[ExpectedException(typeof(OptionSyntaxException))]
+		[Fact]
+		//// [ExpectedException(typeof(OptionSyntaxException))]
 		public void Ensure_That_If_Value_Is_Null_Cannot_Be_Parsed_And_No_Default_Set_Then_optionSyntaxException_Is_Thrown()
 		{
 			var option = new ParsedOption();
@@ -286,8 +286,8 @@ namespace FluentCommandLineParser.Tests.Internals
 		}
 
 
-		[Test]
-		[ExpectedException(typeof(OptionSyntaxException))]
+		[Fact]
+		// [ExpectedException(typeof(OptionSyntaxException))]
 		public void Ensure_That_If_Value_Is_Empty_Cannot_Be_Parsed_And_No_Default_Set_Then_optionSyntaxException_Is_Thrown()
 		{
 			var option = new ParsedOption();
@@ -301,8 +301,8 @@ namespace FluentCommandLineParser.Tests.Internals
 		}
 
 
-		[Test]
-		[ExpectedException(typeof(OptionSyntaxException))]
+		[Fact]
+		// [ExpectedException(typeof(OptionSyntaxException))]
 		public void Ensure_That_If_Value_Is_Whitespace_Cannot_Be_Parsed_And_No_Default_Set_Then_optionSyntaxException_Is_Thrown()
 		{
 			var option = new ParsedOption();

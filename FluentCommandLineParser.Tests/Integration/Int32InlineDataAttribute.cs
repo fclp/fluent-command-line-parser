@@ -1,5 +1,5 @@
 ﻿#region License
-// Int32InlineDataAttribute.cs
+// InlineDataAttribute.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -24,11 +24,12 @@
 
 namespace Fclp.Tests.Integration
 {
-	public class Int32InlineDataAttribute : SimpleShortOptionsAreParsedCorrectlyAttribute
+	/*
+	public class InlineDataAttribute : SimpleShortOptionsAreParsedCorrectlyAttribute
 	{
-		public Int32InlineDataAttribute(string args, int expected)
+		public InlineDataAttribute(string args, int expected)
             : base(args, expectedInt32: expected)
 		{
 		}
-	}
+	} */
 }

@@ -35,7 +35,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 			Because of = () => sut.OptionFactory = null;
 
 			It should_be_unable_to_assign_to_null = () => sut.OptionFactory.ShouldNotBeNull();
-			It should_use_the_default_one_instead = () => sut.OptionFactory.ShouldBeOfType(typeof(CommandLineOptionFactory));
+			It should_use_the_default_one_instead = () => sut.OptionFactory.ShouldBeOfExactType(typeof(CommandLineOptionFactory));
 		}
 	}
 }

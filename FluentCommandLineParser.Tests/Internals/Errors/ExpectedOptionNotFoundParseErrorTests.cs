@@ -25,27 +25,27 @@
 #endregion
 
 using System;
-using NUnit.Framework;
+using Fclp.Internals;
+using Fclp.Internals.Errors;
 using Moq;
+using Xunit;
 
 namespace FluentCommandLineParser.Internals.Errors
 {
-    [TestFixture]
     public class ExpectedOptionNotFoundParseErrorTests
     {
-        [Test]
+        [Fact]
         public void Ensure_Can_Be_Constructed()
         {
             var cmdOption = Mock.Of<ICommandLineOption>();
             var snfError = new ExpectedOptionNotFoundParseError(cmdOption);
-            Assert.AreSame(cmdOption, snfError.Option);
+            Assert.Same(cmdOption, snfError.Option);
         }
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void Ensure_Cannot_Specify_Null_option()
         {
-            new ExpectedOptionNotFoundParseError(null);
+            Assert.Throws<ArgumentNullException>( () =>  new ExpectedOptionNotFoundParseError(null));
         }
     }
 }

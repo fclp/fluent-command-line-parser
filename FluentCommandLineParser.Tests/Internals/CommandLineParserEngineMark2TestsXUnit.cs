@@ -31,9 +31,10 @@ using Xunit.Extensions;
 
 namespace Fclp.Tests.Internals
 {
-	public class SingleOptionInlineDataAttribute : InlineDataAttribute
+	/*
+	public class InlineDataAttribute : Fclp.Tests.Integration.InlineDataAttribute
 	{
-		public SingleOptionInlineDataAttribute(
+		public InlineDataAttribute(
 			string arguments,
 			string expectedKeyChar,
 			string expectedKey,
@@ -43,9 +44,9 @@ namespace Fclp.Tests.Internals
 		}
 	}
 
-	public class DoubleOptionInlineDataAttribute : InlineDataAttribute
+	public class InlineDataAttribute : Fclp.Tests.Integration.InlineDataAttribute
 	{
-		public DoubleOptionInlineDataAttribute(
+		public InlineDataAttribute(
 			string arguments,
 			string firstExpectedKeyChar,
 			string firstExpectedKey,
@@ -62,38 +63,38 @@ namespace Fclp.Tests.Internals
 			secondExpectedValue)
 		{
 		}
-	}
+	} */
 
 	public class CommandLineParserEngineMark2TestsXUnit: TestContextBase<CommandLineParserEngineMark2>
 	{
 		[Theory]
-		[SingleOptionInlineData("-f", "-", "f", null)]
-		[SingleOptionInlineData("/f", "/", "f", null)]
-		[SingleOptionInlineData("--f", "--", "f", null)]
-		[SingleOptionInlineData("-f apple", "-", "f", "apple")]
-		[SingleOptionInlineData("/f apple", "/", "f", "apple")]
-		[SingleOptionInlineData("--f apple", "--", "f", "apple")]
-		[SingleOptionInlineData("-f", "-", "f", null)]
-		[SingleOptionInlineData("/fruit", "/", "fruit", null)]
-		[SingleOptionInlineData("--fruit", "--", "fruit", null)]
-		[SingleOptionInlineData("/fruit apple", "/", "fruit", "apple")]
-		[SingleOptionInlineData("--fruit apple", "--", "fruit", "apple")]
-		[SingleOptionInlineData("-f apple", "-", "f", "apple")]
-		[SingleOptionInlineData("/fruit:apple", "/", "fruit", "apple")]
-		[SingleOptionInlineData("--fruit:apple", "--", "fruit", "apple")]
-		[SingleOptionInlineData("-f:apple", "-", "f", "apple")]
-		[SingleOptionInlineData("/fruit=apple", "/", "fruit", "apple")]
-		[SingleOptionInlineData("--fruit=apple", "--", "fruit", "apple")]
-		[SingleOptionInlineData("-f=apple", "-", "f", "apple")]
-		[SingleOptionInlineData("/fruit 'apple pear plum'", "/", "fruit", "'apple pear plum'")]
-		[SingleOptionInlineData("--fruit 'apple pear plum'", "--", "fruit", "'apple pear plum'")]
-		[SingleOptionInlineData("-f 'apple pear plum'", "-", "f", "'apple pear plum'")]
-		[SingleOptionInlineData("/fruit:'apple pear plum'", "/", "fruit", "'apple pear plum'")]
-		[SingleOptionInlineData("--fruit:'apple pear plum'", "--", "fruit", "'apple pear plum'")]
-		[SingleOptionInlineData("-f:'apple pear plum'", "-", "f", "'apple pear plum'")]
-		[SingleOptionInlineData("/fruit='apple pear plum'", "/", "fruit", "'apple pear plum'")]
-		[SingleOptionInlineData("--fruit='apple pear plum'", "--", "fruit", "'apple pear plum'")]
-		[SingleOptionInlineData("-f='apple pear plum'", "-", "f", "'apple pear plum'")]
+		[InlineData("-f", "-", "f", null)]
+		[InlineData("/f", "/", "f", null)]
+		[InlineData("--f", "--", "f", null)]
+		[InlineData("-f apple", "-", "f", "apple")]
+		[InlineData("/f apple", "/", "f", "apple")]
+		[InlineData("--f apple", "--", "f", "apple")]
+		[InlineData("-f", "-", "f", null)]
+		[InlineData("/fruit", "/", "fruit", null)]
+		[InlineData("--fruit", "--", "fruit", null)]
+		[InlineData("/fruit apple", "/", "fruit", "apple")]
+		[InlineData("--fruit apple", "--", "fruit", "apple")]
+		[InlineData("-f apple", "-", "f", "apple")]
+		[InlineData("/fruit:apple", "/", "fruit", "apple")]
+		[InlineData("--fruit:apple", "--", "fruit", "apple")]
+		[InlineData("-f:apple", "-", "f", "apple")]
+		[InlineData("/fruit=apple", "/", "fruit", "apple")]
+		[InlineData("--fruit=apple", "--", "fruit", "apple")]
+		[InlineData("-f=apple", "-", "f", "apple")]
+		[InlineData("/fruit 'apple pear plum'", "/", "fruit", "'apple pear plum'")]
+		[InlineData("--fruit 'apple pear plum'", "--", "fruit", "'apple pear plum'")]
+		[InlineData("-f 'apple pear plum'", "-", "f", "'apple pear plum'")]
+		[InlineData("/fruit:'apple pear plum'", "/", "fruit", "'apple pear plum'")]
+		[InlineData("--fruit:'apple pear plum'", "--", "fruit", "'apple pear plum'")]
+		[InlineData("-f:'apple pear plum'", "-", "f", "'apple pear plum'")]
+		[InlineData("/fruit='apple pear plum'", "/", "fruit", "'apple pear plum'")]
+		[InlineData("--fruit='apple pear plum'", "--", "fruit", "'apple pear plum'")]
+		[InlineData("-f='apple pear plum'", "-", "f", "'apple pear plum'")]
 		public void should_parse_single_options_correctly(
 			string arguments,
 			string expectedPrefix,
@@ -119,33 +120,33 @@ namespace Fclp.Tests.Internals
 		}
 
 		[Theory]
-		[DoubleOptionInlineData("-f -v", "-", "f", null, "-", "v", null)]
-		[DoubleOptionInlineData("/f /v", "/", "f", null, "/", "v", null)]
-		[DoubleOptionInlineData("--f --v", "--", "f", null, "--", "v", null)]
-		[DoubleOptionInlineData("-f apple -v onion", "-", "f", "apple", "-", "v", "onion")]
-		[DoubleOptionInlineData("/f apple /v onion", "/", "f", "apple", "/", "v", "onion")]
-		[DoubleOptionInlineData("--f apple --v onion", "--", "f", "apple", "--", "v", "onion")]
-		[DoubleOptionInlineData("-f -v", "-", "f", null, "-", "v", null)]
-		[DoubleOptionInlineData("/fruit /vegetable", "/", "fruit", null, "/", "vegetable", null)]
-		[DoubleOptionInlineData("--fruit --vegetable", "--", "fruit", null, "--", "vegetable", null)]
-		[DoubleOptionInlineData("/fruit apple /vegetable onion", "/", "fruit", "apple", "/", "vegetable", "onion")]
-		[DoubleOptionInlineData("--fruit apple --vegetable onion", "--", "fruit", "apple", "--", "vegetable", "onion")]
-		[DoubleOptionInlineData("-f apple -v onion", "-", "f", "apple", "-", "v", "onion")]
-		[DoubleOptionInlineData("/fruit:apple /vegetable:onion", "/", "fruit", "apple", "/", "vegetable", "onion")]
-		[DoubleOptionInlineData("--fruit:apple --vegetable:onion", "--", "fruit", "apple", "--", "vegetable", "onion")]
-		[DoubleOptionInlineData("-f:apple -v: onion", "-", "f", "apple", "-", "v", "onion")]
-		[DoubleOptionInlineData("/fruit=apple /vegetable=onion", "/", "fruit", "apple", "/", "vegetable", "onion")]
-		[DoubleOptionInlineData("--fruit=apple --vegetable=onion", "--", "fruit", "apple", "--", "vegetable", "onion")]
-		[DoubleOptionInlineData("-f=apple -v=onion", "-", "f", "apple", "-", "v", "onion")]
-		[DoubleOptionInlineData("/fruit 'apple pear plum' /vegetable 'onion carrot peas'", "/", "fruit", "'apple pear plum'", "/", "vegetable", "'onion carrot peas'")]
-		[DoubleOptionInlineData("--fruit 'apple pear plum' --vegetable 'onion carrot peas'", "--", "fruit", "'apple pear plum'", "--", "vegetable", "'onion carrot peas'")]
-		[DoubleOptionInlineData("-f 'apple pear plum' -v 'onion carrot peas'", "-", "f", "'apple pear plum'", "-", "v", "'onion carrot peas'")]
-		[DoubleOptionInlineData("/fruit:'apple pear plum' /vegetable:'onion carrot peas'", "/", "fruit", "'apple pear plum'", "/", "vegetable", "'onion carrot peas'")]
-		[DoubleOptionInlineData("--fruit:'apple pear plum' --vegetable:'onion carrot peas'", "--", "fruit", "'apple pear plum'", "--", "vegetable", "'onion carrot peas'")]
-		[DoubleOptionInlineData("-f:'apple pear plum' -v:'onion carrot peas'", "-", "f", "'apple pear plum'", "-", "v", "'onion carrot peas'")]
-		[DoubleOptionInlineData("/fruit='apple pear plum' /vegetable='onion carrot peas'", "/", "fruit", "'apple pear plum'", "/", "vegetable", "'onion carrot peas'")]
-		[DoubleOptionInlineData("--fruit='apple pear plum' --vegetable='onion carrot peas'", "--", "fruit", "'apple pear plum'", "--", "vegetable", "'onion carrot peas'")]
-		[DoubleOptionInlineData("-f='apple pear plum' -v='onion carrot peas'", "-", "f", "'apple pear plum'", "-", "v", "'onion carrot peas'")]
+		[InlineData("-f -v", "-", "f", null, "-", "v", null)]
+		[InlineData("/f /v", "/", "f", null, "/", "v", null)]
+		[InlineData("--f --v", "--", "f", null, "--", "v", null)]
+		[InlineData("-f apple -v onion", "-", "f", "apple", "-", "v", "onion")]
+		[InlineData("/f apple /v onion", "/", "f", "apple", "/", "v", "onion")]
+		[InlineData("--f apple --v onion", "--", "f", "apple", "--", "v", "onion")]
+		[InlineData("-f -v", "-", "f", null, "-", "v", null)]
+		[InlineData("/fruit /vegetable", "/", "fruit", null, "/", "vegetable", null)]
+		[InlineData("--fruit --vegetable", "--", "fruit", null, "--", "vegetable", null)]
+		[InlineData("/fruit apple /vegetable onion", "/", "fruit", "apple", "/", "vegetable", "onion")]
+		[InlineData("--fruit apple --vegetable onion", "--", "fruit", "apple", "--", "vegetable", "onion")]
+		[InlineData("-f apple -v onion", "-", "f", "apple", "-", "v", "onion")]
+		[InlineData("/fruit:apple /vegetable:onion", "/", "fruit", "apple", "/", "vegetable", "onion")]
+		[InlineData("--fruit:apple --vegetable:onion", "--", "fruit", "apple", "--", "vegetable", "onion")]
+		[InlineData("-f:apple -v: onion", "-", "f", "apple", "-", "v", "onion")]
+		[InlineData("/fruit=apple /vegetable=onion", "/", "fruit", "apple", "/", "vegetable", "onion")]
+		[InlineData("--fruit=apple --vegetable=onion", "--", "fruit", "apple", "--", "vegetable", "onion")]
+		[InlineData("-f=apple -v=onion", "-", "f", "apple", "-", "v", "onion")]
+		[InlineData("/fruit 'apple pear plum' /vegetable 'onion carrot peas'", "/", "fruit", "'apple pear plum'", "/", "vegetable", "'onion carrot peas'")]
+		[InlineData("--fruit 'apple pear plum' --vegetable 'onion carrot peas'", "--", "fruit", "'apple pear plum'", "--", "vegetable", "'onion carrot peas'")]
+		[InlineData("-f 'apple pear plum' -v 'onion carrot peas'", "-", "f", "'apple pear plum'", "-", "v", "'onion carrot peas'")]
+		[InlineData("/fruit:'apple pear plum' /vegetable:'onion carrot peas'", "/", "fruit", "'apple pear plum'", "/", "vegetable", "'onion carrot peas'")]
+		[InlineData("--fruit:'apple pear plum' --vegetable:'onion carrot peas'", "--", "fruit", "'apple pear plum'", "--", "vegetable", "'onion carrot peas'")]
+		[InlineData("-f:'apple pear plum' -v:'onion carrot peas'", "-", "f", "'apple pear plum'", "-", "v", "'onion carrot peas'")]
+		[InlineData("/fruit='apple pear plum' /vegetable='onion carrot peas'", "/", "fruit", "'apple pear plum'", "/", "vegetable", "'onion carrot peas'")]
+		[InlineData("--fruit='apple pear plum' --vegetable='onion carrot peas'", "--", "fruit", "'apple pear plum'", "--", "vegetable", "'onion carrot peas'")]
+		[InlineData("-f='apple pear plum' -v='onion carrot peas'", "-", "f", "'apple pear plum'", "-", "v", "'onion carrot peas'")]
 		public void should_parse_double_options_correctly(
 			string arguments,
 			string firstExpectedKeyChar,

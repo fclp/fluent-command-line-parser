@@ -1,5 +1,5 @@
 ﻿#region License
-// EnumInlineDataAttribute.cs
+// InlineDataAttribute.cs
 // Copyright (c) 2014, Simon Williams
 // All rights reserved.
 // 

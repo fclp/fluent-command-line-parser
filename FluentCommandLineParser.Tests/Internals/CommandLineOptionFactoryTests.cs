@@ -26,23 +26,22 @@ using Fclp.Internals;
 using Fclp.Internals.Parsing;
 using Fclp.Internals.Parsing.OptionParsers;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace FluentCommandLineParser.Tests.Internals
 {
 	/// <summary>
 	/// Contains unit tests for the <see cref="CommandLineOptionFactory"/> class.
 	/// </summary>
-	[TestFixture]
 	public class CommandLineOptionFactoryTests
 	{
-		[Test]
+		[Fact]
 		public void Ensure_Can_Be_Constructed()
 		{
 			new CommandLineOptionFactory();
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_CreateCommandLineOption_Returns_Expected_Object()
 		{
 			var factory = new CommandLineOptionFactory();
@@ -56,9 +55,9 @@ namespace FluentCommandLineParser.Tests.Internals
 
 			var actual = factory.CreateOption<string>(expectedShortName, expectedLongName);
 
-			Assert.IsInstanceOf<CommandLineOption<string>>(actual, "Factory returned unexpected object");
-			Assert.AreEqual(expectedShortName, actual.ShortName, "Factory returned Option with unexpected ShortName");
-			Assert.AreEqual(expectedShortName, actual.ShortName, "Factory returned Option with unexpected LongName");
+			Assert.IsType<CommandLineOption<string>>(actual);  //, "Factory returned unexpected object");
+			Assert.Equal(expectedShortName, actual.ShortName); //, "Factory returned Option with unexpected ShortName");
+			Assert.Equal(expectedShortName, actual.ShortName); //, "Factory returned Option with unexpected LongName");
 		}
 	}
 }

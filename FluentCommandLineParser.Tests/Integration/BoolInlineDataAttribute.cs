@@ -1,5 +1,5 @@
 ﻿#region License
-// BoolInlineDataAttribute.cs
+// InlineDataAttribute.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 
@@ -30,5 +30,5 @@ namespace Fclp.Tests.Integration
             : base(args, expectedBoolean: expected)
 		{
 		}
-	}
+	} 
 }

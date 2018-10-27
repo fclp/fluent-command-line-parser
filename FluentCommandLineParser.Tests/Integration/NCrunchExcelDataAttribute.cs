@@ -27,7 +27,7 @@ using Machine.Specifications;
 using Xunit.Extensions;
 
 namespace Fclp.Tests.Integration
-{
+{ /*
 	public class NCrunchExcelDataAttribute : ExcelDataAttribute
 	{
 		public NCrunchExcelDataAttribute(string filename, string selectStatement)
@@ -45,5 +45,5 @@ namespace Fclp.Tests.Integration
 
 			return newFilePath;
 		}
-	}
+	} */
 }

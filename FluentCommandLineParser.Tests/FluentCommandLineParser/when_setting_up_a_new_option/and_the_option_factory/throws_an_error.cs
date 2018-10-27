@@ -49,7 +49,7 @@ namespace Fclp.Tests.FluentCommandLineParser.when_setting_up_a_new_option
 
 			Because of = () => SetupOptionWith(valid_short_name, valid_long_name);
 
-			It should_throw_an_error = () => error.ShouldBeOfType(typeof(TestException));
+			It should_throw_an_error = () => error.ShouldBeOfExactType(typeof(TestException));
 			It should_not_have_setup_an_option = () => sut.Options.ShouldBeEmpty();
 		}
 	}

@@ -45,8 +45,8 @@ namespace Fclp.Tests
 				It should_enable_case_sensitive = () =>
 					sut.IsCaseSensitive.ShouldBeTrue();
 
-				It should_have_the_fluent_parser_by_default = () =>
-					sut.Parser.ShouldBeOfType<IFluentCommandLineParser>();
+				private It should_have_the_fluent_parser_by_default = () =>
+					sut.Parser.ShouldBeAssignableTo<IFluentCommandLineParser>();
 
 				It should_have_initialised_the_object = () =>
 					sut.Object.ShouldNotBeNull();

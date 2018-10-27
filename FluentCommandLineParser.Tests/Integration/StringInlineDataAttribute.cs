@@ -1,5 +1,5 @@
 ﻿#region License
-// StringInlineDataAttribute.cs
+// InlineDataAttribute.cs
 // Copyright (c) 2013, Simon Williams
 // All rights reserved.
 // 

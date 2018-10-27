@@ -28,8 +28,8 @@ using System.Linq;
 using Fclp.Internals.Extensions;
 using Machine.Specifications;
 using Moq;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.AutoMoq;
+using AutoFixture;
+using AutoFixture.AutoMoq;
 
 namespace Fclp.Tests.Internals
 {

@@ -22,12 +22,43 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System.Collections.Generic;
+using System.Reflection;
 using Fclp.Tests.FluentCommandLineParser;
-using Xunit.Extensions;
+using Xunit;
+using Xunit.Sdk;
 
 namespace Fclp.Tests.Integration
-{
-    public class SimpleShortOptionsAreParsedCorrectlyAttribute : InlineDataAttribute
+{ 
+    
+    /// <summary>
+    /// Provides a data source for a data theory, with the data coming from inline values.
+    /// </summary>
+    public class InlineDataAttribute : DataAttribute
+    {
+        private readonly object[] data;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:Xunit.InlineDataAttribute" /> class.
+        /// </summary>
+        /// <param name="data">The data values to pass to the theory.</param>
+        public InlineDataAttribute(params object[] data)
+        {
+            this.data = data;
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<object[]> GetData(MethodInfo testMethod)
+        {
+            return (IEnumerable<object[]>) new object[1][]
+            {
+                this.data
+            };
+        }
+    }
+    
+    
+    public class SimpleShortOptionsAreParsedCorrectlyAttribute : Fclp.Tests.Integration.InlineDataAttribute
     {
         public SimpleShortOptionsAreParsedCorrectlyAttribute(
             string arguments,
@@ -41,5 +72,5 @@ namespace Fclp.Tests.Integration
         {
             
         }
-    }
+    } 
 }

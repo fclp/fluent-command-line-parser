@@ -53,7 +53,7 @@ namespace Fclp.Tests.FluentCommandLineParser
 									SetupOptionWith(valid_short_name, existingLongName);
 								};
 
-			It should_throw_an_error = () => error.ShouldBeOfType(typeof(OptionAlreadyExistsException));
+			It should_throw_an_error = () => error.ShouldBeOfExactType(typeof(OptionAlreadyExistsException));
 			It should_not_have_setup_an_option = () => sut.Options.ShouldContainOnly(existingOption);
 		}
 	}

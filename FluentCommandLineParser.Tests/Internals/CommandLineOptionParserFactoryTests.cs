@@ -27,28 +27,26 @@ using Fclp;
 using Fclp.Internals.Parsing.OptionParsers;
 using Fclp.Tests.FluentCommandLineParser;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace FluentCommandLineParser.Tests.Internals
 {
-	[TestFixture]
 	public class CommandLineOptionParserFactoryTests
 	{
-		[Test]
+		[Fact]
 		public void Enure_Can_Be_Constructed()
 		{
 			new CommandLineOptionParserFactory();
 		}
 
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
+		[Fact]
 		public void Ensure_Cannot_Add_Null_Parser()
 		{
 			var factory = new CommandLineOptionParserFactory();
-			factory.AddOrReplace<string>(null);
+			Assert.Throws<ArgumentNullException>(() => factory.AddOrReplace<string>(null));
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Add_Custom_Parser()
 		{
 			var factory = new CommandLineOptionParserFactory();
@@ -59,10 +57,10 @@ namespace FluentCommandLineParser.Tests.Internals
 
 			var actual = factory.CreateParser<CommandLineOptionParserFactoryTests>();
 
-			Assert.AreSame(mockParser.Object, actual);
+			Assert.Same(mockParser.Object, actual);
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Can_Replace_Existing_Parser()
 		{
 			var factory = new CommandLineOptionParserFactory();
@@ -77,19 +75,18 @@ namespace FluentCommandLineParser.Tests.Internals
 
 			var actual = factory.CreateParser<CommandLineOptionParserFactoryTests>();
 
-			Assert.AreSame(mockParser.Object, actual);
+			Assert.Same(mockParser.Object, actual);
 		}
 
-		[Test]
-		[ExpectedException(typeof(UnsupportedTypeException))]
+		[Fact]
 		public void Ensure_UnsupportedTypeException_Thrown_If_Factory_Is_Unable_To_Create_Requested_Type()
 		{
 			var factory = new CommandLineOptionParserFactory();
 
-			factory.CreateParser<CommandLineOptionParserFactoryTests>();
+			Assert.Throws<UnsupportedTypeException>(() => factory.CreateParser<CommandLineOptionParserFactoryTests>());
 		}
 
-		[Test]
+		[Fact]
 		public void Ensure_Factory_Supports_Out_Of_The_Box_Parsers()
 		{
 			var factory = new CommandLineOptionParserFactory();
@@ -101,45 +98,45 @@ namespace FluentCommandLineParser.Tests.Internals
 			var dtParser = factory.CreateParser<DateTime>();
 			var boolParser = factory.CreateParser<bool>();
 
-			Assert.IsInstanceOf<StringCommandLineOptionParser>(stringParser);
-			Assert.IsInstanceOf<Int32CommandLineOptionParser>(int32Parser);
-            Assert.IsInstanceOf<Int64CommandLineOptionParser>(int64Parser);
-			Assert.IsInstanceOf<DoubleCommandLineOptionParser>(doubleParser);
-			Assert.IsInstanceOf<DateTimeCommandLineOptionParser>(dtParser);
-			Assert.IsInstanceOf<BoolCommandLineOptionParser>(boolParser);
+			Assert.IsType<StringCommandLineOptionParser>(stringParser);
+			Assert.IsType<Int32CommandLineOptionParser>(int32Parser);
+            Assert.IsType<Int64CommandLineOptionParser>(int64Parser);
+			Assert.IsType<DoubleCommandLineOptionParser>(doubleParser);
+			Assert.IsType<DateTimeCommandLineOptionParser>(dtParser);
+			Assert.IsType<BoolCommandLineOptionParser>(boolParser);
 		}
 
-        [Test]
+        [Fact]
         public void Ensure_Factory_Supports_List_Of_Int64()
         {
             var factory = new CommandLineOptionParserFactory();
 
             var int64ListParser = factory.CreateParser<System.Collections.Generic.List<long>>();
 
-            Assert.IsInstanceOf<ListCommandLineOptionParser<long>>(int64ListParser);
+            Assert.IsType<ListCommandLineOptionParser<long>>(int64ListParser);
         }
 
-	    [Test]
+	    [Fact]
 	    public void Ensure_Factory_Supports_Enum()
 	    {
             var factory = new CommandLineOptionParserFactory();
 
 	        var enumParser = factory.CreateParser<TestEnum>();
 
-            Assert.IsInstanceOf<EnumCommandLineOptionParser<TestEnum>>(enumParser);
+            Assert.IsType<EnumCommandLineOptionParser<TestEnum>>(enumParser);
 	    }
 
-        [Test]
+        [Fact]
         public void Ensure_Factory_Supports_EnumFlags()
         {
             var factory = new CommandLineOptionParserFactory();
 
             var enumParser = factory.CreateParser<TestEnumFlag>();
 
-            Assert.IsInstanceOf<EnumFlagCommandLineOptionParser<TestEnumFlag>>(enumParser);
+            Assert.IsType<EnumFlagCommandLineOptionParser<TestEnumFlag>>(enumParser);
         }
 
-        [Test]
+        [Fact]
 	    public void Ensure_Factory_Returns_Custom_Enum_Formatter()
 	    {
             var factory = new CommandLineOptionParserFactory();
@@ -148,7 +145,7 @@ namespace FluentCommandLineParser.Tests.Internals
             factory.AddOrReplace(customParser);
 
             var enumParser = factory.CreateParser<TestEnum>();
-            Assert.AreSame(customParser, enumParser);
+            Assert.Same(customParser, enumParser);
 	    }
 	}
 

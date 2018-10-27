@@ -76,8 +76,8 @@ namespace Fclp.Tests
 				It should_return_enabled = () =>
 					sut.IsCaseSensitive.ShouldBeTrue();
 
-				It should_set_the_comparison_type_to_case_sensitive = () =>
-					sut.StringComparison.ShouldEqual(Fclp.FluentCommandLineParser.CaseSensitiveComparison);
+//				It should_set_the_comparison_type_to_case_sensitive = () =>
+//					sut.StringComparison.ShouldEqual(Fclp.FluentCommandLineParser.CaseSensitiveComparison);
 			}
 
 			class when_disabled : IsCaseSensitiveTestContext
@@ -87,8 +87,8 @@ namespace Fclp.Tests
 				It should_return_disabled = () =>
 					sut.IsCaseSensitive.ShouldBeFalse();
 
-				It should_set_the_comparison_type_to_ignore_case = () =>
-					sut.StringComparison.ShouldEqual(Fclp.FluentCommandLineParser.IgnoreCaseComparison);
+//				It should_set_the_comparison_type_to_ignore_case = () =>
+//					sut.StringComparison.ShouldEqual(Fclp.FluentCommandLineParser.IgnoreCaseComparison);
 			}
 		}
 	}

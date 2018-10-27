@@ -4,7 +4,9 @@ _ReSharper.*
 bin
 obj
 packages/*
+.idea/*
 !repositories.config
 packages/
 _ncrunch*
 *.ncrunch*
+project.lock.json

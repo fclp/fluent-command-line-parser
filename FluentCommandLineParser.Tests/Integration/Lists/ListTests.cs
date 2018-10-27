@@ -34,94 +34,94 @@ namespace Fclp.Tests.Integration
 	public class ListTests : TestContextBase<Fclp.FluentCommandLineParser>
 	{
 		[Theory]
-		[StringListInlineData("--list file1.txt file2.txt file3.txt", "file1.txt", "file2.txt", "file3.txt")]
-		[StringListInlineData("-list file1.txt file2.txt file3.txt", "file1.txt", "file2.txt", "file3.txt")]
-		[StringListInlineData("/list file1.txt file2.txt file3.txt", "file1.txt", "file2.txt", "file3.txt")]
-		[StringListInlineData("--list 'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
-		[StringListInlineData("-list 'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
-		[StringListInlineData("/list 'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
-		[StringListInlineData("/list='file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
-		[StringListInlineData("/list:'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
-		[StringListInlineData("--list:'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
-		[StringListInlineData("--list='file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
-		public void should_create_list_with_expected_strings(string arguments, IEnumerable<string> expectedItems)
+		[InlineData("--list file1.txt file2.txt file3.txt", "file1.txt", "file2.txt", "file3.txt")]
+		[InlineData("-list file1.txt file2.txt file3.txt", "file1.txt", "file2.txt", "file3.txt")]
+		[InlineData("/list file1.txt file2.txt file3.txt", "file1.txt", "file2.txt", "file3.txt")]
+		[InlineData("--list 'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
+		[InlineData("-list 'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
+		[InlineData("/list 'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
+		[InlineData("/list='file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
+		[InlineData("/list:'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
+		[InlineData("--list:'file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
+		[InlineData("--list='file 1.txt' file2.txt 'file 3.txt'", "file 1.txt", "file2.txt", "file 3.txt")]
+		public void should_create_list_with_expected_strings(string arguments, string[] expectedItems)
 		{
 			should_contain_list_with_expected_items(arguments, expectedItems);
 		}
 
 		[Theory]
-		[Int32ListInlineData("--list 123 321 098", 123, 321, 098)]
-		[Int32ListInlineData("-list 123 321 098", 123, 321, 098)]
-		[Int32ListInlineData("/list 123 321 098", 123, 321, 098)]
-		[Int32ListInlineData("/list:123 321 098", 123, 321, 098)]
-		[Int32ListInlineData("/list=123 321 098", 123, 321, 098)]
-		[Int32ListInlineData("--list:123 321 098", 123, 321, 098)]
-		[Int32ListInlineData("--list=123 321 098", 123, 321, 098)]
-		public void should_create_list_with_expected_int32_items(string arguments, IEnumerable<int> expectedItems)
+		[InlineData("--list 123 321 098", 123, 321, 098)]
+		[InlineData("-list 123 321 098", 123, 321, 098)]
+		[InlineData("/list 123 321 098", 123, 321, 098)]
+		[InlineData("/list:123 321 098", 123, 321, 098)]
+		[InlineData("/list=123 321 098", 123, 321, 098)]
+		[InlineData("--list:123 321 098", 123, 321, 098)]
+		[InlineData("--list=123 321 098", 123, 321, 098)]
+		public void should_create_list_with_expected_int32_items(string arguments, int[] expectedItems)
 		{
 			should_contain_list_with_expected_items(arguments, expectedItems);
 		}
 
         [Theory]
-        [Int64ListInlineData("--list 2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
-        [Int64ListInlineData("-list 2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
-        [Int64ListInlineData("/list 2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
-        [Int64ListInlineData("/list:2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
-        [Int64ListInlineData("/list=2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
-        [Int64ListInlineData("--list:2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
-        [Int64ListInlineData("--list=2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
-        public void should_create_list_with_expected_int64_items(string arguments, IEnumerable<long> expectedItems)
+        [InlineData("--list 2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
+        [InlineData("-list 2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
+        [InlineData("/list 2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
+        [InlineData("/list:2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
+        [InlineData("/list=2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
+        [InlineData("--list:2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
+        [InlineData("--list=2147483650 3147483651 4147483652", 2147483650, 3147483651, 4147483652)]
+        public void should_create_list_with_expected_int64_items(string arguments, long[] expectedItems)
         {
             should_contain_list_with_expected_items(arguments, expectedItems);
         }
 
 		[Theory]
-		[DoubleListInlineData("--list 123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
-		[DoubleListInlineData("-list 123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
-		[DoubleListInlineData("/list 123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
-		[DoubleListInlineData("/list:123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
-		[DoubleListInlineData("/list=123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
-		[DoubleListInlineData("--list:123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
-		[DoubleListInlineData("--list=123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
-		public void should_create_list_with_expected_double_items(string arguments, IEnumerable<double> expectedItems)
+		[InlineData("--list 123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
+		[InlineData("-list 123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
+		[InlineData("/list 123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
+		[InlineData("/list:123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
+		[InlineData("/list=123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
+		[InlineData("--list:123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
+		[InlineData("--list=123.456 321.987 098.123465", 123.456, 321.987, 098.123465)]
+		public void should_create_list_with_expected_double_items(string arguments, double[] expectedItems)
 		{
 			should_contain_list_with_expected_items(arguments, expectedItems);
 		}
 
 		[Theory]
-		[BoolListInlineData("--list true false true", true, false, true)]
-		[BoolListInlineData("-l true false true", true, false, true)]
-		[BoolListInlineData("/list true false true", true, false, true)]
-		[BoolListInlineData("/list:true false true", true, false, true)]
-		[BoolListInlineData("/list=true false true", true, false, true)]
-		[BoolListInlineData("--list:true false true", true, false, true)]
-		[BoolListInlineData("--list=true false true", true, false, true)]
-		public void should_create_list_with_expected_bool_items(string arguments, IEnumerable<bool> expectedItems)
+		[InlineData("--list true false true", true, false, true)]
+		[InlineData("-l true false true", true, false, true)]
+		[InlineData("/list true false true", true, false, true)]
+		[InlineData("/list:true false true", true, false, true)]
+		[InlineData("/list=true false true", true, false, true)]
+		[InlineData("--list:true false true", true, false, true)]
+		[InlineData("--list=true false true", true, false, true)]
+		public void should_create_list_with_expected_bool_items(string arguments, params bool[] expectedItems)
 		{
 			should_contain_list_with_expected_items(arguments, expectedItems);
 		}
 
 		[Theory]
-		[EnumListInlineData("--list Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
-		[EnumListInlineData("-l Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
-		[EnumListInlineData("/list Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
-		[EnumListInlineData("/list:Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
-		[EnumListInlineData("/list=Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
-		[EnumListInlineData("--list:Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
-		[EnumListInlineData("--list=Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
-		[EnumListInlineData("--list 0 1", TestEnum.Value0, TestEnum.Value1)]
-		[EnumListInlineData("-l 0 1", TestEnum.Value0, TestEnum.Value1)]
-		[EnumListInlineData("/list 0 1", TestEnum.Value0, TestEnum.Value1)]
-		[EnumListInlineData("/list:0 1", TestEnum.Value0, TestEnum.Value1)]
-		[EnumListInlineData("/list=0 1", TestEnum.Value0, TestEnum.Value1)]
-		[EnumListInlineData("--list:0 1", TestEnum.Value0, TestEnum.Value1)]
-		[EnumListInlineData("--list=0 1", TestEnum.Value0, TestEnum.Value1)]
-		public void should_create_list_with_expected_enum_items(string arguments, IEnumerable<TestEnum> expectedItems)
+		[InlineData("--list Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+		[InlineData("-l Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+		[InlineData("/list Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+		[InlineData("/list:Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+		[InlineData("/list=Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+		[InlineData("--list:Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+		[InlineData("--list=Value0 Value1", TestEnum.Value0, TestEnum.Value1)]
+		[InlineData("--list 0 1", TestEnum.Value0, TestEnum.Value1)]
+		[InlineData("-l 0 1", TestEnum.Value0, TestEnum.Value1)]
+		[InlineData("/list 0 1", TestEnum.Value0, TestEnum.Value1)]
+		[InlineData("/list:0 1", TestEnum.Value0, TestEnum.Value1)]
+		[InlineData("/list=0 1", TestEnum.Value0, TestEnum.Value1)]
+		[InlineData("--list:0 1", TestEnum.Value0, TestEnum.Value1)]
+		[InlineData("--list=0 1", TestEnum.Value0, TestEnum.Value1)]
+		public void should_create_list_with_expected_enum_items(string arguments, params TestEnum[] expectedItems)
 		{
 			should_contain_list_with_expected_items(arguments, expectedItems);
 		}
 
-		private void should_contain_list_with_expected_items<T>(string arguments, IEnumerable<T> expectedItems)
+		private void should_contain_list_with_expected_items<T>(string arguments, params T[] expectedItems)
 		{
 			sut = new Fclp.FluentCommandLineParser();
 

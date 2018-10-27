@@ -75,7 +75,7 @@ namespace Fclp.Tests.Internals.Validators
 				Establish context = () =>
 					SetupOptionWith(shortName: " ");
 
-				It should_throw_an_error = () => error.ShouldBeOfType<InvalidOptionNameException>();
+				It should_throw_an_error = () => error.ShouldBeOfExactType<InvalidOptionNameException>();
 			}
 
 			class when_the_short_name_contains_a_colon : ValidateTestContext
@@ -83,7 +83,7 @@ namespace Fclp.Tests.Internals.Validators
 				Establish context = () =>
 					SetupOptionWith(shortName: ":");
 
-				It should_throw_an_error = () => error.ShouldBeOfType<InvalidOptionNameException>();
+				It should_throw_an_error = () => error.ShouldBeOfExactType<InvalidOptionNameException>();
 			}
 
 			class when_the_short_name_contains_an_equality_sign : ValidateTestContext
@@ -91,7 +91,7 @@ namespace Fclp.Tests.Internals.Validators
 				Establish context = () =>
 					SetupOptionWith(shortName: "=");
 
-				It should_throw_an_error = () => error.ShouldBeOfType<InvalidOptionNameException>();
+				It should_throw_an_error = () => error.ShouldBeOfExactType<InvalidOptionNameException>();
 			}
 
 			class when_the_short_name_is_empty : ValidateTestContext
@@ -107,7 +107,7 @@ namespace Fclp.Tests.Internals.Validators
 				Establish context = () =>
 					SetupOptionWith(shortName: ((char)7).ToString(CultureInfo.InvariantCulture));
 
-				It should_throw_an_error = () => error.ShouldBeOfType<InvalidOptionNameException>();
+				It should_throw_an_error = () => error.ShouldBeOfExactType<InvalidOptionNameException>();
 			}
 
 			class when_the_short_name_is_longer_than_one_char : ValidateTestContext
@@ -115,7 +115,7 @@ namespace Fclp.Tests.Internals.Validators
 				Establish context = () =>
 					SetupOptionWith(shortName: CreateStringOfLength(2));
 
-				It should_throw_an_error = () => error.ShouldBeOfType<InvalidOptionNameException>();
+				It should_throw_an_error = () => error.ShouldBeOfExactType<InvalidOptionNameException>();
 			}
 
 			class when_the_short_name_is_one_char : ValidateTestContext
@@ -139,7 +139,7 @@ namespace Fclp.Tests.Internals.Validators
 				Establish context = () =>
 					SetupOptionWith(longName: " ");
 
-				It should_throw_an_error = () => error.ShouldBeOfType<InvalidOptionNameException>();
+				It should_throw_an_error = () => error.ShouldBeOfExactType<InvalidOptionNameException>();
 			}
 
 			class when_the_long_name_contains_a_colon : ValidateTestContext
@@ -147,7 +147,7 @@ namespace Fclp.Tests.Internals.Validators
 				Establish context = () =>
 					SetupOptionWith(longName: ValidLongName + ":");
 
-				It should_throw_an_error = () => error.ShouldBeOfType<InvalidOptionNameException>();
+				It should_throw_an_error = () => error.ShouldBeOfExactType<InvalidOptionNameException>();
 			}
 
 			class when_the_long_name_contains_an_equality_sign : ValidateTestContext
@@ -155,7 +155,7 @@ namespace Fclp.Tests.Internals.Validators
 				Establish context = () =>
 					SetupOptionWith(longName: ValidLongName + "=");
 
-				It should_throw_an_error = () => error.ShouldBeOfType<InvalidOptionNameException>();
+				It should_throw_an_error = () => error.ShouldBeOfExactType<InvalidOptionNameException>();
 			}
 
 			class when_the_long_name_is_empty : ValidateTestContext
@@ -179,7 +179,7 @@ namespace Fclp.Tests.Internals.Validators
 				Establish context = () =>
 					SetupOptionWith(longName: CreateStringOfLength(1));
 
-				It should_throw_a_too_long_error = () => error.ShouldBeOfType<InvalidOptionNameException>();
+				It should_throw_a_too_long_error = () => error.ShouldBeOfExactType<InvalidOptionNameException>();
 			}
 
 			class when_the_long_name_contains_whitespace: ValidateTestContext
@@ -187,7 +187,7 @@ namespace Fclp.Tests.Internals.Validators
 				Establish context = () =>
 					SetupOptionWith(longName: ValidLongName + " " + ValidLongName);
 
-				It should_throw_an_error = () => error.ShouldBeOfType<InvalidOptionNameException>();
+				It should_throw_an_error = () => error.ShouldBeOfExactType<InvalidOptionNameException>();
 			}
 
 			class when_the_long_name_is_null_and_the_short_name_is_null : ValidateTestContext
@@ -195,7 +195,7 @@ namespace Fclp.Tests.Internals.Validators
 				Establish context = () =>
 					SetupOptionWith(shortName: null, longName: null);
 
-				It should_throw_an_error = () => error.ShouldBeOfType<InvalidOptionNameException>();
+				It should_throw_an_error = () => error.ShouldBeOfExactType<InvalidOptionNameException>();
 			}
 
 			class when_the_long_name_is_empty_and_the_short_name_is_empty : ValidateTestContext
@@ -203,7 +203,7 @@ namespace Fclp.Tests.Internals.Validators
 				Establish context = () =>
 					SetupOptionWith(shortName: string.Empty, longName: string.Empty);
 
-				It should_throw_an_error = () => error.ShouldBeOfType<InvalidOptionNameException>();
+				It should_throw_an_error = () => error.ShouldBeOfExactType<InvalidOptionNameException>();
 			}
 		}
 	}

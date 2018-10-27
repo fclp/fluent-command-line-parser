@@ -30,14 +30,13 @@ using Fclp.Internals;
 using Fclp.Internals.Errors;
 using Fclp.Tests.FluentCommandLineParser;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace Fclp.Tests
 {
     /// <summary>
     /// Contains unit tests for the <see cref="FluentCommandLineParser"/> class.
     /// </summary>
-    [TestFixture]
     public class FluentCommandLineParserTests
     {
         #region HelperMethods
@@ -88,9 +87,9 @@ namespace Fclp.Tests
             var assert = new Action<string[], ICommandLineParserResult>((args, result) =>
             {
                 string msg = FormatArgs(args);
-                Assert.AreEqual(expected, actual, msg);
-                Assert.IsFalse(result.HasErrors, msg);
-                Assert.IsFalse(result.Errors.Any(), msg);
+                Assert.Equal(expected, actual); //, msg);
+                Assert.False(result.HasErrors, msg);
+                Assert.False(result.Errors.Any(), msg);
             });
 
             CallParserWithAllKeyVariations(parser, "short", value, assert);
@@ -101,7 +100,7 @@ namespace Fclp.Tests
 
         #region Description Tests
 
-        [Test]
+        [Fact]
         public void Ensure_Description_Can_Be_Set()
         {
             var parser = CreateFluentParser();
@@ -112,7 +111,7 @@ namespace Fclp.Tests
 
             var actual = ((ICommandLineOption)cmdOption).Description;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
         #endregion Description Tests
@@ -121,14 +120,14 @@ namespace Fclp.Tests
 
         #region String Option
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_String_When_Using_Short_option()
         {
             const string expected = "my-expected-string";
             RunTest(expected, expected);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_String_When_Using_Long_option()
         {
             const string expected = "my-expected-string";
@@ -144,9 +143,9 @@ namespace Fclp.Tests
             CallParserWithAllKeyVariations(parser, key, expected, (args, result) =>
             {
                 string msg = "Executed with args: " + FormatArgs(args);
-                Assert.AreEqual(expected, actual, msg);
-                Assert.IsFalse(result.HasErrors, msg);
-                Assert.IsFalse(result.Errors.Any(), msg);
+                Assert.Equal(expected, actual); //, msg);
+                Assert.False(result.HasErrors, msg);
+                Assert.False(result.Errors.Any(), msg);
             });
         }
 
@@ -154,7 +153,7 @@ namespace Fclp.Tests
 
         #region Int32 Option
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Int32_When_Using_Short_option()
         {
             const int expected = int.MaxValue;
@@ -171,13 +170,13 @@ namespace Fclp.Tests
             //CallParserWithAllKeyVariations(parser, shortKey, expected.ToString(CultureInfo.InvariantCulture), (args, result) =>
             //{
             //    string msg = "Executed with args: " + FormatArgs(args);
-            //    Assert.AreEqual(expected, actual, msg);
-            //    Assert.IsFalse(result.HasErrors, msg);
-            //    Assert.IsFalse(result.Errors.Any(), msg);
+            //    Assert.Equal(expected, actual, msg);
+            //    Assert.False(result.HasErrors, msg);
+            //    Assert.False(result.Errors.Any(), msg);
             //});
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Int32_When_Using_Long_option()
         {
             const int expected = int.MaxValue;
@@ -194,13 +193,13 @@ namespace Fclp.Tests
             CallParserWithAllKeyVariations(parser, longKey, expected.ToString(CultureInfo.InvariantCulture), (args, result) =>
             {
                 string msg = "Executed with args: " + FormatArgs(args);
-                Assert.AreEqual(expected, actual, msg);
-                Assert.IsFalse(result.HasErrors, msg);
-                Assert.IsFalse(result.Errors.Any(), msg);
+                Assert.Equal(expected, actual); //, msg);
+                Assert.False(result.HasErrors, msg);
+                Assert.False(result.Errors.Any(), msg);
             });
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Negative_Integer_Can_Be_Specified_With_Unix_Style()
         {
             var parser = CreateFluentParser();
@@ -212,18 +211,18 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--integer", "--", "-123" });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.EmptyArgs);
-            Assert.IsFalse(result.HelpCalled);
+            Assert.False(result.HasErrors);
+            Assert.False(result.EmptyArgs);
+            Assert.False(result.HelpCalled);
 
-            Assert.AreEqual(-123, actual);
+            Assert.Equal(-123, actual);
         }
 
         #endregion Int32 Option
 
         #region Double Option
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Double_When_Using_Short_option()
         {
             const double expected = 1.23456789d;
@@ -239,13 +238,13 @@ namespace Fclp.Tests
 
             //CallParserWithAllKeyVariations(parser, shortKey, expected.ToString(CultureInfo.InvariantCulture), (args, result) =>
             //{
-            //    Assert.AreEqual(expected, actual, FormatArgs(args));
-            //    Assert.IsFalse(result.HasErrors, FormatArgs(args));
-            //    Assert.IsFalse(result.Errors.Any(), FormatArgs(args));
+            //    Assert.Equal(expected, actual, FormatArgs(args));
+            //    Assert.False(result.HasErrors, FormatArgs(args));
+            //    Assert.False(result.Errors.Any(), FormatArgs(args));
             //});
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Double_When_Using_Long_option()
         {
             const double expected = 1.23456789d;
@@ -261,13 +260,13 @@ namespace Fclp.Tests
 
             CallParserWithAllKeyVariations(parser, longKey, expected.ToString(CultureInfo.InvariantCulture), (args, result) =>
             {
-                Assert.AreEqual(expected, actual, FormatArgs(args));
-                Assert.IsFalse(result.HasErrors, FormatArgs(args));
-                Assert.IsFalse(result.Errors.Any(), FormatArgs(args));
+                Assert.Equal(expected, actual); //, FormatArgs(args));
+                Assert.False(result.HasErrors, FormatArgs(args));
+                Assert.False(result.Errors.Any(), FormatArgs(args));
             });
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Negative_Double_Can_Be_Specified_With_Unix_Style()
         {
             var parser = CreateFluentParser();
@@ -279,18 +278,18 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--double", "--", "-123.456" });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.EmptyArgs);
-            Assert.IsFalse(result.HelpCalled);
+            Assert.False(result.HasErrors);
+            Assert.False(result.EmptyArgs);
+            Assert.False(result.HelpCalled);
 
-            Assert.AreEqual(-123.456, actual);
+            Assert.Equal(-123.456, actual);
         }
 
         #endregion Double Option
 
         #region Enum Option
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option()
         {
             const TestEnum expected = TestEnum.Value1;
@@ -305,10 +304,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "-e", expected.ToString() });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option()
         {
             const TestEnum expected = TestEnum.Value1;
@@ -323,10 +322,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "--enum", expected.ToString() });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option_And_Int32_Enum()
         {
             const TestEnum expected = TestEnum.Value1;
@@ -341,10 +340,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "-e", ((int)expected).ToString(CultureInfo.InvariantCulture) });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option_And_Int32_Enum()
         {
             const TestEnum expected = TestEnum.Value1;
@@ -359,10 +358,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "--enum", ((int)expected).ToString(CultureInfo.InvariantCulture) });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option_And_Lowercase_String()
         {
             const TestEnum expected = TestEnum.Value1;
@@ -377,10 +376,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "-e", expected.ToString().ToLowerInvariant() });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option_And_Int32_Enum_And_Lowercase_String()
         {
             const TestEnum expected = TestEnum.Value1;
@@ -395,10 +394,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "--enum", expected.ToString().ToLowerInvariant() });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Short_option_And_Uppercase_String()
         {
             const TestEnum expected = TestEnum.Value1;
@@ -413,10 +412,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "-e", expected.ToString().ToUpperInvariant() });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Enum_When_Using_Long_option_And_Int32_Enum_And_Uppercase_String()
         {
             const TestEnum expected = TestEnum.Value1;
@@ -431,12 +430,12 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "--enum", expected.ToString().ToUpperInvariant() });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
         #region Enum Flags Option
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_EnumFlag_When_Using_Short_option()
         {
             const TestEnumFlag expected = TestEnumFlag.Value1;
@@ -451,10 +450,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "-e", expected.ToString() });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_EnumFlag_When_Using_Short_option_And_A_List()
         {
             var actual = TestEnumFlag.Value0;
@@ -467,13 +466,13 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "-e", TestEnumFlag.Value1.ToString(), TestEnumFlag.Value2.ToString() });
 
-            Assert.AreEqual(3, (int)actual);
-            Assert.IsTrue(actual.HasFlag(TestEnumFlag.Value1));
-            Assert.IsTrue(actual.HasFlag(TestEnumFlag.Value2));
-            Assert.IsFalse(actual.HasFlag(TestEnumFlag.Value64));
+            Assert.Equal(3, (int)actual);
+            Assert.True(actual.HasFlag(TestEnumFlag.Value1));
+            Assert.True(actual.HasFlag(TestEnumFlag.Value2));
+            Assert.False(actual.HasFlag(TestEnumFlag.Value64));
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_EnumFlag_When_Using_Short_option_And_A_List_With_0()
         {
             var actual = TestEnumFlag.Value0;
@@ -486,16 +485,16 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "-e", TestEnumFlag.Value1.ToString(), TestEnumFlag.Value2.ToString(), TestEnumFlag.Value0.ToString(), TestEnumFlag.Value64.ToString() });
 
-            Assert.AreEqual(67, (int)actual);
-            Assert.IsTrue(actual.HasFlag(TestEnumFlag.Value1));
-            Assert.IsTrue(actual.HasFlag(TestEnumFlag.Value2));
-            Assert.IsTrue(actual.HasFlag(TestEnumFlag.Value64));
-            Assert.IsTrue(actual.HasFlag(TestEnumFlag.Value0));
-            Assert.IsFalse(actual.HasFlag(TestEnumFlag.Value8));
-            Assert.IsFalse(actual.HasFlag(TestEnumFlag.Value32));
+            Assert.Equal(67, (int)actual);
+            Assert.True(actual.HasFlag(TestEnumFlag.Value1));
+            Assert.True(actual.HasFlag(TestEnumFlag.Value2));
+            Assert.True(actual.HasFlag(TestEnumFlag.Value64));
+            Assert.True(actual.HasFlag(TestEnumFlag.Value0));
+            Assert.False(actual.HasFlag(TestEnumFlag.Value8));
+            Assert.False(actual.HasFlag(TestEnumFlag.Value32));
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_EnumFlag_When_Using_Short_option_And_A_List_Of_String_Values()
         {
             var args = new[] { "--direction", "South", "East" };
@@ -509,10 +508,10 @@ namespace Fclp.Tests
 
             p.Parse(args);
 
-            Assert.IsFalse(actual.HasFlag(Direction.North));
-            Assert.IsTrue(actual.HasFlag(Direction.East));
-            Assert.IsTrue(actual.HasFlag(Direction.South));
-            Assert.IsFalse(actual.HasFlag(Direction.West));
+            Assert.False(actual.HasFlag(Direction.North));
+            Assert.True(actual.HasFlag(Direction.East));
+            Assert.True(actual.HasFlag(Direction.South));
+            Assert.False(actual.HasFlag(Direction.West));
         }
 
         [Flags]
@@ -530,7 +529,7 @@ namespace Fclp.Tests
 
         #region Enum? Options
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Null_When_No_Value_Provided()
         {
             TestEnum? actual = TestEnum.Value0;
@@ -543,10 +542,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "-e" });
 
-            Assert.IsNull(actual);
+            Assert.Null(actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Short_option()
         {
             TestEnum? expected = TestEnum.Value1;
@@ -561,10 +560,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "-e", expected.ToString() });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Long_option()
         {
             TestEnum? expected = TestEnum.Value1;
@@ -579,10 +578,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "--enum", expected.ToString() });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Short_option_And_Int32_Enum()
         {
             TestEnum? expected = TestEnum.Value1;
@@ -597,10 +596,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "-e", ((int)expected).ToString(CultureInfo.InvariantCulture) });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Long_option_And_Int32_Enum()
         {
             TestEnum? expected = TestEnum.Value1;
@@ -615,10 +614,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "--enum", ((int)expected).ToString(CultureInfo.InvariantCulture) });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Short_option_And_Lowercase_String()
         {
             TestEnum? expected = TestEnum.Value1;
@@ -633,10 +632,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "-e", expected.ToString().ToLowerInvariant() });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Long_option_And_Int32_Enum_And_Lowercase_String()
         {
             TestEnum? expected = TestEnum.Value1;
@@ -651,10 +650,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "--enum", expected.ToString().ToLowerInvariant() });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Short_option_And_Uppercase_String()
         {
             TestEnum? expected = TestEnum.Value1;
@@ -669,10 +668,10 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "-e", expected.ToString().ToUpperInvariant() });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Enum_When_Using_Long_option_And_Int32_Enum_And_Uppercase_String()
         {
             TestEnum? expected = TestEnum.Value1;
@@ -687,14 +686,14 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "--enum", expected.ToString().ToUpperInvariant() });
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
         #endregion
 
         #region DateTime Option
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_DateTime_When_Using_Short_option()
         {
             var expected = new DateTime(2012, 2, 29, 01, 01, 01);
@@ -709,12 +708,12 @@ namespace Fclp.Tests
 
             //var result = parser.Parse(new[] { "-dt", expected.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.CurrentCulture) });
 
-            //Assert.AreEqual(expected, actual);
-            //Assert.IsFalse(result.HasErrors);
-            //Assert.IsFalse(result.Errors.Any());
+            //Assert.Equal(expected, actual);
+            //Assert.False(result.HasErrors);
+            //Assert.False(result.Errors.Any());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_DateTime_When_Using_Long_option()
         {
             var expected = new DateTime(2012, 2, 29, 01, 01, 01);
@@ -729,12 +728,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--datetime", expected.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.CurrentCulture) });
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_DateTime_When_Using_Spaces_And_Long_option()
         {
             var expected = new DateTime(2012, 2, 29, 01, 01, 01);
@@ -749,19 +748,19 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--datetime", expected.ToString("yyyy MM dd hh:mm:ss tt", CultureInfo.CurrentCulture) });
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_DateTime_When_Using_Spaces_And_Short_option()
         {
             var expected = new DateTime(2012, 2, 29, 01, 01, 01);
             RunTest(expected.ToString("yyyy MM dd hh:mm:ss tt", CultureInfo.CurrentCulture), expected);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_ListDateTime_When_Using_Spaces_And_Long_option()
         {
             var expected = new List<DateTime> {
@@ -782,16 +781,16 @@ namespace Fclp.Tests
             dArgs.AddRange(expected.Select(x => "\"" + x.ToString("yyyy MM dd hh:mm:ss tt", CultureInfo.CurrentCulture) + "\""));
             var result = parser.Parse(dArgs.ToArray());
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
         #endregion DateTime Option
 
         #region int? Option
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Int32_When_Valid_Value_Is_Provided()
         {
             int? expected = 1;
@@ -804,12 +803,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] {"--integer", "1"});
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Int32_When_InValid_Value_Is_Provided()
         {
             int? expected = null;
@@ -822,12 +821,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] {"--integer", "abc"});
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Int32_When_Null_Is_Provided()
         {
             int? expected = null;
@@ -840,16 +839,16 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] {"--integer"} );
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
         #endregion
 
         #region double? Option
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Double_When_Valid_Value_Is_Provided()
         {
             double? expected = 1.23456789d;
@@ -862,12 +861,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--double", expected.Value.ToString(CultureInfo.CurrentCulture) });
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Double_When_InValid_Value_Is_Provided()
         {
             double? expected = null;
@@ -880,12 +879,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--double", "not-a-double" });
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Double_When_No_Value_Is_Provided()
         {
             double? expected = null;
@@ -898,16 +897,16 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--double" });
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
         #endregion
 
         #region DateTime? Option
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_DateTime_When_Valid_Value_Is_Provided()
         {
             DateTime? expected = new DateTime(2012, 2, 29, 01, 01, 01);
@@ -921,12 +920,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--datetime", expected.Value.ToString("yyyy-MM-ddThh:mm:ss", CultureInfo.CurrentCulture) });
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_DateTime_When_InValid_Value_Is_Provided()
         {
             DateTime? expected = null;
@@ -940,12 +939,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--datetime", "not-a-date-time" });
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_DateTime_When_No_Value_Is_Provided()
         {
             DateTime? expected = null;
@@ -959,16 +958,16 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--datetime" });
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
         #endregion
 
         #region bool? Option
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Bool_When_Valid_Value_Is_Provided()
         {
             bool? expected = true;
@@ -981,12 +980,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--bool", "true" });
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Bool_When_InValid_Value_Is_Provided()
         {
             bool? expected = null;
@@ -999,12 +998,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--bool", "not-a-bool" });
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Nullable_Bool_When_No_Value_Is_Provided()
         {
             bool? expected = null;
@@ -1017,16 +1016,16 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--bool" });
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
         #endregion
 
         #region Uri Option
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Uri_When_Valid_Value_Is_Provided()
         {
             const string expected = "https://github.com/fclp/fluent-command-line-parser";
@@ -1039,12 +1038,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--uri", expected });
 
-            Assert.AreEqual(expected, actual.AbsoluteUri);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Equal(expected, actual.AbsoluteUri);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Uri_When_InValid_Value_Is_Provided()
         {
             Uri actual = null;
@@ -1056,12 +1055,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--uri", "not-a-uri" });
 
-            Assert.IsNull(actual);
-            Assert.IsTrue(result.HasErrors);
-            Assert.AreEqual(result.Errors.Count(), 1);
+            Assert.Null(actual);
+            Assert.True(result.HasErrors);
+            Assert.Equal(result.Errors.Count(), 1);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Parser_Calls_The_Callback_With_Expected_Uri_When_No_Value_Is_Provided()
         {
             Uri actual = null;
@@ -1073,16 +1072,16 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--uri" });
 
-            Assert.IsNull(actual);
-            Assert.IsTrue(result.HasErrors);
-            Assert.AreEqual(result.Errors.Count(), 1);
+            Assert.Null(actual);
+            Assert.True(result.HasErrors);
+            Assert.Equal(result.Errors.Count(), 1);
         }
 
         #endregion
 
         #region Long Option Only
 
-        [Test]
+        [Fact]
         public void Can_have_long_option_only()
         {
             var parser = CreateFluentParser();
@@ -1093,26 +1092,25 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--my-feature", "somevalue" });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.EmptyArgs);
-            Assert.IsFalse(result.HelpCalled);
+            Assert.False(result.HasErrors);
+            Assert.False(result.EmptyArgs);
+            Assert.False(result.HelpCalled);
 
-            Assert.AreEqual("somevalue", s);
+            Assert.Equal("somevalue", s);
         }
 
-        [Test]
-        [ExpectedException(typeof(InvalidOptionNameException))]
+        [Fact]
         public void Cannot_have_single_character_long_option()
         {
             var parser = CreateFluentParser();
-            parser.Setup<string>("s");
+            Assert.Throws<InvalidOptionNameException>(() => parser.Setup<string>("s"));
         }
 
         #endregion
 
         #region Required
 
-        [Test]
+        [Fact]
         public void Ensure_Expected_Error_Is_Returned_If_A_Option_Is_Required_And_Null_Args_Are_Specified()
         {
             var parser = CreateFluentParser();
@@ -1122,14 +1120,14 @@ namespace Fclp.Tests
 
             var result = parser.Parse(null);
 
-            Assert.IsTrue(result.HasErrors);
+            Assert.True(result.HasErrors);
 
-            Assert.AreEqual(1, result.Errors.Count());
+            Assert.Equal(1, result.Errors.Count());
 
-            Assert.IsInstanceOf(typeof(ExpectedOptionNotFoundParseError), result.Errors.First());
+            Assert.IsType(typeof(ExpectedOptionNotFoundParseError), result.Errors.First());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Expected_Error_Is_Returned_If_A_Option_Is_Required_And_Empty_Args_Are_Specified()
         {
             var parser = CreateFluentParser();
@@ -1139,14 +1137,14 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new string[0]);
 
-            Assert.IsTrue(result.HasErrors);
+            Assert.True(result.HasErrors);
 
-            Assert.AreEqual(1, result.Errors.Count());
+            Assert.Equal(1, result.Errors.Count());
 
-            Assert.IsInstanceOf(typeof(ExpectedOptionNotFoundParseError), result.Errors.First());
+            Assert.IsType(typeof(ExpectedOptionNotFoundParseError), result.Errors.First());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Expected_Error_Is_Returned_If_Required_Option_Is_Provided()
         {
             var parser = CreateFluentParser();
@@ -1156,14 +1154,14 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "-d" });
 
-            Assert.IsTrue(result.HasErrors);
+            Assert.True(result.HasErrors);
 
-            Assert.AreEqual(1, result.Errors.Count());
+            Assert.Equal(1, result.Errors.Count());
 
-            Assert.IsInstanceOf(typeof(ExpectedOptionNotFoundParseError), result.Errors.First());
+            Assert.IsType(typeof(ExpectedOptionNotFoundParseError), result.Errors.First());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_No_Error_Returned_If_Required_Option_Is_Not_Provided()
         {
             var parser = CreateFluentParser();
@@ -1172,48 +1170,45 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "-d" });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
-        [Test]
-        [ExpectedException(typeof(OptionAlreadyExistsException))]
+        [Fact]
         public void Ensure_Expected_Exception_Thrown_If_Adding_A_Option_With_A_ShortName_Which_Has_Already_Been_Setup()
         {
             var parser = CreateFluentParser();
 
             parser.Setup<string>('s', "string");
 
-            parser.Setup<int>('s', "int32");
+            Assert.Throws<OptionAlreadyExistsException>(() => parser.Setup<int>('s', "int32"));
         }
 
-        [Test]
-        [ExpectedException(typeof(OptionAlreadyExistsException))]
+        [Fact]
         public void Ensure_Expected_Exception_Thrown_If_Adding_A_Option_With_A_ShortName_And_LongName_Which_Has_Already_Been_Setup()
         {
             var parser = CreateFluentParser();
 
             parser.Setup<string>('s', "string");
 
-            parser.Setup<int>('s', "string");
+            Assert.Throws<OptionAlreadyExistsException>(() => parser.Setup<int>('s', "string"));
         }
 
-        [Test]
-        [ExpectedException(typeof(OptionAlreadyExistsException))]
+        [Fact]
         public void Ensure_Expected_Exception_Thrown_If_Adding_A_Option_With_A_LongName_Which_Has_Already_Been_Setup()
         {
             var parser = CreateFluentParser();
 
             parser.Setup<string>('s', "string");
 
-            parser.Setup<int>('i', "string");
+            Assert.Throws<OptionAlreadyExistsException>(() => parser.Setup<int>('i', "string"));
         }
 
         #endregion
 
         #region Default
 
-        [Test]
+        [Fact]
         public void Ensure_Default_Value_Returned_If_No_Value_Specified()
         {
             var parser = CreateFluentParser();
@@ -1227,11 +1222,11 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "-s" });
 
-            Assert.AreSame(expected, actual);
-            Assert.IsTrue(result.HasErrors);
+            Assert.Same(expected, actual);
+            Assert.True(result.HasErrors);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Default_Value_Returned_If_No_Option_Or_Value_Specified()
         {
             var parser = CreateFluentParser();
@@ -1245,40 +1240,40 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new string[0]);
 
-            Assert.AreSame(expected, actual);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.Same(expected, actual);
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
         }
 
         #endregion
 
         #region No Args
 
-        [Test]
+        [Fact]
         public void Ensure_Can_Specify_Empty_Args()
         {
             var parser = CreateFluentParser();
 
             var result = parser.Parse(new string[0]);
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsTrue(result.EmptyArgs);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.False(result.HasErrors);
+            Assert.True(result.EmptyArgs);
+            Assert.False(result.Errors.Any());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Can_Specify_Null_Args()
         {
             var parser = CreateFluentParser();
 
             var result = parser.Parse(null);
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsTrue(result.EmptyArgs);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.False(result.HasErrors);
+            Assert.True(result.EmptyArgs);
+            Assert.False(result.Errors.Any());
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Defaults_Are_Called_When_Empty_Args_Specified()
         {
             var parser = CreateFluentParser();
@@ -1300,19 +1295,19 @@ namespace Fclp.Tests
 
             var result = parser.Parse(null);
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsTrue(result.EmptyArgs);
-            Assert.AreEqual(expectedInt, actualInt);
-            Assert.AreEqual(expectedDouble, actualDouble);
-            Assert.AreEqual(expectedString, actualString);
-            Assert.AreEqual(expectedBool, actualBool);
+            Assert.False(result.HasErrors);
+            Assert.True(result.EmptyArgs);
+            Assert.Equal(expectedInt, actualInt);
+            Assert.Equal(expectedDouble, actualDouble);
+            Assert.Equal(expectedString, actualString);
+            Assert.Equal(expectedBool, actualBool);
         }
 
         #endregion No Args
 
         #region Example
 
-        [Test]
+        [Fact]
         public void Ensure_Example_Works_As_Expected()
         {
             const int expectedRecordId = 10;
@@ -1362,22 +1357,22 @@ namespace Fclp.Tests
             // do the work
             ICommandLineParserResult result = parser.Parse(args);
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.Errors.Any());
+            Assert.False(result.HasErrors);
+            Assert.False(result.Errors.Any());
 
-            Assert.AreEqual(expectedRecordId, recordId);
-            Assert.AreEqual(expectedValue, newValue);
-            Assert.AreEqual(expectedSilentMode, inSilentMode);
-            Assert.AreEqual(expectedSwitchA, switchA);
-            Assert.AreEqual(expectedSwitchB, switchB);
-            Assert.AreEqual(expectedSwitchC, switchC);
+            Assert.Equal(expectedRecordId, recordId);
+            Assert.Equal(expectedValue, newValue);
+            Assert.Equal(expectedSilentMode, inSilentMode);
+            Assert.Equal(expectedSwitchA, switchA);
+            Assert.Equal(expectedSwitchB, switchB);
+            Assert.Equal(expectedSwitchC, switchC);
         }
 
         #endregion
 
         #region Setup Help
 
-        [Test]
+        [Fact]
         public void Setup_Help_And_Ensure_It_Is_Called_With_Custom_Formatter()
         {
             var parser = new Fclp.FluentCommandLineParser();
@@ -1401,12 +1396,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(args);
 
-            Assert.AreSame(expectedCallbackResult, callbackResult);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsTrue(result.HelpCalled);
+            Assert.Same(expectedCallbackResult, callbackResult);
+            Assert.False(result.HasErrors);
+            Assert.True(result.HelpCalled);
         }
 
-        [Test]
+        [Fact]
         public void Setup_Help_And_Ensure_It_Is_Called()
         {
             var parser = new Fclp.FluentCommandLineParser();
@@ -1429,12 +1424,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(args);
 
-            Assert.IsTrue(wasCalled);
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsTrue(result.HelpCalled);
+            Assert.True(wasCalled);
+            Assert.False(result.HasErrors);
+            Assert.True(result.HelpCalled);
         }
 
-        [Test]
+        [Fact]
         public void Setup_Help_With_Symbol()
         {
             var parser = CreateFluentParser();
@@ -1447,11 +1442,11 @@ namespace Fclp.Tests
 
             var result = parser.Parse(args);
 
-            Assert.IsTrue(result.HelpCalled);
-            Assert.IsNotNullOrEmpty(callbackResult);
+            Assert.True(result.HelpCalled);
+            Assert.NotEmpty(callbackResult);
         }
 
-        [Test]
+        [Fact]
         public void Setup_Help_And_Ensure_It_Can_Be_Called_Manually()
         {
             var parser = CreateFluentParser();
@@ -1462,10 +1457,10 @@ namespace Fclp.Tests
 
             parser.HelpOption.ShowHelp(parser.Options);
 
-            Assert.IsNotNullOrEmpty(callbackResult);           
+            Assert.NotEmpty(callbackResult);           
         }
 
-        [Test]
+        [Fact]
         public void Generic_Setup_Help_And_Ensure_It_Can_Be_Called_Manually()
         {
             var parser = new FluentCommandLineParser<TestApplicationArgs>();
@@ -1476,14 +1471,14 @@ namespace Fclp.Tests
 
             parser.HelpOption.ShowHelp(parser.Options);
 
-            Assert.IsNotNullOrEmpty(callbackResult);           
+            Assert.NotEmpty(callbackResult);           
         }
 
         #endregion
 
         #region Case Sensitive
 
-        [Test]
+        [Fact]
         public void Ensure_Short_Options_Are_Case_Sensitive_When_Enabled()
         {
             var parser = CreateFluentParser();
@@ -1501,12 +1496,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "-S", expectedUpperCaseValue, "-s", expectedLowerCaseValue });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.AreEqual(expectedUpperCaseValue, upperCaseValue);
-            Assert.AreEqual(expectedLowerCaseValue, lowerCaseValue);
+            Assert.False(result.HasErrors);
+            Assert.Equal(expectedUpperCaseValue, upperCaseValue);
+            Assert.Equal(expectedLowerCaseValue, lowerCaseValue);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Long_Options_Are_Case_Sensitive_When_Enabled()
         {
             var parser = CreateFluentParser();
@@ -1524,12 +1519,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--LONGOPTION", expectedUpperCaseValue, "--longoption", expectedLowerCaseValue });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.AreEqual(expectedUpperCaseValue, upperCaseValue);
-            Assert.AreEqual(expectedLowerCaseValue, lowerCaseValue);
+            Assert.False(result.HasErrors);
+            Assert.Equal(expectedUpperCaseValue, upperCaseValue);
+            Assert.Equal(expectedLowerCaseValue, lowerCaseValue);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Short_Options_Ignore_Case_When_Disabled()
         {
             var parser = CreateFluentParser();
@@ -1544,11 +1539,11 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--S", expectedValue });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.AreEqual(expectedValue, actualValue);
+            Assert.False(result.HasErrors);
+            Assert.Equal(expectedValue, actualValue);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Long_Options_Ignore_Case_When_Disabled()
         {
             var parser = CreateFluentParser();
@@ -1563,81 +1558,77 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--LONGOPTION", expectedValue });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.AreEqual(expectedValue, actualValue);
+            Assert.False(result.HasErrors);
+            Assert.Equal(expectedValue, actualValue);
         }
 
         #endregion
 
         #region Obsolete
 
-        [Test]
+        [Fact]
         public void Ensure_Obsolete_Setup_With_Only_Short_Option()
         {
             var parser = CreateFluentParser();
             parser.Setup<string>("s", null);
             var option = parser.Options.Single();
-            Assert.IsNull(option.LongName);
-            Assert.AreEqual("s", option.ShortName);
+            Assert.Null(option.LongName);
+            Assert.Equal("s", option.ShortName);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Obsolete_Setup_With_Only_Long_Option()
         {
             var parser = CreateFluentParser();
             parser.Setup<string>(null, "long");
             var option = parser.Options.Single();
-            Assert.AreEqual("long", option.LongName);
-            Assert.IsNull(option.ShortName);
+            Assert.Equal("long", option.LongName);
+            Assert.Null(option.ShortName);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Obsolete_Setup_With_Short_And_Long_Option()
         {
             var parser = CreateFluentParser();
             parser.Setup<string>("s", "long");
             var option = parser.Options.Single();
-            Assert.AreEqual("long", option.LongName);
-            Assert.AreEqual("s", option.ShortName);
+            Assert.Equal("long", option.LongName);
+            Assert.Equal("s", option.ShortName);
         }
 
-        [Test]
-        [ExpectedException(typeof(InvalidOptionNameException))]
+        [Fact]
         public void Ensure_Obsolete_Setup_Does_Not_Allow_Null_Short_And_Long_Options()
         {
             var parser = CreateFluentParser();
-            parser.Setup<string>(null, null);
+            Assert.Throws<InvalidOptionNameException>(() => parser.Setup<string>(null, null));
         }
 
-        [Test]
-        [ExpectedException(typeof(InvalidOptionNameException))]
+        [Fact]
         public void Ensure_Obsolete_Setup_Does_Not_Allow_Empty_Short_And_Long_Options()
         {
             var parser = CreateFluentParser();
-            parser.Setup<string>(string.Empty, string.Empty);
+            Assert.Throws<InvalidOptionNameException>(() => parser.Setup<string>(string.Empty, string.Empty));
         }
 
-        [Test]
-        [ExpectedException(typeof(InvalidOptionNameException))]
+        [Fact]
         public void Ensure_Obsolete_Setup_Does_Not_Allow_Short_Option_With_More_Than_One_Char()
         {
             var parser = CreateFluentParser();
-            parser.Setup<string>("ab", null);
+            Assert.Throws<InvalidOptionNameException>(() => parser.Setup<string>("ab", null));
         }
 
-        [Test]
-        [ExpectedException(typeof(InvalidOptionNameException))]
+        [Fact]
         public void Ensure_Obsolete_Setup_Does_Not_Allow_Long_Option_With_One_Char()
         {
             var parser = CreateFluentParser();
-            parser.Setup<string>(null, "s");
+            Assert.Throws<InvalidOptionNameException>(() => parser.Setup<string>(null, "s"));
         }
 
         #endregion
 
         #region Addtional Arguments
 
-        [Test]
+        [Fact]
         public void Ensure_Additional_Arguments_Callback_Called_When_Additional_Args_Provided()
         {
             var parser = CreateFluentParser();
@@ -1649,16 +1640,16 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--my-option", "value", "--", "addArg1", "addArg2" });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.EmptyArgs);
-            Assert.IsFalse(result.HelpCalled);
+            Assert.False(result.HasErrors);
+            Assert.False(result.EmptyArgs);
+            Assert.False(result.HelpCalled);
 
-            Assert.AreEqual(2, capturedAdditionalArgs.Count());
-            Assert.IsTrue(capturedAdditionalArgs.Contains("addArg1"));
-            Assert.IsTrue(capturedAdditionalArgs.Contains("addArg2"));
+            Assert.Equal(2, capturedAdditionalArgs.Count());
+            Assert.True(capturedAdditionalArgs.Contains("addArg1"));
+            Assert.True(capturedAdditionalArgs.Contains("addArg2"));
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Additional_Arguments_Callback_Not_Called_When_No_Additional_Args_Provided()
         {
             var parser = CreateFluentParser();
@@ -1670,14 +1661,14 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--my-option", "value" });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.EmptyArgs);
-            Assert.IsFalse(result.HelpCalled);
+            Assert.False(result.HasErrors);
+            Assert.False(result.EmptyArgs);
+            Assert.False(result.HelpCalled);
 
-            Assert.IsFalse(wasCalled);
+            Assert.False(wasCalled);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Additional_Arguments_Callback_Not_Called_When_No_Additional_Args_Follow_A_Double_Dash()
         {
             var parser = CreateFluentParser();
@@ -1689,14 +1680,14 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--my-option", "value", "--" });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.EmptyArgs);
-            Assert.IsFalse(result.HelpCalled);
+            Assert.False(result.HasErrors);
+            Assert.False(result.EmptyArgs);
+            Assert.False(result.HelpCalled);
 
-            Assert.IsFalse(wasCalled);
+            Assert.False(wasCalled);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Stable_When_Additional_Args_Are_Provided_But_Capture_Additional_Arguments_Has_Not_Been_Setup()
         {
             var parser = CreateFluentParser();
@@ -1705,12 +1696,12 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--my-option", "value", "--", "addArg1", "addArg2" });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.EmptyArgs);
-            Assert.IsFalse(result.HelpCalled);
+            Assert.False(result.HasErrors);
+            Assert.False(result.EmptyArgs);
+            Assert.False(result.HelpCalled);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Additional_Args_Can_Be_Captured_For_Different_Options()
         {
             var parser = CreateFluentParser();
@@ -1731,27 +1722,27 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--option-one", "value-one", "addArg1", "addArg2", "--option-two", "value-two", "addArg3", "addArg4" });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.EmptyArgs);
-            Assert.IsFalse(result.HelpCalled);
+            Assert.False(result.HasErrors);
+            Assert.False(result.EmptyArgs);
+            Assert.False(result.HelpCalled);
 
-            Assert.AreEqual("value-one", option1Value);
-            Assert.AreEqual("value-two", option2Value);
+            Assert.Equal("value-one", option1Value);
+            Assert.Equal("value-two", option2Value);
 
-            Assert.AreEqual(2, option1AddArgs.Count());
-            Assert.IsTrue(option1AddArgs.Contains("addArg1"));
-            Assert.IsTrue(option1AddArgs.Contains("addArg2"));
+            Assert.Equal(2, option1AddArgs.Count());
+            Assert.True(option1AddArgs.Contains("addArg1"));
+            Assert.True(option1AddArgs.Contains("addArg2"));
 
-            Assert.AreEqual(2, option2AddArgs.Count());
-            Assert.IsTrue(option2AddArgs.Contains("addArg3"));
-            Assert.IsTrue(option2AddArgs.Contains("addArg4"));
+            Assert.Equal(2, option2AddArgs.Count());
+            Assert.True(option2AddArgs.Contains("addArg3"));
+            Assert.True(option2AddArgs.Contains("addArg4"));
         }
 
         #endregion
 
         #region Lists
 
-        [Test]
+        [Fact]
         public void Ensure_Can_Parse_Mulitple_Arguments_Containing_Negative_Integers_To_A_List()
         {
             var parser = CreateFluentParser();
@@ -1763,18 +1754,18 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--integers", "--", "123", "-123", "-321", "321" });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.EmptyArgs);
-            Assert.IsFalse(result.HelpCalled);
+            Assert.False(result.HasErrors);
+            Assert.False(result.EmptyArgs);
+            Assert.False(result.HelpCalled);
 
-            Assert.AreEqual(4, actual.Count());
-            Assert.IsTrue(actual.Contains(123));
-            Assert.IsTrue(actual.Contains(-123));
-            Assert.IsTrue(actual.Contains(-321));
-            Assert.IsTrue(actual.Contains(321));
+            Assert.Equal(4, actual.Count());
+            Assert.True(actual.Contains(123));
+            Assert.True(actual.Contains(-123));
+            Assert.True(actual.Contains(-321));
+            Assert.True(actual.Contains(321));
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Can_Parse_Multiple_Nullable_Enums_To_A_List()
         {
             var parser = CreateFluentParser();
@@ -1786,16 +1777,16 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--enums", "--", TestEnum.Value0.ToString(), TestEnum.Value1.ToString() });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.EmptyArgs);
-            Assert.IsFalse(result.HelpCalled);
+            Assert.False(result.HasErrors);
+            Assert.False(result.EmptyArgs);
+            Assert.False(result.HelpCalled);
 
-            Assert.AreEqual(2, actual.Count());
+            Assert.Equal(2, actual.Count());
             Assert.Contains(TestEnum.Value0, actual);
             Assert.Contains(TestEnum.Value1, actual);
         }
 
-        [Test]
+        [Fact]
         public void Ensure_Can_Parse_Arguments_Containing_Long_To_A_List()
         {
             var parser = CreateFluentParser();
@@ -1811,15 +1802,15 @@ namespace Fclp.Tests
 
             var result = parser.Parse(new[] { "--longs", "--", value1.ToString(), value2.ToString(), value3.ToString(), value4.ToString() });
 
-            Assert.IsFalse(result.HasErrors);
-            Assert.IsFalse(result.EmptyArgs);
-            Assert.IsFalse(result.HelpCalled);
+            Assert.False(result.HasErrors);
+            Assert.False(result.EmptyArgs);
+            Assert.False(result.HelpCalled);
 
-            Assert.AreEqual(4, actual.Count());
-            Assert.IsTrue(actual.Contains(value1));
-            Assert.IsTrue(actual.Contains(value2));
-            Assert.IsTrue(actual.Contains(value3));
-            Assert.IsTrue(actual.Contains(value4));
+            Assert.Equal(4, actual.Count());
+            Assert.True(actual.Contains(value1));
+            Assert.True(actual.Contains(value2));
+            Assert.True(actual.Contains(value3));
+            Assert.True(actual.Contains(value4));
         }
 		
         #endregion
@@ -1828,7 +1819,7 @@ namespace Fclp.Tests
 
         #region Duplicate Options Tests
 
-        [Test]
+        [Fact]
         public void Ensure_First_Value_Is_Stored_When_Duplicate_Options_Are_Specified()
         {
             var parser = CreateFluentParser();
@@ -1838,7 +1829,7 @@ namespace Fclp.Tests
 
             parser.Parse(new[] { "/n=1", "/n=2", "-n=3", "--n=4" });
 
-            Assert.AreEqual(1, number);
+            Assert.Equal(1, number);
         }
 
         #endregion
