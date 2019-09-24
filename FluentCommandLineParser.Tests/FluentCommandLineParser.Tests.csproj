@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="Integration\Int64InlineDataAttribute.cs" />
     <Compile Include="Integration\Lists\Int64ListInlineDataAttribute.cs" />
+    <Compile Include="Internals\UsefulExtensionTests.cs" />
     <Compile Include="UriTests.cs" />
     <Compile Include="CommandLineOptionFormatterTests.cs" />
     <Compile Include="Commands\AddArgs.cs" />

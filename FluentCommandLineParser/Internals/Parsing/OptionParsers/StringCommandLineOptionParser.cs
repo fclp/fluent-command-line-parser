@@ -39,7 +39,11 @@ namespace Fclp.Internals.Parsing.OptionParsers
 		/// <returns></returns>
 		public string Parse(ParsedOption parsedOption)
 		{
-			return parsedOption.Value == null ? null : parsedOption.Value.RemoveAnyWrappingDoubleQuotes();
+			if (parsedOption.Value == null)
+				return null;
+			return parsedOption.Value.ContainsWhitespace()
+				? parsedOption.Value.RemoveAnyWrappingDoubleQuotes()
+				: parsedOption.Value;
 		}
 
 		/// <summary>
